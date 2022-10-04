@@ -9,7 +9,7 @@ modLoader="javafml" #mandatory
 loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="fucking nothing lmao what should I put here"
+license="uh yeah, about that"
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
@@ -29,7 +29,7 @@ displayName="Flat Lights" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="flatlights.png" #optional
 # A text field displayed in the mod UI
-credits="Sampsa for getting me addicted to funny flat neon lights, and the lack of mods that add those to 1.16" #optional
+credits="Sampsa(aka u/Sampsoy aka that one GTNH player with the cool futuristic neon city builds) for getting me addicted to funny flat neon lights, and the lack of mods that add those to 1.16" #optional
 # A text field displayed in the mod UI
 authors="UberHelixx" #optional
 # The description text for the mod (multi line!) (#mandatory)
