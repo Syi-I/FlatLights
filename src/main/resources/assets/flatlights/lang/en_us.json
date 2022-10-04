@@ -1,0 +1,20 @@
+{
+  "itemGroup.Flat Lights": "Flat Lights",
+  "item.flatlights.gun_rat": "no",
+  "block.flatlights.flatlight_black_block": "Black Flat Light Block",
+  "block.flatlights.flatlight_blue_block": "Blue Flat Light Block",
+  "block.flatlights.flatlight_brown_block": "Brown Flat Light Block",
+  "block.flatlights.flatlight_cyan_block": "Cyan Flat Light Block",
+  "block.flatlights.flatlight_gray_block": "Gray Flat Light Block",
+  "block.flatlights.flatlight_green_block": "Green Flat Light Block",
+  "block.flatlights.flatlight_light_blue_block": "Light Blue Flat Light Block",
+  "block.flatlights.flatlight_light_gray_block": "Light Gray Flat Light Block",
+  "block.flatlights.flatlight_lime_block": "Lime Flat Light Block",
+  "block.flatlights.flatlight_magenta_block": "Magenta Flat Light Block",
+  "block.flatlights.flatlight_orange_block": "Orange Flat Light Block",
+  "block.flatlights.flatlight_pink_block": "Pink Flat Light Block",
+  "block.flatlights.flatlight_purple_block": "Purple Flat Light Block",
+  "block.flatlights.flatlight_red_block": "Red Flat Light Block",
+  "block.flatlights.flatlight_white_block": "White Flat Light Block",
+  "block.flatlights.flatlight_yellow_block": "Yellow Flat Light Block"
+}
