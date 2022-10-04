@@ -31,12 +31,10 @@ logoFile="flatlights.png" #optional
 # A text field displayed in the mod UI
 credits="Sampsa for getting me addicted to funny flat neon lights, and the lack of mods that add those to 1.16" #optional
 # A text field displayed in the mod UI
-authors="you thought it was a competent mod author but it was ME, UBERHELIXX" #optional
+authors="UberHelixx" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 wow yeah I sure did make a mod to add textureless, borderless colored lights that are secretly just reskinned glowstone
-
-I would consider adding other varients if I weren't lazy idk. also the code is definitely garbage I just followed a generic tutorial and then copy pasted the working block over and over once it worked if you couldn't tell.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.examplemod]] #optional
