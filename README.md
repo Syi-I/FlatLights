@@ -10,7 +10,7 @@
 
 ## All the available colors of Flat Lights
 
-There are 16 available colors for Flat Light Blocks, corresponding to the dye colors in-game. The screenshots below demonstrate the light emission with and without shaders. *Shaders used are BSL via the Oculus mod*.
+There are 16 available colors for Flat Light Blocks, corresponding to the dye colors in-game. The screenshots below demonstrate the light emission with and without shaders. Each square cell is a 2x2 of the Flat Lights, showing that there is no distinguishable border that appears when using the blocks. *Shaders used are BSL via the Oculus mod*.
 
 ![https://imgur.com/a/Z8i7Gra](https://i.imgur.com/bASX2gG.png)
 ---
