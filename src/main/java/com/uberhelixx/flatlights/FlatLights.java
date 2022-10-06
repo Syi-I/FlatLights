@@ -44,6 +44,7 @@ public class FlatLights
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        //register items and blocks
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
     }
@@ -57,7 +58,6 @@ public class FlatLights
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        //LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().options);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
