@@ -16,5 +16,21 @@
   "block.flatlights.flatlight_purple_block": "Purple Flat Light Block",
   "block.flatlights.flatlight_red_block": "Red Flat Light Block",
   "block.flatlights.flatlight_white_block": "White Flat Light Block",
-  "block.flatlights.flatlight_yellow_block": "Yellow Flat Light Block"
+  "block.flatlights.flatlight_yellow_block": "Yellow Flat Light Block",
+  "block.flatlights.flatlight_black_hexblock": "Black Hex Light Block",
+  "block.flatlights.flatlight_blue_hexblock": "Blue Hex Light Block",
+  "block.flatlights.flatlight_brown_hexblock": "Brown Hex Light Block",
+  "block.flatlights.flatlight_cyan_hexblock": "Cyan Hex Light Block",
+  "block.flatlights.flatlight_gray_hexblock": "Gray Hex Light Block",
+  "block.flatlights.flatlight_green_hexblock": "Green Hex Light Block",
+  "block.flatlights.flatlight_light_blue_hexblock": "Light Blue Hex Light Block",
+  "block.flatlights.flatlight_light_gray_hexblock": "Light Gray Hex Light Block",
+  "block.flatlights.flatlight_lime_hexblock": "Lime Hex Light Block",
+  "block.flatlights.flatlight_magenta_hexblock": "Magenta Hex Light Block",
+  "block.flatlights.flatlight_orange_hexblock": "Orange Hex Light Block",
+  "block.flatlights.flatlight_pink_hexblock": "Pink Hex Light Block",
+  "block.flatlights.flatlight_purple_hexblock": "Purple Hex Light Block",
+  "block.flatlights.flatlight_red_hexblock": "Red Hex Light Block",
+  "block.flatlights.flatlight_white_hexblock": "White Hex Light Block",
+  "block.flatlights.flatlight_yellow_hexblock": "Yellow Hex Light Block"
 }
