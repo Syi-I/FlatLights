@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "flatlights:block/flatlight_green_block" }
+    "": { "model": "flatlights:block/flatblock/flatlight_green_block" }
   }
 }

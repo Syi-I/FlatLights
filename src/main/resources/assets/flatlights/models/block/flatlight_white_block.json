@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "flatlights:block/flatlight_white_block"
-  }
-}

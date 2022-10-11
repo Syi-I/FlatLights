@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "flatlights:block/tiles/flatlight_black_tiles" }
+  }
+}

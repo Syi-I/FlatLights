@@ -1,5 +1,5 @@
 {
   "variants": {
-    "": { "model": "flatlights:block/flatlight_light_gray_hexblock" }
+    "": { "model": "flatlights:block/hexblock/flatlight_light_gray_hexblock" }
   }
 }

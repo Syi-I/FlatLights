@@ -42,7 +42,7 @@ public class ModBlocks {
 
     //light level, change the number to whatever light level value from 0-15
     public static ToIntFunction<BlockState> FLAT_LIGHT_LEVEL = BlockState -> 15;
-    public static ToIntFunction<BlockState> PLATE_LIGHT_LEVEL = BlockState -> 7;
+    public static ToIntFunction<BlockState> PLATE_LIGHT_LEVEL = BlockState -> 10;
 
     //function that just gets the block properties so I don't have to copy-paste it 16 times since the blocks are all the same but reskinned
     //also constants for block hardness(time it takes to mine the block) and resistance(what level explosions and such can destroy the block)
@@ -171,4 +171,60 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> FLATLIGHT_YELLOW_HEXBLOCK = registerBlock("flatlight_yellow_hexblock",
             () -> new Block(getPlateBlockProperties()));
+
+    // EXTRA ##############################################################################################################################
+
+    public static final RegistryObject<Block> FLATLIGHT_LIME_2X2BLOCK = registerBlock("flatlight_lime_2x2block",
+            () -> new Block(getPlateBlockProperties()));
+
+    // TILES ##############################################################################################################################
+
+    public static final RegistryObject<Block> FLATLIGHT_BLACK_TILES = registerBlock("flatlight_black_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_BLUE_TILES = registerBlock("flatlight_blue_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_BROWN_TILES = registerBlock("flatlight_brown_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_CYAN_TILES = registerBlock("flatlight_cyan_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_GRAY_TILES = registerBlock("flatlight_gray_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_GREEN_TILES = registerBlock("flatlight_green_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_LIGHT_BLUE_TILES = registerBlock("flatlight_light_blue_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_LIGHT_GRAY_TILES = registerBlock("flatlight_light_gray_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_LIME_TILES = registerBlock("flatlight_lime_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_MAGENTA_TILES = registerBlock("flatlight_magenta_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_ORANGE_TILES = registerBlock("flatlight_orange_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_PINK_TILES = registerBlock("flatlight_pink_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_PURPLE_TILES = registerBlock("flatlight_purple_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_RED_TILES = registerBlock("flatlight_red_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_WHITE_TILES = registerBlock("flatlight_white_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_YELLOW_TILES = registerBlock("flatlight_yellow_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
 }
