@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0.5'
+version = '1.0.6'
 group = 'com.uberhelixx.flatlights' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'flatlights'
 
@@ -145,7 +145,7 @@ jar {
         attributes([
             "Specification-Title": "flatlights",
             "Specification-Vendor": "helixx_flatlights",
-            "Specification-Version": "1.0.5", //I will probably forget to bump this a lot
+            "Specification-Version": "1.0.6", //I will probably forget to bump this a lot
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"helixx_flatlights",

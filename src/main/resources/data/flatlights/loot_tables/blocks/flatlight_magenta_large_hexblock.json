@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "flatlights:flatlight_magenta_large_hexblock"
+        }
+      ]
+    }
+  ]
+}

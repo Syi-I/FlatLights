@@ -61,7 +61,7 @@ public class ModBlocks {
         return AbstractBlock.Properties.create(Material.GLASS)
                 .hardnessAndResistance(BLOCK_HARDNESS, BLOCK_RESISTANCE)
                 .setLightLevel(PLATE_LIGHT_LEVEL)
-                .sound(SoundType.LODESTONE);
+                .sound(SoundType.NETHERITE);
     }
 
     //white flat light block, just copy-paste with each new color and change the names
@@ -172,9 +172,54 @@ public class ModBlocks {
     public static final RegistryObject<Block> FLATLIGHT_YELLOW_HEXBLOCK = registerBlock("flatlight_yellow_hexblock",
             () -> new Block(getPlateBlockProperties()));
 
-    // EXTRA ##############################################################################################################################
+    // LARGE HEXBLOCKS ##############################################################################################################################
 
-    public static final RegistryObject<Block> FLATLIGHT_LIME_2X2BLOCK = registerBlock("flatlight_lime_2x2block",
+    public static final RegistryObject<Block> FLATLIGHT_BLACK_LARGE_HEXBLOCK = registerBlock("flatlight_black_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_BLUE_LARGE_HEXBLOCK = registerBlock("flatlight_blue_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_BROWN_LARGE_HEXBLOCK = registerBlock("flatlight_brown_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_CYAN_LARGE_HEXBLOCK = registerBlock("flatlight_cyan_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_GRAY_LARGE_HEXBLOCK = registerBlock("flatlight_gray_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_GREEN_LARGE_HEXBLOCK = registerBlock("flatlight_green_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_LIGHT_BLUE_LARGE_HEXBLOCK = registerBlock("flatlight_light_blue_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_LIGHT_GRAY_LARGE_HEXBLOCK = registerBlock("flatlight_light_gray_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_LIME_LARGE_HEXBLOCK = registerBlock("flatlight_lime_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_MAGENTA_LARGE_HEXBLOCK = registerBlock("flatlight_magenta_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_ORANGE_LARGE_HEXBLOCK = registerBlock("flatlight_orange_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_PINK_LARGE_HEXBLOCK = registerBlock("flatlight_pink_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_PURPLE_LARGE_HEXBLOCK = registerBlock("flatlight_purple_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_RED_LARGE_HEXBLOCK = registerBlock("flatlight_red_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_WHITE_LARGE_HEXBLOCK = registerBlock("flatlight_white_large_hexblock",
+            () -> new Block(getPlateBlockProperties()));
+
+    public static final RegistryObject<Block> FLATLIGHT_YELLOW_LARGE_HEXBLOCK = registerBlock("flatlight_yellow_large_hexblock",
             () -> new Block(getPlateBlockProperties()));
 
     // TILES ##############################################################################################################################
@@ -225,6 +270,11 @@ public class ModBlocks {
             () -> new Block(getPlateBlockProperties()));
 
     public static final RegistryObject<Block> FLATLIGHT_YELLOW_TILES = registerBlock("flatlight_yellow_tiles",
+            () -> new Block(getPlateBlockProperties()));
+
+    // EXTRA ##############################################################################################################################
+
+    public static final RegistryObject<Block> FLATLIGHT_LIME_2X2BLOCK = registerBlock("flatlight_lime_2x2block",
             () -> new Block(getPlateBlockProperties()));
 
 }
