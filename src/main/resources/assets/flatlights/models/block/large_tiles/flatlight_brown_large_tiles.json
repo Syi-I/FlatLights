@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "flatlights:block/large_tiles/flatlight_brown_large_tiles"
+  }
+}
