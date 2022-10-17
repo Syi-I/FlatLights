@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    " # ",
+    "X X"
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:flatlight_white_block"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "flatlights:flatlight_white_tiles",
+    "count": 8
+  }
+}
