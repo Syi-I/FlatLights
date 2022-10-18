@@ -2,19 +2,34 @@
 
 ### This mod just adds some new blocks meant to be used as neon lights for builds.
 
-- The blocks are textureless and borderless.
-- Gives off light with the same level as glowstone.
-- Works with shaders and looks kinda neat.
-- The crafting recipe is really easy and generous because I'm lazy and don't want to gather materials.
+- The flat blocks are textureless and borderless. Also gives off light with the same level as glowstone.
+- Variant blocks are *supposed* to have tileable textures (*if they aren't blame my awesome MS paint skills*). 
+- Variant blocks have a lower light level compared to the regular flat blocks.
+- All blocks are harvestable by hand and can be mined quickly.
+- Works with shaders and looks kinda neat (*add them as emissive blocks if that's an option somewhere for your shader of choice, that's what makes the blocks glow in the dark. I use tweaked versions of either BSL or Complementary depending on how I'm feeling*).
+- The crafting recipes are really easy and generous because I'm lazy and don't want to gather materials.
+
 ---
 
-## All the available colors of Flat Lights
+## Available Colors of FlatLight Blocks
 
-There are 16 available colors for Flat Light Blocks, corresponding to the dye colors in-game. The screenshots below demonstrate the light emission with and without shaders. Each square cell is a 2x2 of the Flat Lights, showing that there is no distinguishable border that appears when using the blocks. *Shaders used are BSL via the Oculus mod*.
+There are 16 available colors for Flat Light Blocks, corresponding to the dye colors in-game. The screenshots below demonstrate the light emission with and without shaders. Each square cell is a 2x2 of the Flat Lights, showing that there is no distinguishable border that appears when using the blocks. *Shaders used are a tweaked version of BSL via the Oculus mod*.
 
 ![https://imgur.com/a/Z8i7Gra](https://i.imgur.com/bASX2gG.png)
+
 ---
-Yeah it looks like the Lapis Caelestis blocks from Extra Utilities, that's kinda the point. BUT, there's also only so many ways to make a monochrome block with no details so relax. And yeah I know the code is trash, I made this in a couple hours starting from knowing literally nothing about writing mods, and it definitely shows in the code. I followed the first tutorial that popped up on Google sue me.
+
+## Variants of FlatLight Blocks
+
+These are all the available blocks from FlatLights. Variants include hex blocks, large hex blocks, tiles, and large tiles. Each variant is tileable, as demonstrated by the 2x2 squares of each block type. *Shaders used are a tweaked version of Complementary Shaders via the Oculus mod*.
+
+![https://i.imgur.com/8et9J11](https://i.imgur.com/8et9J11.png)
+
+![https://i.imgur.com/YVmtGtQ](https://i.imgur.com/YVmtGtQ.png)
+
+---
+
+Yeah it looks like the Lapis Caelestis blocks from Extra Utilities, that's kinda the point. BUT, there's also only so many ways to make a monochrome block with no details so relax. Also I know my MS Paint skills are lacking, but at least the variants look neat and mostly uniform right? And yeah I know the code is trash, I made this in a couple hours starting from knowing literally nothing about writing mods, and it definitely shows in the code. I followed the first tutorial that popped up on Google sue me.
 
 
 
