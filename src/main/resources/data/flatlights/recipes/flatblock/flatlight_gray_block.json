@@ -5,7 +5,7 @@
       "tag": "forge:glass"
     },
     {
-      "item": "minecraft:glowstone_dust"
+      "tag": "forge:dusts/glowstone"
     },
     {
       "tag": "forge:dyes/gray"

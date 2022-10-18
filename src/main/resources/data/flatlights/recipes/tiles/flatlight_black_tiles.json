@@ -10,7 +10,7 @@
       "item": "flatlights:flatlight_black_block"
     },
     "X": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     }
   },
   "result": {
