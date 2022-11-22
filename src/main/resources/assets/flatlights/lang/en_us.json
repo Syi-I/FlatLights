@@ -86,5 +86,12 @@
   "block.flatlights.flatlight_purple_large_tiles": "Purple Large Tile Light Block",
   "block.flatlights.flatlight_red_large_tiles": "Red Large Tile Light Block",
   "block.flatlights.flatlight_white_large_tiles": "White Large Tile Light Block",
-  "block.flatlights.flatlight_yellow_large_tiles": "Yellow Large Tile Light Block"
+  "block.flatlights.flatlight_yellow_large_tiles": "Yellow Large Tile Light Block",
+  "block.flatlights.flatlight_lime_brick": "Lime Light Bricks",
+
+  "block.flatlights.flatlight_plating_machine": "Plating Machine",
+  "item.flatlights.prismatic_blade": "Prismatic Blade",
+  "block.flatlights.mob_b_gone": "Mob B' Gone",
+  "item.flatlights.prismatic_ingot": "Prismatic Ingot",
+  "block.flatlights.prismatic_block": "Prismatic Block"
 }

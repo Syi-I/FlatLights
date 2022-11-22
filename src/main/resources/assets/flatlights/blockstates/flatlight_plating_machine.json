@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "flatlights:block/flatlight_plating_machine",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "flatlights:block/flatlight_plating_machine"
+    },
+    "facing=west": {
+      "model": "flatlights:block/flatlight_plating_machine",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "flatlights:block/flatlight_plating_machine",
+      "y": 180
+    }
+  }
+}
