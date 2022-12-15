@@ -329,4 +329,16 @@ public class ModBlocks {
     public static final RegistryObject<Block> PRISMATIC_BLOCK = registerBlock("prismatic_block",
             FlatBlock::new);
 
+    public static final RegistryObject<Block> FLATLIGHT_GLASS_HEXBLOCK = registerBlock("flatlight_glass_hexblock",
+            GlassBlock::new);
+
+    public static final RegistryObject<Block> FLATLIGHT_GLASS_LARGE_HEXBLOCK = registerBlock("flatlight_glass_large_hexblock",
+            GlassBlock::new);
+
+    public static final RegistryObject<Block> FLATLIGHT_GLASS_TILES = registerBlock("flatlight_glass_tiles",
+            GlassBlock::new);
+
+    public static final RegistryObject<Block> FLATLIGHT_GLASS_LARGE_TILES = registerBlock("flatlight_glass_large_tiles",
+            GlassBlock::new);
+
 }

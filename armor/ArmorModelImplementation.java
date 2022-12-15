@@ -1,5 +1,6 @@
-package com.uberhelixx.flatlights.item;
+package com.uberhelixx.flatlights.item.armor;
 
+import com.uberhelixx.flatlights.item.armor.ArmorBaseModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.ResourceLocation;
 

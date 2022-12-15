@@ -5,7 +5,6 @@ import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.SwordItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -28,6 +27,7 @@ public class ModItems {
             () -> new PrismaticBlade(ModItemTier.PRISMATIC, 10, 6f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_INGOT = ITEMS.register("prismatic_ingot",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
     public static final RegistryObject<Item> PRISMATIC_BOOTS = ITEMS.register("prismatic_boots",
             () -> new ArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.FEET, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_LEGGINGS = ITEMS.register("prismatic_leggings",

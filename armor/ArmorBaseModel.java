@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item;
+package com.uberhelixx.flatlights.item.armor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

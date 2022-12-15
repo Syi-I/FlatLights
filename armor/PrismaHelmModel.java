@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item;// Made with Blockbench 4.5.0
+package com.uberhelixx.flatlights.item.armor;// Made with Blockbench 4.5.0
 // Exported for Minecraft version 1.15 - 1.16 with MCP mappings
 // Paste this class into your mod and generate all required imports
 

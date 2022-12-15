@@ -1,4 +1,7 @@
-package com.uberhelixx.flatlights.item;
+package com.uberhelixx.flatlights.item.armor;
+
+import com.uberhelixx.flatlights.item.armor.ArmorBaseModel;
+import com.uberhelixx.flatlights.item.armor.ArmorModelImplementation;
 
 //This needs to be it's own class, I don't recommend doing anything else in here!
 //Otherwise you risk being incompatible with servers.
