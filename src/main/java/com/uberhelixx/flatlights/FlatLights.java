@@ -1,9 +1,13 @@
 package com.uberhelixx.flatlights;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,6 +24,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.stream.Collectors;
+
+import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(FlatLights.MOD_ID)
@@ -40,13 +46,15 @@ public class FlatLights
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
         // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+        EVENT_BUS.register(this);
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         //register items and blocks
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
+        EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
+        EVENT_BUS.addListener(BreadButHighQuality::BreadEnchant);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -58,6 +66,11 @@ public class FlatLights
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
+        //changes rendering for the glass blocks so its transparent
+        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_HEXBLOCK.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_LARGE_HEXBLOCK.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_TILES.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_LARGE_TILES.get(), RenderType.getTranslucent());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

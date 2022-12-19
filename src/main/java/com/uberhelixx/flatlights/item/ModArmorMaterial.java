@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterial implements IArmorMaterial {
 
-    PRISMATIC("prismatic", 40, new int[]{5, 12, 8, 5}, 30, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 5.0F, 0.25F, () -> {
+    PRISMATIC("prismatic", 40, new int[]{5, 8, 12, 5}, 30, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 5.0F, 0.25F, () -> {
         return Ingredient.fromItems(ModItems.PRISMATIC_INGOT.get());
     });
 

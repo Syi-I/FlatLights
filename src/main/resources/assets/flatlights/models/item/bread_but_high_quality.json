@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "flatlights:item/prisma_nucleus"
+    "layer0": "flatlights:item/bread_but_high_quality"
   }
 }

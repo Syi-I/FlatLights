@@ -8,9 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
 
-import java.util.function.ToIntFunction;
-
-public class FlatlightsPlatingMachine extends HorizontalBlock {
+public class PlatingMachine extends HorizontalBlock {
 
     //constants for block hardness (time it takes to mine the block) and resistance (what level explosions and such can destroy the block)
     //lower hardness = lower mining time required
@@ -18,9 +16,10 @@ public class FlatlightsPlatingMachine extends HorizontalBlock {
     //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
     static final float BLOCK_RESISTANCE = 100000000f;
 
-    public FlatlightsPlatingMachine(Properties builder) {
+    public PlatingMachine() {
         super(Properties.create(Material.IRON)
                 .hardnessAndResistance(BLOCK_HARDNESS, BLOCK_RESISTANCE)
+                .notSolid()
                 .sound(SoundType.NETHERITE));
     }
 

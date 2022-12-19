@@ -24,7 +24,7 @@ public class ModItems {
     public static final RegistryObject<Item> GUN_RAT = ITEMS.register("gun_rat",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_BLADE = ITEMS.register("prismatic_blade",
-            () -> new PrismaticBlade(ModItemTier.PRISMATIC, 10, 6f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new PrismaticBlade(ModItemTier.PRISMATIC, 5, 1f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_INGOT = ITEMS.register("prismatic_ingot",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
@@ -37,4 +37,11 @@ public class ModItems {
     public static final RegistryObject<Item> PRISMATIC_HELMET = ITEMS.register("prismatic_helmet",
             () -> new ArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.HEAD, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
+    public static final RegistryObject<Item> PRISMA_NUCLEUS = ITEMS.register("prisma_nucleus",
+            () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
+    /*public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
+            () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));*/
+    public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
+            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 }

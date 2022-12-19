@@ -4,28 +4,23 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
-import java.util.function.ToIntFunction;
-
-public class GlassBlock extends BreakableBlock {
+public class WireGlassBlock extends GlassBlock {
 
     //also constants for block hardness(time it takes to mine the block) and resistance(what level explosions and such can destroy the block)
     //lower hardness = lower mining time required
     static final float BLOCK_HARDNESS = 0.4f;
     //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
     static final float BLOCK_RESISTANCE = 100000000f;
-    public GlassBlock() {
+    public WireGlassBlock() {
         super(Properties.create(Material.GLASS)
                 .hardnessAndResistance(BLOCK_HARDNESS, BLOCK_RESISTANCE)
-                .setOpaque(GlassBlock::isntSolid)
-                .setAllowsSpawn(GlassBlock::neverAllowSpawn)
-                .setSuffocates(GlassBlock::isntSolid)
-                .setBlocksVision(GlassBlock::isntSolid)
+                .setOpaque(WireGlassBlock::isntSolid)
+                .setAllowsSpawn(WireGlassBlock::neverAllowSpawn)
+                .setSuffocates(WireGlassBlock::isntSolid)
+                .setBlocksVision(WireGlassBlock::isntSolid)
                 .notSolid()
                 .sound(SoundType.GLASS));
     }
@@ -41,27 +36,6 @@ public class GlassBlock extends BreakableBlock {
 
     private static Boolean neverAllowSpawn(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity) {
         return false;
-    }
-
-    @Override
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
-
-        return 0.2f;
-
-    }
-
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-
-        return false;
-
-    }
-
-    @Override
-    public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
-
-        return 1;
-
     }
 
 }

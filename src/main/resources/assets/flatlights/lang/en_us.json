@@ -93,5 +93,8 @@
   "item.flatlights.prismatic_blade": "Prismatic Blade",
   "block.flatlights.mob_b_gone": "Mob B' Gone",
   "item.flatlights.prismatic_ingot": "Prismatic Ingot",
-  "block.flatlights.prismatic_block": "Prismatic Block"
+  "block.flatlights.prismatic_block": "Prismatic Block",
+
+  "tooltip.flatlights.prismatic_blade_shift": "§5Deals 10% of the target's max HP as bonus damage, up to a cap of 1000 damage.",
+  "tooltip.flatlights.hold_shift": "§e[Shift]"
 }
