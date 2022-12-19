@@ -1,9 +1,6 @@
 package com.uberhelixx.flatlights.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -15,7 +12,7 @@ import net.minecraft.world.IBlockReader;
 
 import java.util.function.ToIntFunction;
 
-public class GlassBlock extends Block {
+public class GlassBlock extends BreakableBlock {
 
     //also constants for block hardness(time it takes to mine the block) and resistance(what level explosions and such can destroy the block)
     //lower hardness = lower mining time required
@@ -44,6 +41,27 @@ public class GlassBlock extends Block {
 
     private static Boolean neverAllowSpawn(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entity) {
         return false;
+    }
+
+    @Override
+    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
+
+        return 0.2f;
+
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+
+        return false;
+
+    }
+
+    @Override
+    public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
+
+        return 1;
+
     }
 
 }
