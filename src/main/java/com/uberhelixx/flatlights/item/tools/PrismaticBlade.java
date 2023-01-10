@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.item.ModItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -108,9 +109,8 @@ public class PrismaticBlade extends SwordItem {
             if (currentValue == null) {
                 outputMap.put(entry.getKey(), addValue);
                 costCounter += addValue;
-            }
-            else {
-                int value = Math.min(currentValue + addValue, enchantment.getMaxLevel() * 65355);
+            } else {
+                int value = Math.min(currentValue + addValue, enchantment.getMaxLevel() * 3);
                 outputMap.put(entry.getKey(), value);
                 costCounter += (currentValue + addValue) * 2;
             }

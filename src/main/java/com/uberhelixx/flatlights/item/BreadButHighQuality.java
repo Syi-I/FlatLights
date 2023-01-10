@@ -25,16 +25,16 @@ public class BreadButHighQuality extends Item {
             return;
         }
 
-        //get prismatic blade from left anvil slot, enchanted book from right anvil slot
+        //get bread from left anvil slot, enchanted book from right anvil slot
         ItemStack bread = event.getLeft();
         ItemStack enchantedBook = event.getRight();
 
-        //check that a prismatic blade and enchanted book are in the anvil
+        //check that bread and enchanted book are in the anvil
         if (bread == null || bread.getItem() != ModItems.BIG_BREAD.get() || enchantedBook == null || enchantedBook.getItem() != Items.ENCHANTED_BOOK) {
             return;
         }
 
-        //grab current enchantments from blade and book
+        //grab current enchantments from bread and book
         Map<Enchantment, Integer> breadMap = EnchantmentHelper.getEnchantments(bread);
         Map<Enchantment, Integer> bookMap = EnchantmentHelper.getEnchantments(enchantedBook);
 
@@ -43,7 +43,7 @@ public class BreadButHighQuality extends Item {
             return;
         }
 
-        //output enchants for the blade
+        //output enchants for the bread
         Map<Enchantment, Integer> outputMap = new HashMap<>(breadMap);
         int costCounter = 0;
 
@@ -65,7 +65,7 @@ public class BreadButHighQuality extends Item {
             }
         }
 
-        //output new blade with enchants
+        //output new bread with enchants
         event.setCost(costCounter);
         ItemStack magicBread = bread.copy();
         EnchantmentHelper.setEnchantments(outputMap, magicBread);
