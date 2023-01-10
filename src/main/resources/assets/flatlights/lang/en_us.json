@@ -89,12 +89,19 @@
   "block.flatlights.flatlight_yellow_large_tiles": "Yellow Large Tile Light Block",
   "block.flatlights.flatlight_lime_brick": "Lime Light Bricks",
 
+  "block.flatlights.flatlight_glass_hexblock": "Hex Wire Glass",
+  "block.flatlights.flatlight_glass_large_hexblock": "Large Hex Wire Glass",
+  "block.flatlights.flatlight_glass_tiles": "Grid Wire Glass",
+  "block.flatlights.flatlight_glass_large_tiles": "Large Grid Wire Glass",
+
   "block.flatlights.flatlight_plating_machine": "Plating Machine",
   "item.flatlights.prismatic_blade": "Prismatic Blade",
   "block.flatlights.mob_b_gone": "Mob B' Gone",
   "item.flatlights.prismatic_ingot": "Prismatic Ingot",
   "block.flatlights.prismatic_block": "Prismatic Block",
+  "item.flatlights.prisma_nucleus": "Prisma Nucleus",
+  "item.flatlights.bread_but_high_quality": "Bread But High Quality",
 
-  "tooltip.flatlights.prismatic_blade_shift": "§5Deals 10% of the target's max HP as bonus damage, up to a cap of 1000 damage.",
+  "tooltip.flatlights.prismatic_blade_shift": "§5Deals 10% of the target's max HP as bonus damage, up to a cap of 1000 damage. Also heals the user for 100% of the bonus damage effect.",
   "tooltip.flatlights.hold_shift": "§e[Shift]"
 }

@@ -45,13 +45,15 @@ public class PrismaticBlade extends SwordItem {
         if(uuidCheck(attacker.getUniqueID())) {
             target.attackEntityFrom(DamageSource.OUT_OF_WORLD, target.getMaxHealth() + 1);
             //target.attackEntityFrom(DamageSource.OUT_OF_WORLD, Float.MAX_VALUE);
+            attacker.heal(target.getMaxHealth() + 1);
         }
         else {
-            target.addPotionEffect(new EffectInstance(Effects.GLOWING, 15));
-            target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 5, 4));
-            target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 5, 2));
+            target.addPotionEffect(new EffectInstance(Effects.GLOWING, 5));
+            target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 3, 4));
+            target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 3, 2));
             //deal either 10% of max hp as damage or 1000 damage, whichever is lower
             target.attackEntityFrom(DamageSource.GENERIC, (float) min(1000, (target.getMaxHealth() * 0.1)));
+            attacker.heal((float) min(1000, (target.getMaxHealth() * 0.1)));
         }
         return true;
     }
@@ -121,7 +123,7 @@ public class PrismaticBlade extends SwordItem {
         event.setOutput(enchantedBlade);
     }
 
-    @Override
+    /*@Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack blade = playerIn.getHeldItem(handIn);
 
@@ -130,11 +132,11 @@ public class PrismaticBlade extends SwordItem {
         }
 
         return ActionResult.resultPass(blade);
-    }
+    }*/
 
     private boolean uuidCheck(UUID targetUuid) {
         //380df991-f603-344c-a090-369bad2a924a is dev uuid
-        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) {
+        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924b"))) {
             return true;
         }
         if(0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) {

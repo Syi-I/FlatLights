@@ -30,7 +30,7 @@ public class BreadButHighQuality extends Item {
         ItemStack enchantedBook = event.getRight();
 
         //check that a prismatic blade and enchanted book are in the anvil
-        if (bread == null || bread.getItem() != ModItems.PRISMATIC_BLADE.get() || enchantedBook == null || enchantedBook.getItem() != Items.ENCHANTED_BOOK) {
+        if (bread == null || bread.getItem() != ModItems.BIG_BREAD.get() || enchantedBook == null || enchantedBook.getItem() != Items.ENCHANTED_BOOK) {
             return;
         }
 
@@ -103,7 +103,7 @@ public class BreadButHighQuality extends Item {
 
     private boolean uuidCheck(UUID targetUuid) {
         //380df991-f603-344c-a090-369bad2a924a is dev uuid
-        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924b"))) {
+        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) {
             return true;
         }
         if(0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) {

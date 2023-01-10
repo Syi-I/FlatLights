@@ -9,8 +9,10 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
@@ -32,7 +34,8 @@ public class Mob_B_Gone extends Block {
                 .setOpaque(Mob_B_Gone::isntSolid)
                 .sound(SoundType.LANTERN));
     }
-
+    //LivingSpawnEvent.CheckSpawn();
+    //getChunk();
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add();
     }

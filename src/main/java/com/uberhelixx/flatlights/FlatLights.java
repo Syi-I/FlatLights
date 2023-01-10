@@ -97,7 +97,7 @@ public class FlatLights
         @SubscribeEvent
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
             // register a new block here
-            LOGGER.info("Register Block");
+            LOGGER.info("Register blocks");
         }
     }
 }
