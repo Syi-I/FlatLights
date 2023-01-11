@@ -29,13 +29,13 @@ public class ModItems {
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
     public static final RegistryObject<Item> PRISMATIC_BOOTS = ITEMS.register("prismatic_boots",
-            () -> new ArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.FEET, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new ModArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.FEET, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_LEGGINGS = ITEMS.register("prismatic_leggings",
-            () -> new ArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.LEGS, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new ModArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.LEGS, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_CHESTPLATE = ITEMS.register("prismatic_chestplate",
-            () -> new ArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.CHEST, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new ModArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.CHEST, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_HELMET = ITEMS.register("prismatic_helmet",
-            () -> new ArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.HEAD, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new ModArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.HEAD, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
     public static final RegistryObject<Item> PRISMA_NUCLEUS = ITEMS.register("prisma_nucleus",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));

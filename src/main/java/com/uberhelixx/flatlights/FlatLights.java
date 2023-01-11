@@ -2,6 +2,7 @@ package com.uberhelixx.flatlights;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
+import com.uberhelixx.flatlights.item.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import net.minecraft.block.Block;
@@ -55,6 +56,7 @@ public class FlatLights
         ModBlocks.register(eventBus);
         EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
         EVENT_BUS.addListener(BreadButHighQuality::BreadEnchant);
+        EVENT_BUS.addListener(ModArmorItem::DamageReduction);
     }
 
     private void setup(final FMLCommonSetupEvent event)
