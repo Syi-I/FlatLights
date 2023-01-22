@@ -22,6 +22,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -71,6 +72,7 @@ public class PrismaticBlade extends SwordItem {
     }
 
     //trying to rip off kikoku time
+    @SubscribeEvent
     public static void EnchantDouble (AnvilUpdateEvent event) {
         if (!event.getPlayer().isServerWorld()) {
             return;

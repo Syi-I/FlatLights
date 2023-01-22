@@ -10,6 +10,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class BreadButHighQuality extends Item {
         super(properties);
     }
 
+    @SubscribeEvent
     public static void BreadEnchant(AnvilUpdateEvent event) {
         if (!event.getPlayer().isServerWorld()) {
             return;

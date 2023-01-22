@@ -121,7 +121,7 @@ public class ModArmorItem extends ArmorItem {
                     int armorTotal = ((PlayerEntity) event.getEntity()).getTotalArmorValue();
                     //Minecraft.getInstance().player.sendChatMessage("Total armor value is " + armorTotal);
                     int armorVsDiamondTotal = armorTotal - 20;
-                    float reductionRatioCap = 0.5f;
+                    float reductionRatioCap = 0.75f;
                     float reductionRatio;
                     //get reductionRatio, make sure percent doesn't go above reductionRatioCap %
                     if(armorVsDiamondTotal > 0) {

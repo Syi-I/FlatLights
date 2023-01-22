@@ -140,5 +140,6 @@ public class ModBlocks {
     public static final RegistryObject<Block> FLATLIGHT_PLATING_MACHINE = registerBlock("flatlight_plating_machine", PlatingMachine::new);
     public static final RegistryObject<Block> FLATLIGHT_MOB_B_GONE = registerBlock("mob_b_gone", Mob_B_Gone::new);
     public static final RegistryObject<Block> PRISMATIC_BLOCK = registerBlock("prismatic_block", FlatBlock::new);
+    public static final RegistryObject<Block> SPECTRUM_ANVIL = registerBlock("spectrum_anvil", SpectrumAnvil::new);
 
 }
