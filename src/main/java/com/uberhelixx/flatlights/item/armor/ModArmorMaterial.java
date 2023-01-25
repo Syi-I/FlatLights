@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item;
+package com.uberhelixx.flatlights.item.armor;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.ModItems;

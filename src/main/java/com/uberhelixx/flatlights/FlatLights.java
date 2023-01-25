@@ -2,14 +2,16 @@ package com.uberhelixx.flatlights;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
-import com.uberhelixx.flatlights.item.ModArmorItem;
+import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.item.armor.PrismaticBoots;
+import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
+import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,8 +25,6 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.stream.Collectors;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -57,6 +57,9 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
         EVENT_BUS.addListener(BreadButHighQuality::BreadEnchant);
         EVENT_BUS.addListener(ModArmorItem::DamageReduction);
+        EVENT_BUS.addListener(PrismaticChestplate::equipCheck);
+        EVENT_BUS.addListener(PrismaticHelm::equipCheck);
+        EVENT_BUS.addListener(PrismaticBoots::negateFallDamage);
     }
 
     private void setup(final FMLCommonSetupEvent event)

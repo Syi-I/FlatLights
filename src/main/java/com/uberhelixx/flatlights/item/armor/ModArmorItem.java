@@ -1,6 +1,7 @@
-package com.uberhelixx.flatlights.item;
+package com.uberhelixx.flatlights.item.armor;
 
 import com.google.common.collect.ImmutableMap;
+import com.uberhelixx.flatlights.item.armor.ModArmorMaterial;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
@@ -17,7 +18,7 @@ import java.util.Objects;
 public class ModArmorItem extends ArmorItem {
     private static final Map<IArmorMaterial, Effect> MATERIAL_TO_EFFECT_MAP =
             new ImmutableMap.Builder<IArmorMaterial, Effect>()
-                    .put(ModArmorMaterial.PRISMATIC, Effects.INVISIBILITY)
+                    .put(ModArmorMaterial.PRISMATIC, Effects.SATURATION)
                     .build();
 
     public ModArmorItem(IArmorMaterial material, EquipmentSlotType slot, Properties settings) {
@@ -27,7 +28,7 @@ public class ModArmorItem extends ArmorItem {
     @Override
     public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
         if(!world.isRemote()) {
-            if(hasFullSuitOfArmorOn(player)) {
+            if(hasFullArmor(player)) {
                 evaluateArmorEffects(player);
             }
         }
@@ -35,12 +36,12 @@ public class ModArmorItem extends ArmorItem {
         super.onArmorTick(stack, world, player);
     }
 
-    private void evaluateArmorEffects(PlayerEntity player) {
+    void evaluateArmorEffects(PlayerEntity player) {
         for (Map.Entry<IArmorMaterial, Effect> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
             IArmorMaterial mapArmorMaterial = entry.getKey();
             Effect mapStatusEffect = entry.getValue();
 
-            if(hasCorrectArmorOn(mapArmorMaterial, player)) {
+            if(hasCorrectArmorSet(mapArmorMaterial, player)) {
                 addStatusEffectForMaterial(player, mapArmorMaterial, mapStatusEffect);
             }
         }
@@ -49,7 +50,7 @@ public class ModArmorItem extends ArmorItem {
     private void addStatusEffectForMaterial(PlayerEntity player, IArmorMaterial mapArmorMaterial, Effect mapStatusEffect) {
         boolean hasPlayerEffect = !Objects.equals(player.getActivePotionEffect(mapStatusEffect), null);
 
-        if(hasCorrectArmorOn(mapArmorMaterial, player) && !hasPlayerEffect) {
+        if(hasCorrectArmorSet(mapArmorMaterial, player) && !hasPlayerEffect) {
             player.addPotionEffect(new EffectInstance(mapStatusEffect, 400));
 
             // if(new Random().nextFloat() > 0.6f) { // 40% of damaging the armor! Possibly!
@@ -59,7 +60,7 @@ public class ModArmorItem extends ArmorItem {
         }
     }
 
-    private boolean hasFullSuitOfArmorOn(PlayerEntity player) {
+    boolean hasFullArmor(PlayerEntity player) {
         ItemStack boots = player.inventory.armorItemInSlot(0);
         ItemStack leggings = player.inventory.armorItemInSlot(1);
         ItemStack breastplate = player.inventory.armorItemInSlot(2);
@@ -69,7 +70,7 @@ public class ModArmorItem extends ArmorItem {
                 && !leggings.isEmpty() && !boots.isEmpty();
     }
 
-    private static boolean hasCorrectArmorOn(IArmorMaterial material, PlayerEntity player) {
+    private static boolean hasCorrectArmorSet(IArmorMaterial material, PlayerEntity player) {
         ArmorItem boots = ((ArmorItem)player.inventory.armorItemInSlot(0).getItem());
         ArmorItem leggings = ((ArmorItem)player.inventory.armorItemInSlot(1).getItem());
         ArmorItem chestplate = ((ArmorItem)player.inventory.armorItemInSlot(2).getItem());
@@ -80,28 +81,28 @@ public class ModArmorItem extends ArmorItem {
     }
 
     //check if individual armor pieces are prismatic
-    private static boolean wearingHelm(PlayerEntity player) {
+    static boolean wearingHelm(PlayerEntity player) {
         if(!player.inventory.armorItemInSlot(3).isEmpty()) {
             ArmorItem helmet = ((ArmorItem)player.inventory.armorItemInSlot(3).getItem());
             return helmet.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
         }
         return false;
     }
-    private static boolean wearingChest(PlayerEntity player) {
+    static boolean wearingChest(PlayerEntity player) {
         if(!player.inventory.armorItemInSlot(2).isEmpty()) {
             ArmorItem chestplate = ((ArmorItem)player.inventory.armorItemInSlot(2).getItem());
             return chestplate.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
         }
         return false;
     }
-    private static boolean wearingLegs(PlayerEntity player) {
+    static boolean wearingLegs(PlayerEntity player) {
         if(!player.inventory.armorItemInSlot(1).isEmpty()) {
             ArmorItem leggings = ((ArmorItem)player.inventory.armorItemInSlot(1).getItem());
             return leggings.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
         }
         return false;
     }
-    private static boolean wearingBoots(PlayerEntity player) {
+    static boolean wearingBoots(PlayerEntity player) {
         if(!player.inventory.armorItemInSlot(0).isEmpty()) {
             ArmorItem boots = ((ArmorItem)player.inventory.armorItemInSlot(0).getItem());
             return boots.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
