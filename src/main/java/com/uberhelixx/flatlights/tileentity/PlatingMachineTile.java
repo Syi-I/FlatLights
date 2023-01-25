@@ -37,22 +37,22 @@ public class PlatingMachineTile extends TileEntity {
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 switch (slot) {
-                    case 0: return stack.getItem() == ModBlocks.FLATLIGHT_BLACK_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_BLUE_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_BROWN_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_CYAN_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_GRAY_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_GREEN_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_LIGHT_BLUE_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_LIGHT_GRAY_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_LIME_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_MAGENTA_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_ORANGE_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_PINK_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_PURPLE_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_RED_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_WHITE_BLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.FLATLIGHT_YELLOW_BLOCK.get().asItem();
+                    case 0: return stack.getItem() == ModBlocks.BLACK_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.BLUE_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.BROWN_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.CYAN_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.GRAY_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.GREEN_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.LIGHT_BLUE_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.LIGHT_GRAY_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.LIME_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.MAGENTA_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.ORANGE_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.PINK_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.PURPLE_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.RED_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.WHITE_BLOCK.get().asItem() ||
+                            stack.getItem() == ModBlocks.YELLOW_BLOCK.get().asItem();
                     case 1: return stack.getItem() == Items.IRON_INGOT;
                     default:
                         return false;

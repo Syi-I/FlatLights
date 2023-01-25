@@ -39,7 +39,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> PRISMA_NUCLEUS = ITEMS.register("prisma_nucleus",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-    
+
     public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX ",
+    "X#X",
+    " XX"
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:brown_block"
+    },
+    "X": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "flatlights:brown_hexblock",
+    "count": 12
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "flatlights:block/hexblock/light_blue_hexblock"
+  }
+}

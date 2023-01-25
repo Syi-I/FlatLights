@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "flatlights:block/flatblock/light_gray_block" }
+  }
+}

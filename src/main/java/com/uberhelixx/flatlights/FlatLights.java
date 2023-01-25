@@ -72,10 +72,10 @@ public class FlatLights
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
         //changes rendering for the glass blocks so its transparent
-        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_HEXBLOCK.get(), RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_LARGE_HEXBLOCK.get(), RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_TILES.get(), RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.FLATLIGHT_GLASS_LARGE_TILES.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_HEXBLOCK.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_LARGE_HEXBLOCK.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_TILES.get(), RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_LARGE_TILES.get(), RenderType.getTranslucent());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
