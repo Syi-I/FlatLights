@@ -8,6 +8,7 @@ import com.uberhelixx.flatlights.item.armor.PrismaticBoots;
 import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
+import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.RenderType;
@@ -60,6 +61,10 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticChestplate::equipCheck);
         EVENT_BUS.addListener(PrismaticHelm::equipCheck);
         EVENT_BUS.addListener(PrismaticBoots::negateFallDamage);
+        EVENT_BUS.addListener(PrismaticBladeMk2::EnchantStack);
+        EVENT_BUS.addListener(PrismaticBladeMk2::handlePlayerDropsEvent);
+        EVENT_BUS.addListener(PrismaticBladeMk2::handlePlayerCloneEvent);
+        EVENT_BUS.addListener(PrismaticBladeMk2::killMobs);
     }
 
     private void setup(final FMLCommonSetupEvent event)

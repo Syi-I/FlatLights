@@ -4,8 +4,8 @@
 	"textures": {
 		"0": "flatlights:block/mob_b_gone/mob_b_gone_base",
 		"1": "flatlights:block/mob_b_gone/mob_b_gone_edge",
-		"2": "flatlights:block/mob_b_gone/mob_b_gone_glowstrip",
-		"particle": "flatlights:block/mob_b_gone/mob_b_gone_base"
+		"2": "flatlights:block/prismatic_block",
+		"particle": "flatlights:block/prismatic_block"
 	},
 	"elements": [
 		{

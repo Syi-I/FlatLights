@@ -2,7 +2,7 @@
 	"credit": "UberHelixx",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "flatlights:block/spectrum_anvil/colors",
+		"0": "flatlights:block/prismatic_block",
 		"1": "flatlights:block/spectrum_anvil/main",
 		"particle": "flatlights:block/spectrum_anvil/main"
 	},

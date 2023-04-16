@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.item;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.armor.*;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
+import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,7 +25,7 @@ public class ModItems {
     public static final RegistryObject<Item> GUN_RAT = ITEMS.register("gun_rat",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_BLADE = ITEMS.register("prismatic_blade",
-            () -> new PrismaticBlade(ModItemTier.PRISMATIC, 0, -1f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new PrismaticBlade(ModItemTier.PRISMATIC, 0, -2f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_INGOT = ITEMS.register("prismatic_ingot",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
@@ -42,4 +43,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
+    public static final RegistryObject<Item> PRISMATIC_BLADEMK2 = ITEMS.register("prismatic_blademk2",
+            () -> new PrismaticBladeMk2(ModItemTier.PRISMATIC, -5, 1f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 }
