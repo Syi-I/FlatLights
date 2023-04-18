@@ -66,6 +66,7 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::handlePlayerCloneEvent);
         EVENT_BUS.addListener(PrismaticBladeMk2::killMobs);
         EVENT_BUS.addListener(PrismaticBladeMk2::droppedItem);
+        EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
     }
 
     private void setup(final FMLCommonSetupEvent event)

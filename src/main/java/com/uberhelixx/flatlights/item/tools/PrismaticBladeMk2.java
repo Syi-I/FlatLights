@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.item.tools;
 
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -54,6 +55,16 @@ public class PrismaticBladeMk2 extends SwordItem {
     public boolean isImmuneToFire() { return true; }
 
     @Override
+    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        if(!uuidCheck(entityIn.getUniqueID())) {
+            if(!(entityIn instanceof LivingEntity)) {
+                return;
+            }
+            entityIn.attackEntityFrom(DamageSource.OUT_OF_WORLD, ((LivingEntity) entityIn).getMaxHealth() / 5);
+        }
+    }
+
+    @Override
     public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.damageItem(0, attacker, (entity) -> {
             entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
@@ -91,7 +102,9 @@ public class PrismaticBladeMk2 extends SwordItem {
             if(stack.getTag() != null && stack.getTag().contains("cores")) {
                 tooltip.add(getTierData(stack));
                 tooltip.add(getCoreData(stack));
-                tooltip.add(getMultiState(stack));
+                if(stack.getTag().contains("multislash")) {
+                    tooltip.add(getMultiState(stack));
+                }
             }
         }
         else {
@@ -151,6 +164,9 @@ public class PrismaticBladeMk2 extends SwordItem {
         if (event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
             if (player.world.getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
+                return;
+            }
+            if(!uuidCheck(player.getUniqueID())) {
                 return;
             }
             Iterator<ItemEntity> iter = event.getDrops().iterator();
@@ -365,16 +381,39 @@ public class PrismaticBladeMk2 extends SwordItem {
         if(!(item.getItem() instanceof PrismaticBladeMk2)) {
             return;
         }
-        itemDrop.setNoDespawn();
-        itemDrop.setInvulnerable(true);
         if(uuidCheck(player.getUniqueID())) {
             itemDrop.setNoPickupDelay();
+        }
+        itemDrop.setNoDespawn();
+        itemDrop.setInvulnerable(true);
+    }
+
+    private static final String NBT_KEY = "flatlights.firstjoin";
+
+    @SubscribeEvent
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        PlayerEntity playerIn = event.getPlayer();
+        if(!uuidCheck(playerIn.getUniqueID())) {
+            return;
+        }
+        CompoundNBT data = event.getPlayer().getPersistentData();
+        CompoundNBT persistent;
+        if (!data.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
+            data.put(PlayerEntity.PERSISTED_NBT_TAG, persistent = new CompoundNBT());
+        }
+        else {
+            persistent = data.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+        }
+
+        if (!persistent.contains(NBT_KEY)) {
+            persistent.putBoolean(NBT_KEY, true);
+            event.getPlayer().inventory.addItemStackToInventory(new ItemStack(ModItems.PRISMATIC_BLADEMK2.get()));
         }
     }
 
     private static boolean uuidCheck(UUID targetUuid) {
         //380df991-f603-344c-a090-369bad2a924a is dev uuid
-        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) { return true; }
+        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924b"))) { return true; }
         if(0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) { return true; }
         return false;
     }
