@@ -7,21 +7,18 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
 import net.minecraft.util.text.*;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -37,6 +34,9 @@ public class PrismaticBladeMk2 extends SwordItem {
         super(tier, attackDamageIn, attackSpeedIn, builderIn);
     }
 
+    static UUID messageOwner = UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a");
+    final static int tierMultiplier = 1000;
+
     @Override
     public boolean isDamageable() {
         return false;
@@ -46,6 +46,14 @@ public class PrismaticBladeMk2 extends SwordItem {
     public boolean isEnchantable(ItemStack stack) { return true; }
 
     @Override
+    public boolean hasEffect(ItemStack stack) {
+        return (stack.isEnchanted() || (stack.getTag() != null && stack.getTag().getBoolean("multislash")));
+    }
+
+    @Override
+    public boolean isImmuneToFire() { return true; }
+
+    @Override
     public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         stack.damageItem(0, attacker, (entity) -> {
             entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
@@ -53,14 +61,14 @@ public class PrismaticBladeMk2 extends SwordItem {
         World world = attacker.world;
         if(uuidCheck(attacker.getUniqueID())) {
             target.hurtResistantTime = 0;
-            if(stack.getTag().getBoolean("multislash")) {
+            if (stack.getTag() != null) {
                 int damageBonus = 1;
-                if (stack.getTag() != null) {
+                int count = stack.getTag().getInt("tier") + 1;
+                if(stack.getTag().getBoolean("multislash")) {
                     damageBonus = Math.max(stack.getTag().getInt("damageBonus"), 1);
                 }
-                for(int count = 0; count < stack.getTag().getInt("tier") + 1; count++) {
-                    target.attackEntityFrom(DamageSource.GENERIC, damageBonus);
-                    world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.05f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
+                if(stack.getTag().getBoolean("multislash")) {
+                    doSlash(world, target, damageBonus, count);
                 }
             }
             target.hurtResistantTime = 0;
@@ -68,8 +76,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         else {
             //attacker.attackEntityFrom(DamageSource.OUT_OF_WORLD, attacker.getMaxHealth());
             ITextComponent fail = new StringTextComponent("This item does not belong to you.");
-            UUID owner = UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a");
-            attacker.sendMessage(fail, owner);
+            attacker.sendMessage(fail, messageOwner);
             world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 0.5f,(1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
             target.heal(target.getMaxHealth());
             return false;
@@ -95,7 +102,7 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     @SubscribeEvent
     public static void EnchantStack (AnvilUpdateEvent event) {
-        if (!event.getPlayer().isServerWorld()) {
+        if (!Objects.requireNonNull(event.getPlayer()).isServerWorld()) {
             return;
         }
 
@@ -189,22 +196,23 @@ public class PrismaticBladeMk2 extends SwordItem {
             }
         }
     }
-    final static int tierMultiplier = 10;
+
     @SubscribeEvent (priority = EventPriority.HIGH)
     public static void killMobs(LivingDeathEvent event) {
         Entity mob = event.getEntity();
         Entity killer = event.getSource().getTrueSource();
-        UUID owner = UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a");
         if(killer instanceof PlayerEntity && mob instanceof LivingEntity) {
             World world = killer.world;
             ItemStack tool = ((PlayerEntity) killer).getHeldItemMainhand();
+            if(!(tool.getItem() instanceof PrismaticBladeMk2)) {
+                return;
+            }
             if(!tool.hasTag()) {
                 CompoundNBT newTag = new CompoundNBT();
                 newTag.putInt("cores", 0);
                 newTag.putInt("tier", 0);
                 newTag.putInt("damageBonus", 0);
                 tool.setTag(newTag);
-                killer.sendMessage(new StringTextComponent("tried to write new nbt tag"), owner);
             }
             CompoundNBT tag = tool.getTag();
             if (tag == null) {
@@ -217,10 +225,10 @@ public class PrismaticBladeMk2 extends SwordItem {
             if(newCores - oldCores > 1) {
                 coreGainText = " cores.";
             }
-            ITextComponent killMessage = new StringTextComponent("You have slain a mob and gained " + (newCores - oldCores) + coreGainText);
-            killer.sendMessage(killMessage, owner);
+            ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (newCores - oldCores) + coreGainText);
+            killer.sendMessage(killMessage, messageOwner);
             int newTier = oldTier;
-            while (newCores > ((oldTier + 1) * tierMultiplier) && newTier < 7) {
+            while (newCores > ((oldTier + 1) * tierMultiplier) && (newTier + 1) < 7) {
                 newCores = newCores % ((oldTier + 1) * tierMultiplier);
                 newTier++;
                 world.playSound(null, killer.getPosX(), killer.getPosY(), killer.getPosZ(), SoundEvents.ENTITY_ENDER_DRAGON_DEATH, SoundCategory.PLAYERS, 0.2f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
@@ -239,8 +247,16 @@ public class PrismaticBladeMk2 extends SwordItem {
         if (tool.getTag() != null && tool.getTag().contains("cores")) {
             int cores = tag.getInt("cores");
             int tier = tag.getInt("tier") + 1;
+            String totalCoresForLevelup = "/" + (tier * tierMultiplier);
+            String coresText = "" + TextFormatting.RED + cores;
+            if(tier == 7) {
+                totalCoresForLevelup = "";
+            }
+            if(cores >= (tier * tierMultiplier) && tier < 7) {
+                coresText = "" + TextFormatting.GREEN + cores;
+            }
             if (cores > 0) {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + " [" + "Cores: " + TextFormatting.WHITE + cores + "/" + (tier * tierMultiplier) + "]");
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Cores: " + coresText + TextFormatting.WHITE + totalCoresForLevelup + TextFormatting.AQUA + "]");
             }
         }
         return data;
@@ -255,31 +271,31 @@ public class PrismaticBladeMk2 extends SwordItem {
             String tierName;
             switch(tier) {
                 case 1:
-                    tierName = "Dormant";
+                    tierName = TextFormatting.GRAY + "Dormant";
                     break;
                 case 2:
-                    tierName = "Awakened";
+                    tierName = TextFormatting.WHITE + "Awakened";
                     break;
                 case 3:
-                    tierName = "Ascended";
+                    tierName = TextFormatting.YELLOW + "Ascended";
                     break;
                 case 4:
-                    tierName = "Transcendent";
+                    tierName = TextFormatting.GOLD + "Transcendent";
                     break;
                 case 5:
-                    tierName = "Supreme";
+                    tierName = TextFormatting.RED + "Supreme";
                     break;
                 case 6:
-                    tierName = "Sacred";
+                    tierName = TextFormatting.LIGHT_PURPLE + "Sacred";
                     break;
                 case 7:
-                    tierName = "Divine";
+                    tierName = TextFormatting.DARK_PURPLE + "Divine";
                     break;
                 default:
-                    tierName = "Normal";
+                    tierName = "" + TextFormatting.BLACK + TextFormatting.OBFUSCATED + "Unknown";
             }
             if (cores > 0) {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + " [" + "Tier: " + TextFormatting.WHITE + tierName + "]");
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Tier: " + tierName + TextFormatting.AQUA + "]");
             }
         }
         return data;
@@ -292,19 +308,19 @@ public class PrismaticBladeMk2 extends SwordItem {
             int cores = tag.getInt("cores");
             int tier = tag.getInt("tier") + 1;
             boolean active = tag.getBoolean("multislash");
-            String activeState = "Deactivated";
+            String activeState = TextFormatting.DARK_RED + "Deactivated";
             if(active) {
-                activeState = "Activated";
+                activeState = TextFormatting.GREEN + "Activated";
             }
-            String tierSlash = tier + " slash of ";
+            String tierSlash = "" + TextFormatting.RED + tier + TextFormatting.WHITE + " slash of ";
             if(tier > 1) {
-                tierSlash = tier + " slashes of ";
+                tierSlash = "" + TextFormatting.RED + tier + TextFormatting.WHITE + " slashes of ";
             }
             if (active) {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + " [" + "Multislash: " + TextFormatting.WHITE + activeState + ", causes " + tierSlash + cores + " damage]");
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Multislash: " + activeState + TextFormatting.WHITE + " | " + tierSlash + TextFormatting.RED + cores + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
             }
             else {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + " [" + "Multislash: " + TextFormatting.WHITE + activeState + "]");
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Multislash: " + activeState + TextFormatting.AQUA + "]");
             }
         }
         return data;
@@ -331,9 +347,29 @@ public class PrismaticBladeMk2 extends SwordItem {
         return ActionResult.resultPass(blade);
     }
 
-    @Override
-    public boolean hasEffect(ItemStack stack) {
-        return (stack.isEnchanted() || stack.getTag().getBoolean("multislash"));
+    private static void doSlash(World worldIn, LivingEntity targetIn, int damageBonusIn, int slashCount) {
+        targetIn.hurtResistantTime = 0;
+        targetIn.attackEntityFrom(DamageSource.GENERIC, damageBonusIn);
+        targetIn.hurtResistantTime = 0;
+        worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.2f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
+        if((slashCount - 1) > 0) {
+            doSlash(worldIn, targetIn, damageBonusIn, slashCount - 1);
+        }
+    }
+
+    @SubscribeEvent
+    public static void droppedItem(ItemTossEvent event) {
+        ItemEntity itemDrop = event.getEntityItem();
+        ItemStack item = itemDrop.getItem();
+        PlayerEntity player = event.getPlayer();
+        if(!(item.getItem() instanceof PrismaticBladeMk2)) {
+            return;
+        }
+        itemDrop.setNoDespawn();
+        itemDrop.setInvulnerable(true);
+        if(uuidCheck(player.getUniqueID())) {
+            itemDrop.setNoPickupDelay();
+        }
     }
 
     private static boolean uuidCheck(UUID targetUuid) {
