@@ -85,7 +85,6 @@ public class PrismaticBladeMk2 extends SwordItem {
             target.hurtResistantTime = 0;
         }
         else {
-            //attacker.attackEntityFrom(DamageSource.OUT_OF_WORLD, attacker.getMaxHealth());
             ITextComponent fail = new StringTextComponent("This item does not belong to you.");
             attacker.sendMessage(fail, messageOwner);
             world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 0.5f,(1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
@@ -296,16 +295,16 @@ public class PrismaticBladeMk2 extends SwordItem {
                     tierName = TextFormatting.YELLOW + "Ascended";
                     break;
                 case 4:
-                    tierName = TextFormatting.GOLD + "Transcendent";
+                    tierName = TextFormatting.GOLD + "Exalted";
                     break;
                 case 5:
-                    tierName = TextFormatting.RED + "Supreme";
+                    tierName = TextFormatting.RED + "Sacred";
                     break;
                 case 6:
-                    tierName = TextFormatting.LIGHT_PURPLE + "Sacred";
+                    tierName = TextFormatting.LIGHT_PURPLE + "Divine";
                     break;
                 case 7:
-                    tierName = TextFormatting.DARK_PURPLE + "Divine";
+                    tierName = TextFormatting.DARK_PURPLE + "Primordial";
                     break;
                 default:
                     tierName = "" + TextFormatting.BLACK + TextFormatting.OBFUSCATED + "Unknown";
@@ -367,7 +366,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         targetIn.hurtResistantTime = 0;
         targetIn.attackEntityFrom(DamageSource.GENERIC, damageBonusIn);
         targetIn.hurtResistantTime = 0;
-        worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.2f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
+        worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.1f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
         if((slashCount - 1) > 0) {
             doSlash(worldIn, targetIn, damageBonusIn, slashCount - 1);
         }
@@ -404,16 +403,25 @@ public class PrismaticBladeMk2 extends SwordItem {
         else {
             persistent = data.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
         }
-
-        if (!persistent.contains(NBT_KEY)) {
+        if(persistent.contains(NBT_KEY)) {
+            boolean alreadyHave = false;
+            for (int i = 0; i < playerIn.inventory.mainInventory.size(); ++i) {
+                ItemStack stack = playerIn.inventory.mainInventory.get(i);
+                if (stack.getItem() instanceof PrismaticBladeMk2) {
+                    alreadyHave = true;
+                }
+            }
+            persistent.putBoolean(NBT_KEY, alreadyHave);
+        }
+        if (!persistent.contains(NBT_KEY) || !persistent.getBoolean(NBT_KEY)) {
             persistent.putBoolean(NBT_KEY, true);
-            event.getPlayer().inventory.addItemStackToInventory(new ItemStack(ModItems.PRISMATIC_BLADEMK2.get()));
+            playerIn.inventory.addItemStackToInventory(new ItemStack(ModItems.PRISMATIC_BLADEMK2.get()));
         }
     }
 
     private static boolean uuidCheck(UUID targetUuid) {
         //380df991-f603-344c-a090-369bad2a924a is dev uuid
-        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924b"))) { return true; }
+        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) { return true; }
         if(0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) { return true; }
         return false;
     }
