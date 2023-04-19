@@ -1,13 +1,11 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.item.ModItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
@@ -15,9 +13,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -28,9 +24,9 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Objects;
 
-import static java.lang.Math.max;
+import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 import static java.lang.Math.min;
 
 public class PrismaticBlade extends SwordItem {
@@ -74,7 +70,7 @@ public class PrismaticBlade extends SwordItem {
     //trying to rip off kikoku time
     @SubscribeEvent
     public static void EnchantDouble (AnvilUpdateEvent event) {
-        if (!event.getPlayer().isServerWorld()) {
+        if (!Objects.requireNonNull(event.getPlayer()).isServerWorld()) {
             return;
         }
 
@@ -136,14 +132,4 @@ public class PrismaticBlade extends SwordItem {
         return ActionResult.resultPass(blade);
     }*/
 
-    private boolean uuidCheck(UUID targetUuid) {
-        //380df991-f603-344c-a090-369bad2a924a is dev uuid
-        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924b"))) {
-            return true;
-        }
-        if(0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) {
-            return true;
-        }
-        return false;
-    }
 }

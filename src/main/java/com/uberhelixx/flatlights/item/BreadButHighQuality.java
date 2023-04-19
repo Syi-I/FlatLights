@@ -14,7 +14,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Objects;
+
+import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class BreadButHighQuality extends Item {
     public BreadButHighQuality(Properties properties) {
@@ -23,7 +25,7 @@ public class BreadButHighQuality extends Item {
 
     @SubscribeEvent
     public static void BreadEnchant(AnvilUpdateEvent event) {
-        if (!event.getPlayer().isServerWorld()) {
+        if (!Objects.requireNonNull(event.getPlayer()).isServerWorld()) {
             return;
         }
 
@@ -103,16 +105,6 @@ public class BreadButHighQuality extends Item {
         return ActionResult.resultPass(bread);
     }
 
-    private boolean uuidCheck(UUID targetUuid) {
-        //380df991-f603-344c-a090-369bad2a924a is dev uuid
-        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) {
-            return true;
-        }
-        if(0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) {
-            return true;
-        }
-        return false;
-    }
 }
 
 

@@ -106,13 +106,16 @@
   "item.flatlights.prismatic_leggings": "Prismatic Leggings",
   "item.flatlights.prismatic_boots": "Prismatic Boots",
   "block.flatlights.spectrum_anvil": "Spectrum Anvil",
+  "item.flatlights.prismatic_blademk2": "Final Sunset",
+
 
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
-  "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals 10% of the target's max HP as bonus damage, up to a cap of 1000 damage.",
+  "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals 10% of the target's max HP as bonus damage.",
   "tooltip.flatlights.prismatic_helm": "§eLike a scuba helmet but fancy.",
   "tooltip.flatlights.prismatic_helm_shift": "§5§oProvides night vision and water breathing when worn.",
   "tooltip.flatlights.prismatic_chestplate": "§eWho needs jetpacks?",
   "tooltip.flatlights.prismatic_chestplate_shift": "§5§oProvides creative flight when worn.",
   "tooltip.flatlights.prismatic_boots": "§eThanks, jump jets!",
-  "tooltip.flatlights.prismatic_boots_shift": "§5§oPrevents fall damage when worn."
+  "tooltip.flatlights.prismatic_boots_shift": "§5§oPrevents fall damage when worn.",
+  "tooltip.flatlights.prismatic_blademk2_shift": "§5§oAs the sun sets, I rejoice."
 }
