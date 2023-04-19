@@ -1,6 +1,5 @@
 package com.uberhelixx.flatlights.item.tools;
 
-import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -28,6 +27,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.*;
+
+import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class PrismaticBladeMk2 extends SwordItem {
 
@@ -417,12 +418,5 @@ public class PrismaticBladeMk2 extends SwordItem {
             persistent.putBoolean(NBT_KEY, true);
             playerIn.inventory.addItemStackToInventory(new ItemStack(ModItems.PRISMATIC_BLADEMK2.get()));
         }
-    }
-
-    private static boolean uuidCheck(UUID targetUuid) {
-        //380df991-f603-344c-a090-369bad2a924a is dev uuid
-        if(0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) { return true; }
-        if(0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) { return true; }
-        return false;
     }
 }
