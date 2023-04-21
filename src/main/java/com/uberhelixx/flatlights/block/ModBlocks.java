@@ -3,11 +3,7 @@ package com.uberhelixx.flatlights.block;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.ModItemGroup;
 import com.uberhelixx.flatlights.item.ModItems;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,7 +12,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
-import java.util.function.ToIntFunction;
 
 public class ModBlocks {
 
@@ -40,22 +35,22 @@ public class ModBlocks {
     }
 
     // FLAT BLOCKS ##############################################################################################################################
-    public static final RegistryObject<Block> BLACK_BLOCK = registerBlock("black_block", FlatBlock::new);
-    public static final RegistryObject<Block> BLUE_BLOCK = registerBlock("blue_block", FlatBlock::new);
-    public static final RegistryObject<Block> BROWN_BLOCK = registerBlock("brown_block", FlatBlock::new);
-    public static final RegistryObject<Block> CYAN_BLOCK = registerBlock("cyan_block", FlatBlock::new);
-    public static final RegistryObject<Block> GRAY_BLOCK = registerBlock("gray_block", FlatBlock::new);
-    public static final RegistryObject<Block> GREEN_BLOCK = registerBlock("green_block", FlatBlock::new);
-    public static final RegistryObject<Block> LIGHT_BLUE_BLOCK = registerBlock("light_blue_block", FlatBlock::new);
-    public static final RegistryObject<Block> LIGHT_GRAY_BLOCK = registerBlock("light_gray_block", FlatBlock::new);
-    public static final RegistryObject<Block> LIME_BLOCK = registerBlock("lime_block", FlatBlock::new);
-    public static final RegistryObject<Block> MAGENTA_BLOCK = registerBlock("magenta_block", FlatBlock::new);
-    public static final RegistryObject<Block> ORANGE_BLOCK = registerBlock("orange_block", FlatBlock::new);
-    public static final RegistryObject<Block> PINK_BLOCK = registerBlock("pink_block", FlatBlock::new);
-    public static final RegistryObject<Block> PURPLE_BLOCK = registerBlock("purple_block", FlatBlock::new);
-    public static final RegistryObject<Block> RED_BLOCK = registerBlock("red_block", FlatBlock::new);
-    public static final RegistryObject<Block> WHITE_BLOCK = registerBlock("white_block", FlatBlock::new);
-    public static final RegistryObject<Block> YELLOW_BLOCK = registerBlock("yellow_block", FlatBlock::new);
+    public static final RegistryObject<Block> BLACK_FLATBLOCK = registerBlock("black_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> BLUE_FLATBLOCK = registerBlock("blue_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> BROWN_FLATBLOCK = registerBlock("brown_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> CYAN_FLATBLOCK = registerBlock("cyan_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> GRAY_FLATBLOCK = registerBlock("gray_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> GREEN_FLATBLOCK = registerBlock("green_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> LIGHT_BLUE_FLATBLOCK = registerBlock("light_blue_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> LIGHT_GRAY_FLATBLOCK = registerBlock("light_gray_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> LIME_FLATBLOCK = registerBlock("lime_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> MAGENTA_FLATBLOCK = registerBlock("magenta_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> ORANGE_FLATBLOCK = registerBlock("orange_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> PINK_FLATBLOCK = registerBlock("pink_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> PURPLE_FLATBLOCK = registerBlock("purple_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> RED_FLATBLOCK = registerBlock("red_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> WHITE_FLATBLOCK = registerBlock("white_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> YELLOW_FLATBLOCK = registerBlock("yellow_flatblock", FlatBlock::new);
 
     // HEX BLOCKS ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_HEXBLOCK = registerBlock("black_hexblock", PlateBlock::new);

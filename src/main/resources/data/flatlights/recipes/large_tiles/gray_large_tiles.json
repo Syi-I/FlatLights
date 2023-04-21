@@ -7,7 +7,7 @@
   ],
   "key": {
     "#": {
-      "item": "flatlights:gray_block"
+      "item": "flatlights:gray_flatblock"
     },
     "X": {
       "tag": "forge:ingots/iron"
