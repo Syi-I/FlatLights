@@ -89,10 +89,11 @@
   "block.flatlights.yellow_large_tiles": "Yellow Large Tile Light Block",
   "block.flatlights.lime_brick": "Lime Light Bricks",
 
-  "block.flatlights.glass_hexblock": "Hex Wire Glass",
-  "block.flatlights.glass_large_hexblock": "Large Hex Wire Glass",
-  "block.flatlights.glass_tiles": "Grid Wire Glass",
-  "block.flatlights.glass_large_tiles": "Large Grid Wire Glass",
+  "block.flatlights.glass_hexblock": "Hex Wire Glass Block",
+  "block.flatlights.glass_large_hexblock": "Large Hex Wire Glass Block",
+  "block.flatlights.glass_tiles": "Grid Wire Glass Block",
+  "block.flatlights.glass_large_tiles": "Large Grid Wire Glass Block",
+  "block.flatlights.glass_flatblock": "Flat Glass Block",
 
   "block.flatlights.plating_machine": "Plating Machine",
   "item.flatlights.prismatic_blade": "Prismatic Blade",

@@ -134,6 +134,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> GLASS_LARGE_HEXBLOCK = registerBlock("glass_large_hexblock", WireGlassBlock::new);
     public static final RegistryObject<Block> GLASS_TILES = registerBlock("glass_tiles", WireGlassBlock::new);
     public static final RegistryObject<Block> GLASS_LARGE_TILES = registerBlock("glass_large_tiles", WireGlassBlock::new);
+    public static final RegistryObject<Block> GLASS_FLATBLOCK = registerBlock("glass_flatblock", WireGlassBlock::new);
 
     // EXTRA ##############################################################################################################################
     public static final RegistryObject<Block> LIME_BRICK = registerBlock("lime_brick", PlateBlock::new);
