@@ -28,8 +28,3 @@ These are all the available blocks from FlatLights. Variants include hex blocks,
 ![https://i.imgur.com/YVmtGtQ](https://i.imgur.com/YVmtGtQ.png)
 
 ---
-
-Yeah it looks like the Lapis Caelestis blocks from Extra Utilities, that's kinda the point. BUT, there's also only so many ways to make a monochrome block with no details so relax. Also I know my MS Paint skills are lacking, but at least the variants look neat and mostly uniform right? And yeah I know the code is trash, I made this in a couple hours starting from knowing literally nothing about writing mods, and it definitely shows in the code. I followed the first tutorial that popped up on Google sue me.
-
-
-
