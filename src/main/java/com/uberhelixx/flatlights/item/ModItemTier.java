@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public enum ModItemTier implements IItemTier {
 
-    PRISMATIC(10240, 4f, 9f, 3, 100, () -> Ingredient.fromItems(ModBlocks.LIME_BLOCK.get()));
+    PRISMATIC(10240, 4f, 9f, 3, 100, () -> Ingredient.fromItems(ModBlocks.LIME_FLATBLOCK.get()));
     private final int maxUses;
     private final float efficiency;
     private final float attackDamage;

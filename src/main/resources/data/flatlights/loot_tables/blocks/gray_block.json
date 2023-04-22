@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "flatlights:gray_block"
+          "name": "flatlights:gray_flatblock"
         }
       ]
     }
