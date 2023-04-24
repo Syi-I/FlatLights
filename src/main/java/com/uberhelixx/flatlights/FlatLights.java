@@ -1,6 +1,8 @@
 package com.uberhelixx.flatlights;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
+import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -55,6 +57,8 @@ public class FlatLights
         //register items and blocks
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
+        ModContainers.register(eventBus);
+
         EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
         EVENT_BUS.addListener(BreadButHighQuality::BreadEnchant);
         EVENT_BUS.addListener(ModArmorItem::DamageReduction);
@@ -67,6 +71,7 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::killMobs);
         EVENT_BUS.addListener(PrismaticBladeMk2::droppedItem);
         EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
+        //EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
     }
 
     private void setup(final FMLCommonSetupEvent event)
