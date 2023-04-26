@@ -21,8 +21,7 @@ public class ModContainers {
             () -> IForgeContainerType.create(((windowId, inv, data) -> {
                 PlayerEntity player = inv.player;
                 World world = player.getEntityWorld();
-                IWorldPosCallable pos = IWorldPosCallable.of(world, data.readBlockPos());
-                return new SpectrumAnvilContainer(windowId, inv, pos);
+                return new SpectrumAnvilContainer(windowId, inv);
             })));
 
 
