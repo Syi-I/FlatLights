@@ -71,7 +71,7 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::killMobs);
         EVENT_BUS.addListener(PrismaticBladeMk2::droppedItem);
         EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
-        //EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
+        EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
     }
 
     private void setup(final FMLCommonSetupEvent event)

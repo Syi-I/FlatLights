@@ -1,14 +1,11 @@
 package com.uberhelixx.flatlights.block;
 
-import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
-import com.uberhelixx.flatlights.container.ModContainers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.state.DirectionProperty;
@@ -19,7 +16,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -46,7 +42,7 @@ public class SpectrumAnvilBlock extends AnvilBlock {
     private static final VoxelShape PART_UPPER_Z = Block.makeCuboidShape(3.0D, 9.5D, 0.0D, 13.0D, 16.0D, 16.0D);
     private static final VoxelShape X_AXIS_AABB = VoxelShapes.or(PART_BASE, PART_LOWER_X, PART_MID_X, PART_UPPER_X);
     private static final VoxelShape Z_AXIS_AABB = VoxelShapes.or(PART_BASE, PART_LOWER_Z, PART_MID_Z, PART_UPPER_Z);
-    private static final ITextComponent containerName = new TranslationTextComponent("container.repair");
+    private static final ITextComponent containerName = ITextComponent.getTextComponentOrEmpty("Spectrum Anvil");
 
     public SpectrumAnvilBlock() {
         super(Properties.create(Material.ANVIL)

@@ -23,16 +23,4 @@ public class SpectrumAnvilContainer extends RepairContainer {
     public boolean canInteractWith(PlayerEntity player) {
         return isWithinUsableDistance(this.posMain, player, ModBlocks.SPECTRUM_ANVIL.get());
     }
-
-    /*private final IntReferenceHolder maximumCost = IntReferenceHolder.single();
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public int getMaximumCost() {
-        return Math.min(this.maximumCost.get(), 30);
-    }
-
-    public void setMaximumCost(int value) {
-        this.maximumCost.set(Math.min(value, 30));
-    }*/
 }
