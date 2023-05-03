@@ -133,7 +133,7 @@ public class ModBlocks {
 
     // EXTRA ##############################################################################################################################
     public static final RegistryObject<Block> LIME_BRICK = registerBlock("lime_brick", PlateBlock::new);
-    public static final RegistryObject<Block> PLATING_MACHINE = registerBlock("plating_machine", PlatingMachine::new);
+    public static final RegistryObject<Block> PLATING_MACHINE = registerBlock("plating_machine", PlatingMachineBlock::new);
     public static final RegistryObject<Block> MOB_B_GONE = registerBlock("mob_b_gone", Mob_B_Gone::new);
     public static final RegistryObject<Block> PRISMATIC_BLOCK = registerBlock("prismatic_block", FlatBlock::new);
     public static final RegistryObject<Block> SPECTRUM_ANVIL = registerBlock("spectrum_anvil", SpectrumAnvilBlock::new);
