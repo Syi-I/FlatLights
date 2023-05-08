@@ -15,11 +15,15 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
 
+    //special blocks are for blocks with special models or blockstates so datagen sucks less
     public static final DeferredRegister<Block> BLOCKS
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+    public static final DeferredRegister<Block> SPECIAL_BLOCKS
             = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+        SPECIAL_BLOCKS.register(eventBus);
     }
 
     //helper function for registering blocks
@@ -28,10 +32,18 @@ public class ModBlocks {
         registerBlockItem(name, toReturn);
         return toReturn;
     }
+    private static <T extends Block>RegistryObject<T> registerSpecialBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = SPECIAL_BLOCKS.register(name, block);
+        registerSpecialBlockItem(name, toReturn);
+        return toReturn;
+    }
 
     //helper function for registering block as an item, so it exists as a drop and can actually be crafted/used
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
-        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+        ModItems.BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+    private static <T extends Block> void registerSpecialBlockItem(String name, RegistryObject<T> block) {
+        ModItems.SPECIAL_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
 
     // FLAT BLOCKS ##############################################################################################################################
@@ -133,9 +145,9 @@ public class ModBlocks {
 
     // EXTRA ##############################################################################################################################
     public static final RegistryObject<Block> LIME_BRICK = registerBlock("lime_brick", PlateBlock::new);
-    public static final RegistryObject<Block> PLATING_MACHINE = registerBlock("plating_machine", PlatingMachineBlock::new);
-    public static final RegistryObject<Block> MOB_B_GONE = registerBlock("mob_b_gone", Mob_B_Gone::new);
+    public static final RegistryObject<Block> PLATING_MACHINE = registerSpecialBlock("plating_machine", PlatingMachineBlock::new);
+    public static final RegistryObject<Block> MOB_B_GONE = registerSpecialBlock("mob_b_gone", Mob_B_Gone::new);
     public static final RegistryObject<Block> PRISMATIC_BLOCK = registerBlock("prismatic_block", FlatBlock::new);
-    public static final RegistryObject<Block> SPECTRUM_ANVIL = registerBlock("spectrum_anvil", SpectrumAnvilBlock::new);
+    public static final RegistryObject<Block> SPECTRUM_ANVIL = registerSpecialBlock("spectrum_anvil", SpectrumAnvilBlock::new);
 
 }
