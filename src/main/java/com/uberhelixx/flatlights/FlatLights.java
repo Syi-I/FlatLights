@@ -36,7 +36,7 @@ import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 public class FlatLights
 {
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "flatlights";
 
     public FlatLights() {
