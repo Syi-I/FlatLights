@@ -1,7 +1,8 @@
-package com.uberhelixx.flatlights.data;
+package com.uberhelixx.flatlights.data.server;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.data.server.ModTags;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.data.*;
 import net.minecraft.item.crafting.Ingredient;

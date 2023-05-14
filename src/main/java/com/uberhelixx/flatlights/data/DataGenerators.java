@@ -2,6 +2,10 @@ package com.uberhelixx.flatlights.data;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.data.client.ModItemModelProvider;
+import com.uberhelixx.flatlights.data.server.ModBlockTagsProvider;
+import com.uberhelixx.flatlights.data.server.ModItemTagsProvider;
+import com.uberhelixx.flatlights.data.server.ModLootTableProvider;
+import com.uberhelixx.flatlights.data.server.ModRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -1,7 +1,6 @@
-package com.uberhelixx.flatlights.data;
+package com.uberhelixx.flatlights.data.server;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.data.ModTags;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;

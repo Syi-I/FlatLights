@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.data;
+package com.uberhelixx.flatlights.data.server;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;

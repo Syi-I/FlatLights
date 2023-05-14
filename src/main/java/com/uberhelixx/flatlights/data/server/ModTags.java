@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.data;
+package com.uberhelixx.flatlights.data.server;
 
 import com.uberhelixx.flatlights.FlatLights;
 import net.minecraft.block.Block;
