@@ -1,6 +1,8 @@
 package com.uberhelixx.flatlights.item.tools;
 
+import com.uberhelixx.flatlights.FlatLightsConfig;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -15,6 +17,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -49,9 +52,9 @@ public class PrismaticBlade extends SwordItem {
             target.addPotionEffect(new EffectInstance(Effects.GLOWING, 5));
             target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 3, 4));
             target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 3, 2));
-            //deal either 10% of max hp as damage or 1000 damage, whichever is lower
-            target.attackEntityFrom(DamageSource.GENERIC, (float) min(1000, (target.getMaxHealth() * 0.1)));
-            attacker.heal((float) min(1000, (target.getMaxHealth() * 0.1)));
+            //deal either x% of max hp as damage or config cap damage, whichever is lower
+            target.attackEntityFrom(DamageSource.GENERIC, (float) min(FlatLightsConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsConfig.healthDamagePercent.get())));
+            attacker.heal((float) min(FlatLightsConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsConfig.healthDamagePercent.get())));
         }
         return true;
     }
@@ -60,6 +63,9 @@ public class PrismaticBlade extends SwordItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blade_shift"));
+            String percentDmg = "Percent Damage: " + MiscHelpers.coloredText(TextFormatting.RED, (FlatLightsConfig.healthDamagePercent.get() * 100) + "%") + " of mob's max HP. (Cap of " + MiscHelpers.coloredText(TextFormatting.RED, FlatLightsConfig.healthDamageCap.get() + "") + " damage.)";
+            ITextComponent percentDmgTooltip = ITextComponent.getTextComponentOrEmpty(percentDmg);
+            tooltip.add(percentDmgTooltip);
         }
         else {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.hold_shift"));
@@ -108,7 +114,7 @@ public class PrismaticBlade extends SwordItem {
                 outputMap.put(entry.getKey(), addValue);
                 costCounter += addValue;
             } else {
-                int value = Math.min(currentValue + addValue, enchantment.getMaxLevel() * 3);
+                int value = Math.min(currentValue + addValue, enchantment.getMaxLevel() * FlatLightsConfig.enchantMultiplierCap.get());
                 outputMap.put(entry.getKey(), value);
                 costCounter += (currentValue + addValue) * 2;
             }

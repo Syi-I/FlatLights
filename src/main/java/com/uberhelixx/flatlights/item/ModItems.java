@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.item;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.FlatLightsConfig;
 import com.uberhelixx.flatlights.item.armor.*;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
@@ -11,6 +12,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.swing.*;
+
 public class ModItems {
 
     //special items are for items with specific models and stuff (eg from blockbench) so datagen sucks less
@@ -20,11 +23,14 @@ public class ModItems {
             = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
     public static final DeferredRegister<Item> BLOCK_ITEMS
             = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+    public static final DeferredRegister<Item> SPECIAL_BLOCK_ITEMS
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         SPECIAL_ITEMS.register(eventBus);
         BLOCK_ITEMS.register(eventBus);
+        SPECIAL_BLOCK_ITEMS.register(eventBus);
     }
 
     //adding any additional items, just copy this and change the names e.g. 'POWERED_RAT' and 'powered_rat' to something else

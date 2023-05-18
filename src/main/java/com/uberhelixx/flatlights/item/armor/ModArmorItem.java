@@ -1,17 +1,26 @@
 package com.uberhelixx.flatlights.item.armor;
 
 import com.google.common.collect.ImmutableMap;
+import com.uberhelixx.flatlights.FlatLightsConfig;
 import com.uberhelixx.flatlights.item.armor.ModArmorMaterial;
+import com.uberhelixx.flatlights.util.MiscHelpers;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,6 +32,23 @@ public class ModArmorItem extends ArmorItem {
 
     public ModArmorItem(IArmorMaterial material, EquipmentSlotType slot, Properties settings) {
         super(material, slot, settings);
+    }
+
+    @Override
+    public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) { return true; }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsConfig.armorDamageReduction.get() + "%") + " damage reduction. (+5% reduction per armor point above 20 total points)";
+        ITextComponent dmgReductionTooltip = ITextComponent.getTextComponentOrEmpty(dmgReduction);
+        tooltip.add(dmgReductionTooltip);
+
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -122,10 +148,10 @@ public class ModArmorItem extends ArmorItem {
                     int armorTotal = ((PlayerEntity) event.getEntity()).getTotalArmorValue();
                     //Minecraft.getInstance().player.sendChatMessage("Total armor value is " + armorTotal);
                     int armorVsDiamondTotal = armorTotal - 20;
-                    float reductionRatioCap = 0.75f;
+                    float reductionRatioCap = FlatLightsConfig.armorDamageReduction.get() / 100f;
                     float reductionRatio;
                     //get reductionRatio, make sure percent doesn't go above reductionRatioCap %
-                    if(armorVsDiamondTotal > 0) {
+                    if(armorVsDiamondTotal > 0 && reductionRatioCap > 0) {
                         reductionRatio = Math.min((armorVsDiamondTotal * 0.05f), reductionRatioCap);
                     }
                     else {

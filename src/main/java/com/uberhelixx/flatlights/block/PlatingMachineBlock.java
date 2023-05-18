@@ -1,12 +1,24 @@
 package com.uberhelixx.flatlights.block;
 
+import com.uberhelixx.flatlights.FlatLightsConfig;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class PlatingMachineBlock extends HorizontalBlock {
 
@@ -29,5 +41,20 @@ public class PlatingMachineBlock extends HorizontalBlock {
 
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        String indev = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is not fully functional.");
+        ITextComponent indevTooltip = ITextComponent.getTextComponentOrEmpty(indev);
+        tooltip.add(indevTooltip);
+        if(!FlatLightsConfig.indevBlocks.get()) {
+            String noPlace = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is disabled and cannot be placed.");
+            ITextComponent noPlaceTooltip = ITextComponent.getTextComponentOrEmpty(noPlace);
+            tooltip.add(noPlaceTooltip);
+        }
+
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 }
