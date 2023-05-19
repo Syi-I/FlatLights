@@ -47,7 +47,7 @@ authors="UberHelixx" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-wow yeah I sure did make a mod to add textureless, borderless colored lights that are secretly just reskinned glowstone
+Some not so fancy light blocks to use for decoration in builds, as well as a few random tools.
 '''
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.

@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.block;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.FlatLightsConfig;
 import com.uberhelixx.flatlights.item.ModItemGroup;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.block.Block;
@@ -43,7 +44,7 @@ public class ModBlocks {
         ModItems.BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
     private static <T extends Block> void registerSpecialBlockItem(String name, RegistryObject<T> block) {
-        ModItems.SPECIAL_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+        ModItems.SPECIAL_BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
 
     // FLAT BLOCKS ##############################################################################################################################

@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights;
 
+import com.google.common.collect.Ordering;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
@@ -11,15 +12,20 @@ import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.util.MiscEventHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -28,6 +34,10 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -58,7 +68,9 @@ public class FlatLights
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
         ModContainers.register(eventBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsConfig.SPEC, "flatlights-common.toml");
 
+        //events
         EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
         EVENT_BUS.addListener(BreadButHighQuality::BreadEnchant);
         EVENT_BUS.addListener(ModArmorItem::DamageReduction);
@@ -72,6 +84,7 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::droppedItem);
         EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
         EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
+        EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
     }
 
     private void setup(final FMLCommonSetupEvent event)
