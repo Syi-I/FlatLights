@@ -48,7 +48,7 @@ public final class FlatLightsConfig {
 
         BUILDER.comment("If you don't know what you're doing just leave the values at default.").push("Dev Testing");
         {
-            BUILDER.comment("Basic test value to see if config works properly, doesn't do anything outside of like one random dev test lol [Default: true]");
+            BUILDER.comment("Basic test value to see if config works properly, shouldn't do anything outside of like one random dev test but just in case leave it alone lol [Default: true]");
             testValue = BUILDER.define("TestValue", true);
 
             BUILDER.comment("Enable or disable placement of indev blocks. These blocks are non-functional and have no recipes currently, but have models and stuff so you could use them for decoration I guess? [Default: true]");
