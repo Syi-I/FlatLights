@@ -1,6 +1,9 @@
 package com.uberhelixx.flatlights.util;
 
 import com.uberhelixx.flatlights.FlatLightsConfig;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.UUID;
@@ -9,6 +12,15 @@ public class MiscHelpers {
 
     public static String coloredText(TextFormatting color, String input) {
         return ("" + color + input + TextFormatting.RESET);
+    }
+
+    public static double getItemDamage(ItemStack weapon) {
+        String weaponMap = weapon.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_DAMAGE).toString().replaceFirst(".*?amount=([0-9]+\\.[0-9]+).*", "$1");
+        double weaponDamage = 1.0;
+        if(weaponMap.matches("[0-9]+\\.[0-9]+")) {
+            weaponDamage = Double.parseDouble(weaponMap) + 1;
+        }
+        return weaponDamage;
     }
 
     public static boolean uuidCheck(UUID targetUuid) {

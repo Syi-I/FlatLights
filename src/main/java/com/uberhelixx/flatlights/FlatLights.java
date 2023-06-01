@@ -4,6 +4,8 @@ import com.google.common.collect.Ordering;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
+import com.uberhelixx.flatlights.enchantments.ModEnchantments;
+import com.uberhelixx.flatlights.enchantments.QuantumStrikeEnchantment;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -68,6 +70,7 @@ public class FlatLights
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
         ModContainers.register(eventBus);
+        ModEnchantments.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsConfig.SPEC, "flatlights-common.toml");
 
         //events
@@ -85,6 +88,7 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
         EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
         EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
+        EVENT_BUS.addListener(QuantumStrikeEnchantment::quantumDmg);
     }
 
     private void setup(final FMLCommonSetupEvent event)
