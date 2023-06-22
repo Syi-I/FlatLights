@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.item.tools;
 
+import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.client.gui.screen.Screen;
@@ -243,7 +244,7 @@ public class PrismaticBladeMk2 extends SwordItem {
                 coreGainText = " cores.";
             }
             ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (newCores - oldCores) + coreGainText);
-            if(FlatLightsCommonConfig.coreNoti.get()) {
+            if(FlatLightsClientConfig.coreNoti.get()) {
                 killer.sendMessage(killMessage, messageOwner);
             }
             int newTier = oldTier;

@@ -43,19 +43,12 @@ public class PrismaticBlade extends SwordItem {
         stack.damageItem(0, attacker, (entity) -> {
             entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
         });
-        if(uuidCheck(attacker.getUniqueID())) {
-            target.attackEntityFrom(DamageSource.OUT_OF_WORLD, target.getMaxHealth() + 1);
-            //target.attackEntityFrom(DamageSource.OUT_OF_WORLD, Float.MAX_VALUE);
-            attacker.heal(target.getMaxHealth() + 1);
-        }
-        else {
-            target.addPotionEffect(new EffectInstance(Effects.GLOWING, 5));
-            target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 3, 4));
-            target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 3, 2));
-            //deal either x% of max hp as damage or config cap damage, whichever is lower
-            target.attackEntityFrom(DamageSource.GENERIC, (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
-            attacker.heal((float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
-        }
+        target.addPotionEffect(new EffectInstance(Effects.GLOWING, 5));
+        target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 3, 4));
+        target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 3, 2));
+        //deal either x% of max hp as damage or config cap damage, whichever is lower
+        target.attackEntityFrom(DamageSource.GENERIC, (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
+        attacker.heal((float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
         return true;
     }
 

@@ -1,14 +1,9 @@
 package com.uberhelixx.flatlights.effect;
 
-import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
-import net.minecraft.potion.Effects;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class EntangledEffect extends Effect {
     protected EntangledEffect(EffectType typeIn, int liquidColorIn) {

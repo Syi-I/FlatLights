@@ -75,36 +75,6 @@ public class BreadButHighQuality extends Item {
         EnchantmentHelper.setEnchantments(outputMap, magicBread);
         event.setOutput(magicBread);
     }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack bread = playerIn.getHeldItem(handIn);
-
-        if(uuidCheck(playerIn.getUniqueID())) {
-
-            Map<Enchantment, Integer> breadMap = EnchantmentHelper.getEnchantments(bread);
-            Map<Enchantment, Integer> outputMap = new HashMap<>(breadMap);
-
-            for (Map.Entry<Enchantment, Integer> entry : breadMap.entrySet()) {
-                Enchantment enchantment = entry.getKey();
-                if (enchantment == null) {
-                    continue;
-                }
-                Integer currentValue = breadMap.get(entry.getKey());
-                if (currentValue == null) {
-                    continue;
-                } else {
-                    outputMap.put(entry.getKey(), 32767);
-                }
-            }
-            ItemStack powerBread = bread.copy();
-            EnchantmentHelper.setEnchantments(outputMap, powerBread);
-            return ActionResult.resultPass(powerBread);
-        }
-
-        return ActionResult.resultPass(bread);
-    }
-
 }
 
 

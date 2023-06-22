@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.util;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.block.Mob_B_Gone;
 import com.uberhelixx.flatlights.block.PlatingMachineBlock;
@@ -23,16 +24,16 @@ public class MiscEventHelpers {
     }
 
     @SubscribeEvent
-    public static void quantumDmg(LivingHurtEvent event) {
-        if(event.getSource() == ModDamageTypes.QUANTUM) {
-            FlatLights.LOGGER.info("Dealt " + event.getAmount() + " quantum damage");
+    public static void quantumDmgCheck(LivingHurtEvent event) {
+        if(event.getSource() == ModDamageTypes.QUANTUM && FlatLightsClientConfig.miscLogging.get()) {
+            FlatLights.LOGGER.debug("Dealt " + event.getAmount() + " quantum damage");
         }
     }
 
     @SubscribeEvent
-    public static void entangledDmg(LivingHurtEvent event) {
-        if(event.getSource() == ModDamageTypes.ENTANGLED) {
-            FlatLights.LOGGER.info("Dealt " + event.getAmount() + " entangled damage");
+    public static void entangledDmgCheck(LivingHurtEvent event) {
+        if(event.getSource() == ModDamageTypes.ENTANGLED && FlatLightsClientConfig.miscLogging.get()) {
+            FlatLights.LOGGER.debug("Dealt " + event.getAmount() + " entangled damage");
         }
     }
 }

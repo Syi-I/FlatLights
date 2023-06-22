@@ -67,6 +67,7 @@ public class FlatLights
         ModEnchantments.register(eventBus);
         ModEffects.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
         //events
         EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
@@ -83,8 +84,8 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
         EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
         EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
-        EVENT_BUS.addListener(MiscEventHelpers::quantumDmg);
-        EVENT_BUS.addListener(MiscEventHelpers::entangledDmg);
+        EVENT_BUS.addListener(MiscEventHelpers::quantumDmgCheck);
+        EVENT_BUS.addListener(MiscEventHelpers::entangledDmgCheck);
         EVENT_BUS.addListener(QuantumStrikeEnchantment::entangleDmg);
     }
 
