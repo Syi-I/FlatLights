@@ -5,6 +5,7 @@ import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.ModEnchantments;
+import com.uberhelixx.flatlights.enchantments.QuantumStrikeEnchantment;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -84,6 +85,7 @@ public class FlatLights
         EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
         EVENT_BUS.addListener(MiscEventHelpers::quantumDmg);
         EVENT_BUS.addListener(MiscEventHelpers::entangledDmg);
+        EVENT_BUS.addListener(QuantumStrikeEnchantment::entangleDmg);
     }
 
     private void setup(final FMLCommonSetupEvent event)
