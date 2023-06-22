@@ -111,9 +111,11 @@
 
   "effect.flatlights.armor_shred": "Armor Shred",
   "effect.flatlights.entangled": "Entangled",
+  "effect.flatlights.bleed": "Bleeding",
 
   "enchantment.flatlights.quantum_strike": "Quantum Strike",
   "enchantment.flatlights.bonesaw": "Bonesaw",
+  "enchantment.flatlights.bleeding_edge": "Bleeding Edge",
 
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",

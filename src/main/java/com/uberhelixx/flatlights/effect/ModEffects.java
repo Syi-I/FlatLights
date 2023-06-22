@@ -21,5 +21,7 @@ public class ModEffects {
 
     public static final RegistryObject<Effect> ENTANGLED = POTIONS.register("entangled", () -> new EntangledEffect(EffectType.HARMFUL, 4984012));
     public static final RegistryObject<Effect> ARMOR_SHRED = POTIONS.register("armor_shred", () -> new ArmorShredEffect(EffectType.HARMFUL, 4740710).addAttributesModifier(Attributes.ARMOR, "ce4baba4-105e-11ee-be56-0242ac120002", (double)-0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    public static final RegistryObject<Effect> BLEED = POTIONS.register("bleed", () -> new EntangledEffect(EffectType.HARMFUL, 9386280));
+
 
 }

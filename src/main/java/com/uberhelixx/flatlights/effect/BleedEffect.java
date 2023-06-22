@@ -4,9 +4,10 @@ import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
+import net.minecraft.util.DamageSource;
 
-public class EntangledEffect extends Effect {
-    protected EntangledEffect(EffectType typeIn, int liquidColorIn) {
+public class BleedEffect extends Effect {
+    protected BleedEffect(EffectType typeIn, int liquidColorIn) {
         super(typeIn, liquidColorIn);
     }
 
@@ -17,14 +18,14 @@ public class EntangledEffect extends Effect {
         if(amplifier > 0) {
             dmgMultiplier += amplifier;
         }
-        entityLivingBaseIn.attackEntityFrom(ModDamageTypes.ENTANGLED, entityLivingBaseIn.getMaxHealth() * (0.1F * dmgMultiplier));
+        entityLivingBaseIn.attackEntityFrom(DamageSource.GENERIC, entityLivingBaseIn.getMaxHealth() * (0.03F * dmgMultiplier));
 
         super.performEffect(entityLivingBaseIn, amplifier);
     }
 
     @Override
     public boolean isReady(int duration, int amplifier) {
-        return duration <= 1;
+        return duration % 3 == 0;
     }
 
 }

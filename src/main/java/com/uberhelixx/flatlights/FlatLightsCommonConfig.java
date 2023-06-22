@@ -17,6 +17,7 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> quantumPercent;
     public static final ForgeConfigSpec.ConfigValue<Double> entangledRange;
     public static final ForgeConfigSpec.ConfigValue<Integer> bonesawStacks;
+    public static final ForgeConfigSpec.ConfigValue<Integer> bleedStacks;
 
 
     static {
@@ -45,6 +46,9 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Amount of Armor Shred effect stacks allowed from the Bonesaw enchantment. Each stack adds -0.1 to armor MULTIPLY_TOTAL attribute value. (Applies 1 new stack per hit up to this value) [Default: 5]");
             bonesawStacks = BUILDER.defineInRange("BonesawStacks", 5, 1, 10);
+
+            BUILDER.comment("Amount of Bleed effect stacks allowed from the Bleeding Edge enchantment. Each stack deals +3% damage of target's max HP value. (Applies 1 new stack per hit up to this value) [Default: 5]");
+            bleedStacks = BUILDER.defineInRange("BleedStacks", 5, 1, 33);
         }
         BUILDER.pop();
 
