@@ -23,4 +23,5 @@ public class ModEnchantments {
     }
 
     public static final RegistryObject<Enchantment> QUANTUM_STRIKE = registerEnch("quantum_strike", QuantumStrikeEnchantment::new);
+    public static final RegistryObject<Enchantment> BONESAW = registerEnch("bonesaw", BonesawEnchantment::new);
 }

@@ -14,8 +14,8 @@ public final class FlatLightsClientConfig {
 
         BUILDER.push("Enable/Disable Features");
         {
-            BUILDER.comment("Enable chat notification for use with Prismatic Blade MK2. [Default: true]");
-            coreNoti = BUILDER.define("CoreNotification", true);
+            BUILDER.comment("Enable chat notification for use with Prismatic Blade MK2. [Default: false]");
+            coreNoti = BUILDER.define("CoreNotification", false);
         }
         BUILDER.pop();
 

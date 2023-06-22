@@ -16,6 +16,7 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> entangledPercent;
     public static final ForgeConfigSpec.ConfigValue<Integer> quantumPercent;
     public static final ForgeConfigSpec.ConfigValue<Double> entangledRange;
+    public static final ForgeConfigSpec.ConfigValue<Integer> bonesawStacks;
 
 
     static {
@@ -30,17 +31,20 @@ public final class FlatLightsCommonConfig {
             BUILDER.comment("Percentage of target's max HP taken to be dealt as damage by the Prismatic Blade on hit. (Deals x% bonus damage, with 1.00 = 100% of target's max HP) [Default: 0.05 (5%)]");
             healthDamagePercent = BUILDER.defineInRange("HealthDamagePercent", 0.05, 0.00, 1.00);
 
-            BUILDER.comment("The max percentage of damage reduction one can achieve using the Prismatic Armor. Damage reduction percentage is increased based on total armor value, each point above diamond granting +5% reduction ((totalArmorValue - 20) * 0.05). Does not require full set of Prismatic Armor to activate. (Reduces incoming damage by x% up to this cap) [Default 25%]");
+            BUILDER.comment("Max percentage of damage reduction one can achieve using the Prismatic Armor. Damage reduction percentage is increased based on total armor value, each point above diamond granting +5% reduction ((totalArmorValue - 20) * 0.05). Does not require full set of Prismatic Armor to activate. (Reduces incoming damage by x% up to this cap) [Default 25%]");
             armorDamageReduction = BUILDER.defineInRange("ArmorDamageReduction", 25, 0, 100);
 
-            BUILDER.comment("The max percentage of damage the Entangled effect can trigger per hit. (Calculates total dmg% such that entangledDmg = initialDmg * ((100 - EntangledPercent)/100)) [Default: 0 -> 100% damage]");
+            BUILDER.comment("Max percentage of damage the Entangled effect can trigger per hit. (Calculates total dmg% such that entangledDmg = initialDmg * ((100 - EntangledPercent)/100)) [Default: 0 -> 100% damage]");
             entangledPercent = BUILDER.defineInRange("EntangledPercentDmg", 0, 0, 99);
 
-            BUILDER.comment("The max percentage of damage the Quantum Strike follow up attack can trigger. (Calculates total dmg% such that quantumDmg = baseWeaponDmg * ((100 - QuantumPercent)/100)) [Default: 0 -> 100% damage]");
+            BUILDER.comment("Max percentage of damage the Quantum Strike follow up attack can trigger. (Calculates total dmg% such that quantumDmg = baseWeaponDmg * ((100 - QuantumPercent)/100)) [Default: 0 -> 100% damage]");
             quantumPercent = BUILDER.defineInRange("QuantumPercentDmg", 0, 0, 99);
 
-            BUILDER.comment("The radius that the Entangled effect searches for other entangled mobs. (Radius from the mob being attacked) [Default: 16]");
+            BUILDER.comment("Radius that the Entangled effect searches for other entangled mobs. (Radius from the mob being attacked) [Default: 16]");
             entangledRange = BUILDER.defineInRange("EntangledRange", 16.0D, 1.0D, 32.0D);
+
+            BUILDER.comment("Amount of Armor Shred effect stacks allowed from the Bonesaw enchantment. Each stack adds -0.1 to armor MULTIPLY_TOTAL attribute value. (Applies 1 new stack per hit up to this value) [Default: 5]");
+            bonesawStacks = BUILDER.defineInRange("BonesawStacks", 5, 1, 10);
         }
         BUILDER.pop();
 

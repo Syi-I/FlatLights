@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.enchantments;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
@@ -33,7 +34,7 @@ public class QuantumStrikeEnchantment extends Enchantment {
             target.hurtResistantTime = 0;
             target.attackEntityFrom(ModDamageTypes.QUANTUM, (float) (weaponDamage * (1 + (0.1F * level))) * ((100F - FlatLightsCommonConfig.quantumPercent.get()) / 100));
             ((LivingEntity) target).addPotionEffect(new EffectInstance(ModEffects.ENTANGLED.get(), 600, level));
-            target.hurtResistantTime = 20;
+            //target.hurtResistantTime = 20;
         }
     }
 
@@ -49,12 +50,14 @@ public class QuantumStrikeEnchantment extends Enchantment {
             return;
         }
         else {
-            List<Entity> entities = target.world.getEntitiesWithinAABBExcludingEntity(target, target.getBoundingBox().expand(searchRadius, searchRadius, searchRadius));
+            List<Entity> entities = target.world.getEntitiesWithinAABBExcludingEntity(target, target.getBoundingBox().grow(searchRadius, searchRadius, searchRadius));
             for (Entity instance : entities) {
                 if (instance instanceof LivingEntity && ((LivingEntity) instance).isPotionActive(ModEffects.ENTANGLED.get())) {
+                    if(FlatLightsClientConfig.miscLogging.get()) {
+                        FlatLights.LOGGER.debug("Entangled mob: " + instance.getName());
+                    }
                     instance.hurtResistantTime = 0;
                     instance.attackEntityFrom(ModDamageTypes.ENTANGLED, event.getAmount() * (100F - FlatLightsCommonConfig.entangledPercent.get()) / 100);
-                    instance.hurtResistantTime = 20;
                 }
             }
         }
