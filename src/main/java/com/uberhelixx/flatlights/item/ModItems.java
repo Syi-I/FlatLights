@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.item;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.FlatLightsConfig;
 import com.uberhelixx.flatlights.item.armor.*;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
@@ -11,8 +10,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import javax.swing.*;
 
 public class ModItems {
 

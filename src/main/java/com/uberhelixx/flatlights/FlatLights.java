@@ -1,11 +1,10 @@
 package com.uberhelixx.flatlights;
 
-import com.google.common.collect.Ordering;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
+import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.ModEnchantments;
-import com.uberhelixx.flatlights.enchantments.QuantumStrikeEnchantment;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -19,8 +18,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -36,10 +33,6 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -71,7 +64,8 @@ public class FlatLights
         ModBlocks.register(eventBus);
         ModContainers.register(eventBus);
         ModEnchantments.register(eventBus);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsConfig.SPEC, "flatlights-common.toml");
+        ModEffects.register(eventBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
 
         //events
         EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
@@ -88,7 +82,8 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
         EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
         EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
-        EVENT_BUS.addListener(QuantumStrikeEnchantment::quantumDmg);
+        EVENT_BUS.addListener(MiscEventHelpers::quantumDmg);
+        EVENT_BUS.addListener(MiscEventHelpers::entangledDmg);
     }
 
     private void setup(final FMLCommonSetupEvent event)

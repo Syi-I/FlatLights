@@ -2,7 +2,7 @@ package com.uberhelixx.flatlights;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public final class FlatLightsConfig {
+public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 

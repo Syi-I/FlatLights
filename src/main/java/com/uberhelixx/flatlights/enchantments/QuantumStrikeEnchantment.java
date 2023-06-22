@@ -44,15 +44,6 @@ public class QuantumStrikeEnchantment extends Enchantment {
         return 1 + (0.75f * level);
     }*/
 
-    @SubscribeEvent
-    public static void quantumDmg(LivingHurtEvent event) {
-        if(event.getSource() == ModDamageTypes.QUANTUM) {
-            FlatLights.LOGGER.info("Dealt " + event.getAmount() + " quantum damage");
-            LivingEntity target = event.getEntityLiving();
-            target.addPotionEffect(new EffectInstance(Effects.GLOWING, 600));
-        }
-    }
-
     public static void entangleDmg(LivingHurtEvent event) {
 
     }

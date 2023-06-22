@@ -1,6 +1,6 @@
 package com.uberhelixx.flatlights.util;
 
-import com.uberhelixx.flatlights.FlatLightsConfig;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class MiscHelpers {
     }
 
     public static boolean uuidCheck(UUID targetUuid) {
-        if(FlatLightsConfig.testValue.get()) {
+        if(FlatLightsCommonConfig.testValue.get()) {
             //380df991-f603-344c-a090-369bad2a924a is dev1 uuid
             if (0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) {
                 return true;

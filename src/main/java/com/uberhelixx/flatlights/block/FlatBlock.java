@@ -1,6 +1,6 @@
 package com.uberhelixx.flatlights.block;
 
-import com.uberhelixx.flatlights.FlatLightsConfig;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -41,13 +40,13 @@ public class FlatBlock extends Block {
     @Override
     public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
 
-        return FlatLightsConfig.entityDamageableBlocks.get();
+        return FlatLightsCommonConfig.entityDamageableBlocks.get();
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if(FlatLightsConfig.entityDamageableBlocks.get()) {
+        if(FlatLightsCommonConfig.entityDamageableBlocks.get()) {
             String mobDamageable = "Mob Destructible: " + MiscHelpers.coloredText(TextFormatting.RED, "TRUE");
             ITextComponent mobDamageableTooltip = ITextComponent.getTextComponentOrEmpty(mobDamageable);
             tooltip.add(mobDamageableTooltip);

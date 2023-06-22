@@ -1,10 +1,8 @@
 package com.uberhelixx.flatlights.item.armor;
 
 import com.google.common.collect.ImmutableMap;
-import com.uberhelixx.flatlights.FlatLightsConfig;
-import com.uberhelixx.flatlights.item.armor.ModArmorMaterial;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -14,7 +12,6 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,7 +41,7 @@ public class ModArmorItem extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsConfig.armorDamageReduction.get() + "%") + " damage reduction. (+5% reduction per armor point above 20 total points)";
+        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " damage reduction. (+5% reduction per armor point above 20 total points)";
         ITextComponent dmgReductionTooltip = ITextComponent.getTextComponentOrEmpty(dmgReduction);
         tooltip.add(dmgReductionTooltip);
 
@@ -148,7 +145,7 @@ public class ModArmorItem extends ArmorItem {
                     int armorTotal = ((PlayerEntity) event.getEntity()).getTotalArmorValue();
                     //Minecraft.getInstance().player.sendChatMessage("Total armor value is " + armorTotal);
                     int armorVsDiamondTotal = armorTotal - 20;
-                    float reductionRatioCap = FlatLightsConfig.armorDamageReduction.get() / 100f;
+                    float reductionRatioCap = FlatLightsCommonConfig.armorDamageReduction.get() / 100f;
                     float reductionRatio;
                     //get reductionRatio, make sure percent doesn't go above reductionRatioCap %
                     if(armorVsDiamondTotal > 0 && reductionRatioCap > 0) {

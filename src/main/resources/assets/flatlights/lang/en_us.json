@@ -109,6 +109,10 @@
   "block.flatlights.spectrum_anvil": "Spectrum Anvil",
   "item.flatlights.prismatic_blademk2": "Final Sunset",
 
+  "effect.flatlights.armor_shred": "Armor Shred",
+  "effect.flatlights.entangled": "Entangled",
+
+  "enchantment.flaglights.quantum_strike": "Quantum Strike",
 
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",

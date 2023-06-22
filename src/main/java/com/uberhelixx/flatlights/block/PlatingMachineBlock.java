@@ -1,6 +1,6 @@
 package com.uberhelixx.flatlights.block;
 
-import com.uberhelixx.flatlights.FlatLightsConfig;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -49,7 +49,7 @@ public class PlatingMachineBlock extends HorizontalBlock {
         String indev = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is not fully functional.");
         ITextComponent indevTooltip = ITextComponent.getTextComponentOrEmpty(indev);
         tooltip.add(indevTooltip);
-        if(!FlatLightsConfig.indevBlocks.get()) {
+        if(!FlatLightsCommonConfig.indevBlocks.get()) {
             String noPlace = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is disabled and cannot be placed.");
             ITextComponent noPlaceTooltip = ITextComponent.getTextComponentOrEmpty(noPlace);
             tooltip.add(noPlaceTooltip);
