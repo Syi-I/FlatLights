@@ -46,18 +46,14 @@ public class QuantumStrikeEnchantment extends Enchantment {
     public static void entangleDmg(LivingHurtEvent event) {
         LivingEntity target = event.getEntityLiving();
         double searchRadius = FlatLightsCommonConfig.entangledRange.get();
-        if(event.getSource() == ModDamageTypes.ENTANGLED) {
-            return;
-        }
-        else {
+        if(event.getSource() != ModDamageTypes.ENTANGLED) {
             List<Entity> entities = target.world.getEntitiesWithinAABBExcludingEntity(target, target.getBoundingBox().grow(searchRadius, searchRadius, searchRadius));
             for (Entity instance : entities) {
                 if (instance instanceof LivingEntity && ((LivingEntity) instance).isPotionActive(ModEffects.ENTANGLED.get())) {
-                    if(FlatLightsClientConfig.miscLogging.get()) {
-                        FlatLights.LOGGER.debug("Quantum Strike Enchant: Entangled mob: " + instance.getName());
-                    }
+                    MiscHelpers.debugLogger("[Quantum Strike Enchant] Entangled mob: " + instance.getName());
                     instance.hurtResistantTime = 0;
                     instance.attackEntityFrom(ModDamageTypes.ENTANGLED, event.getAmount() * (100F - FlatLightsCommonConfig.entangledPercent.get()) / 100);
+                    instance.hurtResistantTime = 20;
                 }
             }
         }

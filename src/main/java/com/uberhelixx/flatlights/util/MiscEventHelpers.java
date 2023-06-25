@@ -25,15 +25,15 @@ public class MiscEventHelpers {
 
     @SubscribeEvent
     public static void quantumDmgCheck(LivingHurtEvent event) {
-        if(event.getSource() == ModDamageTypes.QUANTUM && FlatLightsClientConfig.miscLogging.get()) {
-            FlatLights.LOGGER.debug("DMG Event Helper: Dealt " + event.getAmount() + " quantum damage");
+        if(event.getSource() == ModDamageTypes.QUANTUM) {
+            MiscHelpers.debugLogger("[DMG Event Helper] Dealt " + event.getAmount() + " quantum damage");
         }
     }
 
     @SubscribeEvent
     public static void entangledDmgCheck(LivingHurtEvent event) {
-        if(event.getSource() == ModDamageTypes.ENTANGLED && FlatLightsClientConfig.miscLogging.get()) {
-            FlatLights.LOGGER.debug("DMG Event Helper: Dealt " + event.getAmount() + " entangled damage");
+        if(event.getSource() == ModDamageTypes.ENTANGLED) {
+            MiscHelpers.debugLogger("[DMG Event Helper] Dealt " + event.getAmount() + " entangled damage");
         }
     }
 }

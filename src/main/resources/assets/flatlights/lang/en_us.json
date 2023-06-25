@@ -117,6 +117,7 @@
   "enchantment.flatlights.bonesaw": "Bonesaw",
   "enchantment.flatlights.bleeding_edge": "Bleeding Edge",
   "enchantment.flatlights.neutralizer": "Neutralizer",
+  "enchantment.flatlights.flash_of_brilliance": "Flash of Brilliance",
 
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",

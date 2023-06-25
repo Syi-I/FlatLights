@@ -22,10 +22,14 @@ public class MiscHelpers {
         if(weaponMap.matches("[0-9]+\\.[0-9]+")) {
             weaponDamage = Double.parseDouble(weaponMap) + 1;
         }
-        if(FlatLightsClientConfig.miscLogging.get()) {
-            FlatLights.LOGGER.debug("Mainhand weapon damage: " + weaponDamage);
-        }
+        MiscHelpers.debugLogger("Mainhand weapon damage: " + weaponDamage);
         return weaponDamage;
+    }
+
+    public static void debugLogger(String message) {
+        if (FlatLightsClientConfig.miscLogging.get()) {
+            FlatLights.LOGGER.debug(message);
+        }
     }
 
     public static boolean uuidCheck(UUID targetUuid) {

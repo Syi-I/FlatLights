@@ -4,6 +4,7 @@ import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.effect.ModEffects;
+import com.uberhelixx.flatlights.enchantments.FlashOfBrillianceEnchantment;
 import com.uberhelixx.flatlights.enchantments.ModEnchantments;
 import com.uberhelixx.flatlights.enchantments.NeutralizerEnchantment;
 import com.uberhelixx.flatlights.enchantments.QuantumStrikeEnchantment;
@@ -89,6 +90,7 @@ public class FlatLights
         EVENT_BUS.addListener(MiscEventHelpers::entangledDmgCheck);
         EVENT_BUS.addListener(QuantumStrikeEnchantment::entangleDmg);
         EVENT_BUS.addListener(NeutralizerEnchantment::damageSourceConversion);
+        EVENT_BUS.addListener(FlashOfBrillianceEnchantment::xpDropMultiplier);
     }
 
     private void setup(final FMLCommonSetupEvent event)

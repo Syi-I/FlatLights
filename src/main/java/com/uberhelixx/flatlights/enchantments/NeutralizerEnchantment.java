@@ -30,7 +30,7 @@ public class NeutralizerEnchantment extends Enchantment {
     public int getMaxLevel() { return 1; }
 
     private static void doPhysDmg(LivingEntity target, float damageAmount) {
-        FlatLights.LOGGER.debug("Doing physical damage");
+        MiscHelpers.debugLogger("[Neutralizer] Doing physical damage");
         target.hurtResistantTime = 0;
         target.attackEntityFrom(ModDamageTypes.PHYSICAL, damageAmount);
         target.hurtResistantTime = 20;
@@ -47,9 +47,7 @@ public class NeutralizerEnchantment extends Enchantment {
                 if (instance.isEnchanted()) {
                     Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(instance);
                     for (Map.Entry<Enchantment, Integer> entry : instanceMap.entrySet()) {
-                        if (FlatLightsClientConfig.miscLogging.get()) {
-                            FlatLights.LOGGER.debug("Neutralizer: Enchantment found was: " + entry.toString());
-                        }
+                    MiscHelpers.debugLogger("[Neutralizer] Enchantment found was: " + entry.toString());
                         if (entry.getKey() == ModEnchantments.NEUTRALIZER.get()) {
                             neutralizerPresent = true;
                         }
@@ -57,15 +55,11 @@ public class NeutralizerEnchantment extends Enchantment {
                 }
             }
 
-            if (FlatLightsClientConfig.miscLogging.get()) {
-                FlatLights.LOGGER.debug("Neutralizer: neutralizerPresent = " + neutralizerPresent);
-            }
+            MiscHelpers.debugLogger("[Neutralizer] neutralizerPresent = " + neutralizerPresent);
 
             if (neutralizerPresent) {
-                if (FlatLightsClientConfig.miscLogging.get()) {
-                    FlatLights.LOGGER.debug("Neutralizer: Neutralizer enchantment triggered");
-                    FlatLights.LOGGER.debug("Neutralizer: Initial un-neutralized damage: " + damageAmount);
-                }
+                MiscHelpers.debugLogger("[Neutralizer] Neutralizer enchantment triggered");
+                MiscHelpers.debugLogger("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
                 event.setCanceled(true);
                 doPhysDmg(target, damageAmount);
             }

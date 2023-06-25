@@ -18,6 +18,7 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> entangledRange;
     public static final ForgeConfigSpec.ConfigValue<Integer> bonesawStacks;
     public static final ForgeConfigSpec.ConfigValue<Integer> bleedStacks;
+    public static final ForgeConfigSpec.ConfigValue<Double> fobChanceCap;
 
 
     static {
@@ -49,6 +50,9 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Amount of Bleed effect stacks allowed from the Bleeding Edge enchantment. Each stack deals +3% damage of target's max HP value. (Applies 1 new stack per hit up to this value) [Default: 5]");
             bleedStacks = BUILDER.defineInRange("BleedStacks", 5, 1, 33);
+
+            BUILDER.comment("Max chance that Flash of Brilliance has to activate. (Chance for 10x XP drops, each level adds +5% chance for max of 25% at level 5) [Default: 0.25 -> 25%]");
+            fobChanceCap = BUILDER.defineInRange("FobChanceCap", 0.25, 0.001, 1.0);
         }
         BUILDER.pop();
 

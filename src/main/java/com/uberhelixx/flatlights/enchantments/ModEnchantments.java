@@ -26,4 +26,5 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> BONESAW = registerEnch("bonesaw", BonesawEnchantment::new);
     public static final RegistryObject<Enchantment> BLEEDING_EDGE = registerEnch("bleeding_edge", BleedingEdgeEnchantment::new);
     public static final RegistryObject<Enchantment> NEUTRALIZER = registerEnch("neutralizer", NeutralizerEnchantment::new);
+    public static final RegistryObject<Enchantment> FLASH_OF_BRILLIANCE = registerEnch("flash_of_brilliance", FlashOfBrillianceEnchantment::new);
 }
