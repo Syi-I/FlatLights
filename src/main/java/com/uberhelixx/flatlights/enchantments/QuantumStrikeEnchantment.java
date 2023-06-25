@@ -54,7 +54,7 @@ public class QuantumStrikeEnchantment extends Enchantment {
             for (Entity instance : entities) {
                 if (instance instanceof LivingEntity && ((LivingEntity) instance).isPotionActive(ModEffects.ENTANGLED.get())) {
                     if(FlatLightsClientConfig.miscLogging.get()) {
-                        FlatLights.LOGGER.debug("Entangled mob: " + instance.getName());
+                        FlatLights.LOGGER.debug("Quantum Strike Enchant: Entangled mob: " + instance.getName());
                     }
                     instance.hurtResistantTime = 0;
                     instance.attackEntityFrom(ModDamageTypes.ENTANGLED, event.getAmount() * (100F - FlatLightsCommonConfig.entangledPercent.get()) / 100);
