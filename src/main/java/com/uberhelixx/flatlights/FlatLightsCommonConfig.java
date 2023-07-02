@@ -19,6 +19,8 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> bonesawStacks;
     public static final ForgeConfigSpec.ConfigValue<Integer> bleedStacks;
     public static final ForgeConfigSpec.ConfigValue<Double> fobChanceCap;
+    public static final ForgeConfigSpec.ConfigValue<Integer> entangledEndDmg;
+
 
 
     static {
@@ -53,6 +55,9 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Max chance that Flash of Brilliance has to activate. (Chance for 10x XP drops, each level adds +5% chance for max of 25% at level 5) [Default: 0.25 -> 25%]");
             fobChanceCap = BUILDER.defineInRange("FobChanceCap", 0.25, 0.001, 1.0);
+
+            BUILDER.comment("Damage cap for the Entangled effect's ending damage. (Based off percentage of target's max HP, each level of Quantum Strike gives 10% more damage for 'dmg = maxHP * 0.1 * level * cap%')  [Default: 100 -> 100%]");
+            entangledEndDmg = BUILDER.defineInRange("EntangledEndingDamage", 100, 1, Integer.MAX_VALUE);
         }
         BUILDER.pop();
 
