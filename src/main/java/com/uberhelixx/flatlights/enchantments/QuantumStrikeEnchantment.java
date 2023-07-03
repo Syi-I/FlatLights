@@ -1,7 +1,5 @@
 package com.uberhelixx.flatlights.enchantments;
 
-import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;

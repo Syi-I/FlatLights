@@ -1,12 +1,9 @@
 package com.uberhelixx.flatlights.enchantments;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -14,14 +11,11 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class Shimmer2Enchantment extends Enchantment {
     public Shimmer2Enchantment() {

@@ -1,6 +1,5 @@
 package com.uberhelixx.flatlights.effect;
 
-import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;

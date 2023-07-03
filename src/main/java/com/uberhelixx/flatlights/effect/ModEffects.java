@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.effect;
 
 import com.uberhelixx.flatlights.FlatLights;
-import net.minecraft.advancements.criterion.MobEffectsPredicate;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.potion.Effect;

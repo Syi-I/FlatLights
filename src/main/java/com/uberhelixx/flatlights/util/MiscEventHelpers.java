@@ -1,7 +1,5 @@
 package com.uberhelixx.flatlights.util;
 
-import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.block.Mob_B_Gone;
 import com.uberhelixx.flatlights.block.PlatingMachineBlock;

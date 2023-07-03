@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
-import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;

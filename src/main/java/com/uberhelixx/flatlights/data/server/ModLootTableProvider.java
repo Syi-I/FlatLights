@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.data.server;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.mojang.datafixers.util.Pair;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import net.minecraft.block.Block;

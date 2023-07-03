@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 import static java.lang.Math.min;
 
 public class PrismaticBlade extends SwordItem {
