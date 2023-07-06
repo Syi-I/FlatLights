@@ -35,23 +35,15 @@ public class FlashOfBrillianceEnchantment extends Enchantment {
         int baseXpAmount = event.getDroppedExperience();
 
         ItemStack instance = user.getHeldItemMainhand();
-        if (instance.isEnchanted()) {
-            Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(instance);
-            for (Map.Entry<Enchantment, Integer> entry : instanceMap.entrySet()) {
-                MiscHelpers.debugLogger("[Flash of Brilliance] Enchantment found was: " + entry.toString());
-                if (entry.getKey() == ModEnchantments.FLASH_OF_BRILLIANCE.get()) {
-                    int level = entry.getValue();
-                    double chanceCap = FlatLightsCommonConfig.fobChanceCap.get();
-                    double activeChance = level * 0.05;
-                    if(Math.random() <= Math.min(activeChance, chanceCap)) {
-                        event.setDroppedExperience(10 * baseXpAmount);
-                        MiscHelpers.debugLogger("[Flash of Brilliance] Triggered XP multiplier.");
-                        MiscHelpers.debugLogger("[Flash of Brilliance] Base XP value: " + baseXpAmount + " | New XP value: " + baseXpAmount * 10);
-                    }
-                }
+        int level = MiscHelpers.enchantLevelGrabber(instance, ModEnchantments.FLASH_OF_BRILLIANCE.get());
+        if(level != 0) {
+            double chanceCap = FlatLightsCommonConfig.fobChanceCap.get();
+            double activeChance = level * 0.05;
+            if(Math.random() <= Math.min(activeChance, chanceCap)) {
+                event.setDroppedExperience(10 * baseXpAmount);
+                MiscHelpers.debugLogger("[Flash of Brilliance] Triggered XP multiplier.");
+                MiscHelpers.debugLogger("[Flash of Brilliance] Base XP value: " + baseXpAmount + " | New XP value: " + baseXpAmount * 10);
             }
         }
-
-
     }
 }

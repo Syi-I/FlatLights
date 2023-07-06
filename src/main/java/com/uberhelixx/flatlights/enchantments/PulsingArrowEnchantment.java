@@ -38,25 +38,19 @@ public class PulsingArrowEnchantment extends Enchantment {
             LivingEntity shooter = (LivingEntity) arrow.getShooter();
             MiscHelpers.debugLogger("[Pulsing Arrow Damage] Shooter of arrow: " + shooter.getName());
             ItemStack bow = shooter.getHeldItemMainhand();
-            if(bow.isEnchanted()) {
-                Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(bow);
-                for(Map.Entry<Enchantment, Integer> entry : instanceMap.entrySet()) {
-                    MiscHelpers.debugLogger("[Pulsing Arrow Damage] Enchantment found was: " + entry.toString());
-                    if(entry.getKey() == ModEnchantments.PULSINGARROW.get()) {
-                        int pulseLevel = entry.getValue();
-                        List<Entity> entities = arrow.world.getEntitiesWithinAABBExcludingEntity(arrow, arrow.getBoundingBox().grow(searchRadius, searchRadius, searchRadius));
-                        for (Entity instance : entities) {
-                            if (instance instanceof LivingEntity) {
-                                double arrowDamage = arrow.getDamage();
-                                float pulseDamage = (float) (2F * arrowDamage * (pulseLevel) * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.pulsingPercent.get()));
-                                instance.hurtResistantTime = 0;
-                                instance.attackEntityFrom(DamageSource.LIGHTNING_BOLT, pulseDamage);
-                                instance.hurtResistantTime = 0;
-                                MiscHelpers.debugLogger("[Pulsing Arrow Damage] Pulse damaged mob: " + instance.getName());
-                                MiscHelpers.debugLogger("[Pulsing Arrow Damage] Arrow damage: " + arrowDamage);
-                                MiscHelpers.debugLogger("[Pulsing Arrow Damage] Initial pulse damage: " + pulseDamage);
-                            }
-                        }
+            Integer pulseLevel = MiscHelpers.enchantLevelGrabber(bow, ModEnchantments.PULSINGARROW.get());
+            if(pulseLevel != 0) {
+                List<Entity> entities = arrow.world.getEntitiesWithinAABBExcludingEntity(arrow, arrow.getBoundingBox().grow(searchRadius, searchRadius, searchRadius));
+                for (Entity instance : entities) {
+                    if (instance instanceof LivingEntity) {
+                        double arrowDamage = arrow.getDamage();
+                        float pulseDamage = (float) (2F * arrowDamage * (pulseLevel) * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.pulsingPercent.get()));
+                        instance.hurtResistantTime = 0;
+                        instance.attackEntityFrom(DamageSource.LIGHTNING_BOLT, pulseDamage);
+                        instance.hurtResistantTime = 0;
+                        MiscHelpers.debugLogger("[Pulsing Arrow Damage] Pulse damaged mob: " + instance.getName());
+                        MiscHelpers.debugLogger("[Pulsing Arrow Damage] Arrow damage: " + arrowDamage);
+                        MiscHelpers.debugLogger("[Pulsing Arrow Damage] Initial pulse damage: " + pulseDamage);
                     }
                 }
             }

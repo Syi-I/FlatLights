@@ -3,11 +3,16 @@ package com.uberhelixx.flatlights.util;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.enchantments.ModEnchantments;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MiscHelpers {
@@ -28,6 +33,34 @@ public class MiscHelpers {
 
     public static float damagePercentCalc(Integer percent) {
         return (percent / 100F);
+    }
+
+    public static boolean enchantCheck(ItemStack item, Enchantment enchName) {
+        if(item.isEnchanted()) {
+            Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(item);
+            debugLogger("[Enchantment Checker] Checking for: " + enchName.toString());
+            for (Map.Entry<Enchantment, Integer> entry : instanceMap.entrySet()) {
+                debugLogger("[Enchantment Checker] Found enchantment: " + entry.toString());
+                if (entry.getKey() == enchName) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static Integer enchantLevelGrabber(ItemStack item, Enchantment enchName) {
+        if(item.isEnchanted()) {
+            Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(item);
+            debugLogger("[Enchantment Checker] Checking for: " + enchName.toString());
+            for (Map.Entry<Enchantment, Integer> entry : instanceMap.entrySet()) {
+                debugLogger("[Enchantment Checker] Found enchantment: " + entry.toString());
+                if (entry.getKey() == enchName) {
+                    return entry.getValue();
+                }
+            }
+        }
+        return 0;
     }
 
     public static void debugLogger(String message) {

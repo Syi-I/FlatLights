@@ -35,17 +35,11 @@ public class NeutralizerEnchantment extends Enchantment {
 
         if(event.getSource() != ModDamageTypes.PHYSICAL) {
             for (ItemStack instance : target.getArmorInventoryList()) {
-                if (instance.isEnchanted()) {
-                    Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(instance);
-                    for (Map.Entry<Enchantment, Integer> entry : instanceMap.entrySet()) {
-                    MiscHelpers.debugLogger("[Neutralizer] Enchantment found was: " + entry.toString());
-                        if (entry.getKey() == ModEnchantments.NEUTRALIZER.get()) {
-                            MiscHelpers.debugLogger("[Neutralizer] Neutralizer enchantment triggered");
-                            MiscHelpers.debugLogger("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
-                            event.setCanceled(true);
-                            doPhysDmg(target, damageAmount);
-                        }
-                    }
+                if(MiscHelpers.enchantCheck(instance, ModEnchantments.NEUTRALIZER.get())) {
+                    MiscHelpers.debugLogger("[Neutralizer] Neutralizer enchantment triggered");
+                    MiscHelpers.debugLogger("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
+                    event.setCanceled(true);
+                    doPhysDmg(target, damageAmount);
                 }
             }
         }
