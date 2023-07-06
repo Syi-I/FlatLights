@@ -32,7 +32,6 @@ public class NeutralizerEnchantment extends Enchantment {
     public static void damageSourceConversion(LivingHurtEvent event) {
         LivingEntity target = event.getEntityLiving();
         float damageAmount = event.getAmount();
-        boolean neutralizerPresent = false;
 
         if(event.getSource() != ModDamageTypes.PHYSICAL) {
             for (ItemStack instance : target.getArmorInventoryList()) {
@@ -41,19 +40,13 @@ public class NeutralizerEnchantment extends Enchantment {
                     for (Map.Entry<Enchantment, Integer> entry : instanceMap.entrySet()) {
                     MiscHelpers.debugLogger("[Neutralizer] Enchantment found was: " + entry.toString());
                         if (entry.getKey() == ModEnchantments.NEUTRALIZER.get()) {
-                            neutralizerPresent = true;
+                            MiscHelpers.debugLogger("[Neutralizer] Neutralizer enchantment triggered");
+                            MiscHelpers.debugLogger("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
+                            event.setCanceled(true);
+                            doPhysDmg(target, damageAmount);
                         }
                     }
                 }
-            }
-
-            MiscHelpers.debugLogger("[Neutralizer] neutralizerPresent = " + neutralizerPresent);
-
-            if (neutralizerPresent) {
-                MiscHelpers.debugLogger("[Neutralizer] Neutralizer enchantment triggered");
-                MiscHelpers.debugLogger("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
-                event.setCanceled(true);
-                doPhysDmg(target, damageAmount);
             }
         }
     }

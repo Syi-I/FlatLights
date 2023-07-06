@@ -20,6 +20,10 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> bleedStacks;
     public static final ForgeConfigSpec.ConfigValue<Double> fobChanceCap;
     public static final ForgeConfigSpec.ConfigValue<Integer> entangledEndDmg;
+    public static final ForgeConfigSpec.ConfigValue<Double> pulsingArrowRadius;
+    public static final ForgeConfigSpec.ConfigValue<Integer> pulsingPercent;
+
+
 
 
 
@@ -38,11 +42,11 @@ public final class FlatLightsCommonConfig {
             BUILDER.comment("Max percentage of damage reduction one can achieve using the Prismatic Armor. Damage reduction percentage is increased based on total armor value, each point above diamond granting +5% reduction ((totalArmorValue - 20) * 0.05). Does not require full set of Prismatic Armor to activate. (Reduces incoming damage by x% up to this cap) [Default 25%]");
             armorDamageReduction = BUILDER.defineInRange("ArmorDamageReduction", 25, 0, 100);
 
-            BUILDER.comment("Max percentage of damage the Entangled effect can trigger per hit. (Calculates total dmg% such that entangledDmg = initialDmg * ((100 - EntangledPercent)/100)) [Default: 0 -> 100% damage]");
-            entangledPercent = BUILDER.defineInRange("EntangledPercentDmg", 0, 0, 99);
+            BUILDER.comment("Max percentage of damage the Entangled effect can trigger per hit. (Calculates total dmg% such that entangledDmg = initialDmg * ((EntangledPercent)/100) ) [Default: 100 -> 100% damage]");
+            entangledPercent = BUILDER.defineInRange("EntangledPercentDmg", 100, 0, 100);
 
-            BUILDER.comment("Max percentage of damage the Quantum Strike follow up attack can trigger. (Calculates total dmg% such that quantumDmg = baseWeaponDmg * ((100 - QuantumPercent)/100)) [Default: 0 -> 100% damage]");
-            quantumPercent = BUILDER.defineInRange("QuantumPercentDmg", 0, 0, 99);
+            BUILDER.comment("Max percentage of damage the Quantum Strike follow up attack can trigger. (Calculates total dmg% such that quantumDmg = baseWeaponDmg * ((QuantumPercent)/100) ) [Default: 100 -> 100% damage]");
+            quantumPercent = BUILDER.defineInRange("QuantumPercentDmg", 100, 0, 100);
 
             BUILDER.comment("Radius that the Entangled effect searches for other entangled mobs. (Radius from the mob being attacked) [Default: 16]");
             entangledRange = BUILDER.defineInRange("EntangledRange", 16.0D, 1.0D, 32.0D);
@@ -58,6 +62,12 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Damage cap for the Entangled effect's ending damage. (Based off percentage of target's max HP, each level of Quantum Strike gives 10% more damage for 'dmg = maxHP * 0.1 * level * cap%')  [Default: 100 -> 100%]");
             entangledEndDmg = BUILDER.defineInRange("EntangledEndingDamage", 100, 1, Integer.MAX_VALUE);
+
+            BUILDER.comment("Effect radius for pulsing arrow damage.  [Default: 2]");
+            pulsingArrowRadius = BUILDER.defineInRange("PulsingArrowRadius", 2.0, 0.1, 5.0);
+
+            BUILDER.comment("Max percentage of damage the Pulsing Arrows enchant can trigger per hit. (Calculates total dmg% such that pulsingAreaDmg = arrowDmg * (level + 1) * 2 * ((PulsingPercent)/100) ) [Default: 100 -> 100% damage]");
+            pulsingPercent = BUILDER.defineInRange("PulsingArrowDamagePercent", 100, 0, 100);
         }
         BUILDER.pop();
 

@@ -125,6 +125,8 @@
   "enchantment.flatlights.flash_of_brilliance.desc": "Has a certain chance to get 10 times the XP from killing something.",
   "enchantment.flatlights.shimmer2": "Shimmer",
   "enchantment.flatlights.shimmer2.desc": "The best enchantment that definitely does something and doesn't just make your item have the enchantment glint.",
+  "enchantment.flatlights.pulsing_arrow": "Pulsing Arrows",
+  "enchantment.flatlights.pulsing_arrow.desc": "Arrows deal extra splash damage on impact.",
 
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",

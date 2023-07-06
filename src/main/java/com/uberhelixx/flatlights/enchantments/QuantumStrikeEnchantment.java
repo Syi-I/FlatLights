@@ -30,7 +30,7 @@ public class QuantumStrikeEnchantment extends Enchantment {
             ItemStack weapon = user.getHeldItemMainhand();
             double weaponDamage = MiscHelpers.getItemDamage(weapon);
             target.hurtResistantTime = 0;
-            target.attackEntityFrom(ModDamageTypes.QUANTUM, (float) (weaponDamage * (1 + (0.1F * level))) * ((100F - FlatLightsCommonConfig.quantumPercent.get()) / 100));
+            target.attackEntityFrom(ModDamageTypes.QUANTUM, (float) (weaponDamage * (1 + (0.1F * level))) * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.quantumPercent.get()));
             ((LivingEntity) target).addPotionEffect(new EffectInstance(ModEffects.ENTANGLED.get(), 600, level));
             //target.hurtResistantTime = 20;
         }
@@ -50,7 +50,7 @@ public class QuantumStrikeEnchantment extends Enchantment {
                 if (instance instanceof LivingEntity && ((LivingEntity) instance).isPotionActive(ModEffects.ENTANGLED.get())) {
                     MiscHelpers.debugLogger("[Quantum Strike Enchant] Entangled mob: " + instance.getName());
                     instance.hurtResistantTime = 0;
-                    instance.attackEntityFrom(ModDamageTypes.ENTANGLED, event.getAmount() * (100F - FlatLightsCommonConfig.entangledPercent.get()) / 100);
+                    instance.attackEntityFrom(ModDamageTypes.ENTANGLED, event.getAmount() * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.entangledPercent.get()));
                     instance.hurtResistantTime = 20;
                 }
             }

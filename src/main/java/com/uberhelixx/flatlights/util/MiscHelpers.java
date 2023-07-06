@@ -26,6 +26,10 @@ public class MiscHelpers {
         return weaponDamage;
     }
 
+    public static float damagePercentCalc(Integer percent) {
+        return (percent / 100F);
+    }
+
     public static void debugLogger(String message) {
         if (FlatLightsClientConfig.miscLogging.get()) {
             FlatLights.LOGGER.debug(message);

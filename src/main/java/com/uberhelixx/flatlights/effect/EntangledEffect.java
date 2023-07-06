@@ -2,6 +2,7 @@ package com.uberhelixx.flatlights.effect;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
@@ -18,7 +19,7 @@ public class EntangledEffect extends Effect {
         if(amplifier > 0) {
             dmgMultiplier += amplifier;
         }
-        entityLivingBaseIn.attackEntityFrom(ModDamageTypes.ENTANGLED, entityLivingBaseIn.getMaxHealth() * (0.1F * dmgMultiplier) * ((FlatLightsCommonConfig.entangledEndDmg.get()) / 100F));
+        entityLivingBaseIn.attackEntityFrom(ModDamageTypes.ENTANGLED, entityLivingBaseIn.getMaxHealth() * (0.1F * dmgMultiplier) * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.entangledEndDmg.get()));
 
         super.performEffect(entityLivingBaseIn, amplifier);
     }

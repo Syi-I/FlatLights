@@ -89,6 +89,7 @@ public class FlatLights
         EVENT_BUS.addListener(NeutralizerEnchantment::damageSourceConversion);
         EVENT_BUS.addListener(FlashOfBrillianceEnchantment::xpDropMultiplier);
         EVENT_BUS.addListener(Shimmer2Enchantment::shimmerOverload);
+        EVENT_BUS.addListener(PulsingArrowEnchantment::arrowPulseDmg);
     }
 
     private void setup(final FMLCommonSetupEvent event)
