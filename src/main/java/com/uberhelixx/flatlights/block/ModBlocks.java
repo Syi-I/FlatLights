@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.block;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.FlatLightsConfig;
 import com.uberhelixx.flatlights.item.ModItemGroup;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.block.Block;

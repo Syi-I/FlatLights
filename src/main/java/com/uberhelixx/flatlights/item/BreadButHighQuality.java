@@ -2,21 +2,15 @@ package com.uberhelixx.flatlights.item;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class BreadButHighQuality extends Item {
     public BreadButHighQuality(Properties properties) {
@@ -75,36 +69,6 @@ public class BreadButHighQuality extends Item {
         EnchantmentHelper.setEnchantments(outputMap, magicBread);
         event.setOutput(magicBread);
     }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack bread = playerIn.getHeldItem(handIn);
-
-        if(uuidCheck(playerIn.getUniqueID())) {
-
-            Map<Enchantment, Integer> breadMap = EnchantmentHelper.getEnchantments(bread);
-            Map<Enchantment, Integer> outputMap = new HashMap<>(breadMap);
-
-            for (Map.Entry<Enchantment, Integer> entry : breadMap.entrySet()) {
-                Enchantment enchantment = entry.getKey();
-                if (enchantment == null) {
-                    continue;
-                }
-                Integer currentValue = breadMap.get(entry.getKey());
-                if (currentValue == null) {
-                    continue;
-                } else {
-                    outputMap.put(entry.getKey(), 32767);
-                }
-            }
-            ItemStack powerBread = bread.copy();
-            EnchantmentHelper.setEnchantments(outputMap, powerBread);
-            return ActionResult.resultPass(powerBread);
-        }
-
-        return ActionResult.resultPass(bread);
-    }
-
 }
 
 

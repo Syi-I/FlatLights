@@ -1,13 +1,12 @@
 package com.uberhelixx.flatlights.block;
 
-import com.uberhelixx.flatlights.FlatLightsConfig;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -98,7 +97,7 @@ public class SpectrumAnvilBlock extends AnvilBlock {
         String indev = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is not fully functional.");
         ITextComponent indevTooltip = ITextComponent.getTextComponentOrEmpty(indev);
         tooltip.add(indevTooltip);
-        if(!FlatLightsConfig.indevBlocks.get()) {
+        if(!FlatLightsCommonConfig.indevBlocks.get()) {
             String noPlace = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is disabled and cannot be placed.");
             ITextComponent noPlaceTooltip = ITextComponent.getTextComponentOrEmpty(noPlace);
             tooltip.add(noPlaceTooltip);

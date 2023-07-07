@@ -1,6 +1,6 @@
 package com.uberhelixx.flatlights.block;
 
-import com.uberhelixx.flatlights.FlatLightsConfig;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -38,7 +38,7 @@ public class WireGlassBlock extends GlassBlock {
 
     @Override
     public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
-        return FlatLightsConfig.entityDamageableBlocks.get();
+        return FlatLightsCommonConfig.entityDamageableBlocks.get();
     }
 
     private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
@@ -52,7 +52,7 @@ public class WireGlassBlock extends GlassBlock {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if(FlatLightsConfig.entityDamageableBlocks.get()) {
+        if(FlatLightsCommonConfig.entityDamageableBlocks.get()) {
             String mobDamageable = "Mob Destructible: " + MiscHelpers.coloredText(TextFormatting.RED, "TRUE");
             ITextComponent mobDamageableTooltip = ITextComponent.getTextComponentOrEmpty(mobDamageable);
             tooltip.add(mobDamageableTooltip);
