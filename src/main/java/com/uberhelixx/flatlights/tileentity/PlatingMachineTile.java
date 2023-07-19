@@ -25,6 +25,10 @@ public class PlatingMachineTile extends TileEntity {
         super(tileEntityTypeIn);
     }
 
+    public PlatingMachineTile() {
+        this(ModTileEntities.PLATING_MACHINE_TILE.get());
+    }
+
     private ItemStackHandler createHandler() {
         return new ItemStackHandler(2) {
             @Override
