@@ -87,12 +87,7 @@ public class PlatingMachineBlock extends HorizontalBlock {
                     NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
                 }
                 else {
-                    throw new IllegalStateException("Container provider missing");
-                }
-            }
-            else {
-                if(tileEntity instanceof PlatingMachineTile) {
-                    EntityType.TRIDENT.spawn(((ServerWorld) worldIn), null, player, pos, SpawnReason.TRIGGERED, true, true);
+                    throw new IllegalStateException("Container provider missing :skull:");
                 }
             }
         }

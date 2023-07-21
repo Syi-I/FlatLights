@@ -1,10 +1,14 @@
 package com.uberhelixx.flatlights.tileentity;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
+import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
 import net.minecraft.block.BlockState;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
@@ -15,9 +19,10 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 
-public class PlatingMachineTile extends TileEntity {
+public class PlatingMachineTile extends TileEntity implements ITickableTileEntity {
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
@@ -38,27 +43,7 @@ public class PlatingMachineTile extends TileEntity {
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                switch (slot) {
-                    case 0: return stack.getItem() == ModBlocks.BLACK_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.BLUE_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.BROWN_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.CYAN_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.GRAY_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.GREEN_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.LIGHT_BLUE_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.LIGHT_GRAY_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.LIME_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.MAGENTA_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.ORANGE_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.PINK_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.PURPLE_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.RED_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.WHITE_FLATBLOCK.get().asItem() ||
-                            stack.getItem() == ModBlocks.YELLOW_FLATBLOCK.get().asItem();
-                    case 1: return stack.getItem() == Items.IRON_INGOT;
-                    default:
-                        return false;
-                }
+                return true;
             }
 
             @Override
@@ -100,4 +85,34 @@ public class PlatingMachineTile extends TileEntity {
         return super.getCapability(cap, side);
     }
 
+    public void craft() {
+        Inventory inv = new Inventory(itemHandler.getSlots());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            inv.setInventorySlotContents(i, itemHandler.getStackInSlot(i));
+        }
+
+        assert world != null;
+        Optional<PlatingMachineRecipe> recipe = world.getRecipeManager().getRecipe(ModRecipeTypes.PLATING_RECIPE, inv, world);
+
+        recipe.ifPresent(iRecipe -> {
+            ItemStack output = iRecipe.getRecipeOutput();
+            craftTheItem(output);
+            markDirty();
+        });
+    }
+
+    private void craftTheItem(ItemStack output) {
+        itemHandler.extractItem(0, 1, false);
+        itemHandler.extractItem(1, 1, false);
+        itemHandler.insertItem(1, output, false);
+    }
+
+    @Override
+    public void tick() {
+        assert world != null;
+        if(world.isRemote) {
+            return;
+        }
+        craft();
+    }
 }
