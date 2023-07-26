@@ -1,16 +1,21 @@
 package com.uberhelixx.flatlights.container;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.tileentity.PlatingMachineTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.CapabilityProvider;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -29,14 +34,23 @@ public class PlatingMachineContainer extends Container {
         playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         layoutPlayerInventorySlots(8, 86);
-        if(tileEntity != null) {
+        if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h ->
             {
-                addSlot(new SlotItemHandler(h, 0, 80, 31));
-                addSlot(new SlotItemHandler(h, 1, 80, 53));
+                addSlot(new SlotItemHandler(h, 0, 53, 31));
+                addSlot(new SlotItemHandler(h, 1, 53, 53));
+                addSlot(new SlotOutput(h, 2, 103, 42));
             });
         }
     }
+
+    public int getPlateTime() {
+        if(tileEntity.getTileData().contains("plateTime")) {
+            return tileEntity.getTileData().getInt("plateTime");
+        }
+        return 0;
+    }
+
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
@@ -69,6 +83,19 @@ public class PlatingMachineContainer extends Container {
         addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
 
+    // SlotOutput is a slot that will not accept any item
+    public class SlotOutput extends SlotItemHandler {
+        public SlotOutput(IItemHandler playerInventory, int index, int xPosition, int yPosition) {
+            super(playerInventory, index, xPosition, yPosition);
+        }
+
+        // if this function returns false, the player won't be able to insert the given item into this slot
+        @Override
+        public boolean isItemValid(ItemStack stack) {
+            return false;
+        }
+    }
+
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
     // must assign a slot number to each of the slots used by the GUI.
     // For this container, we can see both the tile inventory's slots as well as the player inventory slots and the hotbar.
@@ -85,7 +112,7 @@ public class PlatingMachineContainer extends Container {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must match TileEntityInventoryBasic.NUMBER_OF_SLOTS
+    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must match TileEntityInventoryBasic.NUMBER_OF_SLOTS
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {

@@ -8,23 +8,28 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 
 public class PlatingMachineTile extends TileEntity implements ITickableTileEntity {
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    private int plateTime;
 
     public PlatingMachineTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
@@ -35,7 +40,7 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     }
 
     private ItemStackHandler createHandler() {
-        return new ItemStackHandler(2) {
+        return new ItemStackHandler(3) {
             @Override
             protected void onContentsChanged(int slot) {
                 markDirty();
@@ -66,12 +71,14 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     @Override
     public void read(BlockState state, CompoundNBT nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
+        this.plateTime = nbt.getInt("plateTime");
         super.read(state, nbt);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         compound.put("inv", itemHandler.serializeNBT());
+        compound.putInt("plateTime", plateTime);
         return super.write(compound);
     }
 
@@ -104,7 +111,26 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     private void craftTheItem(ItemStack output) {
         itemHandler.extractItem(0, 1, false);
         itemHandler.extractItem(1, 1, false);
-        itemHandler.insertItem(1, output, false);
+        itemHandler.insertItem(2, output, false);
+    }
+
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        CompoundNBT nbtTag = new CompoundNBT();
+        //save data to nbt
+        nbtTag.putInt("plateTime", plateTime);
+        return new SUpdateTileEntityPacket(getPos(), -1, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        CompoundNBT nbtTag = pkt.getNbtCompound();
+        //read nbt data
+        if(nbtTag.contains("plateTime")) {
+            plateTime = nbtTag.getInt("plateTime");
+            this.getTileData().putInt("plateTime", plateTime);
+        }
     }
 
     @Override
@@ -113,6 +139,21 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
         if(world.isRemote) {
             return;
         }
-        craft();
+        if(itemHandler.getStackInSlot(0).isEmpty() || itemHandler.getStackInSlot(1).isEmpty()) {
+            this.plateTime = 0;
+            world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+            this.markDirty();
+        }
+        this.plateTime++;
+        if(plateTime < 100) {
+            world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+            this.markDirty();
+        }
+        else if(plateTime >= 100 && itemHandler.getStackInSlot(2).isEmpty()) {
+            craft();
+            this.plateTime = 0;
+            world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+            this.markDirty();
+        }
     }
 }
