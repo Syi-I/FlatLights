@@ -1,32 +1,44 @@
 package com.uberhelixx.flatlights.block;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.container.PlatingMachineContainer;
 import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
+import com.uberhelixx.flatlights.tileentity.ModTileEntities;
+import com.uberhelixx.flatlights.tileentity.PlatingMachineTile;
+import com.uberhelixx.flatlights.tileentity.SpectrumAnvilTile;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -71,9 +83,46 @@ public class SpectrumAnvilBlock extends AnvilBlock {
     }
 
     @Override
-    public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-        return new SimpleNamedContainerProvider((id, inventory, player) ->
-                new SpectrumAnvilContainer(id, inventory, IWorldPosCallable.of(worldIn, pos)), containerName);
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if(!worldIn.isRemote()) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if(!player.isCrouching()) {
+                if(tileEntity instanceof SpectrumAnvilTile) {
+                    INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
+                    NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
+                }
+                else {
+                    throw new IllegalStateException("Container provider missing :skull:");
+                }
+            }
+        }
+        return ActionResultType.SUCCESS;
+    }
+
+    private INamedContainerProvider createContainerProvider(World worldIn, BlockPos pos) {
+        return new INamedContainerProvider() {
+            @Override
+            public ITextComponent getDisplayName() {
+                return new TranslationTextComponent("screen.flatlights.spectrum_anvil");
+            }
+
+            @Nullable
+            @Override
+            public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                return new SpectrumAnvilContainer(i, playerInventory);
+            }
+        };
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return ModTileEntities.SPECTRUM_ANVIL_TILE.get().create();
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
     }
 
     @SubscribeEvent

@@ -18,4 +18,7 @@ public class ModTileEntities {
 
     public static RegistryObject<TileEntityType<PlatingMachineTile>> PLATING_MACHINE_TILE = TILE_ENTITIES.register("plating_machine_tile",
             () -> TileEntityType.Builder.create(PlatingMachineTile::new, ModBlocks.PLATING_MACHINE.get()).build(null));
+
+    public static RegistryObject<TileEntityType<SpectrumAnvilTile>> SPECTRUM_ANVIL_TILE = TILE_ENTITIES.register("spectrum_anvil_tile",
+            () -> TileEntityType.Builder.create(SpectrumAnvilTile::new, ModBlocks.SPECTRUM_ANVIL.get()).build(null));
 }

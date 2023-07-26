@@ -129,6 +129,7 @@
   "enchantment.flatlights.pulsing_arrow.desc": "Arrows deal extra splash damage on impact.",
 
   "screen.flatlights.plating_machine": "Plating Machine",
+  "screen.flatlights.spectrum_anvil": "Spectrum Anvil",
 
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",

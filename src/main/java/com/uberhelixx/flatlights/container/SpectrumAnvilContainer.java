@@ -33,13 +33,13 @@ import java.util.Map;
 public class SpectrumAnvilContainer extends AbstractRepairContainer {
     private final IWorldPosCallable posMain;
 
+    public SpectrumAnvilContainer(int id, PlayerInventory playerInventory) {
+        this(id, playerInventory, IWorldPosCallable.DUMMY);
+    }
+
     public SpectrumAnvilContainer(int id, PlayerInventory playerInventory, IWorldPosCallable worldPos) {
         super(ModContainers.SPECTRUM_ANVIL_CONTAINER.get(), id, playerInventory, worldPos);
         this.posMain = worldPos;
-    }
-
-    public SpectrumAnvilContainer(int id, PlayerInventory playerInventory) {
-        this(id, playerInventory, IWorldPosCallable.DUMMY);
     }
 
     @Override
