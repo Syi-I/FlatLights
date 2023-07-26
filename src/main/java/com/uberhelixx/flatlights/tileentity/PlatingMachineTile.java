@@ -1,12 +1,10 @@
 package com.uberhelixx.flatlights.tileentity;
 
-import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
