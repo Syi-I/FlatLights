@@ -35,6 +35,6 @@ public class PlatingMachineScreen extends ContainerScreen<PlatingMachineContaine
         int width = (int) Math.round(progressPercent * 25);
         MiscHelpers.debugLogger("Progress percent in GUI: " + progressPercent);
         MiscHelpers.debugLogger("Width in GUI: " + width);
-        this.blit(matrixStack, i + 74, j + 37, 176, 0, width, 26);
+        this.blit(matrixStack, i + 74, j + 32, 176, 0, width, 26);
     }
 }

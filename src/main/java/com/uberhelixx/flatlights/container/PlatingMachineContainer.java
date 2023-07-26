@@ -37,9 +37,9 @@ public class PlatingMachineContainer extends Container {
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h ->
             {
-                addSlot(new SlotItemHandler(h, 0, 53, 31));
-                addSlot(new SlotItemHandler(h, 1, 53, 53));
-                addSlot(new SlotOutput(h, 2, 103, 42));
+                addSlot(new SlotItemHandler(h, 0, 53, 26));
+                addSlot(new SlotItemHandler(h, 1, 53, 48));
+                addSlot(new SlotOutput(h, 2, 103, 37));
             });
         }
     }

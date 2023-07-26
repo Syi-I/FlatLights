@@ -30,6 +30,7 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
     private int plateTime;
+    private int plateFinishTime = 100;
 
     public PlatingMachineTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
@@ -145,11 +146,11 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
             this.markDirty();
         }
         this.plateTime++;
-        if(plateTime < 100) {
+        if(plateTime < plateFinishTime) {
             world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
             this.markDirty();
         }
-        else if(plateTime >= 100 && itemHandler.getStackInSlot(2).isEmpty()) {
+        else if(plateTime >= plateFinishTime && itemHandler.getStackInSlot(2).isEmpty()) {
             craft();
             this.plateTime = 0;
             world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
