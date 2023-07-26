@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
+import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.*;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
@@ -13,9 +14,12 @@ import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
+import com.uberhelixx.flatlights.tileentity.ModTileEntities;
 import com.uberhelixx.flatlights.util.MiscEventHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.event.RegistryEvent;
@@ -62,9 +66,11 @@ public class FlatLights
         //register items and blocks
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
-        ModContainers.register(eventBus);
         ModEnchantments.register(eventBus);
         ModEffects.register(eventBus);
+        ModTileEntities.register(eventBus);
+        ModContainers.register(eventBus);
+        ModRecipeTypes.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
@@ -107,6 +113,9 @@ public class FlatLights
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_TILES.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_LARGE_TILES.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_FLATBLOCK.get(), RenderType.getTranslucent());
+
+        //register screen for PlatingMachine
+        ScreenManager.registerFactory(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

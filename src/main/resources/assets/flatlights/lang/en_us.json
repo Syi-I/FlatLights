@@ -128,6 +128,8 @@
   "enchantment.flatlights.pulsing_arrow": "Pulsing Arrows",
   "enchantment.flatlights.pulsing_arrow.desc": "Arrows deal extra splash damage on impact.",
 
+  "screen.flatlights.plating_machine": "Plating Machine",
+
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",
   "tooltip.flatlights.prismatic_helm_shift": "§5§oProvides night vision and water breathing when worn.",
