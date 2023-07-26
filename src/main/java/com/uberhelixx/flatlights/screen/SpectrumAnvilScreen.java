@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.AbstractRepairScreen;
+import net.minecraft.client.gui.screen.inventory.AnvilScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -37,7 +38,7 @@ public class SpectrumAnvilScreen extends AbstractRepairScreen<SpectrumAnvilConta
         this.nameField.setCanLoseFocus(false);
         this.nameField.setTextColor(-1);
         this.nameField.setDisabledTextColour(-1);
-        this.nameField.setEnableBackgroundDrawing(true);
+        this.nameField.setEnableBackgroundDrawing(false);
         this.nameField.setMaxStringLength(35);
         this.nameField.setResponder(this::renameItem);
         this.children.add(this.nameField);
@@ -103,15 +104,6 @@ public class SpectrumAnvilScreen extends AbstractRepairScreen<SpectrumAnvilConta
             }
         }
 
-    }
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int x, int y) {
-        RenderSystem.color4f(1f, 1f, 1f, 1f);
-        this.minecraft.getTextureManager().bindTexture(SPECTRUM_ANVIL_RESOURCE);
-        int i = this.guiLeft;
-        int j = this.guiTop;
-        this.blit(matrixStack, i, j, 0, 0, this.xSize, this.ySize + 2);
     }
 
     public void renderNameField(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
