@@ -1,0 +1,14 @@
+{
+  "type": "flatlights:plating",
+  "ingredients": [
+    {
+      "item": "minecraft:netherite_sword"
+    },
+    {
+      "item": "flatlights:prisma_nucleus"
+    }
+  ],
+  "output": {
+    "item": "flatlights:prismatic_blade"
+  }
+}

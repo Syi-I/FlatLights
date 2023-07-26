@@ -40,14 +40,14 @@ displayName="Flat Lights" #mandatory
 logoFile="flatlights.png" #optional
 
 # A text field displayed in the mod UI
-credits="Sampsa (aka u/Sampsoy, aka that one GTNH player with the cool futuristic neon city builds) for getting me addicted to funny flat neon lights, and also the lack of mods that add those to 1.16" #optional
+credits="me and my very good:tm: code" #optional
 
 # A text field displayed in the mod UI
 authors="UberHelixx" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-wow yeah I sure did make a mod to add textureless, borderless colored lights that are secretly just reskinned glowstone
+Some not so fancy light blocks to use for decoration in builds, as well as a few random tools.
 '''
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.

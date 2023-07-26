@@ -1,13 +1,17 @@
 package com.uberhelixx.flatlights.block;
 
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IWorldPosCallable;
@@ -16,11 +20,16 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.ToIntFunction;
 
 public class SpectrumAnvilBlock extends AnvilBlock {
@@ -80,5 +89,20 @@ public class SpectrumAnvilBlock extends AnvilBlock {
         if(event.getCost() > 30) {
             event.setCost(30);
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        String indev = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is not fully functional.");
+        ITextComponent indevTooltip = ITextComponent.getTextComponentOrEmpty(indev);
+        tooltip.add(indevTooltip);
+        if(!FlatLightsCommonConfig.indevBlocks.get()) {
+            String noPlace = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is disabled and cannot be placed.");
+            ITextComponent noPlaceTooltip = ITextComponent.getTextComponentOrEmpty(noPlace);
+            tooltip.add(noPlaceTooltip);
+        }
+
+        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 }

@@ -3,6 +3,9 @@ package com.uberhelixx.flatlights;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
+import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
+import com.uberhelixx.flatlights.effect.ModEffects;
+import com.uberhelixx.flatlights.enchantments.*;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -11,15 +14,21 @@ import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
+import com.uberhelixx.flatlights.tileentity.ModTileEntities;
+import com.uberhelixx.flatlights.util.MiscEventHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -36,7 +45,7 @@ import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 public class FlatLights
 {
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "flatlights";
 
     public FlatLights() {
@@ -57,8 +66,15 @@ public class FlatLights
         //register items and blocks
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
+        ModEnchantments.register(eventBus);
+        ModEffects.register(eventBus);
+        ModTileEntities.register(eventBus);
         ModContainers.register(eventBus);
+        ModRecipeTypes.register(eventBus);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
+        //events
         EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
         EVENT_BUS.addListener(BreadButHighQuality::BreadEnchant);
         EVENT_BUS.addListener(ModArmorItem::DamageReduction);
@@ -72,6 +88,14 @@ public class FlatLights
         EVENT_BUS.addListener(PrismaticBladeMk2::droppedItem);
         EVENT_BUS.addListener(PrismaticBladeMk2::onPlayerJoin);
         EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
+        EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
+        EVENT_BUS.addListener(MiscEventHelpers::quantumDmgCheck);
+        EVENT_BUS.addListener(MiscEventHelpers::entangledDmgCheck);
+        EVENT_BUS.addListener(QuantumStrikeEnchantment::entangleDmg);
+        EVENT_BUS.addListener(NeutralizerEnchantment::damageSourceConversion);
+        EVENT_BUS.addListener(FlashOfBrillianceEnchantment::xpDropMultiplier);
+        EVENT_BUS.addListener(Shimmer2Enchantment::shimmerOverload);
+        EVENT_BUS.addListener(PulsingArrowEnchantment::arrowPulseDmg);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -89,6 +113,9 @@ public class FlatLights
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_TILES.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_LARGE_TILES.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_FLATBLOCK.get(), RenderType.getTranslucent());
+
+        //register screen for PlatingMachine
+        ScreenManager.registerFactory(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

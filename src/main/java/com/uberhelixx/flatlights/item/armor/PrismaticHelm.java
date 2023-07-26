@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.text.ITextComponent;
@@ -27,7 +26,6 @@ public class PrismaticHelm extends ModArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_helm"));
         if(Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_helm_shift"));
         }

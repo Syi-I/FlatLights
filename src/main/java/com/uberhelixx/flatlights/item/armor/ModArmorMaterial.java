@@ -3,7 +3,6 @@ package com.uberhelixx.flatlights.item.armor;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;
