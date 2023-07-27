@@ -28,6 +28,13 @@ public class ModContainers {
         return new SpectrumAnvilContainer(windowId, inv);
     })));
 
+    public static final RegistryObject<ContainerType<LightStorageContainer>> LIGHT_STORAGE_CONTAINER
+            = CONTAINERS.register("light_storage_container", () -> IForgeContainerType.create(((windowId, inv, data) -> {
+        BlockPos pos = data.readBlockPos();
+        World world = inv.player.getEntityWorld();
+        return new LightStorageContainer(windowId, world, pos, inv, inv.player);
+    })));
+
     public static void register(IEventBus eventBus) {
         CONTAINERS.register(eventBus);
     }

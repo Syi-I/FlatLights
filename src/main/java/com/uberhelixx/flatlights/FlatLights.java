@@ -14,6 +14,7 @@ import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
 import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
@@ -118,6 +119,7 @@ public class FlatLights
         //register screen for PlatingMachine
         ScreenManager.registerFactory(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
         ScreenManager.registerFactory(ModContainers.SPECTRUM_ANVIL_CONTAINER.get(), SpectrumAnvilScreen::new);
+        ScreenManager.registerFactory(ModContainers.LIGHT_STORAGE_CONTAINER.get(), LightStorageScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
