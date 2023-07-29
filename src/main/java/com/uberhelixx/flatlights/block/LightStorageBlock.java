@@ -2,10 +2,8 @@ package com.uberhelixx.flatlights.block;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.container.LightStorageContainer;
-import com.uberhelixx.flatlights.container.PlatingMachineContainer;
 import com.uberhelixx.flatlights.tileentity.LightStorageTile;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
-import com.uberhelixx.flatlights.tileentity.PlatingMachineTile;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
@@ -45,10 +44,10 @@ public class LightStorageBlock extends Block {
     static final float BLOCK_RESISTANCE = 100000000f;
 
     public LightStorageBlock() {
-        super(Properties.create(Material.GLASS)
+        super(Properties.create(Material.ROCK)
                 .hardnessAndResistance(BLOCK_HARDNESS, BLOCK_RESISTANCE)
                 .notSolid()
-                .sound(SoundType.GLASS));
+                .sound(SoundType.STONE));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -74,6 +73,7 @@ public class LightStorageBlock extends Block {
                 if(tileEntity instanceof LightStorageTile) {
                     INamedContainerProvider containerProvider = createContainerProvider(worldIn, pos);
                     NetworkHooks.openGui(((ServerPlayerEntity) player), containerProvider, tileEntity.getPos());
+                    ((LightStorageTile) tileEntity).playSound(SoundEvents.BLOCK_ENDER_CHEST_OPEN);
                 }
                 else {
                     throw new IllegalStateException("Container provider missing :skull:");

@@ -96,17 +96,19 @@
   "block.flatlights.glass_flatblock": "Flat Glass Block",
 
   "block.flatlights.plating_machine": "Plating Machine",
-  "item.flatlights.prismatic_blade": "Prismatic Blade",
   "block.flatlights.mob_b_gone": "Mob B' Gone",
-  "item.flatlights.prismatic_ingot": "Prismatic Ingot",
   "block.flatlights.prismatic_block": "Prismatic Block",
-  "item.flatlights.prisma_nucleus": "Prisma Nucleus",
+  "block.flatlights.spectrum_anvil": "Spectrum Anvil",
+  "block.flatlights.light_storage": "Light Storage Block",
+
   "item.flatlights.bread_but_high_quality": "Bread But High Quality",
+  "item.flatlights.prismatic_blade": "Prismatic Blade",
+  "item.flatlights.prismatic_ingot": "Prismatic Ingot",
+  "item.flatlights.prisma_nucleus": "Prisma Nucleus",
   "item.flatlights.prismatic_helmet": "Prismatic Helmet",
   "item.flatlights.prismatic_chestplate": "Prismatic Chestplate",
   "item.flatlights.prismatic_leggings": "Prismatic Leggings",
   "item.flatlights.prismatic_boots": "Prismatic Boots",
-  "block.flatlights.spectrum_anvil": "Spectrum Anvil",
   "item.flatlights.prismatic_blademk2": "Final Sunset",
 
   "effect.flatlights.armor_shred": "Armor Shred",

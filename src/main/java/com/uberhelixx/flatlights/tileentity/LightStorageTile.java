@@ -1,30 +1,21 @@
 package com.uberhelixx.flatlights.tileentity;
 
-import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
-import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
+import com.uberhelixx.flatlights.block.LightStorageBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ChestTileEntity;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.extensions.IForgeTileEntity;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Optional;
 
 
 public class LightStorageTile extends TileEntity {
@@ -88,5 +79,17 @@ public class LightStorageTile extends TileEntity {
         }
 
         return super.getCapability(cap, side);
+    }
+
+    public void playSound(SoundEvent soundEvent) {
+        if (this.getBlockState().getBlock() instanceof LightStorageBlock) {
+            double x = this.pos.getX() + 0.5D;
+            double y = this.pos.getY() + 0.5D;
+            double z = this.pos.getZ() + 0.5D;
+            if (this.world != null) {
+                this.world.playSound(null, x, y, z, soundEvent,
+                        SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.container;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.tileentity.LightStorageTile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -8,6 +9,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -39,6 +41,15 @@ public class LightStorageContainer extends Container {
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
         return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerIn, ModBlocks.LIGHT_STORAGE.get());
+    }
+
+    public void onContainerClosed(PlayerEntity playerIn) {
+        PlayerInventory playerinventory = playerIn.inventory;
+        if (!playerinventory.getItemStack().isEmpty()) {
+            playerIn.dropItem(playerinventory.getItemStack(), false);
+            playerinventory.setItemStack(ItemStack.EMPTY);
+        }
+        ((LightStorageTile) tileEntity).playSound(SoundEvents.ITEM_LODESTONE_COMPASS_LOCK);
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
