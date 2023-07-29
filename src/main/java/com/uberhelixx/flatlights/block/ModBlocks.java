@@ -149,5 +149,6 @@ public class ModBlocks {
     public static final RegistryObject<Block> MOB_B_GONE = registerSpecialBlock("mob_b_gone", Mob_B_Gone::new);
     public static final RegistryObject<Block> PRISMATIC_BLOCK = registerBlock("prismatic_block", FlatBlock::new);
     public static final RegistryObject<Block> SPECTRUM_ANVIL = registerSpecialBlock("spectrum_anvil", SpectrumAnvilBlock::new);
+    public static final RegistryObject<Block> LIGHT_STORAGE = registerSpecialBlock("light_storage", LightStorageBlock::new);
 
 }

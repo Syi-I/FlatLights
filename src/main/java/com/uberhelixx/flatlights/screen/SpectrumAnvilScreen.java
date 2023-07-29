@@ -2,6 +2,7 @@ package com.uberhelixx.flatlights.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.AbstractRepairScreen;
@@ -18,7 +19,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class SpectrumAnvilScreen extends AbstractRepairScreen<SpectrumAnvilContainer> {
 
-    private static final ResourceLocation SPECTRUM_ANVIL_RESOURCE = new ResourceLocation("textures/gui/anvil.png");
+    private static final ResourceLocation SPECTRUM_ANVIL_RESOURCE = new ResourceLocation(FlatLights.MOD_ID, "textures/gui/anvil.png");
     private static final ITextComponent field_243333_B = new TranslationTextComponent("container.repair.expensive");
     private TextFieldWidget nameField;
     public SpectrumAnvilScreen(SpectrumAnvilContainer container, PlayerInventory playerInventory, ITextComponent title) {

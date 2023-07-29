@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "flatlights:block/light_storage" }
+  }
+}

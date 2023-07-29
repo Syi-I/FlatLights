@@ -21,4 +21,7 @@ public class ModTileEntities {
 
     public static RegistryObject<TileEntityType<SpectrumAnvilTile>> SPECTRUM_ANVIL_TILE = TILE_ENTITIES.register("spectrum_anvil_tile",
             () -> TileEntityType.Builder.create(SpectrumAnvilTile::new, ModBlocks.SPECTRUM_ANVIL.get()).build(null));
+
+    public static RegistryObject<TileEntityType<LightStorageTile>> LIGHT_STORAGE_TILE = TILE_ENTITIES.register("light_storage_tile",
+            () -> TileEntityType.Builder.create(LightStorageTile::new, ModBlocks.LIGHT_STORAGE.get()).build(null));
 }
