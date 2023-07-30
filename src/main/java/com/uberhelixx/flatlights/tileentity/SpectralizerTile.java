@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.tileentity;
 
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
-import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
 import com.uberhelixx.flatlights.data.recipes.SpectralizerRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.Inventory;
@@ -26,22 +25,23 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class PlatingMachineTile extends TileEntity implements ITickableTileEntity {
+public class SpectralizerTile extends TileEntity implements ITickableTileEntity {
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
-    private int plateTime;
-    private int plateFinishTime = 100;
+    private int infuseTime;
+    private int infuseFinishTime = 80;
+    private boolean working;
 
-    public PlatingMachineTile(TileEntityType<?> tileEntityTypeIn) {
+    public SpectralizerTile(TileEntityType<?> tileEntityTypeIn) {
         super(tileEntityTypeIn);
     }
 
-    public PlatingMachineTile() {
-        this(ModTileEntities.PLATING_MACHINE_TILE.get());
+    public SpectralizerTile() {
+        this(ModTileEntities.SPECTRALIZER_TILE.get());
     }
 
     private ItemStackHandler createHandler() {
-        return new ItemStackHandler(3) {
+        return new ItemStackHandler(7) {
             @Override
             protected void onContentsChanged(int slot) {
                 markDirty();
@@ -72,14 +72,14 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     @Override
     public void read(BlockState state, CompoundNBT nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
-        this.plateTime = nbt.getInt("plateTime");
+        this.infuseTime = nbt.getInt("infuseTime");
         super.read(state, nbt);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         compound.put("inv", itemHandler.serializeNBT());
-        compound.putInt("plateTime", plateTime);
+        compound.putInt("infuseTime", infuseTime);
         return super.write(compound);
     }
 
@@ -100,7 +100,7 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
         }
 
         assert world != null;
-        Optional<PlatingMachineRecipe> recipe = world.getRecipeManager().getRecipe(ModRecipeTypes.PLATING_RECIPE, inv, world);
+        Optional<SpectralizerRecipe> recipe = world.getRecipeManager().getRecipe(ModRecipeTypes.SPECTRALIZER_RECIPE, inv, world);
 
         recipe.ifPresent(iRecipe -> {
             ItemStack output = iRecipe.getRecipeOutput();
@@ -112,7 +112,11 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     private void craftTheItem(ItemStack output) {
         itemHandler.extractItem(0, 1, false);
         itemHandler.extractItem(1, 1, false);
-        itemHandler.insertItem(2, output, false);
+        itemHandler.extractItem(2, 1, false);
+        itemHandler.extractItem(3, 1, false);
+        itemHandler.extractItem(4, 1, false);
+        itemHandler.extractItem(5, 1, false);
+        itemHandler.insertItem(6, output, false);
     }
 
     public boolean readyToCraft() {
@@ -121,10 +125,12 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
             inv.setInventorySlotContents(i, itemHandler.getStackInSlot(i));
         }
         assert world != null;
-        Optional<PlatingMachineRecipe> recipe = world.getRecipeManager().getRecipe(ModRecipeTypes.PLATING_RECIPE, inv, world);
+        Optional<SpectralizerRecipe> recipe = world.getRecipeManager().getRecipe(ModRecipeTypes.SPECTRALIZER_RECIPE, inv, world);
         if(recipe.isPresent()) {
+            this.working = recipe.get().matches(inv, world);
             return recipe.get().matches(inv, world);
         }
+        this.working = false;
         return false;
     }
 
@@ -133,7 +139,8 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     public SUpdateTileEntityPacket getUpdatePacket() {
         CompoundNBT nbtTag = new CompoundNBT();
         //save data to nbt
-        nbtTag.putInt("plateTime", plateTime);
+        nbtTag.putInt("infuseTime", infuseTime);
+        nbtTag.putBoolean("working", working);
         return new SUpdateTileEntityPacket(getPos(), -1, nbtTag);
     }
 
@@ -141,9 +148,13 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT nbtTag = pkt.getNbtCompound();
         //read nbt data
-        if(nbtTag.contains("plateTime")) {
-            plateTime = nbtTag.getInt("plateTime");
-            this.getTileData().putInt("plateTime", plateTime);
+        if(nbtTag.contains("infuseTime")) {
+            infuseTime = nbtTag.getInt("infuseTime");
+            this.getTileData().putInt("infuseTime", infuseTime);
+        }
+        if(nbtTag.contains("working")) {
+            working = nbtTag.getBoolean("working");
+            this.getTileData().putBoolean("working", working);
         }
     }
 
@@ -154,18 +165,18 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
             return;
         }
         if(!readyToCraft()) {
-            this.plateTime = 0;
+            this.infuseTime = 0;
             world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
             this.markDirty();
         }
-        this.plateTime++;
-        if(plateTime < plateFinishTime) {
+        this.infuseTime++;
+        if(infuseTime < infuseFinishTime) {
             world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
             this.markDirty();
         }
-        else if(plateTime >= plateFinishTime && itemHandler.getStackInSlot(2).isEmpty()) {
+        else if(infuseTime >= infuseFinishTime && itemHandler.getStackInSlot(6).isEmpty()) {
             craft();
-            this.plateTime = 0;
+            this.infuseTime = 0;
             world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
             this.markDirty();
         }

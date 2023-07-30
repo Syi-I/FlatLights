@@ -16,10 +16,16 @@ public class ModRecipeTypes {
     public static void register(IEventBus eventBus) {
         RECIPE_SERIALIZER.register(eventBus);
         Registry.register(Registry.RECIPE_TYPE, PlatingMachineRecipe.TYPE_ID, PLATING_RECIPE);
+        Registry.register(Registry.RECIPE_TYPE, SpectralizerRecipe.TYPE_ID, SPECTRALIZER_RECIPE);
     }
 
     public static final RegistryObject<PlatingMachineRecipe.Serializer> PLATING_SERIALIZER =
             RECIPE_SERIALIZER.register("plating", PlatingMachineRecipe.Serializer::new);
 
     public static IRecipeType<PlatingMachineRecipe> PLATING_RECIPE = new PlatingMachineRecipe.PlatingRecipeType();
+
+    public static final RegistryObject<SpectralizerRecipe.Serializer> SPECTRALIZER_SERIALIZER =
+            RECIPE_SERIALIZER.register("spectralizer", SpectralizerRecipe.Serializer::new);
+
+    public static IRecipeType<SpectralizerRecipe> SPECTRALIZER_RECIPE = new SpectralizerRecipe.SpectralizerRecipeType();
 }

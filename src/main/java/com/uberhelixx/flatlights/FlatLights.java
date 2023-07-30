@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
+import com.uberhelixx.flatlights.container.SpectralizerContainer;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.*;
@@ -16,6 +17,7 @@ import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
+import com.uberhelixx.flatlights.screen.SpectralizerScreen;
 import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
 import com.uberhelixx.flatlights.util.MiscEventHelpers;
@@ -120,6 +122,7 @@ public class FlatLights
         ScreenManager.registerFactory(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
         ScreenManager.registerFactory(ModContainers.SPECTRUM_ANVIL_CONTAINER.get(), SpectrumAnvilScreen::new);
         ScreenManager.registerFactory(ModContainers.LIGHT_STORAGE_CONTAINER.get(), LightStorageScreen::new);
+        ScreenManager.registerFactory(ModContainers.SPECTRALIZER_CONTAINER.get(), SpectralizerScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
