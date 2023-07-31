@@ -24,4 +24,7 @@ public class ModTileEntities {
 
     public static RegistryObject<TileEntityType<LightStorageTile>> LIGHT_STORAGE_TILE = TILE_ENTITIES.register("light_storage_tile",
             () -> TileEntityType.Builder.create(LightStorageTile::new, ModBlocks.LIGHT_STORAGE.get()).build(null));
+
+    public static RegistryObject<TileEntityType<SpectralizerTile>> SPECTRALIZER_TILE = TILE_ENTITIES.register("spectralizer_tile",
+            () -> TileEntityType.Builder.create(SpectralizerTile::new, ModBlocks.SPECTRALIZER.get()).build(null));
 }

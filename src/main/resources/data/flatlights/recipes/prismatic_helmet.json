@@ -1,0 +1,26 @@
+{
+  "type": "flatlights:spectralizer",
+  "ingredients": [
+    {
+      "item": "minecraft:netherite_helmet"
+    },
+    {
+      "item": "flatlights:prisma_nucleus"
+    },
+    {
+      "item": "flatlights:prisma_nucleus"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    }
+  ],
+  "output": {
+    "item": "flatlights:prismatic_helmet"
+  }
+}

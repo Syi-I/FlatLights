@@ -100,6 +100,7 @@
   "block.flatlights.prismatic_block": "Prismatic Block",
   "block.flatlights.spectrum_anvil": "Spectrum Anvil",
   "block.flatlights.light_storage": "Light Storage Block",
+  "block.flatlights.light_storage": "Spectralizer",
 
   "item.flatlights.bread_but_high_quality": "Bread But High Quality",
   "item.flatlights.prismatic_blade": "Prismatic Blade",
@@ -133,6 +134,7 @@
   "screen.flatlights.plating_machine": "Plating Machine",
   "screen.flatlights.spectrum_anvil": "Spectrum Anvil",
   "screen.flatlights.light_storage": "Light Storage Block",
+  "screen.flatlights.spectralizer": "Spectralizer",
 
   "tooltip.flatlights.hold_shift": "§6[§fShift§6]",
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",
