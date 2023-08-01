@@ -42,7 +42,7 @@ public class ModItems {
     public static final RegistryObject<Item> PRISMATIC_BOOTS = ITEMS.register("prismatic_boots",
             () -> new PrismaticBoots(ModArmorMaterial.PRISMATIC, EquipmentSlotType.FEET, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_LEGGINGS = ITEMS.register("prismatic_leggings",
-            () -> new ModArmorItem(ModArmorMaterial.PRISMATIC, EquipmentSlotType.LEGS, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new PrismaticLeggings(ModArmorMaterial.PRISMATIC, EquipmentSlotType.LEGS, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_CHESTPLATE = ITEMS.register("prismatic_chestplate",
             () -> new PrismaticChestplate(ModArmorMaterial.PRISMATIC, EquipmentSlotType.CHEST, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_HELMET = ITEMS.register("prismatic_helmet",

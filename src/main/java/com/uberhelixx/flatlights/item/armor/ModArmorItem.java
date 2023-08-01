@@ -41,7 +41,7 @@ public class ModArmorItem extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " damage reduction. (+5% reduction per armor point above 20 total points)";
+        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " damage reduction.";
         ITextComponent dmgReductionTooltip = ITextComponent.getTextComponentOrEmpty(dmgReduction);
         tooltip.add(dmgReductionTooltip);
 
