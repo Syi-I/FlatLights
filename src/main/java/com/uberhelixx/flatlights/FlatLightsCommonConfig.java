@@ -22,6 +22,7 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> entangledEndDmg;
     public static final ForgeConfigSpec.ConfigValue<Double> pulsingArrowRadius;
     public static final ForgeConfigSpec.ConfigValue<Integer> pulsingPercent;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> multilayerReduction;
 
 
 
@@ -78,6 +79,9 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Does the Prismatic Chestplate give flight abilities? [Default: true]");
             chestplateFlight = BUILDER.define("ChestplateFlight", true);
+
+            BUILDER.comment("Does each individual Prismatic Armor piece reduce damage independently or only calculate once if wearing any Prismatic Armor piece? [Default: true]");
+            multilayerReduction = BUILDER.define("MultilayerReduction", true);
         }
         BUILDER.pop();
 

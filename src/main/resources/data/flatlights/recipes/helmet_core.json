@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X",
+    "   "
+  ],
+  "key": {
+    "X": {
+      "item": "flatlights:prismatic_ingot"
+    }
+  },
+  "result": {
+    "item": "flatlights:helmet_core",
+    "count": 1
+  }
+}

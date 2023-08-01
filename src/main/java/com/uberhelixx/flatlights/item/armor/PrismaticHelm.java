@@ -78,5 +78,4 @@ public class PrismaticHelm extends ModArmorItem {
             }
         }
     }
-
 }

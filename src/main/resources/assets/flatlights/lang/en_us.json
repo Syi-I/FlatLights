@@ -100,7 +100,7 @@
   "block.flatlights.prismatic_block": "Prismatic Block",
   "block.flatlights.spectrum_anvil": "Spectrum Anvil",
   "block.flatlights.light_storage": "Light Storage Block",
-  "block.flatlights.light_storage": "Spectralizer",
+  "block.flatlights.spectralizer": "Spectralizer",
 
   "item.flatlights.bread_but_high_quality": "Bread But High Quality",
   "item.flatlights.prismatic_blade": "Prismatic Blade",
@@ -111,6 +111,10 @@
   "item.flatlights.prismatic_leggings": "Prismatic Leggings",
   "item.flatlights.prismatic_boots": "Prismatic Boots",
   "item.flatlights.prismatic_blademk2": "Final Sunset",
+  "item.flatlights.helmet_core": "Prismatic Helmet Core",
+  "item.flatlights.chest_core": "Prismatic Chestplate Core",
+  "item.flatlights.pants_core": "Prismatic Leggings Core",
+  "item.flatlights.boots_core": "Prismatic Boots Core",
 
   "effect.flatlights.armor_shred": "Armor Shred",
   "effect.flatlights.entangled": "Entangled",

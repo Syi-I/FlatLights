@@ -2,7 +2,7 @@
   "type": "flatlights:spectralizer",
   "ingredients": [
     {
-      "item": "flatlights:helmet_core"
+      "item": "flatlights:chest_core"
     },
     {
       "item": "flatlights:prisma_nucleus"
@@ -21,6 +21,6 @@
     }
   ],
   "output": {
-    "item": "flatlights:prismatic_helmet"
+    "item": "flatlights:prismatic_chestplate"
   }
 }
