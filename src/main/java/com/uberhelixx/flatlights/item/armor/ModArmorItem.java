@@ -41,7 +41,7 @@ public class ModArmorItem extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " damage reduction. (+5% reduction per armor point above 20 total points)";
+        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " damage reduction.";
         ITextComponent dmgReductionTooltip = ITextComponent.getTextComponentOrEmpty(dmgReduction);
         tooltip.add(dmgReductionTooltip);
 
@@ -137,30 +137,45 @@ public class ModArmorItem extends ArmorItem {
     @SubscribeEvent
     public static void DamageReduction(LivingHurtEvent event) {
         if(!event.getSource().isUnblockable()) {
-            if (event.getEntity() instanceof PlayerEntity) {
-                //Minecraft.getInstance().player.sendChatMessage("Entity taking damage is a player");
-                if (wearingBoots((PlayerEntity) event.getEntity()) || wearingLegs((PlayerEntity) event.getEntity()) ||
-                        wearingChest((PlayerEntity) event.getEntity()) || wearingHelm((PlayerEntity) event.getEntity())) {
-                    //Minecraft.getInstance().player.sendChatMessage("Wearing a prisma armor piece");
-                    int armorTotal = ((PlayerEntity) event.getEntity()).getTotalArmorValue();
-                    //Minecraft.getInstance().player.sendChatMessage("Total armor value is " + armorTotal);
+            if(event.getEntity() instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) event.getEntity();
+                if(wearingBoots(player) || wearingLegs(player) || wearingChest(player) || wearingHelm(player)) {
+                    int armorTotal = player.getTotalArmorValue();
+                    MiscHelpers.debugLogger("[Prismatic Armor] Total armor value is " + armorTotal);
+                    MiscHelpers.debugLogger("[Prismatic Armor] Initial damage is " + event.getAmount());
                     int armorVsDiamondTotal = armorTotal - 20;
                     float reductionRatioCap = FlatLightsCommonConfig.armorDamageReduction.get() / 100f;
                     float reductionRatio;
+
                     //get reductionRatio, make sure percent doesn't go above reductionRatioCap %
                     if(armorVsDiamondTotal > 0 && reductionRatioCap > 0) {
                         reductionRatio = Math.min((armorVsDiamondTotal * 0.05f), reductionRatioCap);
                     }
+                    //normal damage taken if at or below diamond level armor
                     else {
-                        //normal damage taken if at or below diamond level armor
                         reductionRatio = 0;
                     }
                     float reducedDamage = event.getAmount() * (1 - reductionRatio);
-                    //Minecraft.getInstance().player.sendChatMessage("Reduced damage is now " + reducedDamage);
+                    if(FlatLightsCommonConfig.multilayerReduction.get()) {
+                        reducedDamage = event.getAmount();
+                        if(wearingBoots(player)) {
+                            reducedDamage = reducedDamage * (1 - reductionRatio);
+                        }
+                        if(wearingLegs(player)) {
+                            reducedDamage = reducedDamage * (1 - reductionRatio);
+                        }
+                        if(wearingChest(player)) {
+                            reducedDamage = reducedDamage * (1 - reductionRatio);
+                        }
+                        if(wearingHelm(player)) {
+                            reducedDamage = reducedDamage * (1 - reductionRatio);
+                        }
+                    }
+
+                    MiscHelpers.debugLogger("[Prismatic Armor] Reduced damage is now " + reducedDamage);
                     event.setAmount(reducedDamage);
                 }
             }
         }
     }
-
 }

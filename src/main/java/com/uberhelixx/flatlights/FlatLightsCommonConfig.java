@@ -22,6 +22,7 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> entangledEndDmg;
     public static final ForgeConfigSpec.ConfigValue<Double> pulsingArrowRadius;
     public static final ForgeConfigSpec.ConfigValue<Integer> pulsingPercent;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> multilayerReduction;
 
 
 
@@ -39,7 +40,7 @@ public final class FlatLightsCommonConfig {
             BUILDER.comment("Percentage of target's max HP taken to be dealt as damage by the Prismatic Blade on hit. (Deals x% bonus damage, with 1.00 = 100% of target's max HP) [Default: 0.05 (5%)]");
             healthDamagePercent = BUILDER.defineInRange("HealthDamagePercent", 0.05, 0.00, 1.00);
 
-            BUILDER.comment("Max percentage of damage reduction one can achieve using the Prismatic Armor. Damage reduction percentage is increased based on total armor value, each point above diamond granting +5% reduction ((totalArmorValue - 20) * 0.05). Does not require full set of Prismatic Armor to activate. (Reduces incoming damage by x% up to this cap) [Default 25%]");
+            BUILDER.comment("Max percentage of damage reduction one can achieve using the Prismatic Armor. Damage reduction percentage is increased based on total armor value, each point above 20 granting +5% reduction ((totalArmorValue - 20) * 0.05). Means that the armor by itself can only achieve up to 50% reduction at most (it totals up to 30 points). Does not require full set of Prismatic Armor to activate. (Reduces incoming damage by x% up to this cap) [Default 25%]");
             armorDamageReduction = BUILDER.defineInRange("ArmorDamageReduction", 25, 0, 100);
 
             BUILDER.comment("Max percentage of damage the Entangled effect can trigger per hit. (Calculates total dmg% such that entangledDmg = initialDmg * ((EntangledPercent)/100) ) [Default: 100 -> 100% damage]");
@@ -78,6 +79,9 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Does the Prismatic Chestplate give flight abilities? [Default: true]");
             chestplateFlight = BUILDER.define("ChestplateFlight", true);
+
+            BUILDER.comment("Does each individual Prismatic Armor piece reduce damage independently or only calculate once if wearing any Prismatic Armor piece? [Default: true]");
+            multilayerReduction = BUILDER.define("MultilayerReduction", true);
         }
         BUILDER.pop();
 
