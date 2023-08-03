@@ -93,7 +93,7 @@ public class PlatingMachineRecipe implements IPlatingMachineRecipe {
         @Nullable
         @Override
         public PlatingMachineRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(2, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputs = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
 
             inputs.replaceAll(ignored -> Ingredient.read(buffer));
 
