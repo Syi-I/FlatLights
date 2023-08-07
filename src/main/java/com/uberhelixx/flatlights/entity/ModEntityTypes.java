@@ -18,4 +18,7 @@ public class ModEntityTypes {
 
     public static final RegistryObject<EntityType<VoidProjectileEntity>> VOID_PROJECTILE = ENTITY_TYPES.register("void_projectile",
             () -> EntityType.Builder.create((EntityType.IFactory<VoidProjectileEntity>) VoidProjectileEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).build("void_projectile"));
+
+    public static final RegistryObject<EntityType<BombSwingEntity>> BOMB_SWING_PROJECTILE = ENTITY_TYPES.register("bomb_swing_projectile",
+            () -> EntityType.Builder.create((EntityType.IFactory<BombSwingEntity>) BombSwingEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).build("bomb_swing_projectile"));
 }

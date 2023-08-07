@@ -3,7 +3,6 @@ package com.uberhelixx.flatlights;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
-import com.uberhelixx.flatlights.container.SpectralizerContainer;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.*;
@@ -16,6 +15,9 @@ import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.item.tools.PrismaticSword;
+import com.uberhelixx.flatlights.network.PacketHandler;
+import com.uberhelixx.flatlights.render.BombSwingProjectileRenderer;
 import com.uberhelixx.flatlights.render.VoidProjectileRenderer;
 import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
@@ -107,6 +109,7 @@ public class FlatLights
         EVENT_BUS.addListener(Shimmer2Enchantment::shimmerOverload);
         EVENT_BUS.addListener(PulsingArrowEnchantment::arrowPulseDmg);
         EVENT_BUS.addListener(PrismaticBladeMk2::megaHit);
+        EVENT_BUS.addListener(PrismaticSword::bombSwingTrigger);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -114,6 +117,8 @@ public class FlatLights
         // some preinit code
         LOGGER.info("Preinit stuff");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        //have to initialize packet handler here oop
+        PacketHandler.init();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -133,6 +138,7 @@ public class FlatLights
 
         //register entity renderers
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_PROJECTILE.get(), VoidProjectileRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), BombSwingProjectileRenderer::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

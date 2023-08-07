@@ -4,6 +4,7 @@ import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.armor.*;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -68,4 +69,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> BOOTS_CORE = ITEMS.register("boots_core",
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
+    public static final RegistryObject<Item> PRISMATIC_SWORD = ITEMS.register("prismatic_sword",
+            () -> new PrismaticSword(ModItemTier.PRISMATIC, -4, -2.4f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 }
