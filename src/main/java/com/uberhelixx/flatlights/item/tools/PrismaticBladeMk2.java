@@ -1,13 +1,19 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
+import com.uberhelixx.flatlights.entity.ModEntityTypes;
+import com.uberhelixx.flatlights.entity.VoidProjectileEntity;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,9 +21,12 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.*;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
@@ -91,7 +100,9 @@ public class PrismaticBladeMk2 extends SwordItem {
         else {
             ITextComponent fail = new StringTextComponent("This item does not belong to you.");
             attacker.sendMessage(fail, messageOwner);
-            world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 0.5f,(1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
+            if(!world.isRemote()) {
+                world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), ModSoundEvents.SQUEAK.get(), SoundCategory.PLAYERS, 0.5f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
+            }
             target.heal(target.getMaxHealth());
             return false;
         }
@@ -362,7 +373,10 @@ public class PrismaticBladeMk2 extends SwordItem {
         ItemStack blade = playerIn.getHeldItem(handIn);
         if(uuidCheck(playerIn.getUniqueID())) {
             if (Screen.hasShiftDown()) {
-                worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.PLAYERS, 0.2f, (1.0f + (worldIn.rand.nextFloat() * 0.2f)) * 0.1f);
+                if(!worldIn.isRemote()) {
+                    worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
+                }
+
                 if (blade.getTag() == null) {
                     CompoundNBT newTag = new CompoundNBT();
                     newTag.putBoolean("multislash", true);
@@ -400,7 +414,7 @@ public class PrismaticBladeMk2 extends SwordItem {
             else {
                 assert blade.getTag() != null;
                 if(blade.getTag().contains("projectile") && blade.getTag().getBoolean("projectile")) {
-                    shootProjectile();
+                    shootProjectile(worldIn, playerIn, playerIn.getPosition());
                 }
             }
         }
@@ -417,8 +431,21 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
     }
 
-    private static void shootProjectile() {
-
+    private static void shootProjectile(World worldIn, PlayerEntity player, BlockPos pos) {
+        //get direction player is looking currently
+        Vector3d look = player.getLookVec();
+        MiscHelpers.debugLogger("[Void Projectile Shot] Player Look Vector: " + look);
+        //spawn projectile
+        if (!worldIn.isRemote()){
+            VoidProjectileEntity orb = new VoidProjectileEntity(ModEntityTypes.VOID_PROJECTILE.get(), player, worldIn);
+            orb.shoot(look.getX(), look.getY(), look.getZ(), 3f, 0);
+            orb.setNoGravity(true);
+            worldIn.addEntity(orb);
+            worldIn.playSound(null, pos, ModSoundEvents.VOID_PROJECTILE_SHOT.get(), SoundCategory.PLAYERS, 1, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
+        }
+        //do backwards dash
+        double dashFactor = -2.0;
+        player.setMotion(look.normalize().mul(dashFactor, dashFactor, dashFactor));
     }
 
     @SubscribeEvent (priority = EventPriority.HIGH)

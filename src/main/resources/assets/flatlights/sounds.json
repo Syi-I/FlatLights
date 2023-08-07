@@ -1,0 +1,23 @@
+{
+  "squeak": {
+    "category": "player",
+    "subtitle": "flatlights.squeak",
+    "sounds": [
+      "flatlights:squeak"
+    ]
+  },
+  "dev_blade_mode_switch": {
+    "category": "player",
+    "subtitle": "flatlights.dev_blade_mode_switch",
+    "sounds": [
+      "flatlights:dev_blade_mode_switch"
+    ]
+  },
+  "void_projectile_shot": {
+    "category": "player",
+    "subtitle": "flatlights.void_projectile_shot",
+    "sounds": [
+      "flatlights:void_projectile_shot"
+    ]
+  }
+}

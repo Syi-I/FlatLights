@@ -148,6 +148,10 @@
   "tooltip.flatlights.prismatic_boots_shift": "§5§oPrevents fall damage when worn.",
   "tooltip.flatlights.prismatic_blademk2_shift": "§5§oAs the sun sets, I rejoice.",
 
+  "flatlights.squeak": "Squeak",
+  "flatlights.dev_blade_mode_switch": "Swapped blade modes",
+  "flatlights.void_projectile_shot": "Shot black hole",
+
   "enchantment.level.11": "11",
   "enchantment.level.12": "12",
   "enchantment.level.13": "13",
