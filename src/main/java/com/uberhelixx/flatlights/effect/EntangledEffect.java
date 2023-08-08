@@ -8,6 +8,8 @@ import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 
 public class EntangledEffect extends Effect {
+    private static final String ENTANGLED_TEAM = "entangledMobs";
+
     protected EntangledEffect(EffectType typeIn, int liquidColorIn) {
         super(typeIn, liquidColorIn);
     }
@@ -20,13 +22,17 @@ public class EntangledEffect extends Effect {
             dmgMultiplier += amplifier;
         }
         entityLivingBaseIn.attackEntityFrom(ModDamageTypes.ENTANGLED, entityLivingBaseIn.getMaxHealth() * (0.1F * dmgMultiplier) * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.entangledEndDmg.get()));
-
+        entityLivingBaseIn.getEntityWorld().getScoreboard().removePlayerFromTeam(entityLivingBaseIn.getCachedUniqueIdString(), entityLivingBaseIn.getEntityWorld().getScoreboard().getTeam("entangledMobs"));
         super.performEffect(entityLivingBaseIn, amplifier);
     }
 
     @Override
     public boolean isReady(int duration, int amplifier) {
         return duration <= 1;
+    }
+
+    public static String getEntangledTeam() {
+        return ENTANGLED_TEAM;
     }
 
 }

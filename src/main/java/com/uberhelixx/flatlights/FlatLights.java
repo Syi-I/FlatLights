@@ -110,6 +110,7 @@ public class FlatLights
         EVENT_BUS.addListener(PulsingArrowEnchantment::arrowPulseDmg);
         EVENT_BUS.addListener(PrismaticBladeMk2::megaHit);
         EVENT_BUS.addListener(PrismaticSword::bombSwingTrigger);
+        EVENT_BUS.addListener(QuantumStrikeEnchantment::removeFromEntangledTeam);
     }
 
     private void setup(final FMLCommonSetupEvent event)
