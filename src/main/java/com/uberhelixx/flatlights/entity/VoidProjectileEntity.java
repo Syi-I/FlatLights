@@ -1,11 +1,15 @@
 package com.uberhelixx.flatlights.entity;
 
+import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.Explosion;
@@ -31,12 +35,14 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
     public void tick() {
         super.tick();
         if (this.timeInGround > 1){
-            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
+            //this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
+            summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
             this.remove();
         }
         if(this.getShooter() != null) {
             if (this.getDistance(this.getShooter()) >= 12) {
-                this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
+                //this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
+                summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
                 this.remove();
             }
         }
@@ -52,9 +58,10 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
 
     @Override
     protected void onEntityHit(EntityRayTraceResult ray) {
-        super.onEntityHit(ray);
+        //super.onEntityHit(ray);
         //this, x, y, z, explosionStrength, setsFires, breakMode
-        this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
+        //this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
+        summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
     }
 
     //on block collision
@@ -67,5 +74,24 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    public void summonBlackHole(double x, double y, double z) {
+        LivingEntity originalShooter = null;
+        if(this.getShooter() != null) {
+            MiscHelpers.debugLogger("[Void Sphere] shooter is not null");
+            originalShooter = (LivingEntity) this.getShooter();
+        }
+        if(originalShooter == null) {
+            return;
+        }
+        World worldIn = originalShooter.getEntityWorld();
+        if (!worldIn.isRemote()){
+            VoidSphereEntity orb = new VoidSphereEntity(ModEntityTypes.VOID_SPHERE.get(), (LivingEntity) this.getShooter(), this.getShooter().getEntityWorld());
+            orb.setLocationAndAngles(x, y - 1.5, z, 0f, 0f);
+            orb.setNoGravity(true);
+            worldIn.addEntity(orb);
+            MiscHelpers.debugLogger("[Void Sphere] Summon sphere");
+        }
     }
 }

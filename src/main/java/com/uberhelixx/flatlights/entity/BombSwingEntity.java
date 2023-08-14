@@ -49,6 +49,7 @@ public class BombSwingEntity extends AbstractArrowEntity {
         super.onEntityHit(ray);
         //this, x, y, z, explosionStrength, setsFires, breakMode
         this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), bombRadius, false, Explosion.Mode.NONE);
+        this.remove();
     }
 
     @Override

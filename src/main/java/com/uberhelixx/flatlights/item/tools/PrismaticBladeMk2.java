@@ -61,7 +61,9 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return (stack.isEnchanted() || (stack.getTag() != null && stack.getTag().getBoolean("multislash")));
+        return (stack.isEnchanted() || (stack.getTag() != null && (stack.getTag().getBoolean("multislash") ||
+                stack.getTag().getBoolean("megaton") ||
+                stack.getTag().getBoolean("projectile"))));
     }
 
     @Override
@@ -359,7 +361,7 @@ public class PrismaticBladeMk2 extends SwordItem {
             }
             else if (projectile) {
                 activeState = TextFormatting.GREEN + "Projectile";
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Shoot a projectile dealing "  + TextFormatting.RED + (totalDmg / 2) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Shoot a projectile dealing "  + TextFormatting.RED + (totalDmg / 10) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
             }
             else {
                 data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.AQUA + "]");
@@ -412,9 +414,10 @@ public class PrismaticBladeMk2 extends SwordItem {
                 }
             }
             else {
-                assert blade.getTag() != null;
-                if(blade.getTag().contains("projectile") && blade.getTag().getBoolean("projectile")) {
-                    shootProjectile(worldIn, playerIn, playerIn.getPosition());
+                if(blade.getTag() != null) {
+                    if (blade.getTag().contains("projectile") && blade.getTag().getBoolean("projectile")) {
+                        shootProjectile(worldIn, playerIn, playerIn.getPosition());
+                    }
                 }
             }
         }

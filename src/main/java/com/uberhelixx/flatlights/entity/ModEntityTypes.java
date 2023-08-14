@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.entity;
 import com.uberhelixx.flatlights.FlatLights;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -17,8 +18,17 @@ public class ModEntityTypes {
     }
 
     public static final RegistryObject<EntityType<VoidProjectileEntity>> VOID_PROJECTILE = ENTITY_TYPES.register("void_projectile",
-            () -> EntityType.Builder.create((EntityType.IFactory<VoidProjectileEntity>) VoidProjectileEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).build("void_projectile"));
+            () -> EntityType.Builder.create((EntityType.IFactory<VoidProjectileEntity>) VoidProjectileEntity::new,
+                    EntityClassification.MISC).size(0.5F, 0.5F)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "void_projectile").toString()));
 
     public static final RegistryObject<EntityType<BombSwingEntity>> BOMB_SWING_PROJECTILE = ENTITY_TYPES.register("bomb_swing_projectile",
-            () -> EntityType.Builder.create((EntityType.IFactory<BombSwingEntity>) BombSwingEntity::new, EntityClassification.MISC).size(0.5F, 0.5F).build("bomb_swing_projectile"));
+            () -> EntityType.Builder.create((EntityType.IFactory<BombSwingEntity>) BombSwingEntity::new,
+                    EntityClassification.MISC).size(0.5F, 0.5F)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "bomb_swing_projectile").toString()));
+
+    public static final RegistryObject<EntityType<VoidSphereEntity>> VOID_SPHERE = ENTITY_TYPES.register("void_sphere",
+            () -> EntityType.Builder.create((EntityType.IFactory<VoidSphereEntity>) VoidSphereEntity::new,
+                    EntityClassification.MISC).size(2F, 2F)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "void_sphere").toString()));
 }
