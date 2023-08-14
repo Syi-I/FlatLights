@@ -31,4 +31,9 @@ public class ModEntityTypes {
             () -> EntityType.Builder.create((EntityType.IFactory<VoidSphereEntity>) VoidSphereEntity::new,
                     EntityClassification.MISC).size(2F, 2F)
                     .build(new ResourceLocation(FlatLights.MOD_ID, "void_sphere").toString()));
+
+    public static final RegistryObject<EntityType<ChairEntity>> CHAIR_ENTITY = ENTITY_TYPES.register("chair_entity",
+            () -> EntityType.Builder.create((EntityType.IFactory<ChairEntity>) ChairEntity::new,
+                            EntityClassification.MISC).size(0.5F, 0.5F)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "chair_entity").toString()));
 }

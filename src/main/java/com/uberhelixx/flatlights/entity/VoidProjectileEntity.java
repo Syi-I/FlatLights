@@ -35,13 +35,11 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
     public void tick() {
         super.tick();
         if (this.timeInGround > 1){
-            //this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
             summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
             this.remove();
         }
-        if(this.getShooter() != null) {
+        else if(this.getShooter() != null) {
             if (this.getDistance(this.getShooter()) >= 12) {
-                //this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
                 summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
                 this.remove();
             }
@@ -58,10 +56,8 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
 
     @Override
     protected void onEntityHit(EntityRayTraceResult ray) {
-        //super.onEntityHit(ray);
-        //this, x, y, z, explosionStrength, setsFires, breakMode
-        //this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 5.0f, false, Explosion.Mode.NONE);
         summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
+        this.remove();
     }
 
     //on block collision

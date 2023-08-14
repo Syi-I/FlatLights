@@ -107,7 +107,7 @@ public class VoidSphereEntity extends AbstractArrowEntity {
         for (Entity instance : entities) {
             if (instance instanceof LivingEntity) {
                 //damage mobs in radius
-                if(instance.getDistance(this) <= 1.5) {
+                if(instance.getDistance(this) <= 2) {
                     instance.attackEntityFrom(ModDamageTypes.causeIndirectQuantum(this, this.getShooter()), projectileBonus);
                 }
                 //pull mob towards sphere

@@ -1,0 +1,7 @@
+{
+  "loader": "forge:obj",
+  "flip-v": true,
+  "ambientToFullbright": false,
+  "materialLibraryOverride": "flatlights:models/block/motivational_chair/motivational_chair.mtl",
+  "model" : "flatlights:models/block/motivational_chair/motivational_chair.obj"
+}

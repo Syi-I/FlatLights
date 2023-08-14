@@ -18,6 +18,7 @@ import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.render.BombSwingProjectileRenderer;
+import com.uberhelixx.flatlights.render.ChairEntityRenderer;
 import com.uberhelixx.flatlights.render.VoidProjectileRenderer;
 import com.uberhelixx.flatlights.render.VoidSphereRenderer;
 import com.uberhelixx.flatlights.screen.LightStorageScreen;
@@ -31,8 +32,10 @@ import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -145,6 +148,7 @@ public class FlatLights
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_PROJECTILE.get(), VoidProjectileRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), BombSwingProjectileRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_SPHERE.get(), VoidSphereRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHAIR_ENTITY.get(), ChairEntityRenderer::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
@@ -177,6 +181,7 @@ public class FlatLights
         public static void onModelRegistryEvent(ModelRegistryEvent event) {
             MiscHelpers.debugLogger("tried to add special model idk");
             ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
+            ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
         }
     }
 }
