@@ -19,5 +19,19 @@
     "sounds": [
       "flatlights:void_projectile_shot"
     ]
+  },
+  "void_fizzle": {
+    "category": "player",
+    "subtitle": "flatlights.void_fizzle",
+    "sounds": [
+      "flatlights:void_fizzle"
+    ]
+  },
+  "void_hum": {
+    "category": "player",
+    "subtitle": "flatlights.void_hum",
+    "sounds": [
+      "flatlights:void_hum"
+    ]
   }
 }

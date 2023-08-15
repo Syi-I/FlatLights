@@ -70,8 +70,10 @@ public class QuantumStrikeEnchantment extends Enchantment {
     public static void removeFromEntangledTeam(LivingDeathEvent event) {
         Scoreboard scoreboard = event.getEntityLiving().getEntityWorld().getScoreboard();
         LivingEntity entityIn = event.getEntityLiving();
-        if(entityIn.getTeam() == scoreboard.getTeam(EntangledEffect.getEntangledTeam())) {
-            scoreboard.removePlayerFromTeam(entityIn.getCachedUniqueIdString(), scoreboard.getTeam(EntangledEffect.getEntangledTeam()));
+        if(entityIn.getTeam() != null) {
+            if (entityIn.getTeam() == scoreboard.getTeam(EntangledEffect.getEntangledTeam())) {
+                scoreboard.removePlayerFromTeam(entityIn.getCachedUniqueIdString(), scoreboard.getTeam(EntangledEffect.getEntangledTeam()));
+            }
         }
     }
 }

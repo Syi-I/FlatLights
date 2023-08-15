@@ -23,4 +23,6 @@ public class ModSoundEvents {
     public static final RegistryObject<SoundEvent> SQUEAK = registerSoundEvent("squeak");
     public static final RegistryObject<SoundEvent> DEV_BLADE_MODE_SWITCH = registerSoundEvent("dev_blade_mode_switch");
     public static final RegistryObject<SoundEvent> VOID_PROJECTILE_SHOT = registerSoundEvent("void_projectile_shot");
+    public static final RegistryObject<SoundEvent> VOID_FIZZLE = registerSoundEvent("void_fizzle");
+    public static final RegistryObject<SoundEvent> VOID_HUM = registerSoundEvent("void_hum");
 }

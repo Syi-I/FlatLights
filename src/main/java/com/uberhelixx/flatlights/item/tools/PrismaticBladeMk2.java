@@ -102,9 +102,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         else {
             ITextComponent fail = new StringTextComponent("This item does not belong to you.");
             attacker.sendMessage(fail, messageOwner);
-            if(!world.isRemote()) {
-                world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), ModSoundEvents.SQUEAK.get(), SoundCategory.PLAYERS, 0.5f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
-            }
+            world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), ModSoundEvents.SQUEAK.get(), SoundCategory.PLAYERS, 0.5f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
             target.heal(target.getMaxHealth());
             return false;
         }
