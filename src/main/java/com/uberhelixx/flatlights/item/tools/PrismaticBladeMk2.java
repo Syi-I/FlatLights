@@ -1,13 +1,19 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
+import com.uberhelixx.flatlights.entity.ModEntityTypes;
+import com.uberhelixx.flatlights.entity.VoidProjectileEntity;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,13 +21,18 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.*;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,7 +61,9 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return (stack.isEnchanted() || (stack.getTag() != null && stack.getTag().getBoolean("multislash")));
+        return (stack.isEnchanted() || (stack.getTag() != null && (stack.getTag().getBoolean("multislash") ||
+                stack.getTag().getBoolean("megaton") ||
+                stack.getTag().getBoolean("projectile"))));
     }
 
     @Override
@@ -89,7 +102,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         else {
             ITextComponent fail = new StringTextComponent("This item does not belong to you.");
             attacker.sendMessage(fail, messageOwner);
-            world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.PLAYERS, 0.5f,(1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
+            world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), ModSoundEvents.SQUEAK.get(), SoundCategory.PLAYERS, 0.5f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
             target.heal(target.getMaxHealth());
             return false;
         }
@@ -104,7 +117,7 @@ public class PrismaticBladeMk2 extends SwordItem {
                 tooltip.add(getTierData(stack));
                 tooltip.add(getCoreData(stack));
                 if(stack.getTag().contains("multislash")) {
-                    tooltip.add(getMultiState(stack));
+                    tooltip.add(getSwordState(stack));
                 }
             }
         }
@@ -182,7 +195,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
     }
 
-    public static boolean addToPlayerInventory(PlayerEntity player, ItemStack stack) {
+    private static boolean addToPlayerInventory(PlayerEntity player, ItemStack stack) {
         if (stack.isEmpty() || player == null) {
             return false;
         }
@@ -238,6 +251,7 @@ public class PrismaticBladeMk2 extends SwordItem {
             int oldCores = tag.getInt("cores");
             int oldTier = tag.getInt("tier");
             int newCores = oldCores + Math.max((Math.round(((LivingEntity) mob).getMaxHealth() / 20)), 1);
+            tag.putInt("totalBonus", newCores);
             String coreGainText = " core.";
             if(newCores - oldCores > 1) {
                 coreGainText = " cores.";
@@ -260,7 +274,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
     }
 
-    public static ITextComponent getCoreData(ItemStack tool) {
+    private static ITextComponent getCoreData(ItemStack tool) {
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
         if (tool.getTag() != null && tool.getTag().contains("cores")) {
@@ -281,7 +295,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         return data;
     }
 
-    public static ITextComponent getTierData(ItemStack tool) {
+    private static ITextComponent getTierData(ItemStack tool) {
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
         if (tool.getTag() != null && tool.getTag().contains("cores")) {
@@ -320,26 +334,35 @@ public class PrismaticBladeMk2 extends SwordItem {
         return data;
     }
 
-    public static ITextComponent getMultiState(ItemStack tool) {
+    private static ITextComponent getSwordState(ItemStack tool) {
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
-        if (tool.getTag() != null && tool.getTag().contains("multislash")) {
+        if (tool.getTag() != null && tag.contains("multislash") && tag.contains("megaton") && tag.contains("projectile")) {
             int cores = tag.getInt("cores");
             int tier = tag.getInt("tier") + 1;
-            boolean active = tag.getBoolean("multislash");
+            int totalDmg = tag.getInt("totalBonus");
+            boolean multi = tag.getBoolean("multislash");
+            boolean mega = tag.getBoolean("megaton");
+            boolean projectile = tag.getBoolean("projectile");
             String activeState = TextFormatting.DARK_RED + "Deactivated";
-            if(active) {
-                activeState = TextFormatting.GREEN + "Activated";
-            }
             String tierSlash = "" + TextFormatting.RED + tier + TextFormatting.WHITE + " slash of ";
             if(tier > 1) {
                 tierSlash = "" + TextFormatting.RED + tier + TextFormatting.WHITE + " slashes of ";
             }
-            if (active) {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Multislash: " + activeState + TextFormatting.WHITE + " | " + tierSlash + TextFormatting.RED + cores + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+            if (multi) {
+                activeState = TextFormatting.GREEN + "Multislash";
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | " + tierSlash + TextFormatting.RED + cores + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+            }
+            else if (mega) {
+                activeState = TextFormatting.GREEN + "Megaton Raid";
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Increase hits by " + TextFormatting.RED + totalDmg + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+            }
+            else if (projectile) {
+                activeState = TextFormatting.GREEN + "Projectile";
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Shoot a projectile dealing "  + TextFormatting.RED + (totalDmg / 10) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
             }
             else {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Multislash: " + activeState + TextFormatting.AQUA + "]");
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.AQUA + "]");
             }
         }
         return data;
@@ -348,18 +371,51 @@ public class PrismaticBladeMk2 extends SwordItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack blade = playerIn.getHeldItem(handIn);
-        if(Screen.hasShiftDown()) {
-            if (uuidCheck(playerIn.getUniqueID())) {
-                worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.PLAYERS, 0.2f, (1.0f + (worldIn.rand.nextFloat() * 0.2f)) * 0.1f);
+        if(uuidCheck(playerIn.getUniqueID())) {
+            if (Screen.hasShiftDown()) {
+                if(!worldIn.isRemote()) {
+                    worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
+                }
+
                 if (blade.getTag() == null) {
                     CompoundNBT newTag = new CompoundNBT();
                     newTag.putBoolean("multislash", true);
+                    newTag.putBoolean("megaton", false);
+                    newTag.putBoolean("projectile", false);
                     blade.setTag(newTag);
                 } else {
                     CompoundNBT tag = blade.getTag();
-                    boolean active = tag.getBoolean("multislash");
-                    tag.putBoolean("multislash", !active);
+                    boolean multi = tag.getBoolean("multislash");
+                    boolean mega = tag.getBoolean("megaton");
+                    boolean projectile = tag.getBoolean("projectile");
+                    if(multi) {
+                        tag.putBoolean("multislash", false);
+                        tag.putBoolean("megaton", true);
+                        tag.putBoolean("projectile", false);
+                    }
+                    else if(mega) {
+                        tag.putBoolean("multislash", false);
+                        tag.putBoolean("megaton", false);
+                        tag.putBoolean("projectile", true);
+                    }
+                    else if(projectile) {
+                        tag.putBoolean("multislash", false);
+                        tag.putBoolean("megaton", false);
+                        tag.putBoolean("projectile", false);
+                    }
+                    else {
+                        tag.putBoolean("multislash", true);
+                        tag.putBoolean("megaton", false);
+                        tag.putBoolean("projectile", false);
+                    }
                     blade.setTag(tag);
+                }
+            }
+            else {
+                if(blade.getTag() != null) {
+                    if (blade.getTag().contains("projectile") && blade.getTag().getBoolean("projectile")) {
+                        shootProjectile(worldIn, playerIn, playerIn.getPosition());
+                    }
                 }
             }
         }
@@ -373,6 +429,42 @@ public class PrismaticBladeMk2 extends SwordItem {
         worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.1f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
         if((slashCount - 1) > 0) {
             doSlash(worldIn, targetIn, damageBonusIn, slashCount - 1);
+        }
+    }
+
+    private static void shootProjectile(World worldIn, PlayerEntity player, BlockPos pos) {
+        //get direction player is looking currently
+        Vector3d look = player.getLookVec();
+        MiscHelpers.debugLogger("[Void Projectile Shot] Player Look Vector: " + look);
+        //spawn projectile
+        if (!worldIn.isRemote()){
+            VoidProjectileEntity orb = new VoidProjectileEntity(ModEntityTypes.VOID_PROJECTILE.get(), player, worldIn);
+            orb.shoot(look.getX(), look.getY(), look.getZ(), 3f, 0);
+            orb.setNoGravity(true);
+            worldIn.addEntity(orb);
+            worldIn.playSound(null, pos, ModSoundEvents.VOID_PROJECTILE_SHOT.get(), SoundCategory.PLAYERS, 1, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
+        }
+        //do backwards dash
+        double dashFactor = -2.0;
+        player.setMotion(look.normalize().mul(dashFactor, dashFactor, dashFactor));
+    }
+
+    @SubscribeEvent (priority = EventPriority.HIGH)
+    public static void megaHit(LivingHurtEvent event) {
+        if(event.getSource().getTrueSource() == null) {
+            return;
+        }
+        Iterator<ItemStack> heldItem = event.getSource().getTrueSource().getHeldEquipment().iterator();
+        for (Iterator<ItemStack> item = heldItem; item.hasNext(); ) {
+            ItemStack iter = item.next();
+            if(iter.getItem() instanceof PrismaticBladeMk2){
+                CompoundNBT tag = iter.getTag();
+                assert tag != null;
+                if(tag.contains("megaton") && tag.getBoolean("megaton")) {
+                    int bonusDmg = tag.getInt("totalBonus");
+                    event.setAmount(event.getAmount() + bonusDmg);
+                }
+            }
         }
     }
 

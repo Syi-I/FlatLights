@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "flatlights:block/motivational_chair/motivational_chair_wrapper",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "flatlights:block/motivational_chair/motivational_chair_wrapper"
+    },
+    "facing=west": {
+      "model": "flatlights:block/motivational_chair/motivational_chair_wrapper",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "flatlights:block/motivational_chair/motivational_chair_wrapper",
+      "y": 180
+    }
+  }
+}

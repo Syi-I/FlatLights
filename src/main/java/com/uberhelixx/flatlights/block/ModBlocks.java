@@ -151,5 +151,6 @@ public class ModBlocks {
     public static final RegistryObject<Block> SPECTRUM_ANVIL = registerSpecialBlock("spectrum_anvil", SpectrumAnvilBlock::new);
     public static final RegistryObject<Block> LIGHT_STORAGE = registerSpecialBlock("light_storage", LightStorageBlock::new);
     public static final RegistryObject<Block> SPECTRALIZER = registerSpecialBlock("spectralizer", SpectralizerBlock::new);
+    public static final RegistryObject<Block> MOTIVATIONAL_CHAIR = registerSpecialBlock("motivational_chair", MotivationalChairBlock::new);
 
 }

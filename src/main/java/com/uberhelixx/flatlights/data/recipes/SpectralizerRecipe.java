@@ -97,7 +97,7 @@ public class SpectralizerRecipe implements ISpectralizerRecipe {
         @Nullable
         @Override
         public SpectralizerRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(6, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputs = NonNullList.withSize(buffer.readInt(), Ingredient.EMPTY);
 
             inputs.replaceAll(ignored -> Ingredient.read(buffer));
 

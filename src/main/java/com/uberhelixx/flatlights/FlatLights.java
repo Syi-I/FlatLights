@@ -3,10 +3,10 @@ package com.uberhelixx.flatlights;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
-import com.uberhelixx.flatlights.container.SpectralizerContainer;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.*;
+import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -15,22 +15,35 @@ import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.item.tools.PrismaticSword;
+import com.uberhelixx.flatlights.network.PacketHandler;
+import com.uberhelixx.flatlights.render.BombSwingProjectileRenderer;
+import com.uberhelixx.flatlights.render.ChairEntityRenderer;
+import com.uberhelixx.flatlights.render.VoidProjectileRenderer;
+import com.uberhelixx.flatlights.render.VoidSphereRenderer;
 import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
 import com.uberhelixx.flatlights.screen.SpectralizerScreen;
 import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
 import com.uberhelixx.flatlights.util.MiscEventHelpers;
+import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -75,6 +88,8 @@ public class FlatLights
         ModTileEntities.register(eventBus);
         ModContainers.register(eventBus);
         ModRecipeTypes.register(eventBus);
+        ModEntityTypes.register(eventBus);
+        ModSoundEvents.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
@@ -100,6 +115,9 @@ public class FlatLights
         EVENT_BUS.addListener(FlashOfBrillianceEnchantment::xpDropMultiplier);
         EVENT_BUS.addListener(Shimmer2Enchantment::shimmerOverload);
         EVENT_BUS.addListener(PulsingArrowEnchantment::arrowPulseDmg);
+        EVENT_BUS.addListener(PrismaticBladeMk2::megaHit);
+        EVENT_BUS.addListener(PrismaticSword::bombSwingTrigger);
+        EVENT_BUS.addListener(QuantumStrikeEnchantment::removeFromEntangledTeam);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -107,6 +125,8 @@ public class FlatLights
         // some preinit code
         LOGGER.info("Preinit stuff");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        //have to initialize packet handler here oop
+        PacketHandler.init();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -118,11 +138,17 @@ public class FlatLights
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_LARGE_TILES.get(), RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_FLATBLOCK.get(), RenderType.getTranslucent());
 
-        //register screen for PlatingMachine
+        //register screens for containers
         ScreenManager.registerFactory(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
         ScreenManager.registerFactory(ModContainers.SPECTRUM_ANVIL_CONTAINER.get(), SpectrumAnvilScreen::new);
         ScreenManager.registerFactory(ModContainers.LIGHT_STORAGE_CONTAINER.get(), LightStorageScreen::new);
         ScreenManager.registerFactory(ModContainers.SPECTRALIZER_CONTAINER.get(), SpectralizerScreen::new);
+
+        //register entity renderers
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_PROJECTILE.get(), VoidProjectileRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), BombSwingProjectileRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_SPHERE.get(), VoidSphereRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHAIR_ENTITY.get(), ChairEntityRenderer::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
@@ -150,6 +176,12 @@ public class FlatLights
         public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
             // register a new block here
             LOGGER.info("Register blocks");
+        }
+        @SubscribeEvent
+        public static void onModelRegistryEvent(ModelRegistryEvent event) {
+            MiscHelpers.debugLogger("tried to add special model idk");
+            ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
+            ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
         }
     }
 }

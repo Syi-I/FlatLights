@@ -11,7 +11,7 @@ loaderVersion="[36,)" #mandatory; This is typically bumped every Minecraft versi
 
 # The license for your mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance.
-license="The MIT License (MIT)"
+license="GNU GENERAL PUBLIC LICENSE"
 
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="https://github.com/Syi-I/FlatLights/issues?q=is%3Aissue" #optional

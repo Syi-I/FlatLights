@@ -2,17 +2,16 @@ package com.uberhelixx.flatlights.util;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
-import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.enchantments.ModEnchantments;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 public class MiscHelpers {
@@ -61,6 +60,21 @@ public class MiscHelpers {
             }
         }
         return 0;
+    }
+
+    //add stuff to a team with an assigned color so that the glowing effect has a different color
+    public static void addToTeam(LivingEntity entityIn, String teamName, TextFormatting color) {
+        //get existing scoreboard from world
+        Scoreboard scoreboard = entityIn.getEntityWorld().getScoreboard();
+        //try to get existing team from scoreboard or create the new team if it doesn't exist
+        if (scoreboard.getTeam(teamName) == null) {
+            scoreboard.createTeam(teamName);
+        }
+        //add entity to team and change color of team if it is not already the input color
+        scoreboard.addPlayerToTeam(entityIn.getCachedUniqueIdString(), scoreboard.getTeam(teamName));
+        if(scoreboard.getTeam(teamName).getColor() != color) {
+            scoreboard.getTeam(teamName).setColor(color);
+        }
     }
 
     public static void debugLogger(String message) {

@@ -102,6 +102,8 @@
   "block.flatlights.light_storage": "Light Storage Block",
   "block.flatlights.spectralizer": "Spectralizer",
 
+  "block.flatlights.motivational_chair": "Motivational Chair",
+
   "item.flatlights.bread_but_high_quality": "Bread But High Quality",
   "item.flatlights.prismatic_blade": "Prismatic Blade",
   "item.flatlights.prismatic_ingot": "Prismatic Ingot",
@@ -115,6 +117,7 @@
   "item.flatlights.chest_core": "Prismatic Chestplate Core",
   "item.flatlights.pants_core": "Prismatic Leggings Core",
   "item.flatlights.boots_core": "Prismatic Boots Core",
+  "item.flatlights.prismatic_sword": "Prismatic Sword",
 
   "effect.flatlights.armor_shred": "Armor Shred",
   "effect.flatlights.entangled": "Entangled",
@@ -146,7 +149,11 @@
   "tooltip.flatlights.prismatic_chestplate_shift": "§5§oProvides creative flight when worn.",
   "tooltip.flatlights.prismatic_leggings_shift": "§5§oStops Piglins from being hostile.",
   "tooltip.flatlights.prismatic_boots_shift": "§5§oPrevents fall damage when worn.",
-  "tooltip.flatlights.prismatic_blademk2_shift": "§5§oAs the sun sets, I rejoice.",
+  "tooltip.flatlights.prismatic_blademk2_shift": "§5§oSurvive or be destroyed, there is no other choice.",
+
+  "flatlights.squeak": "Squeak",
+  "flatlights.dev_blade_mode_switch": "Swapped blade modes",
+  "flatlights.void_projectile_shot": "Shot black hole",
 
   "enchantment.level.11": "11",
   "enchantment.level.12": "12",
