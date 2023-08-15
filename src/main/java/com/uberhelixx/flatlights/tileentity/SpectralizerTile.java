@@ -22,7 +22,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class SpectralizerTile extends TileEntity implements ITickableTileEntity {

@@ -1,22 +1,16 @@
 package com.uberhelixx.flatlights.entity;
 
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
-
-import java.util.Objects;
 
 public class VoidProjectileEntity extends AbstractArrowEntity {
     protected VoidProjectileEntity(EntityType<? extends AbstractArrowEntity> type, World worldIn) {

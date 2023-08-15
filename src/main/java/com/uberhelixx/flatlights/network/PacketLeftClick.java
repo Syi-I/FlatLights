@@ -1,6 +1,5 @@
 package com.uberhelixx.flatlights.network;
 
-import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;

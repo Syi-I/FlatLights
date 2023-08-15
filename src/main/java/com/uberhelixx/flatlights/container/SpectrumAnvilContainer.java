@@ -9,8 +9,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.AbstractRepairContainer;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.RepairContainer;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -27,7 +25,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
-import java.rmi.registry.RegistryHandler;
 import java.util.Map;
 
 public class SpectrumAnvilContainer extends AbstractRepairContainer {

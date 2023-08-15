@@ -3,7 +3,6 @@ package com.uberhelixx.flatlights.damagesource;
 import com.uberhelixx.flatlights.FlatLights;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
 
 import javax.annotation.Nullable;

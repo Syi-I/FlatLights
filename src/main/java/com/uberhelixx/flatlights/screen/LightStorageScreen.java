@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.container.LightStorageContainer;
-import com.uberhelixx.flatlights.container.PlatingMachineContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;

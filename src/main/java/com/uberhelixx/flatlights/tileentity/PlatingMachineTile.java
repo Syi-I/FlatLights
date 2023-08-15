@@ -2,7 +2,6 @@ package com.uberhelixx.flatlights.tileentity;
 
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
-import com.uberhelixx.flatlights.data.recipes.SpectralizerRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -23,7 +22,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class PlatingMachineTile extends TileEntity implements ITickableTileEntity {

@@ -6,7 +6,6 @@ import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.AbstractRepairScreen;
-import net.minecraft.client.gui.screen.inventory.AnvilScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
