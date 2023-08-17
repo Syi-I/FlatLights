@@ -21,9 +21,13 @@ public class ModBlocks {
     public static final DeferredRegister<Block> SPECIAL_BLOCKS
             = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
 
+    public static final DeferredRegister<Block> PANELS
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
         SPECIAL_BLOCKS.register(eventBus);
+        PANELS.register(eventBus);
     }
 
     //helper function for registering blocks
@@ -37,6 +41,11 @@ public class ModBlocks {
         registerSpecialBlockItem(name, toReturn);
         return toReturn;
     }
+    private static <T extends Block>RegistryObject<T> registerPanel(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = PANELS.register(name, block);
+        registerPanelItem(name, toReturn);
+        return toReturn;
+    }
 
     //helper function for registering block as an item, so it exists as a drop and can actually be crafted/used
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
@@ -44,6 +53,9 @@ public class ModBlocks {
     }
     private static <T extends Block> void registerSpecialBlockItem(String name, RegistryObject<T> block) {
         ModItems.SPECIAL_BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+    private static <T extends Block> void registerPanelItem(String name, RegistryObject<T> block) {
+        ModItems.PANEL_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
 
     // FLAT BLOCKS ##############################################################################################################################
@@ -135,6 +147,24 @@ public class ModBlocks {
     public static final RegistryObject<Block> RED_LARGE_TILES = registerBlock("red_large_tiles", PlateBlock::new);
     public static final RegistryObject<Block> WHITE_LARGE_TILES = registerBlock("white_large_tiles", PlateBlock::new);
     public static final RegistryObject<Block> YELLOW_LARGE_TILES = registerBlock("yellow_large_tiles", PlateBlock::new);
+
+    // PANEL ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_PANEL = registerPanel("black_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> BLUE_PANEL = registerPanel("blue_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> BROWN_PANEL = registerPanel("brown_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> CYAN_PANEL = registerPanel("cyan_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> GRAY_PANEL = registerPanel("gray_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> GREEN_PANEL = registerPanel("green_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_PANEL = registerPanel("light_blue_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_PANEL = registerPanel("light_gray_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> LIME_PANEL = registerPanel("lime_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> MAGENTA_PANEL = registerPanel("magenta_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> ORANGE_PANEL = registerPanel("orange_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> PINK_PANEL = registerPanel("pink_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> PURPLE_PANEL = registerPanel("purple_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> RED_PANEL = registerPanel("red_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> WHITE_PANEL = registerPanel("white_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> YELLOW_PANEL = registerPanel("yellow_panel", () -> new SlabLightBlock(2));
 
     // GLASS ##############################################################################################################################
     public static final RegistryObject<Block> GLASS_HEXBLOCK = registerBlock("glass_hexblock", WireGlassBlock::new);

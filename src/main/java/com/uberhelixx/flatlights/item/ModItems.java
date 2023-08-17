@@ -23,12 +23,15 @@ public class ModItems {
             = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
     public static final DeferredRegister<Item> SPECIAL_BLOCK_ITEMS
             = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+    public static final DeferredRegister<Item> PANEL_ITEMS
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         SPECIAL_ITEMS.register(eventBus);
         BLOCK_ITEMS.register(eventBus);
         SPECIAL_BLOCK_ITEMS.register(eventBus);
+        PANEL_ITEMS.register(eventBus);
     }
 
     //adding any additional items, just copy this and change the names e.g. 'POWERED_RAT' and 'powered_rat' to something else
@@ -70,6 +73,6 @@ public class ModItems {
     public static final RegistryObject<Item> BOOTS_CORE = ITEMS.register("boots_core",
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
-    public static final RegistryObject<Item> PRISMATIC_SWORD = ITEMS.register("prismatic_sword",
+    public static final RegistryObject<Item> PRISMATIC_SWORD = SPECIAL_ITEMS.register("prismatic_sword",
             () -> new PrismaticSword(ModItemTier.PRISMATIC, -4, -2.4f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 }
