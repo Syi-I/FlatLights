@@ -73,12 +73,24 @@ public class ModBlocks {
         ModItems.PILLAR_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
 
+        public static final DeferredRegister<Block> HORIZONTAL_EDGES
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+    private static <T extends Block>RegistryObject<T> registerEdgeH(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = HORIZONTAL_EDGES.register(name, block);
+        registerEdgeItem(name, toReturn);
+        return toReturn;
+    }
+    private static <T extends Block> void registerEdgeItem(String name, RegistryObject<T> block) {
+        ModItems.EDGE_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
         SPECIAL_BLOCKS.register(eventBus);
         PANELS.register(eventBus);
         FLATBLOCKS.register(eventBus);
         PILLARS.register(eventBus);
+        HORIZONTAL_EDGES.register(eventBus);
     }
 
     // FLAT BLOCKS ##############################################################################################################################
@@ -206,6 +218,24 @@ public class ModBlocks {
     public static final RegistryObject<Block> RED_PILLAR = registerPillar("red_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> WHITE_PILLAR = registerPillar("white_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> YELLOW_PILLAR = registerPillar("yellow_pillar", () -> new PillarLightBlock(4));
+
+    // HORIZONTAL EDGE ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_HORIZONTAL_EDGE = registerEdgeH("black_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> BLUE_HORIZONTAL_EDGE = registerEdgeH("blue_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> BROWN_HORIZONTAL_EDGE = registerEdgeH("brown_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> CYAN_HORIZONTAL_EDGE = registerEdgeH("cyan_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> GRAY_HORIZONTAL_EDGE = registerEdgeH("gray_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> GREEN_HORIZONTAL_EDGE = registerEdgeH("green_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_HORIZONTAL_EDGE = registerEdgeH("light_blue_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_HORIZONTAL_EDGE = registerEdgeH("light_gray_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIME_HORIZONTAL_EDGE = registerEdgeH("lime_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> MAGENTA_HORIZONTAL_EDGE = registerEdgeH("magenta_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> ORANGE_HORIZONTAL_EDGE = registerEdgeH("orange_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PINK_HORIZONTAL_EDGE = registerEdgeH("pink_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PURPLE_HORIZONTAL_EDGE = registerEdgeH("purple_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> RED_HORIZONTAL_EDGE = registerEdgeH("red_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> WHITE_HORIZONTAL_EDGE = registerEdgeH("white_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> YELLOW_HORIZONTAL_EDGE = registerEdgeH("yellow_horizontal_edge", () -> new HorizontalEdgeBlock(2));
 
     // GLASS ##############################################################################################################################
     public static final RegistryObject<Block> GLASS_HEXBLOCK = registerBlock("glass_hexblock", WireGlassBlock::new);

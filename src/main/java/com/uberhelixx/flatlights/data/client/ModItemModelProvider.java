@@ -29,6 +29,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         generatePanelItems();
         generateFlatblockItems();
         generatePillarItems();
+        generateEdgeItems();
         FlatLights.LOGGER.info("[ModItemModelProvider] Finished generating generic item models.");
     }
 
@@ -84,6 +85,18 @@ public class ModItemModelProvider extends ItemModelProvider {
             String filePath = pillarItem.get().getRegistryName().getPath();
             FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider PILLAR path: " + filePath);
             getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/pillar/" + filePath)))
+                    .transforms().transform(ModelBuilder.Perspective.HEAD)
+                    .scale(scale, scale, scale)
+                    .translation(0, 14, 0).end();
+        }
+    }
+
+    private void generateEdgeItems() {
+        float scale = 0.2f;
+        for(RegistryObject<Item> edgeHItem : ModItems.EDGE_ITEMS.getEntries()) {
+            String filePath = edgeHItem.get().getRegistryName().getPath();
+            FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider EDGE path: " + filePath);
+            getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/horizontal_edge/" + filePath)))
                     .transforms().transform(ModelBuilder.Perspective.HEAD)
                     .scale(scale, scale, scale)
                     .translation(0, 14, 0).end();

@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.Half;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -31,6 +32,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         generatePanels();
         generateFlatblocks();
         generatePillars();
+        generateEdges();
         FlatLights.LOGGER.info("[ModBlockStateProvider] Finished generating generic blockstates.");
 
     }
@@ -56,10 +58,31 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 }, BlockStateProperties.WATERLOGGED);
     }
 
+    //for horizontal rotating blocks with up and down half (similar to stair positioning)
+    public void rotationHalfStates(Block block, Function<BlockState, ModelFile> modelFunc) {
+        getVariantBuilder(block)
+                .forAllStatesExcept(state -> {
+                    Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
+                    Half half = state.get(BlockStateProperties.HALF);
+                    return ConfiguredModel.builder()
+                            .modelFile(modelFunc.apply(state))
+                            .rotationX(half == Half.TOP ? 180 : 0)
+                            .rotationY(half == Half.TOP ? (((int)facing.getHorizontalAngle() % 360) + 180) : (((int)facing.getHorizontalAngle() % 360)))
+                            .build();
+                }, BlockStateProperties.WATERLOGGED);
+    }
+
     private void generatePillars() {
         for(RegistryObject<Block> block : ModBlocks.PILLARS.getEntries()) {
             String filePath = block.get().getRegistryName().getPath();
             rotationStates(block.get(), $ -> models().getExistingFile(modLoc("block/pillar/" + filePath)));
+        }
+    }
+
+    private void generateEdges() {
+        for(RegistryObject<Block> block : ModBlocks.HORIZONTAL_EDGES.getEntries()) {
+            String filePath = block.get().getRegistryName().getPath();
+            rotationHalfStates(block.get(), $ -> models().getExistingFile(modLoc("block/horizontal_edge/" + filePath)));
         }
     }
 
