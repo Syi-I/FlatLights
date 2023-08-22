@@ -1,5 +1,6 @@
 {
 	"credit": "UberHelixx",
+	"parent": "block/block",
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "flatlights:block/prismatic_block",
@@ -443,27 +444,6 @@
 			}
 		}
 	],
-	"display": {
-		"thirdperson_righthand": {
-			"scale": [0.2, 0.2, 0.2]
-		},
-		"thirdperson_lefthand": {
-			"scale": [0.2, 0.2, 0.2]
-		},
-		"firstperson_righthand": {
-			"scale": [0.3, 0.3, 0.3]
-		},
-		"firstperson_lefthand": {
-			"scale": [0.3, 0.3, 0.3]
-		},
-		"ground": {
-			"scale": [0.32, 0.32, 0.32]
-		},
-		"gui": {
-			"rotation": [32, 135, 0],
-			"scale": [0.6, 0.6, 0.6]
-		}
-	},
 	"groups": [
 		{
 			"name": "VoxelShapes",

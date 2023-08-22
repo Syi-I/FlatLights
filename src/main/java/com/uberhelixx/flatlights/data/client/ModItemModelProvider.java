@@ -20,18 +20,16 @@ public class ModItemModelProvider extends ItemModelProvider {
         super(generator, FlatLights.MOD_ID, existingFileHelper);
     }
 
-    final String[] blockColors = {"black", "blue", "brown", "cyan", "gray", "green", "light_blue", "light_gray",
-            "lime", "magenta", "orange", "pink", "purple", "red", "white", "yellow", "glass"};
-    final String[] blockSuffixes = {"flatblock", "hexblock", "tiles"};
-
     @Override
     protected void registerModels() {
         ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
-        FlatLights.LOGGER.info("Generating generic item models...");
+        FlatLights.LOGGER.info("[ModItemModelProvider] Generating generic item models...");
         generateRegularItems(itemGenerated);
-        generateRegularBlockItems();
+        generateBlockItems();
         generatePanelItems();
-        FlatLights.LOGGER.info("Finished generating generic item models.");
+        generateFlatblockItems();
+        generatePillarItems();
+        FlatLights.LOGGER.info("[ModItemModelProvider] Finished generating generic item models.");
     }
 
     private ItemModelBuilder builder(ModelFile itemGenerated, String name) {
@@ -48,30 +46,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         }
     }
 
-    //generate item models for blocks with normal models and all same sided textures
-    private void generateRegularBlockItems() {
-        for(RegistryObject<Item> entry : ModItems.BLOCK_ITEMS.getEntries()) {
-            String itemName = entry.getId().toString();
-            String trimmedName = itemName.replace("flatlights:", "");
-            boolean suffixPresent = false;
-            for(String suffix : blockSuffixes) {
-                if(trimmedName.contains(suffix)) {
-                    if(trimmedName.contains("glass")) {
-                        withExistingParent("" + trimmedName, modLoc("block/" + "glass" + "/" + trimmedName));
-                    }
-                    else if(trimmedName.contains("large")) {
-                        withExistingParent("" + trimmedName, modLoc("block/" + "large_" + suffix + "/" + trimmedName));
-                    }
-                    else {
-                        withExistingParent("" + trimmedName, modLoc("block/" + suffix + "/" + trimmedName));
-                    }
-                    suffixPresent = true;
-                }
-            }
-            if(!suffixPresent) {
-                withExistingParent("" + trimmedName, modLoc("block/" + trimmedName));
-            }
-            FlatLights.LOGGER.info("Generated " + trimmedName);
+    private void generateBlockItems() {
+        for(RegistryObject<Item> block : ModItems.BLOCK_ITEMS.getEntries()) {
+            String filePath = block.get().getRegistryName().getPath();
+            getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + filePath)));
+            FlatLights.LOGGER.info("[ModItemModelProvider] Generated " + filePath);
         }
     }
 
@@ -79,10 +58,34 @@ public class ModItemModelProvider extends ItemModelProvider {
     private void generatePanelItems() {
         for(RegistryObject<Item> panelItem : ModItems.PANEL_ITEMS.getEntries()) {
             String filePath = panelItem.get().getRegistryName().getPath();
-            MiscHelpers.debugLogger("[Data Generators] Item Model Provider PANEL path: " + filePath);
+            FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider PANEL path: " + filePath);
             getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/panel/" + filePath)))
                     .transforms().transform(ModelBuilder.Perspective.HEAD)
                     .scale(1f, 1f, 1f)
+                    .translation(0, 14, 0).end();
+        }
+    }
+
+    private void generateFlatblockItems() {
+        float scale = 0.2f;
+        for(RegistryObject<Item> flatItem : ModItems.FLATBLOCK_ITEMS.getEntries()) {
+            String filePath = flatItem.get().getRegistryName().getPath();
+            FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider FLATBLOCK path: " + filePath);
+            getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/flatblock/" + filePath)))
+                    .transforms().transform(ModelBuilder.Perspective.HEAD)
+                    .scale(scale, scale, scale)
+                    .translation(0, 14, 0).end();
+        }
+    }
+
+    private void generatePillarItems() {
+        float scale = 0.2f;
+        for(RegistryObject<Item> pillarItem : ModItems.PILLAR_ITEMS.getEntries()) {
+            String filePath = pillarItem.get().getRegistryName().getPath();
+            FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider PILLAR path: " + filePath);
+            getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/pillar/" + filePath)))
+                    .transforms().transform(ModelBuilder.Perspective.HEAD)
+                    .scale(scale, scale, scale)
                     .translation(0, 14, 0).end();
         }
     }

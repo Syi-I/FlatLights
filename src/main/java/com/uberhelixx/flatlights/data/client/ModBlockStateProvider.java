@@ -2,7 +2,6 @@ package com.uberhelixx.flatlights.data.client;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.block.ModBlocks;
-import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
@@ -17,8 +16,6 @@ import net.minecraftforge.fml.RegistryObject;
 
 import java.util.function.Function;
 
-import static com.uberhelixx.flatlights.util.MiscHelpers.debugLogger;
-
 public class ModBlockStateProvider extends BlockStateProvider {
     final String[] blockColors = {"black", "blue", "brown", "cyan", "gray", "green", "light_blue", "light_gray",
             "lime", "magenta", "orange", "pink", "purple", "red", "white", "yellow", "glass"};
@@ -29,18 +26,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        FlatLights.LOGGER.info("Generating generic blockstates...");
-
-        /*for(RegistryObject<Block> blockEntry : ModBlocks.BLOCKS.getEntries()) {
-            String itemName = blockEntry.getId().toString();
-            String trimmedName = itemName.replace("flatlights:", "");
-            FlatLights.LOGGER.info("Generated " + trimmedName);
-            simpleBlock(blockEntry.get());
-        }*/
-        //simpleBlock(ModBlocks.BLACK_FLATBLOCK.get());
+        FlatLights.LOGGER.info("[ModBlockStateProvider] Generating generic blockstates...");
         regularBlocks();
         generatePanels();
-        FlatLights.LOGGER.info("Finished generating generic blockstates.");
+        generateFlatblocks();
+        generatePillars();
+        FlatLights.LOGGER.info("[ModBlockStateProvider] Finished generating generic blockstates.");
 
     }
 
@@ -48,28 +39,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private void generatePanels() {
         for(RegistryObject<Block> block : ModBlocks.PANELS.getEntries()) {
             String filePath = block.get().getRegistryName().getPath();
-            panelStates(block.get(), $ -> models().getExistingFile(modLoc("block/panel/" + filePath)));
-
+            rotationStates(block.get(), $ -> models().getExistingFile(modLoc("block/panel/" + filePath)));
         }
-        /*panelStates(ModBlocks.BLUE_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.BROWN_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.CYAN_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.GRAY_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.GREEN_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.LIGHT_BLUE_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.LIGHT_GRAY_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.LIME_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.MAGENTA_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.ORANGE_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.PINK_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.PURPLE_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.RED_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.WHITE_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));
-        panelStates(ModBlocks.YELLOW_PANEL.get(), $ -> models().getExistingFile(modLoc("block/panel/black_panel")));*/
     }
 
-    //for panel blockstates
-    public void panelStates(Block block, Function<BlockState, ModelFile> modelFunc) {
+    //for rotating blockstates
+    public void rotationStates(Block block, Function<BlockState, ModelFile> modelFunc) {
         getVariantBuilder(block)
                 .forAllStatesExcept(state -> {
                     Direction facing = state.get(BlockStateProperties.FACING);
@@ -79,6 +54,20 @@ public class ModBlockStateProvider extends BlockStateProvider {
                             .rotationY(facing.getAxis().isVertical() ? 0 : (((int)facing.getHorizontalAngle() % 360) + 180))
                             .build();
                 }, BlockStateProperties.WATERLOGGED);
+    }
+
+    private void generatePillars() {
+        for(RegistryObject<Block> block : ModBlocks.PILLARS.getEntries()) {
+            String filePath = block.get().getRegistryName().getPath();
+            rotationStates(block.get(), $ -> models().getExistingFile(modLoc("block/pillar/" + filePath)));
+        }
+    }
+
+    private void generateFlatblocks() {
+        for(RegistryObject<Block> block : ModBlocks.FLATBLOCKS.getEntries()) {
+            String filePath = block.get().getRegistryName().getPath();
+            simpleBlock(block.get(), models().getExistingFile(modLoc("block/flatblock/" + filePath)));
+        }
     }
 
     private void regularBlocks() {
@@ -102,7 +91,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     suffixPresent = true;
                 }
             }
-            if(!suffixPresent) {
+            if(!suffixPresent && filePath != "prismatic_block") {
                 texturePath = ("block/" + filePath);
             }
             FlatLights.LOGGER.info("[ModBlockStateProvider] blockTexture path: " + texturePath);
