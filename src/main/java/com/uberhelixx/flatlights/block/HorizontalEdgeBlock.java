@@ -70,16 +70,16 @@ public class HorizontalEdgeBlock extends Block implements IWaterLoggable {
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         World worldIn = context.getWorld();
-        BlockPos pos = context.getPos().offset(context.getNearestLookingDirection().getOpposite());
+        BlockPos pos = context.getPos();
         Direction direction = context.getFace();
         boolean waterlogged = worldIn.getFluidState(context.getPos()).getFluid() == Fluids.WATER;
         if (context.getPlayer() != null && worldIn.getBlockState(pos).getBlock() instanceof HorizontalEdgeBlock && !context.getPlayer().isCrouching())
             return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
-                    .with(BlockStateProperties.HORIZONTAL_FACING, worldIn.getBlockState(pos).get(BlockStateProperties.HORIZONTAL_FACING))
+                    .with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing())
                     .with(BlockStateProperties.HALF, direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double)pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP);
         else
-            return getDefaultState().with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite())
-                    .with(BlockStateProperties.HALF, Half.BOTTOM).with(BlockStateProperties.WATERLOGGED, waterlogged)
+            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
+                    .with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite())
                     .with(BlockStateProperties.HALF, direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double)pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP);
     }
 

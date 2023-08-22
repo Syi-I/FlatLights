@@ -30,11 +30,13 @@ public class SlabLightBlock extends RotatingBlock {
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         World worldIn = context.getWorld();
-        BlockPos pos = context.getPos().offset(context.getNearestLookingDirection().getOpposite());
+        BlockPos pos = context.getPos().offset(context.getFace().getOpposite());
         boolean waterlogged = worldIn.getFluidState(context.getPos()).getFluid() == Fluids.WATER;
         if (context.getPlayer() != null && worldIn.getBlockState(pos).getBlock() instanceof SlabLightBlock && !context.getPlayer().isCrouching())
-            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged).with(BlockStateProperties.FACING, worldIn.getBlockState(pos).get(BlockStateProperties.FACING));
+            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
+                    .with(BlockStateProperties.FACING, worldIn.getBlockState(pos).get(BlockStateProperties.FACING));
         else
-            return getDefaultState().with(BlockStateProperties.FACING, context.getNearestLookingDirection().getOpposite()).with(BlockStateProperties.WATERLOGGED, waterlogged);
+            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
+                    .with(BlockStateProperties.FACING, context.getFace());
     }
 }
