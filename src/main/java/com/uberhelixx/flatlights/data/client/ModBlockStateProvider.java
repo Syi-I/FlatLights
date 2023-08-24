@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.data.client;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.block.HorizontalEdgeBlock;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -32,7 +33,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         generatePanels();
         generateFlatblocks();
         generatePillars();
-        generateEdges();
+        //generateEdges();
+        generateEdgeMultiparts();
         FlatLights.LOGGER.info("[ModBlockStateProvider] Finished generating generic blockstates.");
 
     }
@@ -46,7 +48,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     //for rotating blockstates
-    public void rotationStates(Block block, Function<BlockState, ModelFile> modelFunc) {
+    private void rotationStates(Block block, Function<BlockState, ModelFile> modelFunc) {
         getVariantBuilder(block)
                 .forAllStatesExcept(state -> {
                     Direction facing = state.get(BlockStateProperties.FACING);
@@ -59,7 +61,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     //for horizontal rotating blocks with up and down half (similar to stair positioning)
-    public void rotationHalfStates(Block block, Function<BlockState, ModelFile> modelFunc) {
+    private void rotationHalfStates(Block block, Function<BlockState, ModelFile> modelFunc) {
         getVariantBuilder(block)
                 .forAllStatesExcept(state -> {
                     Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
@@ -70,6 +72,101 @@ public class ModBlockStateProvider extends BlockStateProvider {
                             .rotationY(half == Half.TOP ? (((int)facing.getHorizontalAngle() % 360) + 180) : (((int)facing.getHorizontalAngle() % 360)))
                             .build();
                 }, BlockStateProperties.WATERLOGGED);
+    }
+
+    private void multipartEdges(Block block) {
+        String filePath = block.getRegistryName().getPath();
+        ModelFile edgeModel = models().getExistingFile(modLoc("block/horizontal_edge/" + filePath));
+        //horizontal facing index (order is S-W-N-E, 0-3)
+        getMultipartBuilder(block)
+                .part()
+                    .modelFile(edgeModel).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 2)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.NORTH_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModel).rotationY(180).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 0)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.SOUTH_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModel).rotationY(270).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 1)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.WEST_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModel).rotationY(90).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 3)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, false)
+                        .condition(HorizontalEdgeBlock.EAST_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModel).rotationX(180).rotationY(180).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 2)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.NORTH_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModel).rotationX(180).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 0)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.SOUTH_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModel).rotationX(180).rotationY(90).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 1)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.WEST_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModel).rotationX(180).rotationY(270).addModel().useOr()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.FACING_INDEX, 3)
+                    .end()
+                    .nestedGroup()
+                        .condition(HorizontalEdgeBlock.PLACED_TOP, true)
+                        .condition(HorizontalEdgeBlock.EAST_ADJ, true)
+                    .end()
+                    .end();
     }
 
     private void generatePillars() {
@@ -83,6 +180,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for(RegistryObject<Block> block : ModBlocks.HORIZONTAL_EDGES.getEntries()) {
             String filePath = block.get().getRegistryName().getPath();
             rotationHalfStates(block.get(), $ -> models().getExistingFile(modLoc("block/horizontal_edge/" + filePath)));
+        }
+    }
+
+    private void generateEdgeMultiparts() {
+        for(RegistryObject<Block> block : ModBlocks.HORIZONTAL_EDGES.getEntries()) {
+            String filePath = block.get().getRegistryName().getPath();
+            multipartEdges(block.get());
         }
     }
 

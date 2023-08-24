@@ -73,7 +73,7 @@ public class ModBlocks {
         ModItems.PILLAR_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
 
-        public static final DeferredRegister<Block> HORIZONTAL_EDGES
+    public static final DeferredRegister<Block> HORIZONTAL_EDGES
             = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
     private static <T extends Block>RegistryObject<T> registerEdgeH(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = HORIZONTAL_EDGES.register(name, block);

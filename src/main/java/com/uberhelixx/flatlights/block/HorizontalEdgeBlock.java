@@ -9,6 +9,8 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
@@ -16,6 +18,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,15 +45,15 @@ public class HorizontalEdgeBlock extends Block implements IWaterLoggable {
 
         //make shape based off of direction from RotatingBlock
         this.thickness = thickness;
-        EAST = Block.makeCuboidShape(0, 0, 0, thickness, thickness, 16);
-        WEST = Block.makeCuboidShape(16 - thickness, 0, 0,16, thickness, 16);
-        NORTH = Block.makeCuboidShape(0, 0,16 - thickness, 16, thickness, 16);
-        SOUTH = Block.makeCuboidShape(0, 0, 0, 16, thickness, thickness);
+        WEST = Block.makeCuboidShape(0, 0, 0, thickness, thickness, 16);
+        EAST = Block.makeCuboidShape(16 - thickness, 0, 0,16, thickness, 16);
+        SOUTH = Block.makeCuboidShape(0, 0,16 - thickness, 16, thickness, 16);
+        NORTH = Block.makeCuboidShape(0, 0, 0, 16, thickness, thickness);
 
-        NORTH_TOP = Block.makeCuboidShape(0, 16 - thickness,16 - thickness, 16, 16, 16);
-        SOUTH_TOP = Block.makeCuboidShape(0, 16 - thickness, 0, 16, 16, thickness);
-        WEST_TOP = Block.makeCuboidShape(16 - thickness, 16 - thickness, 0,16, 16, 16);
-        EAST_TOP = Block.makeCuboidShape(0, 16 - thickness, 0, thickness, 16, 16);
+        SOUTH_TOP = Block.makeCuboidShape(0, 16 - thickness,16 - thickness, 16, 16, 16);
+        NORTH_TOP = Block.makeCuboidShape(0, 16 - thickness, 0, 16, 16, thickness);
+        EAST_TOP = Block.makeCuboidShape(16 - thickness, 16 - thickness, 0,16, 16, 16);
+        WEST_TOP = Block.makeCuboidShape(0, 16 - thickness, 0, thickness, 16, 16);
     }
 
     public VoxelShape NORTH;
@@ -61,9 +64,21 @@ public class HorizontalEdgeBlock extends Block implements IWaterLoggable {
     public VoxelShape SOUTH_TOP;
     public VoxelShape WEST_TOP;
     public VoxelShape EAST_TOP;
+    public static final BooleanProperty NORTH_ADJ = BooleanProperty.create("north_adj");
+    public static final BooleanProperty SOUTH_ADJ = BooleanProperty.create("south_adj");
+    public static final BooleanProperty EAST_ADJ = BooleanProperty.create("east_adj");
+    public static final BooleanProperty WEST_ADJ = BooleanProperty.create("west_adj");
+    public static final BooleanProperty PLACED_TOP = BooleanProperty.create("placed_top");
+    public static final IntegerProperty FACING_INDEX = IntegerProperty.create("facing_index", 0, 3);
 
+    @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.WATERLOGGED, BlockStateProperties.HALF);
+        builder.add(BlockStateProperties.WATERLOGGED, FACING_INDEX, PLACED_TOP, NORTH_ADJ, SOUTH_ADJ, EAST_ADJ, WEST_ADJ);
+    }
+
+    private boolean checkSides(BlockItemUseContext context, Direction direction) {
+        BlockPos pos = context.getPos().offset(direction);
+        return hasEnoughSolidSide(context.getWorld(), pos, direction.getOpposite());
     }
 
     @Nullable
@@ -73,14 +88,13 @@ public class HorizontalEdgeBlock extends Block implements IWaterLoggable {
         BlockPos pos = context.getPos();
         Direction direction = context.getFace();
         boolean waterlogged = worldIn.getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-        if (context.getPlayer() != null && worldIn.getBlockState(pos).getBlock() instanceof HorizontalEdgeBlock && !context.getPlayer().isCrouching())
-            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
-                    .with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing())
-                    .with(BlockStateProperties.HALF, direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double)pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP);
-        else
-            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
-                    .with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite())
-                    .with(BlockStateProperties.HALF, direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double)pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP);
+        return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
+            .with(FACING_INDEX, context.getPlacementHorizontalFacing().getHorizontalIndex())
+            .with(NORTH_ADJ, checkSides(context, Direction.NORTH))
+            .with(SOUTH_ADJ, checkSides(context, Direction.SOUTH))
+            .with(EAST_ADJ, checkSides(context, Direction.EAST))
+            .with(WEST_ADJ, checkSides(context, Direction.WEST))
+            .with(PLACED_TOP, direction == Direction.DOWN || (direction != Direction.UP && context.getHitVec().y - (double) pos.getY() > 0.5D));
     }
 
     @SuppressWarnings("deprecation")
@@ -88,32 +102,104 @@ public class HorizontalEdgeBlock extends Block implements IWaterLoggable {
     @Override
     public VoxelShape getShape(BlockState blockState, @Nonnull IBlockReader worldIn, @Nonnull BlockPos blockPos, @Nonnull ISelectionContext ctx) {
         VoxelShape directionShape;
-        Direction facing = blockState.get(BlockStateProperties.HORIZONTAL_FACING);
+        int facing = blockState.get(FACING_INDEX);
         //get Index of this horizontal facing (order is S-W-N-E, 0-3)
-        switch (facing.getHorizontalIndex()) {
+        switch (facing) {
             case 0:
                 directionShape = SOUTH;
-                if(blockState.get(BlockStateProperties.HALF) == Half.TOP) {
+                if(blockState.get(NORTH_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, NORTH);
+                }
+                if(blockState.get(EAST_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, EAST);
+                }
+                if(blockState.get(WEST_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, WEST);
+                }
+                if(blockState.get(PLACED_TOP)) {
                     directionShape = SOUTH_TOP;
+                    if(blockState.get(NORTH_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, NORTH_TOP);
+                    }
+                    if(blockState.get(EAST_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, EAST_TOP);
+                    }
+                    if(blockState.get(WEST_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, WEST_TOP);
+                    }
                 }
                 break;
             default:
             case 1:
                 directionShape = WEST;
-                if(blockState.get(BlockStateProperties.HALF) == Half.TOP) {
+                if(blockState.get(NORTH_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, NORTH);
+                }
+                if(blockState.get(SOUTH_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, SOUTH);
+                }
+                if(blockState.get(EAST_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, EAST);
+                }
+                if(blockState.get(PLACED_TOP)) {
                     directionShape = WEST_TOP;
+                    if(blockState.get(NORTH_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, NORTH_TOP);
+                    }
+                    if(blockState.get(SOUTH_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, SOUTH_TOP);
+                    }
+                    if(blockState.get(EAST_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, EAST_TOP);
+                    }
                 }
                 break;
             case 2:
                 directionShape = NORTH;
-                if(blockState.get(BlockStateProperties.HALF) == Half.TOP) {
+                if(blockState.get(SOUTH_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, SOUTH);
+                }
+                if(blockState.get(EAST_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, EAST);
+                }
+                if(blockState.get(WEST_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, WEST);
+                }
+                if(blockState.get(PLACED_TOP)) {
                     directionShape = NORTH_TOP;
+                    if(blockState.get(SOUTH_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, SOUTH_TOP);
+                    }
+                    if(blockState.get(EAST_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, EAST_TOP);
+                    }
+                    if(blockState.get(WEST_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, WEST_TOP);
+                    }
                 }
                 break;
             case 3:
                 directionShape = EAST;
-                if(blockState.get(BlockStateProperties.HALF) == Half.TOP) {
+                if(blockState.get(NORTH_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, NORTH);
+                }
+                if(blockState.get(SOUTH_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, SOUTH);
+                }
+                if(blockState.get(WEST_ADJ)) {
+                    directionShape = VoxelShapes.or(directionShape, WEST);
+                }
+                if(blockState.get(PLACED_TOP)) {
                     directionShape = EAST_TOP;
+                    if(blockState.get(NORTH_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, NORTH_TOP);
+                    }
+                    if(blockState.get(SOUTH_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, SOUTH_TOP);
+                    }
+                    if(blockState.get(WEST_ADJ)) {
+                        directionShape = VoxelShapes.or(directionShape, WEST_TOP);
+                    }
                 }
                 break;
         }
