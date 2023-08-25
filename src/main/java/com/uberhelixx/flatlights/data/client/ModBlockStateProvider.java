@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.data.client;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.block.HorizontalEdgeBlock;
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.block.VerticalEdgeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
@@ -33,7 +34,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
         generatePanels();
         generateFlatblocks();
         generatePillars();
-        //generateEdges();
         generateEdgeMultiparts();
         FlatLights.LOGGER.info("[ModBlockStateProvider] Finished generating generic blockstates.");
 
@@ -74,7 +74,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 }, BlockStateProperties.WATERLOGGED);
     }
 
-    private void multipartEdges(Block block) {
+    private void multipartEdgesH(Block block) {
         String filePath = block.getRegistryName().getPath();
         ModelFile edgeModel = models().getExistingFile(modLoc("block/horizontal_edge/" + filePath));
         //horizontal facing index (order is S-W-N-E, 0-3)
@@ -169,6 +169,247 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     .end();
     }
 
+    private void multipartEdgesV(Block block) {
+        String filePath = block.getRegistryName().getPath();
+        //uses same model as the horizontal edges, but we rotate this 90 degrees for the vertical parts
+        ModelFile edgeModelH = models().getExistingFile(modLoc("block/horizontal_edge/" + filePath.replace("vertical", "horizontal")));
+        ModelFile edgeModelV = models().getExistingFile(modLoc("block/vertical_edge/" + filePath));
+        //horizontal facing index (order is S-W-N-E, 0-3)
+        getMultipartBuilder(block)
+                .part()
+                    .modelFile(edgeModelH).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModelH).rotationY(180).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModelH).rotationY(270).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModelH).rotationY(90).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModelH).rotationX(180).rotationY(180).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                        .condition(VerticalEdgeBlock.UP_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModelH).rotationX(180).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                        .condition(VerticalEdgeBlock.UP_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModelH).rotationX(180).rotationY(90).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                        .condition(VerticalEdgeBlock.UP_ADJ, true)
+                    .end()
+                    .end()
+                .part()
+                    .modelFile(edgeModelH).rotationX(180).rotationY(270).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                        .condition(VerticalEdgeBlock.UP_ADJ, true)
+                    .end()
+                    .end()
+                .part() //Q1
+                    .modelFile(edgeModelV).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                        .condition(VerticalEdgeBlock.UP_ADJ, false)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, false)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, true)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .end()
+                .part() //Q2
+                    .modelFile(edgeModelV).rotationY(90).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                        .condition(VerticalEdgeBlock.UP_ADJ, false)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, false)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, true)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 2)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .end()
+                .part() //Q3
+                    .modelFile(edgeModelV).rotationY(180).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                        .condition(VerticalEdgeBlock.UP_ADJ, false)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, false)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, true)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 3)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .end()
+                .part() //Q4
+                    .modelFile(edgeModelV).rotationY(270).addModel().useOr()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                        .condition(VerticalEdgeBlock.UP_ADJ, false)
+                        .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, false)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, true)
+                .end()
+                .nestedGroup()
+                .condition(VerticalEdgeBlock.FACING_INDEX, 1)
+                .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                .condition(VerticalEdgeBlock.RIGHT_ADJ, false)
+                .condition(VerticalEdgeBlock.UP_ADJ, true)
+                .condition(VerticalEdgeBlock.DOWN_ADJ, false)
+                .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, false)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .nestedGroup()
+                        .condition(VerticalEdgeBlock.FACING_INDEX, 0)
+                        .condition(VerticalEdgeBlock.LEFT_ADJ, true)
+                        .condition(VerticalEdgeBlock.RIGHT_ADJ, true)
+                    .end()
+                    .end();
+    }
+
     private void generatePillars() {
         for(RegistryObject<Block> block : ModBlocks.PILLARS.getEntries()) {
             String filePath = block.get().getRegistryName().getPath();
@@ -176,17 +417,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
         }
     }
 
-    private void generateEdges() {
-        for(RegistryObject<Block> block : ModBlocks.HORIZONTAL_EDGES.getEntries()) {
-            String filePath = block.get().getRegistryName().getPath();
-            rotationHalfStates(block.get(), $ -> models().getExistingFile(modLoc("block/horizontal_edge/" + filePath)));
-        }
-    }
-
     private void generateEdgeMultiparts() {
         for(RegistryObject<Block> block : ModBlocks.HORIZONTAL_EDGES.getEntries()) {
-            String filePath = block.get().getRegistryName().getPath();
-            multipartEdges(block.get());
+            multipartEdgesH(block.get());
+        }
+        for(RegistryObject<Block> block : ModBlocks.VERTICAL_EDGES.getEntries()) {
+            multipartEdgesV(block.get());
         }
     }
 

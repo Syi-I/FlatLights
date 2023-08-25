@@ -2,8 +2,6 @@ package com.uberhelixx.flatlights.data.client;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -29,7 +27,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         generatePanelItems();
         generateFlatblockItems();
         generatePillarItems();
-        generateEdgeItems();
+        generateEdgeHItems();
+        generateEdgeVItems();
         FlatLights.LOGGER.info("[ModItemModelProvider] Finished generating generic item models.");
     }
 
@@ -91,12 +90,24 @@ public class ModItemModelProvider extends ItemModelProvider {
         }
     }
 
-    private void generateEdgeItems() {
+    private void generateEdgeHItems() {
         float scale = 0.2f;
-        for(RegistryObject<Item> edgeHItem : ModItems.EDGE_ITEMS.getEntries()) {
+        for(RegistryObject<Item> edgeHItem : ModItems.EDGEH_ITEMS.getEntries()) {
             String filePath = edgeHItem.get().getRegistryName().getPath();
-            FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider EDGE path: " + filePath);
+            FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider HORIZONTAL_EDGE path: " + filePath);
             getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/horizontal_edge/" + filePath)))
+                    .transforms().transform(ModelBuilder.Perspective.HEAD)
+                    .scale(scale, scale, scale)
+                    .translation(0, 14, 0).end();
+        }
+    }
+
+    private void generateEdgeVItems() {
+        float scale = 0.2f;
+        for(RegistryObject<Item> edgeVItem : ModItems.EDGEV_ITEMS.getEntries()) {
+            String filePath = edgeVItem.get().getRegistryName().getPath();
+            FlatLights.LOGGER.info("[ModItemModelProvider] Item Model Provider VERTICAL_EDGE path: " + filePath);
+            getBuilder(filePath).parent(new ModelFile.UncheckedModelFile(modLoc("block/vertical_edge/" + filePath)))
                     .transforms().transform(ModelBuilder.Perspective.HEAD)
                     .scale(scale, scale, scale)
                     .translation(0, 14, 0).end();

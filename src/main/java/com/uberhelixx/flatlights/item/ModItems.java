@@ -29,7 +29,9 @@ public class ModItems {
             = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
     public static final DeferredRegister<Item> PILLAR_ITEMS
             = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
-    public static final DeferredRegister<Item> EDGE_ITEMS
+    public static final DeferredRegister<Item> EDGEH_ITEMS
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+    public static final DeferredRegister<Item> EDGEV_ITEMS
             = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
 
     public static void register(IEventBus eventBus) {
@@ -40,7 +42,8 @@ public class ModItems {
         PANEL_ITEMS.register(eventBus);
         FLATBLOCK_ITEMS.register(eventBus);
         PILLAR_ITEMS.register(eventBus);
-        EDGE_ITEMS.register(eventBus);
+        EDGEH_ITEMS.register(eventBus);
+        EDGEV_ITEMS.register(eventBus);
     }
 
     //adding any additional items, just copy this and change the names e.g. 'POWERED_RAT' and 'powered_rat' to something else
