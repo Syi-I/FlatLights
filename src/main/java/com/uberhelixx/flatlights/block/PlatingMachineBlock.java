@@ -40,7 +40,7 @@ public class PlatingMachineBlock extends HorizontalBlock {
 
     //constants for block hardness (time it takes to mine the block) and resistance (what level explosions and such can destroy the block)
     //lower hardness = lower mining time required
-    static final float BLOCK_HARDNESS = 0.4f;
+    static final float BLOCK_HARDNESS = 1f;
     //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
     static final float BLOCK_RESISTANCE = 100000000f;
 
