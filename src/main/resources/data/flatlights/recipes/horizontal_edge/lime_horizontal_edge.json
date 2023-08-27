@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "## ",
+    "   "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:lime_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:lime_horizontal_edge",
+    "count": 64
+  }
+}
