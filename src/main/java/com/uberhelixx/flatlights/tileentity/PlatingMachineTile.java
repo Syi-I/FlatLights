@@ -52,7 +52,7 @@ public class PlatingMachineTile extends TileEntity implements ITickableTileEntit
 
             @Override
             public int getSlotLimit(int slot) {
-                return 1;
+                return 64;
             }
 
             @Nonnull

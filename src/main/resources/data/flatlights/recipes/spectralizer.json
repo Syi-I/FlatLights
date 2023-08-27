@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#P#",
+    "XRX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:white_concrete"
+    },
+    "#": {
+      "tag": "forge:glass"
+    },
+    "P": {
+      "item": "flatlights:prismatic_ingot"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "flatlights:spectralizer",
+    "count": 1
+  }
+}

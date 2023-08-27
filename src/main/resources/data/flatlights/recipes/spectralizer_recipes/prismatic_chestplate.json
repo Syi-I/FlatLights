@@ -2,7 +2,7 @@
   "type": "flatlights:spectralizer",
   "ingredients": [
     {
-      "item": "flatlights:pants_core"
+      "item": "flatlights:chest_core"
     },
     {
       "item": "flatlights:prisma_nucleus"
@@ -17,10 +17,10 @@
       "item": "minecraft:nether_star"
     },
     {
-      "item": "minecraft:netherite_ingot"
+      "tag": "forge:ingots/netherite"
     }
   ],
   "output": {
-    "item": "flatlights:prismatic_leggings"
+    "item": "flatlights:prismatic_chestplate"
   }
 }

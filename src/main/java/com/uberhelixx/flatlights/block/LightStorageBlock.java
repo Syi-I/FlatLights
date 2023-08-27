@@ -50,21 +50,7 @@ public class LightStorageBlock extends Block {
                 .sound(SoundType.STONE));
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String indev = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is not fully functional.");
-        ITextComponent indevTooltip = ITextComponent.getTextComponentOrEmpty(indev);
-        tooltip.add(indevTooltip);
-        if(!FlatLightsCommonConfig.indevBlocks.get()) {
-            String noPlace = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is disabled and cannot be placed.");
-            ITextComponent noPlaceTooltip = ITextComponent.getTextComponentOrEmpty(noPlace);
-            tooltip.add(noPlaceTooltip);
-        }
-
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-    }
-
+    @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if(!worldIn.isRemote()) {
@@ -109,6 +95,7 @@ public class LightStorageBlock extends Block {
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {

@@ -53,7 +53,7 @@ public class SpectralizerTile extends TileEntity implements ITickableTileEntity 
 
             @Override
             public int getSlotLimit(int slot) {
-                return 1;
+                return 64;
             }
 
             @Nonnull
