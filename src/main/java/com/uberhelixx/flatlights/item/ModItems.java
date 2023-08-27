@@ -48,12 +48,18 @@ public class ModItems {
 
     //adding any additional items, just copy this and change the names e.g. 'POWERED_RAT' and 'powered_rat' to something else
     //item properties can all be added in that Item constructor e.g. 'ItemGroup' determines where in the Creative Menu the item can be found
-    public static final RegistryObject<Item> GUN_RAT = ITEMS.register("gun_rat",
-            () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-    public static final RegistryObject<Item> PRISMATIC_BLADE = SPECIAL_ITEMS.register("prismatic_blade",
-            () -> new PrismaticBlade(ModItemTier.PRISMATIC, 0, -2f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
     public static final RegistryObject<Item> PRISMATIC_INGOT = ITEMS.register("prismatic_ingot",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
+    public static final RegistryObject<Item> HELMET_CORE = ITEMS.register("helmet_core",
+            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    public static final RegistryObject<Item> CHEST_CORE = ITEMS.register("chest_core",
+            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    public static final RegistryObject<Item> PANTS_CORE = ITEMS.register("pants_core",
+            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    public static final RegistryObject<Item> BOOTS_CORE = ITEMS.register("boots_core",
+            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
     public static final RegistryObject<Item> PRISMATIC_BOOTS = ITEMS.register("prismatic_boots",
             () -> new PrismaticBoots(ModArmorMaterial.PRISMATIC, EquipmentSlotType.FEET, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
@@ -64,27 +70,18 @@ public class ModItems {
     public static final RegistryObject<Item> PRISMATIC_HELMET = ITEMS.register("prismatic_helmet",
             () -> new PrismaticHelm(ModArmorMaterial.PRISMATIC, EquipmentSlotType.HEAD, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
+    public static final RegistryObject<Item> PRISMATIC_SWORD = SPECIAL_ITEMS.register("prismatic_sword",
+            () -> new PrismaticSword(ModItemTier.PRISMATIC, -4, -2.4f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    public static final RegistryObject<Item> PRISMATIC_BLADE = SPECIAL_ITEMS.register("prismatic_blade",
+            () -> new PrismaticBlade(ModItemTier.PRISMATIC, 0, -2f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
     public static final RegistryObject<Item> PRISMA_NUCLEUS = ITEMS.register("prisma_nucleus",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-
     public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
+    public static final RegistryObject<Item> GUN_RAT = ITEMS.register("gun_rat",
+            () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> PRISMATIC_BLADEMK2 = SPECIAL_ITEMS.register("prismatic_blademk2",
             () -> new PrismaticBladeMk2(ModItemTier.PRISMATIC, -5, 1f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-
-    public static final RegistryObject<Item> HELMET_CORE = ITEMS.register("helmet_core",
-            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-
-    public static final RegistryObject<Item> CHEST_CORE = ITEMS.register("chest_core",
-            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-
-    public static final RegistryObject<Item> PANTS_CORE = ITEMS.register("pants_core",
-            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-
-    public static final RegistryObject<Item> BOOTS_CORE = ITEMS.register("boots_core",
-            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-
-    public static final RegistryObject<Item> PRISMATIC_SWORD = SPECIAL_ITEMS.register("prismatic_sword",
-            () -> new PrismaticSword(ModItemTier.PRISMATIC, -4, -2.4f, new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 }

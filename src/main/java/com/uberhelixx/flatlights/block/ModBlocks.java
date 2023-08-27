@@ -276,12 +276,12 @@ public class ModBlocks {
 
     // EXTRA ##############################################################################################################################
     public static final RegistryObject<Block> LIME_BRICK = registerBlock("lime_brick", PlateBlock::new);
-    public static final RegistryObject<Block> PLATING_MACHINE = registerSpecialBlock("plating_machine", PlatingMachineBlock::new);
-    public static final RegistryObject<Block> MOB_B_GONE = registerSpecialBlock("mob_b_gone", Mob_B_Gone::new);
     public static final RegistryObject<Block> PRISMATIC_BLOCK = registerFlatblock("prismatic_block", FlatBlock::new);
-    public static final RegistryObject<Block> SPECTRUM_ANVIL = registerSpecialBlock("spectrum_anvil", SpectrumAnvilBlock::new);
-    public static final RegistryObject<Block> LIGHT_STORAGE = registerSpecialBlock("light_storage", LightStorageBlock::new);
+    public static final RegistryObject<Block> PLATING_MACHINE = registerSpecialBlock("plating_machine", PlatingMachineBlock::new);
     public static final RegistryObject<Block> SPECTRALIZER = registerSpecialBlock("spectralizer", SpectralizerBlock::new);
+    public static final RegistryObject<Block> LIGHT_STORAGE = registerSpecialBlock("light_storage", LightStorageBlock::new);
+    public static final RegistryObject<Block> MOB_B_GONE = registerSpecialBlock("mob_b_gone", Mob_B_Gone::new);
+    public static final RegistryObject<Block> SPECTRUM_ANVIL = registerSpecialBlock("spectrum_anvil", SpectrumAnvilBlock::new);
     public static final RegistryObject<Block> MOTIVATIONAL_CHAIR = registerSpecialBlock("motivational_chair", MotivationalChairBlock::new);
 
 }

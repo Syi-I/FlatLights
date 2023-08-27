@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights;
 
+import com.google.common.collect.Ordering;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
@@ -8,6 +9,7 @@ import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.*;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
+import com.uberhelixx.flatlights.item.ModItemGroup;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.armor.ModArmorItem;
 import com.uberhelixx.flatlights.item.armor.PrismaticBoots;
@@ -34,6 +36,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -42,6 +46,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -53,6 +58,10 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -119,6 +128,7 @@ public class FlatLights
         EVENT_BUS.addListener(QuantumStrikeEnchantment::removeFromEntangledTeam);
     }
 
+    public static Comparator<ItemStack> tabSort;
     private void setup(final FMLCommonSetupEvent event)
     {
         // some preinit code
@@ -126,6 +136,198 @@ public class FlatLights
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         //have to initialize packet handler here oop
         PacketHandler.init();
+
+        //list of all items for sorting creative inventory tab
+        List<Item> itemOrder = Arrays.asList(
+                ModBlocks.BLACK_FLATBLOCK.get().asItem(),
+                ModBlocks.BLUE_FLATBLOCK.get().asItem(),
+                ModBlocks.BROWN_FLATBLOCK.get().asItem(),
+                ModBlocks.CYAN_FLATBLOCK.get().asItem(),
+                ModBlocks.GRAY_FLATBLOCK.get().asItem(),
+                ModBlocks.GREEN_FLATBLOCK.get().asItem(),
+                ModBlocks.LIGHT_BLUE_FLATBLOCK.get().asItem(),
+                ModBlocks.LIGHT_GRAY_FLATBLOCK.get().asItem(),
+                ModBlocks.LIME_FLATBLOCK.get().asItem(),
+                ModBlocks.MAGENTA_FLATBLOCK.get().asItem(),
+                ModBlocks.ORANGE_FLATBLOCK.get().asItem(),
+                ModBlocks.PINK_FLATBLOCK.get().asItem(),
+                ModBlocks.PURPLE_FLATBLOCK.get().asItem(),
+                ModBlocks.RED_FLATBLOCK.get().asItem(),
+                ModBlocks.WHITE_FLATBLOCK.get().asItem(),
+                ModBlocks.YELLOW_FLATBLOCK.get().asItem(),
+
+                ModBlocks.BLACK_HEXBLOCK.get().asItem(),
+                ModBlocks.BLUE_HEXBLOCK.get().asItem(),
+                ModBlocks.BROWN_HEXBLOCK.get().asItem(),
+                ModBlocks.CYAN_HEXBLOCK.get().asItem(),
+                ModBlocks.GRAY_HEXBLOCK.get().asItem(),
+                ModBlocks.GREEN_HEXBLOCK.get().asItem(),
+                ModBlocks.LIGHT_BLUE_HEXBLOCK.get().asItem(),
+                ModBlocks.LIGHT_GRAY_HEXBLOCK.get().asItem(),
+                ModBlocks.LIME_HEXBLOCK.get().asItem(),
+                ModBlocks.MAGENTA_HEXBLOCK.get().asItem(),
+                ModBlocks.ORANGE_HEXBLOCK.get().asItem(),
+                ModBlocks.PINK_HEXBLOCK.get().asItem(),
+                ModBlocks.PURPLE_HEXBLOCK.get().asItem(),
+                ModBlocks.RED_HEXBLOCK.get().asItem(),
+                ModBlocks.WHITE_HEXBLOCK.get().asItem(),
+                ModBlocks.YELLOW_HEXBLOCK.get().asItem(),
+
+                ModBlocks.BLACK_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.BLUE_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.BROWN_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.CYAN_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.GRAY_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.GREEN_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.LIGHT_BLUE_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.LIGHT_GRAY_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.LIME_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.MAGENTA_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.ORANGE_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.PINK_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.PURPLE_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.RED_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.WHITE_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.YELLOW_LARGE_HEXBLOCK.get().asItem(),
+
+                ModBlocks.BLACK_TILES.get().asItem(),
+                ModBlocks.BLUE_TILES.get().asItem(),
+                ModBlocks.BROWN_TILES.get().asItem(),
+                ModBlocks.CYAN_TILES.get().asItem(),
+                ModBlocks.GRAY_TILES.get().asItem(),
+                ModBlocks.GREEN_TILES.get().asItem(),
+                ModBlocks.LIGHT_BLUE_TILES.get().asItem(),
+                ModBlocks.LIGHT_GRAY_TILES.get().asItem(),
+                ModBlocks.LIME_TILES.get().asItem(),
+                ModBlocks.MAGENTA_TILES.get().asItem(),
+                ModBlocks.ORANGE_TILES.get().asItem(),
+                ModBlocks.PINK_TILES.get().asItem(),
+                ModBlocks.PURPLE_TILES.get().asItem(),
+                ModBlocks.RED_TILES.get().asItem(),
+                ModBlocks.WHITE_TILES.get().asItem(),
+                ModBlocks.YELLOW_TILES.get().asItem(),
+
+                ModBlocks.BLACK_LARGE_TILES.get().asItem(),
+                ModBlocks.BLUE_LARGE_TILES.get().asItem(),
+                ModBlocks.BROWN_LARGE_TILES.get().asItem(),
+                ModBlocks.CYAN_LARGE_TILES.get().asItem(),
+                ModBlocks.GRAY_LARGE_TILES.get().asItem(),
+                ModBlocks.GREEN_LARGE_TILES.get().asItem(),
+                ModBlocks.LIGHT_BLUE_LARGE_TILES.get().asItem(),
+                ModBlocks.LIGHT_GRAY_LARGE_TILES.get().asItem(),
+                ModBlocks.LIME_LARGE_TILES.get().asItem(),
+                ModBlocks.MAGENTA_LARGE_TILES.get().asItem(),
+                ModBlocks.ORANGE_LARGE_TILES.get().asItem(),
+                ModBlocks.PINK_LARGE_TILES.get().asItem(),
+                ModBlocks.PURPLE_LARGE_TILES.get().asItem(),
+                ModBlocks.RED_LARGE_TILES.get().asItem(),
+                ModBlocks.WHITE_LARGE_TILES.get().asItem(),
+                ModBlocks.YELLOW_LARGE_TILES.get().asItem(),
+
+                ModBlocks.BLACK_PANEL.get().asItem(),
+                ModBlocks.BLUE_PANEL.get().asItem(),
+                ModBlocks.BROWN_PANEL.get().asItem(),
+                ModBlocks.CYAN_PANEL.get().asItem(),
+                ModBlocks.GRAY_PANEL.get().asItem(),
+                ModBlocks.GREEN_PANEL.get().asItem(),
+                ModBlocks.LIGHT_BLUE_PANEL.get().asItem(),
+                ModBlocks.LIGHT_GRAY_PANEL.get().asItem(),
+                ModBlocks.LIME_PANEL.get().asItem(),
+                ModBlocks.MAGENTA_PANEL.get().asItem(),
+                ModBlocks.ORANGE_PANEL.get().asItem(),
+                ModBlocks.PINK_PANEL.get().asItem(),
+                ModBlocks.PURPLE_PANEL.get().asItem(),
+                ModBlocks.RED_PANEL.get().asItem(),
+                ModBlocks.WHITE_PANEL.get().asItem(),
+                ModBlocks.YELLOW_PANEL.get().asItem(),
+
+                ModBlocks.BLACK_PILLAR.get().asItem(),
+                ModBlocks.BLUE_PILLAR.get().asItem(),
+                ModBlocks.BROWN_PILLAR.get().asItem(),
+                ModBlocks.CYAN_PILLAR.get().asItem(),
+                ModBlocks.GRAY_PILLAR.get().asItem(),
+                ModBlocks.GREEN_PILLAR.get().asItem(),
+                ModBlocks.LIGHT_BLUE_PILLAR.get().asItem(),
+                ModBlocks.LIGHT_GRAY_PILLAR.get().asItem(),
+                ModBlocks.LIME_PILLAR.get().asItem(),
+                ModBlocks.MAGENTA_PILLAR.get().asItem(),
+                ModBlocks.ORANGE_PILLAR.get().asItem(),
+                ModBlocks.PINK_PILLAR.get().asItem(),
+                ModBlocks.PURPLE_PILLAR.get().asItem(),
+                ModBlocks.RED_PILLAR.get().asItem(),
+                ModBlocks.WHITE_PILLAR.get().asItem(),
+                ModBlocks.YELLOW_PILLAR.get().asItem(),
+
+                ModBlocks.BLACK_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.BLUE_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.BROWN_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.CYAN_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.GRAY_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.GREEN_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.LIGHT_BLUE_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.LIGHT_GRAY_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.LIME_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.MAGENTA_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.ORANGE_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.PINK_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.PURPLE_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.RED_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.WHITE_HORIZONTAL_EDGE.get().asItem(),
+                ModBlocks.YELLOW_HORIZONTAL_EDGE.get().asItem(),
+
+                ModBlocks.BLACK_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.BLUE_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.BROWN_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.CYAN_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.GRAY_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.GREEN_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.LIGHT_BLUE_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.LIGHT_GRAY_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.LIME_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.MAGENTA_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.ORANGE_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.PINK_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.PURPLE_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.RED_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.WHITE_VERTICAL_EDGE.get().asItem(),
+                ModBlocks.YELLOW_VERTICAL_EDGE.get().asItem(),
+
+                ModBlocks.GLASS_FLATBLOCK.get().asItem(),
+                ModBlocks.GLASS_HEXBLOCK.get().asItem(),
+                ModBlocks.GLASS_LARGE_HEXBLOCK.get().asItem(),
+                ModBlocks.GLASS_TILES.get().asItem(),
+                ModBlocks.GLASS_LARGE_TILES.get().asItem(),
+
+                ModBlocks.PRISMATIC_BLOCK.get().asItem(),
+
+                ModBlocks.PLATING_MACHINE.get().asItem(),
+                ModBlocks.SPECTRALIZER.get().asItem(),
+                ModBlocks.LIGHT_STORAGE.get().asItem(),
+
+                ModItems.PRISMATIC_INGOT.get(),
+
+                ModItems.HELMET_CORE.get(),
+                ModItems.CHEST_CORE.get(),
+                ModItems.PANTS_CORE.get(),
+                ModItems.BOOTS_CORE.get(),
+
+                ModItems.PRISMATIC_HELMET.get(),
+                ModItems.PRISMATIC_CHESTPLATE.get(),
+                ModItems.PRISMATIC_LEGGINGS.get(),
+                ModItems.PRISMATIC_BOOTS.get(),
+
+                ModItems.PRISMATIC_SWORD.get(),
+                ModItems.PRISMATIC_BLADE.get(),
+                ModItems.PRISMA_NUCLEUS.get(),
+                ModItems.BIG_BREAD.get(),
+
+                ModItems.GUN_RAT.get(), //creative only items
+                ModItems.PRISMATIC_BLADEMK2.get(),
+                ModBlocks.MOB_B_GONE.get().asItem(),
+                ModBlocks.SPECTRUM_ANVIL.get().asItem(),
+                ModBlocks.LIME_BRICK.get().asItem(),
+                ModBlocks.MOTIVATIONAL_CHAIR.get().asItem());
+        tabSort = Ordering.explicit(itemOrder).onResultOf(ItemStack::getItem);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
