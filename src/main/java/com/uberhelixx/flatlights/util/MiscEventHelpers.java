@@ -15,7 +15,7 @@ public class MiscEventHelpers {
     public static void indevPlaced(BlockEvent.EntityPlaceEvent event) {
         Block block = event.getPlacedBlock().getBlock();
         if(!FlatLightsCommonConfig.indevBlocks.get()) {
-            if (block instanceof Mob_B_Gone || block instanceof PlatingMachineBlock || block instanceof SpectrumAnvilBlock) {
+            if (block instanceof Mob_B_Gone || block instanceof SpectrumAnvilBlock) {
                 event.setCanceled(true);
             }
         }

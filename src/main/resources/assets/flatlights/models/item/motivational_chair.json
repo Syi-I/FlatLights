@@ -1,3 +1,6 @@
 {
-  "parent": "flatlights:block/motivational_chair/motivational_chair_wrapper"
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "flatlights:item/motivational_chair"
+  }
 }

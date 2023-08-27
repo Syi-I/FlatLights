@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,7 +41,7 @@ public class PlatingMachineBlock extends HorizontalBlock {
 
     //constants for block hardness (time it takes to mine the block) and resistance (what level explosions and such can destroy the block)
     //lower hardness = lower mining time required
-    static final float BLOCK_HARDNESS = 0.4f;
+    static final float BLOCK_HARDNESS = 1f;
     //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
     static final float BLOCK_RESISTANCE = 100000000f;
 
@@ -59,21 +60,7 @@ public class PlatingMachineBlock extends HorizontalBlock {
         return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String indev = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is not fully functional.");
-        ITextComponent indevTooltip = ITextComponent.getTextComponentOrEmpty(indev);
-        tooltip.add(indevTooltip);
-        if(!FlatLightsCommonConfig.indevBlocks.get()) {
-            String noPlace = "" + MiscHelpers.coloredText(TextFormatting.RED, "This block is disabled and cannot be placed.");
-            ITextComponent noPlaceTooltip = ITextComponent.getTextComponentOrEmpty(noPlace);
-            tooltip.add(noPlaceTooltip);
-        }
-
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-    }
-
+    @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if(!worldIn.isRemote()) {
@@ -115,5 +102,19 @@ public class PlatingMachineBlock extends HorizontalBlock {
     @Override
     public boolean hasTileEntity(BlockState state) {
         return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.hasTileEntity() && state.getBlock() != newState.getBlock()) {
+            // drops everything in the inventory
+            worldIn.getTileEntity(pos).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                for (int i = 0; i < h.getSlots(); i++) {
+                    spawnAsEntity(worldIn, pos, h.getStackInSlot(i));
+                }
+            });
+            worldIn.removeTileEntity(pos);
+        }
     }
 }

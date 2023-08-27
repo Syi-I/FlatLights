@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "item": "flatlights:prismatic_block"
-  },
-  "result": "flatlights:prismatic_ingot",
-  "experience": 1.5,
-  "cookingtime": 100
-}

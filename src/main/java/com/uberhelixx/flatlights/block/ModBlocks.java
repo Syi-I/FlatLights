@@ -15,54 +15,113 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
 
-    //special blocks are for blocks with special models or blockstates so datagen sucks less
+    //different DeferredRegisters for the various block types to try and make datagen easier
     public static final DeferredRegister<Block> BLOCKS
             = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
-    public static final DeferredRegister<Block> SPECIAL_BLOCKS
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
-
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-        SPECIAL_BLOCKS.register(eventBus);
+    //helper function for registering block as an item, so it exists as a drop and can actually be crafted/used
+    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
+        ModItems.BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
-
     //helper function for registering blocks
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
+
+    public static final DeferredRegister<Block> SPECIAL_BLOCKS
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
     private static <T extends Block>RegistryObject<T> registerSpecialBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = SPECIAL_BLOCKS.register(name, block);
         registerSpecialBlockItem(name, toReturn);
         return toReturn;
     }
-
-    //helper function for registering block as an item, so it exists as a drop and can actually be crafted/used
-    private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
-        ModItems.BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
-    }
     private static <T extends Block> void registerSpecialBlockItem(String name, RegistryObject<T> block) {
         ModItems.SPECIAL_BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     }
 
+    public static final DeferredRegister<Block> PANELS
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+    private static <T extends Block>RegistryObject<T> registerPanel(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = PANELS.register(name, block);
+        registerPanelItem(name, toReturn);
+        return toReturn;
+    }
+    private static <T extends Block> void registerPanelItem(String name, RegistryObject<T> block) {
+        ModItems.PANEL_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+
+    public static final DeferredRegister<Block> FLATBLOCKS
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+    private static <T extends Block>RegistryObject<T> registerFlatblock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = FLATBLOCKS.register(name, block);
+        registerFlatblockItem(name, toReturn);
+        return toReturn;
+    }
+    private static <T extends Block> void registerFlatblockItem(String name, RegistryObject<T> block) {
+        ModItems.FLATBLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+
+    public static final DeferredRegister<Block> PILLARS
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+    private static <T extends Block>RegistryObject<T> registerPillar(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = PILLARS.register(name, block);
+        registerPillarItem(name, toReturn);
+        return toReturn;
+    }
+    private static <T extends Block> void registerPillarItem(String name, RegistryObject<T> block) {
+        ModItems.PILLAR_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+
+    public static final DeferredRegister<Block> HORIZONTAL_EDGES
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+    private static <T extends Block>RegistryObject<T> registerEdgeH(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = HORIZONTAL_EDGES.register(name, block);
+        registerEdgeHItem(name, toReturn);
+        return toReturn;
+    }
+    private static <T extends Block> void registerEdgeHItem(String name, RegistryObject<T> block) {
+        ModItems.EDGEH_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+
+    public static final DeferredRegister<Block> VERTICAL_EDGES
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+    private static <T extends Block>RegistryObject<T> registerEdgeV(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = VERTICAL_EDGES.register(name, block);
+        registerEdgeVItem(name, toReturn);
+        return toReturn;
+    }
+    private static <T extends Block> void registerEdgeVItem(String name, RegistryObject<T> block) {
+        ModItems.EDGEV_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    }
+
+    public static void register(IEventBus eventBus) {
+        BLOCKS.register(eventBus);
+        SPECIAL_BLOCKS.register(eventBus);
+        PANELS.register(eventBus);
+        FLATBLOCKS.register(eventBus);
+        PILLARS.register(eventBus);
+        HORIZONTAL_EDGES.register(eventBus);
+        VERTICAL_EDGES.register(eventBus);
+    }
+
     // FLAT BLOCKS ##############################################################################################################################
-    public static final RegistryObject<Block> BLACK_FLATBLOCK = registerBlock("black_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> BLUE_FLATBLOCK = registerBlock("blue_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> BROWN_FLATBLOCK = registerBlock("brown_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> CYAN_FLATBLOCK = registerBlock("cyan_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> GRAY_FLATBLOCK = registerBlock("gray_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> GREEN_FLATBLOCK = registerBlock("green_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> LIGHT_BLUE_FLATBLOCK = registerBlock("light_blue_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> LIGHT_GRAY_FLATBLOCK = registerBlock("light_gray_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> LIME_FLATBLOCK = registerBlock("lime_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> MAGENTA_FLATBLOCK = registerBlock("magenta_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> ORANGE_FLATBLOCK = registerBlock("orange_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> PINK_FLATBLOCK = registerBlock("pink_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> PURPLE_FLATBLOCK = registerBlock("purple_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> RED_FLATBLOCK = registerBlock("red_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> WHITE_FLATBLOCK = registerBlock("white_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> YELLOW_FLATBLOCK = registerBlock("yellow_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> BLACK_FLATBLOCK = registerFlatblock("black_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> BLUE_FLATBLOCK = registerFlatblock("blue_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> BROWN_FLATBLOCK = registerFlatblock("brown_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> CYAN_FLATBLOCK = registerFlatblock("cyan_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> GRAY_FLATBLOCK = registerFlatblock("gray_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> GREEN_FLATBLOCK = registerFlatblock("green_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> LIGHT_BLUE_FLATBLOCK = registerFlatblock("light_blue_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> LIGHT_GRAY_FLATBLOCK = registerFlatblock("light_gray_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> LIME_FLATBLOCK = registerFlatblock("lime_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> MAGENTA_FLATBLOCK = registerFlatblock("magenta_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> ORANGE_FLATBLOCK = registerFlatblock("orange_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> PINK_FLATBLOCK = registerFlatblock("pink_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> PURPLE_FLATBLOCK = registerFlatblock("purple_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> RED_FLATBLOCK = registerFlatblock("red_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> WHITE_FLATBLOCK = registerFlatblock("white_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> YELLOW_FLATBLOCK = registerFlatblock("yellow_flatblock", FlatBlock::new);
 
     // HEX BLOCKS ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_HEXBLOCK = registerBlock("black_hexblock", PlateBlock::new);
@@ -136,6 +195,78 @@ public class ModBlocks {
     public static final RegistryObject<Block> WHITE_LARGE_TILES = registerBlock("white_large_tiles", PlateBlock::new);
     public static final RegistryObject<Block> YELLOW_LARGE_TILES = registerBlock("yellow_large_tiles", PlateBlock::new);
 
+    // PANEL ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_PANEL = registerPanel("black_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> BLUE_PANEL = registerPanel("blue_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> BROWN_PANEL = registerPanel("brown_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> CYAN_PANEL = registerPanel("cyan_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> GRAY_PANEL = registerPanel("gray_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> GREEN_PANEL = registerPanel("green_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_PANEL = registerPanel("light_blue_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_PANEL = registerPanel("light_gray_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> LIME_PANEL = registerPanel("lime_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> MAGENTA_PANEL = registerPanel("magenta_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> ORANGE_PANEL = registerPanel("orange_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> PINK_PANEL = registerPanel("pink_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> PURPLE_PANEL = registerPanel("purple_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> RED_PANEL = registerPanel("red_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> WHITE_PANEL = registerPanel("white_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> YELLOW_PANEL = registerPanel("yellow_panel", () -> new SlabLightBlock(2));
+
+    // PILLAR ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_PILLAR = registerPillar("black_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> BLUE_PILLAR = registerPillar("blue_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> BROWN_PILLAR = registerPillar("brown_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> CYAN_PILLAR = registerPillar("cyan_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> GRAY_PILLAR = registerPillar("gray_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> GREEN_PILLAR = registerPillar("green_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> LIGHT_BLUE_PILLAR = registerPillar("light_blue_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> LIGHT_GRAY_PILLAR = registerPillar("light_gray_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> LIME_PILLAR = registerPillar("lime_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> MAGENTA_PILLAR = registerPillar("magenta_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> ORANGE_PILLAR = registerPillar("orange_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> PINK_PILLAR = registerPillar("pink_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> PURPLE_PILLAR = registerPillar("purple_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> RED_PILLAR = registerPillar("red_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> WHITE_PILLAR = registerPillar("white_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> YELLOW_PILLAR = registerPillar("yellow_pillar", () -> new PillarLightBlock(4));
+
+    // HORIZONTAL EDGE ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_HORIZONTAL_EDGE = registerEdgeH("black_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> BLUE_HORIZONTAL_EDGE = registerEdgeH("blue_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> BROWN_HORIZONTAL_EDGE = registerEdgeH("brown_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> CYAN_HORIZONTAL_EDGE = registerEdgeH("cyan_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> GRAY_HORIZONTAL_EDGE = registerEdgeH("gray_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> GREEN_HORIZONTAL_EDGE = registerEdgeH("green_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_HORIZONTAL_EDGE = registerEdgeH("light_blue_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_HORIZONTAL_EDGE = registerEdgeH("light_gray_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIME_HORIZONTAL_EDGE = registerEdgeH("lime_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> MAGENTA_HORIZONTAL_EDGE = registerEdgeH("magenta_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> ORANGE_HORIZONTAL_EDGE = registerEdgeH("orange_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PINK_HORIZONTAL_EDGE = registerEdgeH("pink_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PURPLE_HORIZONTAL_EDGE = registerEdgeH("purple_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> RED_HORIZONTAL_EDGE = registerEdgeH("red_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> WHITE_HORIZONTAL_EDGE = registerEdgeH("white_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> YELLOW_HORIZONTAL_EDGE = registerEdgeH("yellow_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+
+    // VERTICAL EDGE ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_VERTICAL_EDGE = registerEdgeV("black_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> BLUE_VERTICAL_EDGE = registerEdgeV("blue_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> BROWN_VERTICAL_EDGE = registerEdgeV("brown_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> CYAN_VERTICAL_EDGE = registerEdgeV("cyan_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> GRAY_VERTICAL_EDGE = registerEdgeV("gray_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> GREEN_VERTICAL_EDGE = registerEdgeV("green_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_VERTICAL_EDGE = registerEdgeV("light_blue_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_VERTICAL_EDGE = registerEdgeV("light_gray_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> LIME_VERTICAL_EDGE = registerEdgeV("lime_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> MAGENTA_VERTICAL_EDGE = registerEdgeV("magenta_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> ORANGE_VERTICAL_EDGE = registerEdgeV("orange_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> PINK_VERTICAL_EDGE = registerEdgeV("pink_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> PURPLE_VERTICAL_EDGE = registerEdgeV("purple_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> RED_VERTICAL_EDGE = registerEdgeV("red_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> WHITE_VERTICAL_EDGE = registerEdgeV("white_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> YELLOW_VERTICAL_EDGE = registerEdgeV("yellow_vertical_edge", () -> new VerticalEdgeBlock(2));
+
     // GLASS ##############################################################################################################################
     public static final RegistryObject<Block> GLASS_HEXBLOCK = registerBlock("glass_hexblock", WireGlassBlock::new);
     public static final RegistryObject<Block> GLASS_LARGE_HEXBLOCK = registerBlock("glass_large_hexblock", WireGlassBlock::new);
@@ -145,12 +276,12 @@ public class ModBlocks {
 
     // EXTRA ##############################################################################################################################
     public static final RegistryObject<Block> LIME_BRICK = registerBlock("lime_brick", PlateBlock::new);
+    public static final RegistryObject<Block> PRISMATIC_BLOCK = registerFlatblock("prismatic_block", FlatBlock::new);
     public static final RegistryObject<Block> PLATING_MACHINE = registerSpecialBlock("plating_machine", PlatingMachineBlock::new);
-    public static final RegistryObject<Block> MOB_B_GONE = registerSpecialBlock("mob_b_gone", Mob_B_Gone::new);
-    public static final RegistryObject<Block> PRISMATIC_BLOCK = registerBlock("prismatic_block", FlatBlock::new);
-    public static final RegistryObject<Block> SPECTRUM_ANVIL = registerSpecialBlock("spectrum_anvil", SpectrumAnvilBlock::new);
-    public static final RegistryObject<Block> LIGHT_STORAGE = registerSpecialBlock("light_storage", LightStorageBlock::new);
     public static final RegistryObject<Block> SPECTRALIZER = registerSpecialBlock("spectralizer", SpectralizerBlock::new);
+    public static final RegistryObject<Block> LIGHT_STORAGE = registerSpecialBlock("light_storage", LightStorageBlock::new);
+    public static final RegistryObject<Block> MOB_B_GONE = registerSpecialBlock("mob_b_gone", Mob_B_Gone::new);
+    public static final RegistryObject<Block> SPECTRUM_ANVIL = registerSpecialBlock("spectrum_anvil", SpectrumAnvilBlock::new);
     public static final RegistryObject<Block> MOTIVATIONAL_CHAIR = registerSpecialBlock("motivational_chair", MotivationalChairBlock::new);
 
 }

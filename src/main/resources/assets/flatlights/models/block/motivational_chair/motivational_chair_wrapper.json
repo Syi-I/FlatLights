@@ -3,5 +3,8 @@
   "flip-v": true,
   "ambientToFullbright": false,
   "materialLibraryOverride": "flatlights:models/block/motivational_chair/motivational_chair.mtl",
-  "model" : "flatlights:models/block/motivational_chair/motivational_chair.obj"
+  "model" : "flatlights:models/block/motivational_chair/motivational_chair.obj",
+  "textures": {
+    "particle": "flatlights:block/flatblock/white_flatblock"
+  }
 }

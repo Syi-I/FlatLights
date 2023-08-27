@@ -26,7 +26,7 @@ public class Mob_B_Gone extends Block {
 
     //also constants for block hardness(time it takes to mine the block) and resistance(what level explosions and such can destroy the block)
     //lower hardness = lower mining time required
-    static final float BLOCK_HARDNESS = 0.4f;
+    static final float BLOCK_HARDNESS = 1f;
     //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
     static final float BLOCK_RESISTANCE = 100000000f;
     public static ToIntFunction<BlockState> MOB_B_GONE_LIGHT_LEVEL = BlockState -> 7;
@@ -46,6 +46,7 @@ public class Mob_B_Gone extends Block {
     }
 
     protected static final VoxelShape SHAPE = Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D);
+    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
         return SHAPE;
@@ -54,6 +55,7 @@ public class Mob_B_Gone extends Block {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @OnlyIn(Dist.CLIENT)
     public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) { return 1.0F; }

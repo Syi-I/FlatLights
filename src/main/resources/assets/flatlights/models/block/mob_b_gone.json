@@ -1,5 +1,6 @@
 {
 	"credit": "UberHelixx",
+	"parent": "block/block",
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "flatlights:block/mob_b_gone/mob_b_gone_base",

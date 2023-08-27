@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.data;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.data.client.ModBlockStateProvider;
 import com.uberhelixx.flatlights.data.client.ModItemModelProvider;
 import com.uberhelixx.flatlights.data.server.ModBlockTagsProvider;
 import com.uberhelixx.flatlights.data.server.ModItemTagsProvider;
@@ -20,7 +21,7 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));
-        //generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
+        generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
 
         ModBlockTagsProvider blockTags = new ModBlockTagsProvider(generator, existingFileHelper);
         FlatLights.LOGGER.info("Generating block tags...");

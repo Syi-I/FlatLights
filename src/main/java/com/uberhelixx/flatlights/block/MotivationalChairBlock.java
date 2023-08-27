@@ -23,7 +23,7 @@ import java.util.List;
 
 public class MotivationalChairBlock extends HorizontalBlock {
 
-    static final float BLOCK_HARDNESS = 0.4f;
+    static final float BLOCK_HARDNESS = 0.01f;
     //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
     static final float BLOCK_RESISTANCE = 100000000f;
 
