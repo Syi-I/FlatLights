@@ -23,25 +23,30 @@ public class BombSwingEntity extends AbstractArrowEntity {
         super(type, shooter, worldIn);
     }
 
+    //explosion radius
     private final float bombRadius = 3.0f;
 
     @Override
     public void tick() {
         super.tick();
+        //explode if it hits the ground
         if (this.timeInGround > 1){
             this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), bombRadius, false, Explosion.Mode.NONE);
             this.remove();
         }
+        //remove if projectile sits and doesn't do anything for 10 seconds
         if(this.ticksExisted > 200) {
             this.remove();
         }
     }
 
+    //no item stack since this isn't meant to be picked up
     @Override
     protected ItemStack getArrowStack() {
         return ItemStack.EMPTY;
     }
 
+    //if the projectile hits something it causes an explosion
     @Override
     protected void onEntityHit(EntityRayTraceResult ray) {
         super.onEntityHit(ray);

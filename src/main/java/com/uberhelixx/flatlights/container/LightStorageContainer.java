@@ -27,9 +27,11 @@ public class LightStorageContainer extends Container {
         this.tileEntity = world.getTileEntity(pos);
         playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
+        //where player inventory slots starts
         int xOff = 33;
         int yOff = 30;
         layoutPlayerInventorySlots(41 - xOff, 174 - yOff + 3);
+        //if tile entity exists make all the slots for the inventory screen
         if (tileEntity != null) {
             tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h ->
             {
@@ -52,6 +54,7 @@ public class LightStorageContainer extends Container {
         ((LightStorageTile) tileEntity).playSound(SoundEvents.ITEM_LODESTONE_COMPASS_LOCK);
     }
 
+    //adds slots in a row across, starting from left side
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0; i < amount; i++) {
             addSlot(new SlotItemHandler(handler, index, x, y));
@@ -62,6 +65,7 @@ public class LightStorageContainer extends Container {
         return index;
     }
 
+    //adds slots in a grid (index 0 to index (totalSlots - 1)), x/y coordinates for top left corner starting point
     private int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
         for (int j = 0; j < verAmount; j++) {
             index = addSlotRange(handler, index, x, y, horAmount, dx);
@@ -71,6 +75,7 @@ public class LightStorageContainer extends Container {
         return index;
     }
 
+    //draws the player inventory slots out in typical layout
     private void layoutPlayerInventorySlots(int leftCol, int topRow) {
         addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
 

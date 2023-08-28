@@ -33,6 +33,10 @@ public class FlashOfBrillianceEnchantment extends Enchantment {
     public static void xpDropMultiplier(LivingExperienceDropEvent event) {
         LivingEntity user = event.getAttackingPlayer();
         int baseXpAmount = event.getDroppedExperience();
+        //check if player died since the game freaks out and crashes
+        if(event.getEntity() instanceof PlayerEntity) {
+            return;
+        }
         //check if keepInventory is on
         if(event.getEntity() instanceof PlayerEntity && event.getEntity().getEntityWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
             return;

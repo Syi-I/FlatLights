@@ -41,10 +41,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -123,7 +125,6 @@ public class FlatLights
         EVENT_BUS.addListener(FlashOfBrillianceEnchantment::xpDropMultiplier);
         EVENT_BUS.addListener(Shimmer2Enchantment::shimmerOverload);
         EVENT_BUS.addListener(PulsingArrowEnchantment::arrowPulseDmg);
-        EVENT_BUS.addListener(PrismaticBladeMk2::megaHit);
         EVENT_BUS.addListener(PrismaticSword::bombSwingTrigger);
         EVENT_BUS.addListener(QuantumStrikeEnchantment::removeFromEntangledTeam);
     }

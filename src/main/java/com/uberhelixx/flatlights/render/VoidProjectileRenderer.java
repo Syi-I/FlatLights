@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 public class VoidProjectileRenderer extends ArrowRenderer<VoidProjectileEntity> {
     public static final ResourceLocation projectile = new ResourceLocation(FlatLights.MOD_ID, "textures/entity/void_projectile.png");
 
+    //render like an arrow would be
     public VoidProjectileRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
     }

@@ -6,6 +6,7 @@ import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -78,7 +79,7 @@ public class ModItems {
     public static final RegistryObject<Item> PRISMA_NUCLEUS = ITEMS.register("prisma_nucleus",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
-            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+            () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS).food(new Food.Builder().hunger(30).saturation(36).build())));
 
     public static final RegistryObject<Item> GUN_RAT = ITEMS.register("gun_rat",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));

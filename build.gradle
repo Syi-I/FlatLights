@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.12.0'
+version = '1.13.0'
 group = 'com.uberhelixx.flatlights' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'flatlights'
 
@@ -114,6 +114,18 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+
+    maven {
+        name = "Curios"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        name = "Cursemaven"
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
@@ -123,14 +135,6 @@ repositories {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "https://modmaven.dev"
-    }
-    maven {
-        name = "Curios"
-        url = "https://maven.theillusivec4.top/"
-    }
-    maven {
-        name = "Cursemaven"
-        url = "https://www.cursemaven.com/"
     }
 }
 
@@ -162,8 +166,13 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
     // at runtime, use the full JEI jar
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.1")
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.1:api")
+
+    runtimeOnly fg.deobf("curse.maven:attributefix-280510:3732244")
+    runtimeOnly fg.deobf("curse.maven:classicbars-317642:4031993")
+    runtimeOnly fg.deobf("curse.maven:appleskin-248787:3686480")
 }
 
 //Get properties into the manifest for reading by the runtime..

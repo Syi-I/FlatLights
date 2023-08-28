@@ -47,6 +47,7 @@ public class ChairEntity extends Entity {
         {
             source = this.getPosition();
         }
+        //remove this entity if nothing is sitting in it
         if(!this.world.isRemote())
         {
             if(this.getPassengers().isEmpty() || this.world.isAirBlock(source))
@@ -78,6 +79,7 @@ public class ChairEntity extends Entity {
         return source;
     }
 
+    //make into rideable entity
     @Override
     protected boolean canBeRidden(Entity entity)
     {
@@ -90,6 +92,7 @@ public class ChairEntity extends Entity {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
+    //makes chair entity for player to sit in
     public static ActionResultType create(World world, BlockPos pos, double yOffset, PlayerEntity player)
     {
         if(!world.isRemote())
