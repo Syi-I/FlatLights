@@ -21,6 +21,7 @@ public class EntangledEffect extends Effect {
         if(amplifier > 0) {
             dmgMultiplier += amplifier;
         }
+        //deal damage to entity and remove from the entangled team so the glowing effect color is reset
         entityLivingBaseIn.attackEntityFrom(ModDamageTypes.ENTANGLED, entityLivingBaseIn.getMaxHealth() * (0.1F * dmgMultiplier) * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.entangledEndDmg.get()));
         if(entityLivingBaseIn.getTeam() != null) {
             if (entityLivingBaseIn.getTeam() == entityLivingBaseIn.getEntityWorld().getScoreboard().getTeam(ENTANGLED_TEAM)) {
@@ -30,6 +31,7 @@ public class EntangledEffect extends Effect {
         super.performEffect(entityLivingBaseIn, amplifier);
     }
 
+    //trigger effect as the effect is expiring
     @Override
     public boolean isReady(int duration, int amplifier) {
         return duration <= 1;

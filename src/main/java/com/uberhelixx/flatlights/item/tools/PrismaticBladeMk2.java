@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
+import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.VoidProjectileEntity;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -40,18 +41,29 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class PrismaticBladeMk2 extends SwordItem {
 
+    protected static final String FIRSTJOIN_TAG = "flatlights.firstjoin"; //used to check if dedicated player has been given the starter blade yet
+    public static final String DAMAGE_MODE_TAG = "flatlights.megaton"; //bonus melee damage mode
+    public static final String PROJECTILE_MODE_TAG = "flatlights.projectile"; //projectile shooting mode
+    public static final String TIER_TAG = "flatlights.tier"; //current tier of the blade
+    public static final String DAMAGE_BONUS_TAG = "flatlights.damageBonus"; //current damage = to current number of cores before next tier increase
+    public static final String CORES_TAG = "flatlights.cores"; //current number of cores
+    public static final String TOTAL_BONUS_TAG = "flatlights.totalBonus"; //total damage bonus = to total number of cores gained
+    protected static final int TIER_MULTIPLIER = 1000; //cores needed per tier to increase tier
+    public static final int TOTAL_TIERS = 7; //total tiers available
+
     public PrismaticBladeMk2(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
         super(tier, attackDamageIn, attackSpeedIn, builderIn);
     }
 
     static UUID messageOwner = UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a");
-    final static int tierMultiplier = 1000;
 
     @Override
     public boolean isDamageable() {
@@ -63,9 +75,7 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     @Override
     public boolean hasEffect(ItemStack stack) {
-        return (stack.isEnchanted() || (stack.getTag() != null && (stack.getTag().getBoolean("multislash") ||
-                stack.getTag().getBoolean("megaton") ||
-                stack.getTag().getBoolean("projectile"))));
+        return (stack.isEnchanted() || (stack.getTag() != null && (stack.getTag().getBoolean(DAMAGE_MODE_TAG) || stack.getTag().getBoolean(PROJECTILE_MODE_TAG))));
     }
 
     @Override
@@ -91,12 +101,13 @@ public class PrismaticBladeMk2 extends SwordItem {
             target.hurtResistantTime = 0;
             if (stack.getTag() != null) {
                 int damageBonus = 1;
-                int count = stack.getTag().getInt("tier") + 1;
-                if(stack.getTag().getBoolean("multislash")) {
-                    damageBonus = Math.max(stack.getTag().getInt("damageBonus"), 1);
+                int tier = stack.getTag().getInt(TIER_TAG) + 1;
+                //grab total damage, or leave at 1 if no bonus yet
+                if(stack.getTag().getBoolean(DAMAGE_MODE_TAG)) {
+                    damageBonus = Math.max(stack.getTag().getInt(TOTAL_BONUS_TAG), 1);
                 }
-                if(stack.getTag().getBoolean("multislash")) {
-                    doSlash(world, target, damageBonus, count);
+                if(stack.getTag().getBoolean(DAMAGE_MODE_TAG)) {
+                    doSlash(world, target, attacker, damageBonus, tier);
                 }
             }
             target.hurtResistantTime = 0;
@@ -115,10 +126,10 @@ public class PrismaticBladeMk2 extends SwordItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blademk2_shift"));
-            if(stack.getTag() != null && stack.getTag().contains("cores")) {
+            if(stack.getTag() != null && stack.getTag().contains(CORES_TAG)) {
                 tooltip.add(getTierData(stack));
                 tooltip.add(getCoreData(stack));
-                if(stack.getTag().contains("multislash")) {
+                if(stack.getTag().contains(DAMAGE_MODE_TAG) || stack.getTag().contains(PROJECTILE_MODE_TAG)) {
                     tooltip.add(getSwordState(stack));
                 }
             }
@@ -175,6 +186,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         event.setOutput(enchantedBlade);
     }
 
+    //event to add this item back to inventory after death drops the items
     @SubscribeEvent (priority = EventPriority.HIGH)
     public static void handlePlayerDropsEvent(LivingDropsEvent event) {
         if (event.getEntity() instanceof PlayerEntity) {
@@ -197,6 +209,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
     }
 
+    //function to actually find and add specific items to the player inventory
     private static boolean addToPlayerInventory(PlayerEntity player, ItemStack stack) {
         if (stack.isEmpty() || player == null) {
             return false;
@@ -211,6 +224,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         return false;
     }
 
+    //have to get original player inventory to add item back after death
     @SubscribeEvent (priority = EventPriority.HIGH)
     public static void handlePlayerCloneEvent(PlayerEvent.Clone event) {
         if (!event.isWasDeath()) {
@@ -229,6 +243,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
     }
 
+    //do all core and tier math after killing entities
     @SubscribeEvent (priority = EventPriority.HIGH)
     public static void killMobs(LivingDeathEvent event) {
         Entity mob = event.getEntity();
@@ -236,24 +251,32 @@ public class PrismaticBladeMk2 extends SwordItem {
         if(killer instanceof PlayerEntity && mob instanceof LivingEntity) {
             World world = killer.world;
             ItemStack tool = ((PlayerEntity) killer).getHeldItemMainhand();
+
+            //make sure item is PrismaticBladeMk2
             if(!(tool.getItem() instanceof PrismaticBladeMk2)) {
                 return;
             }
+
+            //check if nbt tags are already present, otherwise add tags
             if(!tool.hasTag()) {
                 CompoundNBT newTag = new CompoundNBT();
-                newTag.putInt("cores", 0);
-                newTag.putInt("tier", 0);
-                newTag.putInt("damageBonus", 0);
+                newTag.putInt(CORES_TAG, 0);
+                newTag.putInt(TIER_TAG, 0);
+                newTag.putInt(DAMAGE_BONUS_TAG, 0);
                 tool.setTag(newTag);
             }
             CompoundNBT tag = tool.getTag();
             if (tag == null) {
                 return;
             }
-            int oldCores = tag.getInt("cores");
-            int oldTier = tag.getInt("tier");
+
+            //grab nbt data for cores, tier to calculate new totals
+            int oldCores = tag.getInt(CORES_TAG);
+            int oldTier = tag.getInt(TIER_TAG);
             int newCores = oldCores + Math.max((Math.round(((LivingEntity) mob).getMaxHealth() / 20)), 1);
-            tag.putInt("totalBonus", newCores);
+            tag.putInt(TOTAL_BONUS_TAG, newCores);
+
+            //kill text notification formatting stuff
             String coreGainText = " core.";
             if(newCores - oldCores > 1) {
                 coreGainText = " cores.";
@@ -262,32 +285,37 @@ public class PrismaticBladeMk2 extends SwordItem {
             if(FlatLightsClientConfig.coreNoti.get()) {
                 killer.sendMessage(killMessage, messageOwner);
             }
+
+            //math for calculating if tier levels up when adding cores after a kill
             int newTier = oldTier;
-            while (newCores > ((oldTier + 1) * tierMultiplier) && (newTier + 1) < 7) {
-                newCores = newCores % ((oldTier + 1) * tierMultiplier);
+            while (newCores > ((oldTier + 1) * TIER_MULTIPLIER) && (newTier + 1) < 7) {
+                newCores = newCores % ((oldTier + 1) * TIER_MULTIPLIER);
                 newTier++;
                 world.playSound(null, killer.getPosX(), killer.getPosY(), killer.getPosZ(), SoundEvents.ENTITY_ENDER_DRAGON_DEATH, SoundCategory.PLAYERS, 0.2f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
                 oldTier = newTier;
             }
-            tag.putInt("cores", newCores);
-            tag.putInt("tier", newTier);
-            tag.putInt("damageBonus", newCores);
+
+            //update nbt data tags
+            tag.putInt(CORES_TAG, newCores);
+            tag.putInt(TIER_TAG, newTier);
+            tag.putInt(DAMAGE_BONUS_TAG, newCores);
             tool.setTag(tag);
         }
     }
 
+    //core count tooltip formatting
     private static ITextComponent getCoreData(ItemStack tool) {
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
-        if (tool.getTag() != null && tool.getTag().contains("cores")) {
-            int cores = tag.getInt("cores");
-            int tier = tag.getInt("tier") + 1;
-            String totalCoresForLevelup = "/" + (tier * tierMultiplier);
+        if (tool.getTag() != null && tool.getTag().contains(CORES_TAG)) {
+            int cores = tag.getInt(CORES_TAG);
+            int tier = tag.getInt(TIER_TAG) + 1;
+            String totalCoresForLevelup = "/" + (tier * TIER_MULTIPLIER);
             String coresText = "" + TextFormatting.RED + cores;
-            if(tier == 7) {
+            if(tier >= 7) {
                 totalCoresForLevelup = "";
             }
-            if(cores >= (tier * tierMultiplier) && tier < 7) {
+            if(cores >= (tier * TIER_MULTIPLIER) && tier < 7) {
                 coresText = "" + TextFormatting.GREEN + cores;
             }
             if (cores > 0) {
@@ -297,12 +325,14 @@ public class PrismaticBladeMk2 extends SwordItem {
         return data;
     }
 
+    //tier level tooltip formatting
     private static ITextComponent getTierData(ItemStack tool) {
+        //reads nbt data and determines the tier tooltip based off the numbers
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
-        if (tool.getTag() != null && tool.getTag().contains("cores")) {
-            int cores = tag.getInt("cores");
-            int tier = tag.getInt("tier") + 1;
+        if (tool.getTag() != null && tool.getTag().contains(CORES_TAG)) {
+            int cores = tag.getInt(CORES_TAG);
+            int tier = tag.getInt(TIER_TAG) + 1;
             String tierName;
             switch(tier) {
                 case 1:
@@ -336,32 +366,33 @@ public class PrismaticBladeMk2 extends SwordItem {
         return data;
     }
 
+    //blade mode tooltip check and formatting
     private static ITextComponent getSwordState(ItemStack tool) {
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
-        if (tool.getTag() != null && tag.contains("multislash") && tag.contains("megaton") && tag.contains("projectile")) {
-            int cores = tag.getInt("cores");
-            int tier = tag.getInt("tier") + 1;
-            int totalDmg = tag.getInt("totalBonus");
-            boolean multi = tag.getBoolean("multislash");
-            boolean mega = tag.getBoolean("megaton");
-            boolean projectile = tag.getBoolean("projectile");
+        //check if nbt tags are present yet
+        if (tool.getTag() != null && tag.contains(DAMAGE_MODE_TAG) && tag.contains(PROJECTILE_MODE_TAG)) {
+            //gets all relevant data from tags
+            int tier = tag.getInt(TIER_TAG) > 0 ? tag.getInt(TIER_TAG) + 1 : 1;
+            int totalDmg = tag.getInt(TOTAL_BONUS_TAG) > 0 ? tag.getInt(TOTAL_BONUS_TAG) : 1;
+            boolean mega = tag.getBoolean(DAMAGE_MODE_TAG);
+            boolean projectile = tag.getBoolean(PROJECTILE_MODE_TAG);
+            DecimalFormat formatting = new DecimalFormat("#.##");
+            formatting.setRoundingMode(RoundingMode.FLOOR);
+
+            //all the tooltip formatting for each mode
             String activeState = TextFormatting.DARK_RED + "Deactivated";
-            String tierSlash = "" + TextFormatting.RED + tier + TextFormatting.WHITE + " slash of ";
-            if(tier > 1) {
-                tierSlash = "" + TextFormatting.RED + tier + TextFormatting.WHITE + " slashes of ";
-            }
-            if (multi) {
-                activeState = TextFormatting.GREEN + "Multislash";
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | " + tierSlash + TextFormatting.RED + cores + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
-            }
-            else if (mega) {
+            if (mega) {
+                float calculatedDmg = totalDmg * ((float)tier / TOTAL_TIERS);
                 activeState = TextFormatting.GREEN + "Megaton Raid";
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Increase hits by " + TextFormatting.RED + totalDmg + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Increase hits by " + TextFormatting.RED + formatting.format(calculatedDmg) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
             }
             else if (projectile) {
-                activeState = TextFormatting.GREEN + "Projectile";
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Shoot a projectile dealing "  + TextFormatting.RED + (totalDmg / 10) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+                //black hole does half damage compared to melee since ranged would be just better
+                int projectileBonus = tag != null && tag.contains(TOTAL_BONUS_TAG) ? tag.getInt(TOTAL_BONUS_TAG) : 1;
+                float projectileDmg = (projectileBonus * ((float)tier / TOTAL_TIERS)) / 2;
+                activeState = TextFormatting.GREEN + "Black Hole";
+                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Shoot a projectile dealing "  + TextFormatting.RED + formatting.format(projectileDmg) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
             }
             else {
                 data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.AQUA + "]");
@@ -370,6 +401,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         return data;
     }
 
+    //right click functions for the blade
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack blade = playerIn.getHeldItem(handIn);
@@ -379,43 +411,36 @@ public class PrismaticBladeMk2 extends SwordItem {
                     worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
                 }
 
+                //gets appropriate tags to check current blade mode (if any), cycles between modes on SHIFT + RCLICK by setting each tag true/false
                 if (blade.getTag() == null) {
                     CompoundNBT newTag = new CompoundNBT();
-                    newTag.putBoolean("multislash", true);
-                    newTag.putBoolean("megaton", false);
-                    newTag.putBoolean("projectile", false);
+                    newTag.putBoolean(DAMAGE_MODE_TAG, false);
+                    newTag.putBoolean(PROJECTILE_MODE_TAG, false);
                     blade.setTag(newTag);
                 } else {
                     CompoundNBT tag = blade.getTag();
-                    boolean multi = tag.getBoolean("multislash");
-                    boolean mega = tag.getBoolean("megaton");
-                    boolean projectile = tag.getBoolean("projectile");
-                    if(multi) {
-                        tag.putBoolean("multislash", false);
-                        tag.putBoolean("megaton", true);
-                        tag.putBoolean("projectile", false);
-                    }
-                    else if(mega) {
-                        tag.putBoolean("multislash", false);
-                        tag.putBoolean("megaton", false);
-                        tag.putBoolean("projectile", true);
+                    boolean mega = tag.getBoolean(DAMAGE_MODE_TAG);
+                    boolean projectile = tag.getBoolean(PROJECTILE_MODE_TAG);
+                    if(mega) {
+                        tag.putBoolean(DAMAGE_MODE_TAG, false);
+                        tag.putBoolean(PROJECTILE_MODE_TAG, true);
                     }
                     else if(projectile) {
-                        tag.putBoolean("multislash", false);
-                        tag.putBoolean("megaton", false);
-                        tag.putBoolean("projectile", false);
+                        tag.putBoolean(DAMAGE_MODE_TAG, false);
+                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
                     }
                     else {
-                        tag.putBoolean("multislash", true);
-                        tag.putBoolean("megaton", false);
-                        tag.putBoolean("projectile", false);
+                        tag.putBoolean(DAMAGE_MODE_TAG, true);
+                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
                     }
                     blade.setTag(tag);
                 }
             }
+            //shoot projectile if on projectile mode
             else {
                 if(blade.getTag() != null) {
-                    if (blade.getTag().contains("projectile") && blade.getTag().getBoolean("projectile")) {
+                    if (blade.getTag().contains(PROJECTILE_MODE_TAG) && blade.getTag().getBoolean(PROJECTILE_MODE_TAG)) {
+                        int tier = blade.getTag().getInt(TIER_TAG);
                         shootProjectile(worldIn, playerIn, playerIn.getPosition());
                     }
                 }
@@ -424,26 +449,24 @@ public class PrismaticBladeMk2 extends SwordItem {
         return ActionResult.resultPass(blade);
     }
 
-    private static void doSlash(World worldIn, LivingEntity targetIn, int damageBonusIn, int slashCount) {
+    private static void doSlash(World worldIn, LivingEntity targetIn, LivingEntity attackerIn, int damageBonusIn, int tierIn) {
         targetIn.hurtResistantTime = 0;
-        targetIn.attackEntityFrom(DamageSource.GENERIC, damageBonusIn);
+        targetIn.attackEntityFrom(ModDamageTypes.causeIndirectPhysDmg(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
         targetIn.hurtResistantTime = 0;
         worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.1f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
-        if((slashCount - 1) > 0) {
-            doSlash(worldIn, targetIn, damageBonusIn, slashCount - 1);
-        }
     }
 
+    //summon and shoot projectile for the projectile mode
     private static void shootProjectile(World worldIn, PlayerEntity player, BlockPos pos) {
         //get direction player is looking currently
         Vector3d look = player.getLookVec();
         MiscHelpers.debugLogger("[Void Projectile Shot] Player Look Vector: " + look);
         //spawn projectile
         if (!worldIn.isRemote()){
-            VoidProjectileEntity orb = new VoidProjectileEntity(ModEntityTypes.VOID_PROJECTILE.get(), player, worldIn);
-            orb.shoot(look.getX(), look.getY(), look.getZ(), 3f, 0);
-            orb.setNoGravity(true);
-            worldIn.addEntity(orb);
+            VoidProjectileEntity orbProjectile = new VoidProjectileEntity(ModEntityTypes.VOID_PROJECTILE.get(), player, worldIn);
+            orbProjectile.shoot(look.getX(), look.getY(), look.getZ(), 3f, 0);
+            orbProjectile.setNoGravity(true);
+            worldIn.addEntity(orbProjectile);
             worldIn.playSound(null, pos, ModSoundEvents.VOID_PROJECTILE_SHOT.get(), SoundCategory.PLAYERS, 1, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
         }
         //do backwards dash
@@ -451,25 +474,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         player.setMotion(look.normalize().mul(dashFactor, dashFactor, dashFactor));
     }
 
-    @SubscribeEvent (priority = EventPriority.HIGH)
-    public static void megaHit(LivingHurtEvent event) {
-        if(event.getSource().getTrueSource() == null) {
-            return;
-        }
-        Iterator<ItemStack> heldItem = event.getSource().getTrueSource().getHeldEquipment().iterator();
-        for (Iterator<ItemStack> item = heldItem; item.hasNext(); ) {
-            ItemStack iter = item.next();
-            if(iter.getItem() instanceof PrismaticBladeMk2){
-                CompoundNBT tag = iter.getTag();
-                assert tag != null;
-                if(tag.contains("megaton") && tag.getBoolean("megaton")) {
-                    int bonusDmg = tag.getInt("totalBonus");
-                    event.setAmount(event.getAmount() + bonusDmg);
-                }
-            }
-        }
-    }
-
+    //makes it so you can't drop the item when it belongs to you (it becomes invincible and you immediately pick it up)
     @SubscribeEvent
     public static void droppedItem(ItemTossEvent event) {
         ItemEntity itemDrop = event.getEntityItem();
@@ -485,8 +490,8 @@ public class PrismaticBladeMk2 extends SwordItem {
         itemDrop.setInvulnerable(true);
     }
 
-    private static final String NBT_KEY = "flatlights.firstjoin";
 
+    //check and set whether this is the player's first time joining and receiving the blade if appropriate
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity playerIn = event.getPlayer();
@@ -495,13 +500,15 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
         CompoundNBT data = event.getPlayer().getPersistentData();
         CompoundNBT persistent;
+        //check for player nbt tag and give/set if not present or false
         if (!data.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
             data.put(PlayerEntity.PERSISTED_NBT_TAG, persistent = new CompoundNBT());
         }
         else {
             persistent = data.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
         }
-        if(persistent.contains(NBT_KEY)) {
+        //check if they have blade or not and if they should be given the blade, then set player tag
+        if(persistent.contains(FIRSTJOIN_TAG)) {
             boolean alreadyHave = false;
             for (int i = 0; i < playerIn.inventory.mainInventory.size(); ++i) {
                 ItemStack stack = playerIn.inventory.mainInventory.get(i);
@@ -509,10 +516,10 @@ public class PrismaticBladeMk2 extends SwordItem {
                     alreadyHave = true;
                 }
             }
-            persistent.putBoolean(NBT_KEY, alreadyHave);
+            persistent.putBoolean(FIRSTJOIN_TAG, alreadyHave);
         }
-        if (!persistent.contains(NBT_KEY) || !persistent.getBoolean(NBT_KEY)) {
-            persistent.putBoolean(NBT_KEY, true);
+        if (!persistent.contains(FIRSTJOIN_TAG) || !persistent.getBoolean(FIRSTJOIN_TAG)) {
+            persistent.putBoolean(FIRSTJOIN_TAG, true);
             playerIn.inventory.addItemStackToInventory(new ItemStack(ModItems.PRISMATIC_BLADEMK2.get()));
         }
     }

@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import java.util.Map;
 
 public class SpectrumAnvilContainer extends AbstractRepairContainer {
+    //I copied like 90% of this from the vanilla anvil class which is probably why this doesn't work well
     private final IWorldPosCallable posMain;
 
     public SpectrumAnvilContainer(int id, PlayerInventory playerInventory) {

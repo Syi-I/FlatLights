@@ -22,6 +22,7 @@ public class BleedEffect extends Effect {
         super.performEffect(entityLivingBaseIn, amplifier);
     }
 
+    //potion effect should trigger every 3 seconds of duration
     @Override
     public boolean isReady(int duration, int amplifier) {
         return duration % 3 == 0;

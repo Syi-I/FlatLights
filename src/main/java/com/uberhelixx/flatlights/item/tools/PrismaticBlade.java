@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.gui.screen.Screen;
@@ -46,7 +47,7 @@ public class PrismaticBlade extends SwordItem {
         target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 3, 4));
         target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 3, 2));
         //deal either x% of max hp as damage or config cap damage, whichever is lower
-        target.attackEntityFrom(DamageSource.GENERIC, (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
+        target.attackEntityFrom(ModDamageTypes.causeIndirectPhysDmg(attacker, attacker), (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
         attacker.heal((float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
         return true;
     }

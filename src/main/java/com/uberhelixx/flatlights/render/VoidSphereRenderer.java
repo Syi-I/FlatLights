@@ -66,11 +66,4 @@ public class VoidSphereRenderer extends EntityRenderer<VoidSphereEntity> {
         return SPHERE;
     }
 
-    public static class VoidSphereRenderFactory implements IRenderFactory<VoidSphereEntity> {
-        @Override
-        public EntityRenderer<? super VoidSphereEntity> createRenderFor(EntityRendererManager manager) {
-            return new VoidSphereRenderer(manager);
-        }
-    }
-
 }

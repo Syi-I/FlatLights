@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.entity;
 
+import com.mojang.datafixers.optics.Prism;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import net.minecraft.block.BlockState;
@@ -37,6 +38,7 @@ public class VoidSphereEntity extends AbstractArrowEntity {
     public void tick() {
         //super.tick();
         damageInRadius();
+        //spawns particles once a second while the entity exists
         if(this.ticksExisted % 20 == 0) {
             if(world.isRemote()) {
                 for(int i = 0; i < 5; i++) {
@@ -55,6 +57,7 @@ public class VoidSphereEntity extends AbstractArrowEntity {
                 }
             }
         }
+        //what happens when we want to remove the entity
         if(this.ticksExisted > 160) {
             this.remove();
             for(int i = 0; i < 360; i++) {
@@ -81,8 +84,8 @@ public class VoidSphereEntity extends AbstractArrowEntity {
     //on block collision
     @Override
     protected void func_230299_a_(BlockRayTraceResult ray) {
-        super.func_230299_a_(ray);
-        BlockState theBlockYouHit = this.world.getBlockState(ray.getPos());
+        //super.func_230299_a_(ray);
+        //BlockState theBlockYouHit = this.world.getBlockState(ray.getPos());
     }
 
     @Override
@@ -98,13 +101,16 @@ public class VoidSphereEntity extends AbstractArrowEntity {
         }
         //pull damage tag from sword to set damage values
         CompoundNBT tag = shooter.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PrismaticBladeMk2 ? shooter.getHeldItem(Hand.MAIN_HAND).getTag() : null;
-        int projectileBonus = tag != null && tag.contains("totalBonus") ? tag.getInt("totalBonus") / 10 : 1;
+        //if tag present with totalBonus then get damage, otherwise just get 1
+        int projectileBonus = tag != null && tag.contains(PrismaticBladeMk2.TOTAL_BONUS_TAG) && tag.getInt(PrismaticBladeMk2.TOTAL_BONUS_TAG) > 0 ? tag.getInt(PrismaticBladeMk2.TOTAL_BONUS_TAG) : 1;
+        int tier = tag != null && tag.contains(PrismaticBladeMk2.TIER_TAG) ? tag.getInt(PrismaticBladeMk2.TIER_TAG) + 1 : 1;
+        float projectileDmg = (projectileBonus * ((float) tier / PrismaticBladeMk2.TOTAL_TIERS)) / 2;
         List<Entity> entities = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this.getShooter(), this.getBoundingBox().grow(5));
         for (Entity instance : entities) {
             if (instance instanceof LivingEntity) {
                 //damage mobs in radius
                 if(instance.getDistance(this) <= 2) {
-                    instance.attackEntityFrom(ModDamageTypes.causeIndirectQuantum(this, this.getShooter()), projectileBonus);
+                    instance.attackEntityFrom(ModDamageTypes.causeIndirectQuantum(this, this.getShooter()), projectileDmg);
                 }
                 //pull mob towards sphere
                 else {

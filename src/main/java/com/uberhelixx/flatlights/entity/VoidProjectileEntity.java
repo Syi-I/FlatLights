@@ -28,6 +28,7 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
     @Override
     public void tick() {
         super.tick();
+        //summon black hole if the projectile hits the ground or if the projectile gets far enough away from the shooter
         if (this.timeInGround > 1){
             summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
             this.remove();
@@ -38,16 +39,19 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
                 this.remove();
             }
         }
+        //if the projectile gets stuck and doesn't do anything it gets removed after 10 seconds
         if(this.ticksExisted > 200) {
             this.remove();
         }
     }
 
+    //no item stack since this is just a projectile medium for summoning the black hole, it's not meant to be picked back up
     @Override
     protected ItemStack getArrowStack() {
         return ItemStack.EMPTY;
     }
 
+    //hitting entity also spawns the black hole
     @Override
     protected void onEntityHit(EntityRayTraceResult ray) {
         summonBlackHole(this.getPosX(), this.getPosY(), this.getPosZ());
@@ -58,7 +62,7 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
     @Override
     protected void func_230299_a_(BlockRayTraceResult ray) {
         super.func_230299_a_(ray);
-        BlockState theBlockYouHit = this.world.getBlockState(ray.getPos());
+        //BlockState theBlockYouHit = this.world.getBlockState(ray.getPos());
     }
 
     @Override
@@ -76,6 +80,7 @@ public class VoidProjectileEntity extends AbstractArrowEntity {
             return;
         }
         World worldIn = originalShooter.getEntityWorld();
+        //create the sphere with no gravity or velocity so it just sits in the air
         if (!worldIn.isRemote()){
             VoidSphereEntity orb = new VoidSphereEntity(ModEntityTypes.VOID_SPHERE.get(), (LivingEntity) this.getShooter(), this.getShooter().getEntityWorld());
             orb.setLocationAndAngles(x, y - 1.5, z, 0f, 0f);
