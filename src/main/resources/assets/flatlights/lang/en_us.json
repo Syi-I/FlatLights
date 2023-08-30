@@ -192,6 +192,11 @@
   "effect.flatlights.bleed": "Bleeding",
 
   "death.attack.flatlights_entangled.player": "Died from quantum entanglement.",
+  "death.attack.flatlights_quantum": "Absorbed too much quantum energy.",
+  "death.attack.flatlights_entangled": "Died from quantum entanglement.",
+  "death.attack.flatlights_physical": "Hit with a strong physical impact.",
+  "death.attack.flatlights_indirectQuantum": "Absorbed too much quantum energy.",
+  "death.attack.flatlights_indirectPhysical": "Hit with a strong physical impact.",
 
   "enchantment.flatlights.quantum_strike": "Quantum Strike",
   "enchantment.flatlights.quantum_strike.desc": "Attacks trigger an instance of [Quantum] damage to the target in addition to regular weapon damage, and inflict the [Entangled] effect for 30 seconds on each hit. (Quantum: Damage type that ignores armor | Entangled: Effect where all entities inflicted with [Entangled] within a certain radius also take damage equal to the damage inflicted on the target entity. When the [Entangled] effect expires, the entity also takes damage equal to a portion of its max HP)",

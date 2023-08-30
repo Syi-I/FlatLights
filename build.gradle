@@ -173,6 +173,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:attributefix-280510:3732244")
     runtimeOnly fg.deobf("curse.maven:classicbars-317642:4031993")
     runtimeOnly fg.deobf("curse.maven:appleskin-248787:3686480")
+    runtimeOnly fg.deobf("curse.maven:reauth-237701:4408006")
 }
 
 //Get properties into the manifest for reading by the runtime..

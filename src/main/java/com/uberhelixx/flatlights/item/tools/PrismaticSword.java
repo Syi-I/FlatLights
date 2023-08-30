@@ -5,6 +5,7 @@ import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketLeftClick;
+import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.client.gui.screen.Screen;
@@ -69,7 +70,7 @@ public class PrismaticSword extends SwordItem {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack sword = playerIn.getHeldItem(handIn);
 
-        if (Screen.hasShiftDown()) {
+        if (playerIn.isCrouching()) {
             if(!worldIn.isRemote()) {
                 worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
             }
@@ -77,11 +78,13 @@ public class PrismaticSword extends SwordItem {
                 CompoundNBT newTag = new CompoundNBT();
                 newTag.putBoolean("bomb", true);
                 sword.setTag(newTag);
+                PacketHandler.sendToServer(new PacketWriteNbt(newTag, sword));
             } else {
                 CompoundNBT tag = sword.getTag();
                 boolean active = tag.getBoolean("bomb");
                 tag.putBoolean("bomb", !active);
                 sword.setTag(tag);
+                PacketHandler.sendToServer(new PacketWriteNbt(tag, sword));
             }
         }
         return ActionResult.resultPass(sword);

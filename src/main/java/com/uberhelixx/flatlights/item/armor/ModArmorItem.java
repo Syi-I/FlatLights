@@ -86,20 +86,21 @@ public class ModArmorItem extends ArmorItem {
     }
 
     boolean hasFullArmor(PlayerEntity player) {
-        ItemStack boots = player.inventory.armorItemInSlot(0);
-        ItemStack leggings = player.inventory.armorItemInSlot(1);
-        ItemStack breastplate = player.inventory.armorItemInSlot(2);
-        ItemStack helmet = player.inventory.armorItemInSlot(3);
+        //use player.inventory.armorInventory.get(slot#) instead of player.inventory.armorItemInSlot(slot#)
+        //armorItemInSlot is clientside only
+        ItemStack boots = player.inventory.armorInventory.get(0);
+        ItemStack leggings = player.inventory.armorInventory.get(1);
+        ItemStack chestplate = player.inventory.armorInventory.get(2);
+        ItemStack helmet = player.inventory.armorInventory.get(3);
 
-        return !helmet.isEmpty() && !breastplate.isEmpty()
-                && !leggings.isEmpty() && !boots.isEmpty();
+        return !helmet.isEmpty() && !chestplate.isEmpty() && !leggings.isEmpty() && !boots.isEmpty();
     }
 
     private static boolean hasCorrectArmorSet(IArmorMaterial material, PlayerEntity player) {
-        ArmorItem boots = ((ArmorItem)player.inventory.armorItemInSlot(0).getItem());
-        ArmorItem leggings = ((ArmorItem)player.inventory.armorItemInSlot(1).getItem());
-        ArmorItem chestplate = ((ArmorItem)player.inventory.armorItemInSlot(2).getItem());
-        ArmorItem helmet = ((ArmorItem)player.inventory.armorItemInSlot(3).getItem());
+        ArmorItem boots = ((ArmorItem) player.inventory.armorInventory.get(0).getItem());
+        ArmorItem leggings = ((ArmorItem) player.inventory.armorInventory.get(1).getItem());
+        ArmorItem chestplate = ((ArmorItem) player.inventory.armorInventory.get(2).getItem());
+        ArmorItem helmet = ((ArmorItem) player.inventory.armorInventory.get(3).getItem());
 
         return helmet.getArmorMaterial() == material || chestplate.getArmorMaterial() == material ||
                 leggings.getArmorMaterial() == material || boots.getArmorMaterial() == material;
@@ -107,29 +108,29 @@ public class ModArmorItem extends ArmorItem {
 
     //check if individual armor pieces are prismatic
     static boolean wearingHelm(PlayerEntity player) {
-        if(!player.inventory.armorItemInSlot(3).isEmpty()) {
-            ArmorItem helmet = ((ArmorItem)player.inventory.armorItemInSlot(3).getItem());
+        if (!player.inventory.armorInventory.get(3).isEmpty()) {
+            ArmorItem helmet = ((ArmorItem) player.inventory.armorInventory.get(3).getItem());
             return helmet.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
         }
         return false;
     }
     static boolean wearingChest(PlayerEntity player) {
-        if(!player.inventory.armorItemInSlot(2).isEmpty()) {
-            ArmorItem chestplate = ((ArmorItem)player.inventory.armorItemInSlot(2).getItem());
+        if (!player.inventory.armorInventory.get(2).isEmpty()) {
+            ArmorItem chestplate = ((ArmorItem) player.inventory.armorInventory.get(2).getItem());
             return chestplate.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
         }
         return false;
     }
     static boolean wearingLegs(PlayerEntity player) {
-        if(!player.inventory.armorItemInSlot(1).isEmpty()) {
-            ArmorItem leggings = ((ArmorItem)player.inventory.armorItemInSlot(1).getItem());
+        if (!player.inventory.armorInventory.get(1).isEmpty()) {
+            ArmorItem leggings = ((ArmorItem) player.inventory.armorInventory.get(1).getItem());
             return leggings.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
         }
         return false;
     }
     static boolean wearingBoots(PlayerEntity player) {
-        if(!player.inventory.armorItemInSlot(0).isEmpty()) {
-            ArmorItem boots = ((ArmorItem)player.inventory.armorItemInSlot(0).getItem());
+        if (!player.inventory.armorInventory.get(0).isEmpty()) {
+            ArmorItem boots = ((ArmorItem) player.inventory.armorInventory.get(0).getItem());
             return boots.getArmorMaterial() == ModArmorMaterial.PRISMATIC;
         }
         return false;

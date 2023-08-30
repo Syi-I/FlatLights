@@ -89,8 +89,12 @@ public class MiscHelpers {
             if (0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) {
                 return true;
             }
-            //fabd0a49-3695-401c-9990-d95464632a6a is help1 uuid
+            //fabd0a49-3695-401c-9990-d95464632a6a is syi uuid
             if (0 == targetUuid.compareTo(UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a"))) {
+                return true;
+            }
+            //db427397-20a1-4996-96c0-bbf29ca7672f is syi uuid
+            if (0 == targetUuid.compareTo(UUID.fromString("db427397-20a1-4996-96c0-bbf29ca7672f"))) {
                 return true;
             }
         }

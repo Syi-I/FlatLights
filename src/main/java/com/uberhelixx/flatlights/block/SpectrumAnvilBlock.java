@@ -62,7 +62,7 @@ public class SpectrumAnvilBlock extends AnvilBlock {
     private static final VoxelShape PART_UPPER_Z = Block.makeCuboidShape(3.0D, 9.5D, 0.0D, 13.0D, 16.0D, 16.0D);
     private static final VoxelShape X_AXIS_AABB = VoxelShapes.or(PART_BASE, PART_LOWER_X, PART_MID_X, PART_UPPER_X);
     private static final VoxelShape Z_AXIS_AABB = VoxelShapes.or(PART_BASE, PART_LOWER_Z, PART_MID_Z, PART_UPPER_Z);
-    private static final ITextComponent containerName = ITextComponent.getTextComponentOrEmpty("Spectrum Anvil");
+    //private static final ITextComponent containerName = ITextComponent.getTextComponentOrEmpty("Spectrum Anvil");
 
     public SpectrumAnvilBlock() {
         super(Properties.create(Material.ANVIL)
