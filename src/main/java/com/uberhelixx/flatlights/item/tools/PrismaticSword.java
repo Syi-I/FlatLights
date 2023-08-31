@@ -114,11 +114,4 @@ public class PrismaticSword extends SwordItem {
             worldIn.playSound(null, pos, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1, (0.75f + (worldIn.rand.nextFloat() * 0.05f)));
         }
     }
-
-    @SubscribeEvent
-    public static void bombSwingTrigger(PlayerInteractEvent.LeftClickEmpty event) {
-        if (!event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.PRISMATIC_SWORD.get()) {
-            PacketHandler.sendToServer(new PacketLeftClick());
-        }
-    }
 }

@@ -46,32 +46,4 @@ public class QuantumStrikeEnchantment extends Enchantment {
     /*public float calcDamageByCreature(int level, CreatureAttribute creatureType) {
         return 1 + (0.75f * level);
     }*/
-
-    @SubscribeEvent
-    public static void entangleDmg(LivingHurtEvent event) {
-        LivingEntity target = event.getEntityLiving();
-        double searchRadius = FlatLightsCommonConfig.entangledRange.get();
-        if(event.getSource() != ModDamageTypes.ENTANGLED) {
-            List<Entity> entities = target.world.getEntitiesWithinAABBExcludingEntity(target, target.getBoundingBox().grow(searchRadius, searchRadius, searchRadius));
-            for (Entity instance : entities) {
-                if (instance instanceof LivingEntity && ((LivingEntity) instance).isPotionActive(ModEffects.ENTANGLED.get())) {
-                    MiscHelpers.debugLogger("[Quantum Strike Enchant] Entangled mob: " + instance.getName());
-                    instance.hurtResistantTime = 0;
-                    instance.attackEntityFrom(ModDamageTypes.ENTANGLED, event.getAmount() * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.entangledPercent.get()));
-                    instance.hurtResistantTime = 20;
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void removeFromEntangledTeam(LivingDeathEvent event) {
-        Scoreboard scoreboard = event.getEntityLiving().getEntityWorld().getScoreboard();
-        LivingEntity entityIn = event.getEntityLiving();
-        if(entityIn.getTeam() != null) {
-            if (entityIn.getTeam() == scoreboard.getTeam(EntangledEffect.getEntangledTeam())) {
-                scoreboard.removePlayerFromTeam(entityIn.getCachedUniqueIdString(), scoreboard.getTeam(EntangledEffect.getEntangledTeam()));
-            }
-        }
-    }
 }

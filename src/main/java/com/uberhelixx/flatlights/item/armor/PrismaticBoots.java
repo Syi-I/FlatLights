@@ -32,15 +32,4 @@ public class PrismaticBoots extends ModArmorItem {
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
-
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void negateFallDamage(LivingHurtEvent event) {
-        DamageSource dmgSrc = event.getSource();
-        if(event.getEntityLiving() instanceof PlayerEntity && wearingBoots((PlayerEntity) event.getEntityLiving())) {
-            if(dmgSrc == DamageSource.FALL) {
-                event.setCanceled(true);
-            }
-        }
-    }
-
 }

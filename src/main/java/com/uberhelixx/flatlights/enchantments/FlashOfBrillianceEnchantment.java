@@ -28,31 +28,4 @@ public class FlashOfBrillianceEnchantment extends Enchantment {
     public ITextComponent getDisplayName(int level) {
         return ((IFormattableTextComponent) super.getDisplayName(level)).mergeStyle(TextFormatting.DARK_GREEN);
     }
-
-    @SubscribeEvent
-    public static void xpDropMultiplier(LivingExperienceDropEvent event) {
-        LivingEntity user = event.getAttackingPlayer();
-        int baseXpAmount = event.getDroppedExperience();
-        //check if player died since the game freaks out and crashes
-        if(event.getEntity() instanceof PlayerEntity) {
-            return;
-        }
-        //check if keepInventory is on
-        if(event.getEntity() instanceof PlayerEntity && event.getEntity().getEntityWorld().getGameRules().getBoolean(GameRules.KEEP_INVENTORY)) {
-            return;
-        }
-
-        ItemStack instance = user.getHeldItem(Hand.MAIN_HAND);
-        int level = MiscHelpers.enchantLevelGrabber(instance, ModEnchantments.FLASH_OF_BRILLIANCE.get());
-        //check if enchantment is present on mainhand item (the item that killed)
-        if(level != 0) {
-            double chanceCap = FlatLightsCommonConfig.fobChanceCap.get();
-            double activeChance = level * 0.05;
-            if(Math.random() <= Math.min(activeChance, chanceCap)) {
-                event.setDroppedExperience(10 * baseXpAmount);
-                MiscHelpers.debugLogger("[Flash of Brilliance] Triggered XP multiplier.");
-                MiscHelpers.debugLogger("[Flash of Brilliance] Base XP value: " + baseXpAmount + " | New XP value: " + baseXpAmount * 10);
-            }
-        }
-    }
 }

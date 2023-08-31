@@ -124,21 +124,6 @@ public class SpectrumAnvilBlock extends AnvilBlock {
         return true;
     }
 
-    @SubscribeEvent
-    public static void LevelCapping(AnvilUpdateEvent event) {
-        if(event.getPlayer() == null) {
-            return;
-        }
-        PlayerEntity playerIn = event.getPlayer();
-        Container containerIn = playerIn.openContainer;
-        if(!(containerIn instanceof SpectrumAnvilContainer)) {
-            return;
-        }
-        if(event.getCost() > 30) {
-            event.setCost(30);
-        }
-    }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {

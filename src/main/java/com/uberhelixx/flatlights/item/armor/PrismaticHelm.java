@@ -35,7 +35,7 @@ public class PrismaticHelm extends ModArmorItem {
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
-    private static void onEquip(PlayerEntity player, boolean hasNightVis, boolean hasWaterBreath) {
+    public static void onEquip(PlayerEntity player, boolean hasNightVis, boolean hasWaterBreath) {
         if(!hasNightVis) {
             player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false));
         }
@@ -44,38 +44,12 @@ public class PrismaticHelm extends ModArmorItem {
         }
     }
 
-    private static void onUnequip(PlayerEntity player, boolean hasNightVis, boolean hasWaterBreath) {
+    public static void onUnequip(PlayerEntity player, boolean hasNightVis, boolean hasWaterBreath) {
         if(hasNightVis) {
             player.removePotionEffect(Effects.NIGHT_VISION);
         }
         if(hasWaterBreath) {
             player.removePotionEffect(Effects.WATER_BREATHING);
-        }
-    }
-
-    @SubscribeEvent
-    public static void equipCheck(LivingEquipmentChangeEvent event) {
-        PlayerEntity player;
-        boolean hasNightVis;
-        boolean hasWaterBreath;
-        if(event.getEntityLiving() instanceof PlayerEntity) {
-            player = (PlayerEntity) event.getEntityLiving();
-            hasNightVis = !Objects.equals(player.getActivePotionEffect(Effects.NIGHT_VISION), null);
-            hasWaterBreath = !Objects.equals(player.getActivePotionEffect(Effects.WATER_BREATHING), null);
-        }
-        else {
-            return;
-        }
-        if(event.getSlot() == EquipmentSlotType.HEAD) {
-            if(event.getFrom() == event.getTo() && event.getFrom().getItem() == ModItems.PRISMATIC_HELMET.get()) {
-                return;
-            }
-            else if(event.getTo().getItem() == ModItems.PRISMATIC_HELMET.get()) {
-                onEquip((PlayerEntity) event.getEntityLiving(), hasNightVis, hasWaterBreath);
-            }
-            else {
-                onUnequip((PlayerEntity) event.getEntityLiving(), hasNightVis, hasWaterBreath);
-            }
         }
     }
 }

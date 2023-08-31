@@ -8,7 +8,7 @@ import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.*;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
-import com.uberhelixx.flatlights.event.PrismaticBladeMk2Events;
+import com.uberhelixx.flatlights.event.*;
 import com.uberhelixx.flatlights.item.BreadButHighQuality;
 import com.uberhelixx.flatlights.item.ModItemGroup;
 import com.uberhelixx.flatlights.item.ModItems;
@@ -105,29 +105,29 @@ public class FlatLights
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
         //events
-        EVENT_BUS.addListener(PrismaticBlade::EnchantDouble);
-        EVENT_BUS.addListener(BreadButHighQuality::BreadEnchant);
-        EVENT_BUS.addListener(ModArmorItem::DamageReduction);
-        EVENT_BUS.addListener(PrismaticChestplate::equipCheck);
-        EVENT_BUS.addListener(PrismaticHelm::equipCheck);
-        EVENT_BUS.addListener(PrismaticBoots::negateFallDamage);
+        EVENT_BUS.addListener(AnvilEvents::EnchantDouble);
+        EVENT_BUS.addListener(AnvilEvents::BreadEnchant);
+        EVENT_BUS.addListener(ArmorEvents::DamageReduction);
+        EVENT_BUS.addListener(ArmorEvents::chestplateEquip);
+        EVENT_BUS.addListener(ArmorEvents::helmetEquip);
+        EVENT_BUS.addListener(ArmorEvents::negateFallDamage);
         EVENT_BUS.addListener(PrismaticBladeMk2Events::EnchantStack);
         EVENT_BUS.addListener(PrismaticBladeMk2Events::handlePlayerDropsEvent);
         EVENT_BUS.addListener(PrismaticBladeMk2Events::handlePlayerCloneEvent);
         EVENT_BUS.addListener(PrismaticBladeMk2Events::killMobs);
         EVENT_BUS.addListener(PrismaticBladeMk2Events::droppedItem);
         EVENT_BUS.addListener(PrismaticBladeMk2Events::onPlayerJoin);
-        EVENT_BUS.addListener(SpectrumAnvilBlock::LevelCapping);
+        EVENT_BUS.addListener(AnvilEvents::LevelCapping);
         EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
         EVENT_BUS.addListener(MiscEventHelpers::quantumDmgCheck);
         EVENT_BUS.addListener(MiscEventHelpers::entangledDmgCheck);
-        EVENT_BUS.addListener(QuantumStrikeEnchantment::entangleDmg);
-        EVENT_BUS.addListener(NeutralizerEnchantment::damageSourceConversion);
-        EVENT_BUS.addListener(FlashOfBrillianceEnchantment::xpDropMultiplier);
-        EVENT_BUS.addListener(Shimmer2Enchantment::shimmerOverload);
-        EVENT_BUS.addListener(PulsingArrowEnchantment::arrowPulseDmg);
-        EVENT_BUS.addListener(PrismaticSword::bombSwingTrigger);
-        EVENT_BUS.addListener(QuantumStrikeEnchantment::removeFromEntangledTeam);
+        EVENT_BUS.addListener(EnchantmentEvents::entangleDmg);
+        EVENT_BUS.addListener(EnchantmentEvents::damageSourceConversion);
+        EVENT_BUS.addListener(EnchantmentEvents::xpDropMultiplier);
+        EVENT_BUS.addListener(EnchantmentEvents::shimmerOverload);
+        EVENT_BUS.addListener(EnchantmentEvents::arrowPulseDmg);
+        EVENT_BUS.addListener(WeaponEvents::bombSwingTrigger);
+        EVENT_BUS.addListener(EnchantmentEvents::removeFromEntangledTeam);
     }
 
     public static Comparator<ItemStack> tabSort;
