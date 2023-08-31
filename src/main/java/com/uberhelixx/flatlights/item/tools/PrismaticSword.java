@@ -71,9 +71,9 @@ public class PrismaticSword extends SwordItem {
         ItemStack sword = playerIn.getHeldItem(handIn);
 
         if (playerIn.isCrouching()) {
-            if(!worldIn.isRemote()) {
-                worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
-            }
+
+            worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
+
             if (sword.getTag() == null) {
                 CompoundNBT newTag = new CompoundNBT();
                 newTag.putBoolean("bomb", true);
@@ -111,7 +111,7 @@ public class PrismaticSword extends SwordItem {
             BombSwingEntity bomb = new BombSwingEntity(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), player, worldIn);
             bomb.shoot(look.getX(), look.getY(), look.getZ(), 1.5f, 0);
             worldIn.addEntity(bomb);
-            worldIn.playSound(null, pos, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1, (0.75f + (worldIn.rand.nextFloat() * 0.05f)));
         }
+        worldIn.playSound(null, pos, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1, (0.75f + (worldIn.rand.nextFloat() * 0.05f)));
     }
 }

@@ -247,9 +247,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         if(uuidCheck(playerIn.getUniqueID())) {
             //can't use Screen.hasShiftDown since clientside so it doesn't register
             if (playerIn.isCrouching()) {
-                if(!worldIn.isRemote()) {
-                    worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
-                }
+                worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
 
                 //gets appropriate tags to check current blade mode (if any), cycles between modes on SHIFT + RCLICK by setting each tag true/false
                 if (blade.getTag() == null) {
@@ -309,8 +307,8 @@ public class PrismaticBladeMk2 extends SwordItem {
             orbProjectile.shoot(look.getX(), look.getY(), look.getZ(), 3f, 0);
             orbProjectile.setNoGravity(true);
             worldIn.addEntity(orbProjectile);
-            worldIn.playSound(null, pos, ModSoundEvents.VOID_PROJECTILE_SHOT.get(), SoundCategory.PLAYERS, 1, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
         }
+        worldIn.playSound(null, pos, ModSoundEvents.VOID_PROJECTILE_SHOT.get(), SoundCategory.PLAYERS, 0.75f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
         //do backwards dash
         double dashFactor = -2.0;
         player.setMotion(look.normalize().mul(dashFactor, dashFactor, dashFactor));
