@@ -229,6 +229,8 @@
   "flatlights.squeak": "Squeak",
   "flatlights.dev_blade_mode_switch": "Swapped blade modes",
   "flatlights.void_projectile_shot": "Shot black hole",
+  "flatlights.void_fizzle": "Black hole disappears",
+  "flatlights.void_hum": "Black hole humming",
 
   "enchantment.level.11": "11",
   "enchantment.level.12": "12",
