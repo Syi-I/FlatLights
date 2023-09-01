@@ -66,60 +66,6 @@ public class PrismaticBlade extends SwordItem {
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
-    //trying to rip off kikoku time
-    @SubscribeEvent
-    public static void EnchantDouble (AnvilUpdateEvent event) {
-        if (!Objects.requireNonNull(event.getPlayer()).isServerWorld()) {
-            return;
-        }
-
-        //get prismatic blade from left anvil slot, enchanted book from right anvil slot
-        ItemStack prismaticBlade = event.getLeft();
-        ItemStack enchantedBook = event.getRight();
-
-        //check that a prismatic blade and enchanted book are in the anvil
-        if (prismaticBlade == null || prismaticBlade.getItem() != ModItems.PRISMATIC_BLADE.get() || enchantedBook == null || enchantedBook.getItem() != Items.ENCHANTED_BOOK) {
-            return;
-        }
-
-        //grab current enchantments from blade and book
-        Map<Enchantment, Integer> swordMap = EnchantmentHelper.getEnchantments(prismaticBlade);
-        Map<Enchantment, Integer> bookMap = EnchantmentHelper.getEnchantments(enchantedBook);
-
-        //check if book has enchants or not
-        if (bookMap.isEmpty()) {
-            return;
-        }
-
-        //output enchants for the blade
-        Map<Enchantment, Integer> outputMap = new HashMap<>(swordMap);
-        int costCounter = 0;
-
-        //putting the enchantment into the output map and doubling enchants
-        for (Map.Entry<Enchantment, Integer> entry : bookMap.entrySet()) {
-            Enchantment enchantment = entry.getKey();
-            if (enchantment == null) {
-                continue;
-            }
-            Integer currentValue = swordMap.get(entry.getKey());
-            Integer addValue = entry.getValue();
-            if (currentValue == null) {
-                outputMap.put(entry.getKey(), addValue);
-                costCounter += addValue;
-            } else {
-                int value = Math.min(currentValue + addValue, enchantment.getMaxLevel() * FlatLightsCommonConfig.enchantMultiplierCap.get());
-                outputMap.put(entry.getKey(), value);
-                costCounter += (currentValue + addValue) * 2;
-            }
-        }
-
-        //output new blade with enchants
-        event.setCost(costCounter);
-        ItemStack enchantedBlade = prismaticBlade.copy();
-        EnchantmentHelper.setEnchantments(outputMap, enchantedBlade);
-        event.setOutput(enchantedBlade);
-    }
-
     /*@Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack blade = playerIn.getHeldItem(handIn);

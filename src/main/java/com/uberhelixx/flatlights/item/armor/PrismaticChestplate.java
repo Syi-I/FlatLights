@@ -40,35 +40,18 @@ public class PrismaticChestplate extends ModArmorItem {
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
-    private static void onEquip(PlayerEntity player) {
+    public static void onEquip(PlayerEntity player) {
         if(!player.isCreative() && !player.isSpectator() && FlatLightsCommonConfig.chestplateFlight.get()) {
             player.abilities.allowFlying = true;
             player.sendPlayerAbilities();
         }
     }
 
-    private static void onUnequip(PlayerEntity player) {
+    public static void onUnequip(PlayerEntity player) {
         if(!player.isCreative() && !player.isSpectator() && FlatLightsCommonConfig.chestplateFlight.get()) {
             player.abilities.allowFlying = false;
             player.abilities.isFlying = false;
             player.sendPlayerAbilities();
-        }
-    }
-
-    @SubscribeEvent
-    public static void equipCheck(LivingEquipmentChangeEvent event) {
-        if(event.getEntityLiving() instanceof PlayerEntity) {
-            if(event.getSlot() == EquipmentSlotType.CHEST) {
-                if(event.getFrom() == event.getTo() && event.getFrom().getItem() == ModItems.PRISMATIC_CHESTPLATE.get()) {
-                    return;
-                }
-                else if(event.getTo().getItem() == ModItems.PRISMATIC_CHESTPLATE.get()) {
-                    onEquip((PlayerEntity) event.getEntityLiving());
-                }
-                else {
-                    onUnequip((PlayerEntity) event.getEntityLiving());
-                }
-            }
         }
     }
 }

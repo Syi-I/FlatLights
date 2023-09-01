@@ -18,19 +18,20 @@ public final class PacketHandler {
             CHANNELS::equals
     );
 
-    //can only have as many messages as CHANNELS is
+    //can only have as many messages as CHANNELS is equal to
     public static void init() {
         int id = 0;
         HANDLER.registerMessage(id++, PacketLeftClick.class, PacketLeftClick::encode, PacketLeftClick::decode, PacketLeftClick::handle);
+        HANDLER.registerMessage(id++, PacketWriteNbt.class, PacketWriteNbt::encode, PacketWriteNbt::decode, PacketWriteNbt::handle);
     }
 
-    public static void sendTo(ServerPlayerEntity playerMP, Object toSend) {
+    public static void sendToPlayer(ServerPlayerEntity playerMP, Object toSend) {
         HANDLER.sendTo(toSend, playerMP.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
     }
 
     public static void sendNonLocal(ServerPlayerEntity playerMP, Object toSend) {
         if (playerMP.server.isDedicatedServer() || !playerMP.getGameProfile().getName().equals(playerMP.server.getServerOwner())) {
-            sendTo(playerMP, toSend);
+            sendToPlayer(playerMP, toSend);
         }
     }
 

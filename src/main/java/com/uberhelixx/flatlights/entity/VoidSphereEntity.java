@@ -1,9 +1,8 @@
 package com.uberhelixx.flatlights.entity;
 
-import com.mojang.datafixers.optics.Prism;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
-import net.minecraft.block.BlockState;
+import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -14,6 +13,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
@@ -42,20 +42,23 @@ public class VoidSphereEntity extends AbstractArrowEntity {
         if(this.ticksExisted % 20 == 0) {
             if(world.isRemote()) {
                 for(int i = 0; i < 5; i++) {
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX() + 1, this.getPosY() + 1.5, this.getPosZ(),
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX() + 1, this.getPosY() + 1, this.getPosZ(),
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX() - 1, this.getPosY()+ 1.5, this.getPosZ(),
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX() - 1, this.getPosY()+ 1, this.getPosZ(),
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1.5, this.getPosZ() + 1,
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1, this.getPosZ() + 1,
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1.5, this.getPosZ() - 1,
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1, this.getPosZ() - 1,
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
                 }
             }
+        }
+        if(this.ticksExisted % 160 == 5) {
+            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_HUM.get(), SoundCategory.AMBIENT, 0.3f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
         }
         //what happens when we want to remove the entity
         if(this.ticksExisted > 160) {
@@ -64,9 +67,10 @@ public class VoidSphereEntity extends AbstractArrowEntity {
                 if(i % 10 == 0) {
                     this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH,
                             this.getPosX() + 0.5d, this.getPosY() + 1, this.getPosZ() + 0.5d,
-                            Math.cos(i) * 0.5d, 0.5d, Math.sin(i) * 0.5d);
+                            Math.cos(i) * 0.5d, 0.0, Math.sin(i) * 0.5d);
                 }
             }
+            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_FIZZLE.get(), SoundCategory.AMBIENT, 0.4f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
         }
     }
 
