@@ -233,7 +233,7 @@ public class PrismaticBladeMk2Events {
             }
             ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (newCores - oldCores) + coreGainText);
             if(FlatLightsClientConfig.coreNoti.get()) {
-                killer.sendMessage(killMessage, messageOwner);
+                killer.sendMessage(killMessage, killer.getUniqueID());
             }
 
             //math for calculating if tier levels up when adding cores after a kill
