@@ -223,7 +223,8 @@ public class EnchantmentEvents {
         Entity user = event.getSource().getTrueSource();
         int level = 0;
         //grab bleeding edge enchantment level if any is applied
-        if(user instanceof PlayerEntity) {
+        //make sure user isn't applying more stacks to themselves when damage ticks, if they are bleeding but also have an item with the enchant
+        if(user instanceof PlayerEntity && target != user) {
             ItemStack weapon = ((PlayerEntity) user).getHeldItem(Hand.MAIN_HAND);
             if(weapon.isEnchanted()) {
                 level = MiscHelpers.enchantLevelGrabber(weapon, ModEnchantments.BLEEDING_EDGE.get());
@@ -240,7 +241,7 @@ public class EnchantmentEvents {
                 user.sendMessage(message, user.getUniqueID());
                 //allow for reapplication if duration is low as otherwise bleed damage may never trigger from constantly being reapplied
                 //allow for reapplication if next level of amplifier (aka bleed stacks present) is lower than the config stack cap
-                if(duration <= 5 || amplifier + 1 <= stackCap) {
+                if(duration <= (5 * 20) || amplifier + 1 <= stackCap) {
                     target.addPotionEffect(new EffectInstance(ModEffects.BLEED.get(), 600, Math.min(amplifier + 1, stackCap)));
                 }
             }
@@ -262,7 +263,8 @@ public class EnchantmentEvents {
         int level = 0;
 
         //check if user is a player and then look for if the mainhand item is enchanted with bonesaw, grab level if true
-        if(user instanceof PlayerEntity) {
+        //make sure user isn't applying more stacks to themselves when hit but also have an item with the enchant
+        if(user instanceof PlayerEntity && target != user) {
             ItemStack weapon = ((PlayerEntity) user).getHeldItem(Hand.MAIN_HAND);
             if(weapon.isEnchanted()) {
                 level = MiscHelpers.enchantLevelGrabber(weapon, ModEnchantments.BONESAW.get());

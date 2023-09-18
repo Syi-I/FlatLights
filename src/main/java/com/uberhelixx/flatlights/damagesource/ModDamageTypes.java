@@ -26,6 +26,6 @@ public class ModDamageTypes {
     }
 
     public static DamageSource causeIndirectBleed(Entity source, @Nullable Entity trueSource) {
-        return (new IndirectEntityDamageSource(FlatLights.MOD_ID + "_indirectBleed", source, trueSource));
+        return (new IndirectEntityDamageSource(FlatLights.MOD_ID + "_indirectBleed", source, trueSource)).setDamageIsAbsolute().setDamageBypassesArmor();
     }
 }
