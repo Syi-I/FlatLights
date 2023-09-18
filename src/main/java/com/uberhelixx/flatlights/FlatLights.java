@@ -128,6 +128,8 @@ public class FlatLights
         EVENT_BUS.addListener(EnchantmentEvents::arrowPulseDmg);
         EVENT_BUS.addListener(WeaponEvents::bombSwingTrigger);
         EVENT_BUS.addListener(EnchantmentEvents::removeFromEntangledTeam);
+        EVENT_BUS.addListener(EnchantmentEvents::bleedingEdgeStacks);
+        EVENT_BUS.addListener(EnchantmentEvents::bonesawStacks);
     }
 
     public static Comparator<ItemStack> tabSort;

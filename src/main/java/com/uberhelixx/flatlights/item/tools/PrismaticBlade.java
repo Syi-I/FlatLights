@@ -2,33 +2,23 @@ package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
-import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import static java.lang.Math.min;
 
@@ -47,7 +37,7 @@ public class PrismaticBlade extends SwordItem {
         target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 3, 4));
         target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 3, 2));
         //deal either x% of max hp as damage or config cap damage, whichever is lower
-        target.attackEntityFrom(ModDamageTypes.causeIndirectPhysDmg(attacker, attacker), (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
+        target.attackEntityFrom(ModDamageTypes.causeIndirectPhys(attacker, attacker), (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
         attacker.heal((float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
         return true;
     }

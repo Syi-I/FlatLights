@@ -1,27 +1,20 @@
 package com.uberhelixx.flatlights.item.tools;
 
-import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.VoidProjectileEntity;
-import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
@@ -31,16 +24,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.math.RoundingMode;
@@ -64,8 +48,6 @@ public class PrismaticBladeMk2 extends SwordItem {
     public PrismaticBladeMk2(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
         super(tier, attackDamageIn, attackSpeedIn, builderIn);
     }
-
-    public static UUID messageOwner = UUID.fromString("fabd0a49-3695-401c-9990-d95464632a6a");
 
     @Override
     public boolean isDamageable() {
@@ -116,7 +98,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
         else {
             ITextComponent fail = new StringTextComponent("This item does not belong to you.");
-            attacker.sendMessage(fail, messageOwner);
+            attacker.sendMessage(fail, attacker.getUniqueID());
             world.playSound(null, target.getPosX(), target.getPosY(), target.getPosZ(), ModSoundEvents.SQUEAK.get(), SoundCategory.PLAYERS, 0.5f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
             target.heal(target.getMaxHealth());
             return false;
@@ -291,7 +273,7 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     private static void doSlash(World worldIn, LivingEntity targetIn, LivingEntity attackerIn, int damageBonusIn, int tierIn) {
         targetIn.hurtResistantTime = 0;
-        targetIn.attackEntityFrom(ModDamageTypes.causeIndirectPhysDmg(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
+        targetIn.attackEntityFrom(ModDamageTypes.causeIndirectPhys(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
         targetIn.hurtResistantTime = 0;
         worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.1f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
     }

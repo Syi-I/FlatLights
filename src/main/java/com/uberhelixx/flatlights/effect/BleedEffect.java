@@ -1,9 +1,13 @@
 package com.uberhelixx.flatlights.effect;
 
+import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.DamageSource;
+
+import java.util.Objects;
 
 public class BleedEffect extends Effect {
     protected BleedEffect(EffectType typeIn, int liquidColorIn) {
@@ -12,20 +16,21 @@ public class BleedEffect extends Effect {
 
     @Override
     public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
-        entityLivingBaseIn.hurtResistantTime = 0;
+        Entity trueSource = entityLivingBaseIn.getLastDamageSource() != null ? entityLivingBaseIn.getLastDamageSource().getTrueSource() : entityLivingBaseIn;
+
         int dmgMultiplier = 1;
         if(amplifier > 0) {
             dmgMultiplier += amplifier;
         }
-        entityLivingBaseIn.attackEntityFrom(DamageSource.GENERIC, entityLivingBaseIn.getMaxHealth() * (0.03F * dmgMultiplier));
+        entityLivingBaseIn.attackEntityFrom(ModDamageTypes.causeIndirectBleed(trueSource, trueSource), entityLivingBaseIn.getMaxHealth() * (0.03F * dmgMultiplier));
 
         super.performEffect(entityLivingBaseIn, amplifier);
     }
 
-    //potion effect should trigger every 3 seconds of duration
+    //potion effect should trigger every 2 seconds of duration (40 ticks = 2 seconds)
     @Override
     public boolean isReady(int duration, int amplifier) {
-        return duration % 3 == 0;
+        return duration % 40 == 0;
     }
 
 }

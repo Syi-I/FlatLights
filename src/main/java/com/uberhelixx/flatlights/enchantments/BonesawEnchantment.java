@@ -6,8 +6,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.Objects;
 
@@ -19,16 +21,28 @@ public class BonesawEnchantment extends Enchantment {
     @Override
     public int getMaxLevel() { return 1; }
 
-
+    //mnoved to EnchantmentEvents because apparently onEntityDamaged double fires, leading to double stack gain
+    /*@Override
     public void onEntityDamaged(LivingEntity user, Entity target, int level) {
+        int stackCap = FlatLightsCommonConfig.bonesawStacks.get() - 1;
+
         if(target instanceof LivingEntity) {
-            if(((LivingEntity) target).isPotionActive(ModEffects.ARMOR_SHRED.get())) {
-                int amplifier = Objects.requireNonNull(((LivingEntity) target).getActivePotionEffect(ModEffects.ARMOR_SHRED.get())).getAmplifier();
-                ((LivingEntity) target).addPotionEffect(new EffectInstance(ModEffects.ARMOR_SHRED.get(), 600, Math.min(amplifier + 1, FlatLightsCommonConfig.bonesawStacks.get())));
+            LivingEntity hitEntity = (LivingEntity) target;
+            if(hitEntity.isPotionActive(ModEffects.ARMOR_SHRED.get())) {
+                int amplifier = Objects.requireNonNull(hitEntity.getActivePotionEffect(ModEffects.ARMOR_SHRED.get())).getAmplifier();
+                if(user instanceof PlayerEntity) {
+                    ITextComponent message = ITextComponent.getTextComponentOrEmpty("[Bonesaw] Amplifier level: " + amplifier);
+                    user.sendMessage(message, user.getUniqueID());
+                }
+                hitEntity.addPotionEffect(new EffectInstance(ModEffects.ARMOR_SHRED.get(), 600, Math.min(amplifier + 1, stackCap)));
             }
             else {
-                ((LivingEntity) target).addPotionEffect(new EffectInstance(ModEffects.ARMOR_SHRED.get(), 600, Math.min(level, FlatLightsCommonConfig.bonesawStacks.get())));
+                if(user instanceof PlayerEntity) {
+                    ITextComponent message = ITextComponent.getTextComponentOrEmpty("[Bonesaw] Enchant level: " + level);
+                    user.sendMessage(message, user.getUniqueID());
+                }
+                hitEntity.addPotionEffect(new EffectInstance(ModEffects.ARMOR_SHRED.get(), 600, Math.min(level - 1, stackCap)));
             }
         }
-    }
+    }*/
 }

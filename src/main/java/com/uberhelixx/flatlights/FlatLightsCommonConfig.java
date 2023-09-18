@@ -24,10 +24,6 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> pulsingPercent;
     public static final ForgeConfigSpec.ConfigValue<Boolean> multilayerReduction;
 
-
-
-
-
     static {
         BUILDER.push("Stat Balancing");
         {

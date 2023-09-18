@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.block;
 
 import com.uberhelixx.flatlights.entity.ChairEntity;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
@@ -13,6 +14,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -57,7 +59,7 @@ public class MotivationalChairBlock extends HorizontalBlock {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String funfact = "This model has nearly triple the triangles and double the vertices of Mario Kart Wii Coconut Mall. Motivational.";
+        String funfact = MiscHelpers.coloredText(TextFormatting.GRAY, "This model has nearly triple the triangles and double the vertices of Mario Kart Wii Coconut Mall. Motivational.");
         ITextComponent funfactTip = ITextComponent.getTextComponentOrEmpty(funfact);
         tooltip.add(funfactTip);
 
