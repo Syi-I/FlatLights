@@ -4,6 +4,7 @@ import com.uberhelixx.flatlights.entity.ChairEntity;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -61,7 +62,14 @@ public class MotivationalChairBlock extends HorizontalBlock {
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         String funfact = MiscHelpers.coloredText(TextFormatting.GRAY, "This model has nearly triple the triangles and double the vertices of Mario Kart Wii Coconut Mall. Motivational.");
         ITextComponent funfactTip = ITextComponent.getTextComponentOrEmpty(funfact);
-        tooltip.add(funfactTip);
+        String mainTooltipText = MiscHelpers.coloredText(TextFormatting.GRAY, "A great spot to AFK");
+        ITextComponent mainTooltip = ITextComponent.getTextComponentOrEmpty(mainTooltipText);
+        if(Screen.hasShiftDown()) {
+            tooltip.add(funfactTip);
+        }
+        else {
+            tooltip.add(mainTooltip);
+        }
 
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }

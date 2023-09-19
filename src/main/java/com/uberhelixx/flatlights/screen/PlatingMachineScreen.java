@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class PlatingMachineScreen extends ContainerScreen<PlatingMachineContainer> {
-    private final ResourceLocation GUI = new ResourceLocation(FlatLights.MOD_ID, "textures/gui/plating_machine_gui2.png");
+    private final ResourceLocation GUI = new ResourceLocation(FlatLights.MOD_ID, "textures/gui/plating_machine_gui.png");
 
     public PlatingMachineScreen(PlatingMachineContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);

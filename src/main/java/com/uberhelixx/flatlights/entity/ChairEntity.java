@@ -2,9 +2,12 @@ package com.uberhelixx.flatlights.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -47,13 +50,23 @@ public class ChairEntity extends Entity {
         {
             source = this.getPosition();
         }
-        //remove this entity if nothing is sitting in it
         if(!this.world.isRemote())
         {
+            //remove this entity if nothing is sitting in it or actual chair block is removed
             if(this.getPassengers().isEmpty() || this.world.isAirBlock(source))
             {
                 this.remove();
                 world.updateComparatorOutputLevel(getPosition(), world.getBlockState(getPosition()).getBlock());
+            }
+            //if someone is sitting in the chair give regen and saturation
+            if(!this.getPassengers().isEmpty()) {
+                List<Entity> passengers = this.getPassengers();
+                for(Entity passenger : passengers) {
+                    if(passenger instanceof LivingEntity) {
+                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.REGENERATION, 5 * 20, 3, true, false));
+                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.SATURATION, 5 * 20, 0, true, false));
+                    }
+                }
             }
         }
     }
