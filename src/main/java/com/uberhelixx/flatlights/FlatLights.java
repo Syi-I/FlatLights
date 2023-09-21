@@ -132,6 +132,7 @@ public class FlatLights
         Map<String, PlayerRenderer> skinMap = Minecraft.getInstance().getRenderManager().getSkinMap();
         for (PlayerRenderer render : new PlayerRenderer[] {skinMap.get("default"), skinMap.get("slim")}) {
             render.addLayer(new PrismaticBladeMk2Renderer(render));
+            //render.addLayer(new BladeStanceRenderer(render));
         }
 
         //list of all items for sorting creative inventory tab
