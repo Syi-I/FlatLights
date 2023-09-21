@@ -63,8 +63,10 @@ public class ChairEntity extends Entity {
                 List<Entity> passengers = this.getPassengers();
                 for(Entity passenger : passengers) {
                     if(passenger instanceof LivingEntity) {
-                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.REGENERATION, 5 * 20, 3, true, false));
-                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.SATURATION, 5 * 20, 0, true, false));
+                        //amount of seconds that this potion effect should last is multiplied by 20 since 20 ticks per second ingame
+                        int seconds = 1;
+                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.REGENERATION, seconds * 20, 2, true, false));
+                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.SATURATION, seconds * 20, 0, true, false));
                     }
                 }
             }

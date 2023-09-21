@@ -42,23 +42,23 @@ public class VoidSphereEntity extends AbstractArrowEntity {
         if(this.ticksExisted % 20 == 0) {
             if(world.isRemote()) {
                 for(int i = 0; i < 5; i++) {
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX() + 1, this.getPosY() + 1, this.getPosZ(),
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY() + 1, this.getPosZ(),
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX() - 1, this.getPosY()+ 1, this.getPosZ(),
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1, this.getPosZ(),
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1, this.getPosZ() + 1,
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1, this.getPosZ(),
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1, this.getPosZ() - 1,
+                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY()+ 1, this.getPosZ(),
                             (this.rand.nextDouble() - 0.5D) * 2.0D, (this.rand.nextDouble() - 0.5D) * 2.0D,
                             (this.rand.nextDouble() - 0.5D) * 2.0D);
                 }
             }
         }
         if(this.ticksExisted % 160 == 5) {
-            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_HUM.get(), SoundCategory.AMBIENT, 0.3f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
+            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_HUM.get(), SoundCategory.AMBIENT, 0.55f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
         }
         //what happens when we want to remove the entity
         if(this.ticksExisted > 160) {
@@ -66,11 +66,11 @@ public class VoidSphereEntity extends AbstractArrowEntity {
             for(int i = 0; i < 360; i++) {
                 if(i % 10 == 0) {
                     this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH,
-                            this.getPosX() + 0.5d, this.getPosY() + 1, this.getPosZ() + 0.5d,
+                            this.getPosX(), this.getPosY() + 1, this.getPosZ(),
                             Math.cos(i) * 0.5d, 0.0, Math.sin(i) * 0.5d);
                 }
             }
-            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_FIZZLE.get(), SoundCategory.AMBIENT, 0.4f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
+            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_FIZZLE.get(), SoundCategory.AMBIENT, 0.35f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
         }
     }
 

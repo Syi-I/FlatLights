@@ -2,28 +2,15 @@ package com.uberhelixx.flatlights;
 
 import com.google.common.collect.Ordering;
 import com.uberhelixx.flatlights.block.ModBlocks;
-import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
-import com.uberhelixx.flatlights.enchantments.*;
+import com.uberhelixx.flatlights.enchantments.ModEnchantments;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.event.*;
-import com.uberhelixx.flatlights.item.BreadButHighQuality;
-import com.uberhelixx.flatlights.item.ModItemGroup;
 import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.armor.ModArmorItem;
-import com.uberhelixx.flatlights.item.armor.PrismaticBoots;
-import com.uberhelixx.flatlights.item.armor.PrismaticChestplate;
-import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
-import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
-import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
-import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.render.BombSwingProjectileRenderer;
-import com.uberhelixx.flatlights.render.ChairEntityRenderer;
-import com.uberhelixx.flatlights.render.VoidProjectileRenderer;
-import com.uberhelixx.flatlights.render.VoidSphereRenderer;
+import com.uberhelixx.flatlights.render.*;
 import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
 import com.uberhelixx.flatlights.screen.SpectralizerScreen;
@@ -34,22 +21,21 @@ import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -65,6 +51,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -140,6 +127,12 @@ public class FlatLights
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         //have to initialize packet handler here oop
         PacketHandler.init();
+
+        //add render layers to players for both skin types
+        Map<String, PlayerRenderer> skinMap = Minecraft.getInstance().getRenderManager().getSkinMap();
+        for (PlayerRenderer render : new PlayerRenderer[] {skinMap.get("default"), skinMap.get("slim")}) {
+            render.addLayer(new PrismaticBladeMk2Renderer(render));
+        }
 
         //list of all items for sorting creative inventory tab
         List<Item> itemOrder = Arrays.asList(
