@@ -25,7 +25,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -117,6 +119,7 @@ public class FlatLights
         EVENT_BUS.addListener(EnchantmentEvents::removeFromEntangledTeam);
         EVENT_BUS.addListener(EnchantmentEvents::bleedingEdgeStacks);
         EVENT_BUS.addListener(EnchantmentEvents::bonesawStacks);
+        EVENT_BUS.addListener(BlockEvents::craftingTableSound);
     }
 
     public static Comparator<ItemStack> tabSort;
