@@ -80,8 +80,8 @@ public final class FlatLightsCommonConfig {
             BUILDER.comment("Does each individual Prismatic Armor piece reduce damage independently or only calculate once if wearing any Prismatic Armor piece? [Default: true]");
             multilayerReduction = BUILDER.define("MultilayerReduction", true);
 
-            BUILDER.comment("Chance for the crafting table jumpscare sound to play. [Default: 10%]");
-            craftingJumpscareChance = BUILDER.defineInRange("CraftingTableJumpscareChance", 10, 0, 100);
+            BUILDER.comment("Chance for the crafting table jumpscare sound to play. [Default: 5%]");
+            craftingJumpscareChance = BUILDER.defineInRange("CraftingTableJumpscareChance", 5, 0, 100);
         }
         BUILDER.pop();
 

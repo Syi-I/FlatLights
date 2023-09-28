@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class PlatingMachineRecipeCategory implements IRecipeCategory<PlatingMachineRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(FlatLights.MOD_ID, "plating");
-    public static final ResourceLocation TEXTURE = new ResourceLocation(FlatLights.MOD_ID, "textures/gui/plating_machine_gui2.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(FlatLights.MOD_ID, "textures/gui/plating_machine_gui.png");
     private final IDrawable background;
     private final IDrawable icon;
     private final IDrawableStatic progressBar;
