@@ -9,6 +9,7 @@ public final class FlatLightsClientConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> testValue;
     public static final ForgeConfigSpec.ConfigValue<Boolean> coreNoti;
     public static final ForgeConfigSpec.ConfigValue<Boolean> miscLogging;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> craftingTableJumpscare;
 
     static {
 
@@ -16,6 +17,9 @@ public final class FlatLightsClientConfig {
         {
             BUILDER.comment("Enable chat notification for use with Prismatic Blade MK2. [Default: false]");
             coreNoti = BUILDER.define("CoreNotification", false);
+
+            BUILDER.comment("Enable or disable playing the sound that triggers from opening a crafting table. [Default: true]");
+            craftingTableJumpscare = BUILDER.define("CraftingTableJumpscare", true);
         }
         BUILDER.pop();
 
