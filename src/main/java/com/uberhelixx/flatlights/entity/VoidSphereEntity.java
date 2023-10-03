@@ -106,7 +106,7 @@ public class VoidSphereEntity extends AbstractArrowEntity {
         //pull damage tag from sword to set damage values
         CompoundNBT tag = shooter.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PrismaticBladeMk2 ? shooter.getHeldItem(Hand.MAIN_HAND).getTag() : null;
         //if tag present with totalBonus then get damage, otherwise just get 1
-        int projectileBonus = tag != null && tag.contains(PrismaticBladeMk2.TOTAL_BONUS_TAG) && tag.getInt(PrismaticBladeMk2.TOTAL_BONUS_TAG) > 0 ? tag.getInt(PrismaticBladeMk2.TOTAL_BONUS_TAG) : 1;
+        int projectileBonus = tag != null && tag.contains(PrismaticBladeMk2.TOTAL_CORES_TAG) && tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) > 0 ? tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) : 1;
         int tier = tag != null && tag.contains(PrismaticBladeMk2.TIER_TAG) ? tag.getInt(PrismaticBladeMk2.TIER_TAG) + 1 : 1;
         float projectileDmg = (projectileBonus * ((float) tier / PrismaticBladeMk2.TOTAL_TIERS)) / 2;
         List<Entity> entities = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this.getShooter(), this.getBoundingBox().grow(5));

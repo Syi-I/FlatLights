@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.network.PacketHandler;
@@ -62,7 +63,7 @@ public class PrismaticBladeMk2Events {
         if(!uuidCheck(playerIn.getUniqueID())) {
             return;
         }
-        CompoundNBT data = event.getPlayer().getPersistentData();
+        CompoundNBT data = playerIn.getPersistentData();
         CompoundNBT persistent;
         //check for player nbt tag and give/set if not present or false
         if (!data.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
@@ -71,20 +72,27 @@ public class PrismaticBladeMk2Events {
         else {
             persistent = data.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
         }
-        //check if they have blade or not and if they should be given the blade, then set player tag
+        //check if it is not the first time the player joined this world, then check if blade is already present in inventory
         if(persistent.contains(FIRSTJOIN_TAG)) {
             boolean alreadyHave = false;
             for (int i = 0; i < playerIn.inventory.mainInventory.size(); ++i) {
                 ItemStack stack = playerIn.inventory.mainInventory.get(i);
                 if (stack.getItem() instanceof PrismaticBladeMk2) {
+                    //has prismatic blade mk2 in inventory, no need to give a new one
                     alreadyHave = true;
                 }
             }
+            //if already have blade, no first join so won't give blade again
             persistent.putBoolean(FIRSTJOIN_TAG, alreadyHave);
         }
+        //if not considered first join (firstjoin = false), then set to true and give blade to player
         if (!persistent.contains(FIRSTJOIN_TAG) || !persistent.getBoolean(FIRSTJOIN_TAG)) {
             persistent.putBoolean(FIRSTJOIN_TAG, true);
             playerIn.inventory.addItemStackToInventory(new ItemStack(ModItems.PRISMATIC_BLADEMK2.get()));
+        }
+        //if no core tracker stat tag in data, add the tag
+        if(!persistent.contains(PLAYER_CORETRACKER_TAG)) {
+            persistent.putInt(PLAYER_CORETRACKER_TAG, 0);
         }
     }
 
@@ -209,9 +217,9 @@ public class PrismaticBladeMk2Events {
             //check if nbt tags are already present, otherwise add tags
             if(!tool.hasTag()) {
                 CompoundNBT newTag = new CompoundNBT();
-                newTag.putInt(CORES_TAG, 0);
-                newTag.putInt(TIER_TAG, 0);
-                newTag.putInt(DAMAGE_BONUS_TAG, 0);
+                newTag.putInt(CURR_CORES_TAG, 0);
+                newTag.putInt(TIER_TAG, 1);
+                newTag.putInt(TOTAL_CORES_TAG, 0);
                 tool.setTag(newTag);
                 PacketHandler.sendToServer(new PacketWriteNbt(newTag, tool));
             }
@@ -221,34 +229,75 @@ public class PrismaticBladeMk2Events {
             }
 
             //grab nbt data for cores, tier to calculate new totals
-            int oldCores = tag.getInt(CORES_TAG);
-            int oldTier = tag.getInt(TIER_TAG);
-            int newCores = oldCores + Math.max((Math.round(((LivingEntity) mob).getMaxHealth() / 20)), 1);
-            tag.putInt(TOTAL_BONUS_TAG, newCores);
+            int oldCurrCores = tag.getInt(CURR_CORES_TAG);
+            int oldCurrTier = tag.getInt(TIER_TAG);
+            int totalCores = tag.getInt(TOTAL_CORES_TAG);
+
+            //gained cores is equal to how many times more HP the mob had compared to the player's base 20 HP
+            int gainedCores = Math.max((Math.round(((LivingEntity) mob).getMaxHealth() / 20)), 1);
+            //updated current core count, adding previous amount of cores and cores gained from the mob killed
+            int newCurrCores = oldCurrCores + gainedCores;
+
+            //double check total core count on weapon with total core count from player data tracker (always tries to get the highest total)
+            CompoundNBT playerData = killer.getPersistentData().getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+
+            //calculate total cores on blade incase something is wrong
+            int bladeIter = oldCurrTier;
+            int coreCheckCount = newCurrCores;
+            while(bladeIter > 1) {
+                bladeIter--;
+                coreCheckCount = coreCheckCount + (bladeIter * TIER_MULTIPLIER);
+            }
+
+            if(totalCores != coreCheckCount) {
+                totalCores = coreCheckCount;
+            }
+
+            //if player tracker exists and is smaller than total cores on blade, set to count from blade
+            if(playerData.contains(PLAYER_CORETRACKER_TAG) && playerData.getInt(PLAYER_CORETRACKER_TAG) <= totalCores) {
+                playerData.putInt(PLAYER_CORETRACKER_TAG, tag.getInt(TOTAL_CORES_TAG));
+            }
+            //if total cores on blade is less than player tracker, add difference between core totals to newCurrCores to update blade
+            else if(playerData.getInt(PLAYER_CORETRACKER_TAG) > totalCores || playerData.getInt(PLAYER_CORETRACKER_TAG) > coreCheckCount) {
+                int coreDiff = playerData.getInt(PLAYER_CORETRACKER_TAG) - totalCores;
+                //update gained cores to include any core difference between player and blade trackers
+                gainedCores = gainedCores + coreDiff;
+                newCurrCores = oldCurrCores + gainedCores;
+            }
+            tag.putInt(TOTAL_CORES_TAG, totalCores + gainedCores);
+            /*if(FlatLightsClientConfig.miscLogging.get()) {
+                killer.sendMessage(ITextComponent.getTextComponentOrEmpty("First Join Tag: " + playerData.getBoolean(FIRSTJOIN_TAG)), killer.getUniqueID());
+                killer.sendMessage(ITextComponent.getTextComponentOrEmpty("Core Check Output via Math Calculation: " + coreCheckCount), killer.getUniqueID());
+                killer.sendMessage(ITextComponent.getTextComponentOrEmpty("Player Core Tracker via NBT Tag: " + playerData.getInt(PLAYER_CORETRACKER_TAG)), killer.getUniqueID());
+                killer.sendMessage(ITextComponent.getTextComponentOrEmpty("Blade Core Tracker via NBT Tag: " + tag.getInt(TOTAL_CORES_TAG)), killer.getUniqueID());
+                killer.sendMessage(ITextComponent.getTextComponentOrEmpty("Blade Total Cores: " + totalCores), killer.getUniqueID());
+                killer.sendMessage(ITextComponent.getTextComponentOrEmpty("New Blade Core Count via Math Calculation: " + newCurrCores), killer.getUniqueID());
+            }*/
 
             //kill text notification formatting stuff
             String coreGainText = " core.";
-            if(newCores - oldCores > 1) {
+            if(newCurrCores - oldCurrCores > 1) {
                 coreGainText = " cores.";
             }
-            ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (newCores - oldCores) + coreGainText);
+            ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (newCurrCores - oldCurrCores) + coreGainText);
             if(FlatLightsClientConfig.coreNoti.get()) {
                 killer.sendMessage(killMessage, killer.getUniqueID());
             }
 
             //math for calculating if tier levels up when adding cores after a kill
-            int newTier = oldTier;
-            while (newCores > ((oldTier + 1) * TIER_MULTIPLIER) && (newTier + 1) < 7) {
-                newCores = newCores % ((oldTier + 1) * TIER_MULTIPLIER);
+            int newTier = oldCurrTier;
+            //new current core count > total for the tier, is next tier up greater than the total tier cap
+            while (newCurrCores > ((oldCurrTier) * TIER_MULTIPLIER) && (newTier) < TOTAL_TIERS) {
+                //get left over cores after promoting to next tier
+                newCurrCores = newCurrCores - ((oldCurrTier) * TIER_MULTIPLIER);
                 newTier++;
                 world.playSound(null, killer.getPosX(), killer.getPosY(), killer.getPosZ(), SoundEvents.ENTITY_ENDER_DRAGON_DEATH, SoundCategory.PLAYERS, 0.2f, (1.0f + (world.rand.nextFloat() * 0.3f)) * 0.99f);
-                oldTier = newTier;
+                oldCurrTier = newTier;
             }
 
             //update nbt data tags
-            tag.putInt(CORES_TAG, newCores);
+            tag.putInt(CURR_CORES_TAG, newCurrCores);
             tag.putInt(TIER_TAG, newTier);
-            tag.putInt(DAMAGE_BONUS_TAG, newCores);
             tool.setTag(tag);
             PacketHandler.sendToServer(new PacketWriteNbt(tag, tool));
         }
