@@ -20,7 +20,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import java.awt.*;
 
 public class VoidSphereRenderer extends EntityRenderer<VoidSphereEntity> {
-    public static final ResourceLocation SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/void_sphere.png");
+    public static final ResourceLocation SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/void_sphere/void_sphere.png");
     public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/void_sphere_wrapper");
 
     public VoidSphereRenderer(EntityRendererManager renderManagerIn) {
