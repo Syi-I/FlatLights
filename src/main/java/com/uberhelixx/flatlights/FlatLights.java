@@ -10,6 +10,7 @@ import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.event.*;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.network.PacketHandler;
+import com.uberhelixx.flatlights.painting.ModPaintings;
 import com.uberhelixx.flatlights.render.*;
 import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
@@ -25,9 +26,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -90,6 +89,7 @@ public class FlatLights
         ModRecipeTypes.register(eventBus);
         ModEntityTypes.register(eventBus);
         ModSoundEvents.register(eventBus);
+        ModPaintings.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
