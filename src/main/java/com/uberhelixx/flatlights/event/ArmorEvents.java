@@ -44,6 +44,8 @@ public class ArmorEvents {
                         reductionRatio = 0;
                     }
                     float reducedDamage = event.getAmount() * (1 - reductionRatio);
+
+                    //reduces damage per piece of prismatic armor worn, instead of just once if wearing any amount of prismatic armor
                     if(FlatLightsCommonConfig.multilayerReduction.get()) {
                         reducedDamage = event.getAmount();
                         if(wearingBoots(player)) {
