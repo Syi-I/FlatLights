@@ -226,9 +226,10 @@
   "tooltip.flatlights.prismatic_blade_shift": "§5§oDeals a percent of the target's max HP as bonus damage.",
   "tooltip.flatlights.prismatic_helm_shift": "§5§oProvides night vision and water breathing when worn.",
   "tooltip.flatlights.prismatic_chestplate_shift": "§5§oProvides creative flight when worn.",
-  "tooltip.flatlights.prismatic_leggings_shift": "§5§oStops Piglins from being hostile.",
+  "tooltip.flatlights.prismatic_leggings_shift": "§5§oPrevents Piglins from being hostile.",
   "tooltip.flatlights.prismatic_boots_shift": "§5§oPrevents fall damage when worn.",
   "tooltip.flatlights.prismatic_blademk2_shift": "§5§oSurvive or be destroyed, there is no other choice.",
+  "tooltip.flatlights.prismatic_blademk2_default": "§5§oDev item where I tested every function first, unstable and unbalanced.",
 
   "flatlights.squeak": "Squeak",
   "flatlights.dev_blade_mode_switch": "Swapped blade modes",
