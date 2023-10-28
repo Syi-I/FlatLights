@@ -21,7 +21,7 @@ public class StatTestCommand {
     private int getStat(CommandSource source) throws CommandSyntaxException {
         ServerPlayerEntity player = source.asPlayer();
         if(!player.getPersistentData().isEmpty() && player.getPersistentData().getCompound("PlayerPersisted").contains(PLAYER_CORETRACKER_TAG)) {
-            source.sendFeedback(new StringTextComponent("Total Cores: " + MiscHelpers.coloredText(TextFormatting.DARK_PURPLE,"" + player.getPersistentData().getCompound("PlayerPersisted").getInt(PLAYER_CORETRACKER_TAG))), true);
+            source.sendFeedback(new StringTextComponent("Total Cores: " + MiscHelpers.coloredText(TextFormatting.DARK_PURPLE,"" + player.getPersistentData().getCompound("PlayerPersisted").getInt(PLAYER_CORETRACKER_TAG))), false);
             return 1;
         }
         else {
@@ -42,7 +42,7 @@ public class StatTestCommand {
             else if(rng > 0.75) {
                 theSilly = "Okay but have you tried GTNH it's a great beginner modpack";
             }
-            source.sendFeedback(new StringTextComponent(theSilly), true);
+            source.sendFeedback(new StringTextComponent(theSilly), false);
             return -1;
         }
     }
