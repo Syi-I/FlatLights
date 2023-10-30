@@ -238,7 +238,7 @@ public class EnchantmentEvents {
                 int amplifier = Objects.requireNonNull(target.getActivePotionEffect(ModEffects.BLEED.get())).getAmplifier();
                 int duration = Objects.requireNonNull(target.getActivePotionEffect(ModEffects.BLEED.get())).getDuration();
                 ITextComponent message = ITextComponent.getTextComponentOrEmpty("[Bleeding Edge] Amplifier level: " + amplifier);
-                user.sendMessage(message, user.getUniqueID());
+                //user.sendMessage(message, user.getUniqueID());
                 //allow for reapplication if duration is low as otherwise bleed damage may never trigger from constantly being reapplied
                 //allow for reapplication if next level of amplifier (aka bleed stacks present) is lower than the config stack cap
                 if(duration <= (5 * 20) || amplifier + 1 <= stackCap) {
@@ -248,7 +248,7 @@ public class EnchantmentEvents {
             //base application if no bleed effect is active
             else {
                 ITextComponent message = ITextComponent.getTextComponentOrEmpty("[Bleeding Edge] Enchant level: " + level);
-                user.sendMessage(message, user.getUniqueID());
+                //user.sendMessage(message, user.getUniqueID());
                 target.addPotionEffect(new EffectInstance(ModEffects.BLEED.get(), 600, Math.min(level - 1, stackCap)));
             }
         }
@@ -277,13 +277,13 @@ public class EnchantmentEvents {
             if(target.isPotionActive(ModEffects.ARMOR_SHRED.get())) {
                 int amplifier = Objects.requireNonNull(target.getActivePotionEffect(ModEffects.ARMOR_SHRED.get())).getAmplifier();
                 ITextComponent message = ITextComponent.getTextComponentOrEmpty("[Bonesaw] Amplifier level: " + amplifier);
-                user.sendMessage(message, user.getUniqueID());
+                //user.sendMessage(message, user.getUniqueID());
                 target.addPotionEffect(new EffectInstance(ModEffects.ARMOR_SHRED.get(), 600, Math.min(amplifier + 1, stackCap)));
             }
             //initial application of armor shred effect when it is not already present on target
             else {
                 ITextComponent message = ITextComponent.getTextComponentOrEmpty("[Bonesaw] Enchant level: " + level);
-                user.sendMessage(message, user.getUniqueID());
+                //user.sendMessage(message, user.getUniqueID());
                 target.addPotionEffect(new EffectInstance(ModEffects.ARMOR_SHRED.get(), 600, Math.min(level - 1, stackCap)));
             }
         }

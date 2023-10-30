@@ -44,6 +44,10 @@ public class ModArmorItem extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        String setEffect = "[Set Effect]: Provides " + MiscHelpers.coloredText(TextFormatting.GOLD, "Saturation");
+        ITextComponent setEffectTooltip = ITextComponent.getTextComponentOrEmpty(setEffect);
+        tooltip.add(setEffectTooltip);
+
         String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " bonus damage reduction when full set is equipped.";
         if(Minecraft.getInstance().player != null) {
             int armorTotal = Minecraft.getInstance().player.getTotalArmorValue();
@@ -65,11 +69,11 @@ public class ModArmorItem extends ArmorItem {
 
             //capped damage reduction tooltip colors
             if(reductionRatio >= reductionRatioCap) {
-                dmgReduction = "" + MiscHelpers.coloredText(TextFormatting.GREEN, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " bonus damage reduction.";
+                dmgReduction = "[" + MiscHelpers.coloredText(TextFormatting.GREEN, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + "] bonus damage reduction.";
             }
             //not full damage reduction tooltip colors
             else {
-                dmgReduction = "" + MiscHelpers.coloredText(TextFormatting.RED, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " bonus damage reduction.";
+                dmgReduction = "[" + MiscHelpers.coloredText(TextFormatting.RED, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + "] bonus damage reduction.";
             }
         }
         ITextComponent dmgReductionTooltip = ITextComponent.getTextComponentOrEmpty(dmgReduction);

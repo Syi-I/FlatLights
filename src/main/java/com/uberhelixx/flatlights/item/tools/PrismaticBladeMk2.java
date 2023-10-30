@@ -280,7 +280,7 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     private void doSlash(World worldIn, LivingEntity targetIn, LivingEntity attackerIn, int damageBonusIn, int tierIn) {
         targetIn.hurtResistantTime = 0;
-        targetIn.attackEntityFrom(ModDamageTypes.causeIndirectPhys(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
+        targetIn.attackEntityFrom(ModDamageTypes.causeIndirectEntangled(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
         targetIn.hurtResistantTime = 0;
         worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.1f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
     }
