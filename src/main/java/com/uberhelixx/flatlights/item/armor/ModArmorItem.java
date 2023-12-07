@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.item.armor;
 import com.google.common.collect.ImmutableMap;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -15,10 +16,10 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,7 +44,38 @@ public class ModArmorItem extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " damage reduction.";
+        String setEffect = "[Set Effect]: Provides " + MiscHelpers.coloredText(TextFormatting.GOLD, "Saturation");
+        ITextComponent setEffectTooltip = ITextComponent.getTextComponentOrEmpty(setEffect);
+        tooltip.add(setEffectTooltip);
+
+        String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " bonus damage reduction when full set is equipped.";
+        if(Minecraft.getInstance().player != null) {
+            int armorTotal = Minecraft.getInstance().player.getTotalArmorValue();
+            int armorVsDiamondTotal = armorTotal - 20;
+            float reductionRatioCap = FlatLightsCommonConfig.armorDamageReduction.get() / 100f;
+            float reductionRatio;
+
+            //get reductionRatio, make sure percent doesn't go above reductionRatioCap %
+            if(armorVsDiamondTotal > 0 && reductionRatioCap > 0) {
+                reductionRatio = Math.min((armorVsDiamondTotal * 0.05f), reductionRatioCap);
+            }
+            //normal damage taken if at or below diamond level armor
+            else {
+                reductionRatio = 0;
+            }
+
+            DecimalFormat formatting = new DecimalFormat("#.##");
+            formatting.setRoundingMode(RoundingMode.FLOOR);
+
+            //capped damage reduction tooltip colors
+            if(reductionRatio >= reductionRatioCap) {
+                dmgReduction = "[" + MiscHelpers.coloredText(TextFormatting.GREEN, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + "] bonus damage reduction.";
+            }
+            //not full damage reduction tooltip colors
+            else {
+                dmgReduction = "[" + MiscHelpers.coloredText(TextFormatting.RED, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + "] bonus damage reduction.";
+            }
+        }
         ITextComponent dmgReductionTooltip = ITextComponent.getTextComponentOrEmpty(dmgReduction);
         tooltip.add(dmgReductionTooltip);
 

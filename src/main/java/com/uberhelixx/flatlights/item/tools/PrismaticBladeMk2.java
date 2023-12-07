@@ -7,6 +7,7 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -37,7 +38,7 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     public static final String FIRSTJOIN_TAG = "flatlights.firstJoin"; //used to check if dedicated player has been given the starter blade yet
     public static final String PLAYER_CORETRACKER_TAG = "flatlights.coreTracker"; //used for checking and remembering core count value if blade gets lost somehow
-    public static final String DAMAGE_MODE_TAG = "flatlights.megaton"; //bonus melee damage mode
+    public static final String DAMAGE_MODE_TAG = "flatlights.damage"; //bonus melee damage mode
     public static final String PROJECTILE_MODE_TAG = "flatlights.projectile"; //projectile shooting mode
     public static final String TIER_TAG = "flatlights.tier"; //current tier of the blade
     public static final String CURR_CORES_TAG = "flatlights.cores"; //current number of cores
@@ -109,12 +110,18 @@ public class PrismaticBladeMk2 extends SwordItem {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blademk2_shift"));
-            if(stack.getTag() != null && stack.getTag().contains(CURR_CORES_TAG)) {
-                tooltip.add(getTierData(stack));
-                tooltip.add(getCoreData(stack));
-                if(stack.getTag().contains(DAMAGE_MODE_TAG) || stack.getTag().contains(PROJECTILE_MODE_TAG)) {
-                    tooltip.add(getSwordState(stack));
+            //check for if this player is able to use the item in the first place, if not give the default tooltip with no information
+            if(Minecraft.getInstance().player != null && !MiscHelpers.uuidCheck(Minecraft.getInstance().player.getUniqueID())) {
+                tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blademk2_default"));
+            }
+            else {
+                tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blademk2_shift"));
+                if (stack.getTag() != null && stack.getTag().contains(CURR_CORES_TAG)) {
+                    tooltip.add(getTierData(stack));
+                    tooltip.add(getCoreData(stack));
+                    if (stack.getTag().contains(DAMAGE_MODE_TAG) || stack.getTag().contains(PROJECTILE_MODE_TAG)) {
+                        tooltip.add(getSwordState(stack));
+                    }
                 }
             }
         }
@@ -133,10 +140,10 @@ public class PrismaticBladeMk2 extends SwordItem {
             int tier = tag.getInt(TIER_TAG);
             String totalCoresForLevelup = "/" + (tier * TIER_MULTIPLIER);
             String coresText = "" + TextFormatting.RED + cores;
-            if(tier >= 7) {
+            if(tier >= TOTAL_TIERS) {
                 totalCoresForLevelup = "";
             }
-            if(cores >= (tier * TIER_MULTIPLIER) && tier < 7) {
+            if(cores >= (tier * TIER_MULTIPLIER) && tier < TOTAL_TIERS) {
                 coresText = "" + TextFormatting.GREEN + cores;
             }
             if (cores > 0) {
@@ -147,6 +154,7 @@ public class PrismaticBladeMk2 extends SwordItem {
     }
 
     //tier level tooltip formatting
+    //if the amount of tiers changes have to manually add things here so that it still has names and formatting, otherwise any amount of tiers over 7 is unknown
     private static ITextComponent getTierData(ItemStack tool) {
         //reads nbt data and determines the tier tooltip based off the numbers
         CompoundNBT tag = tool.getTag();
@@ -196,16 +204,16 @@ public class PrismaticBladeMk2 extends SwordItem {
             //gets all relevant data from tags
             int tier = tag.getInt(TIER_TAG) > 0 ? tag.getInt(TIER_TAG) : 1;
             int totalDmg = tag.getInt(TOTAL_CORES_TAG) > 0 ? tag.getInt(TOTAL_CORES_TAG) : 1;
-            boolean mega = tag.getBoolean(DAMAGE_MODE_TAG);
+            boolean damage = tag.getBoolean(DAMAGE_MODE_TAG);
             boolean projectile = tag.getBoolean(PROJECTILE_MODE_TAG);
             DecimalFormat formatting = new DecimalFormat("#.##");
             formatting.setRoundingMode(RoundingMode.FLOOR);
 
             //all the tooltip formatting for each mode
             String activeState = TextFormatting.DARK_RED + "Deactivated";
-            if (mega) {
+            if (damage) {
                 float calculatedDmg = totalDmg * ((float)tier / TOTAL_TIERS);
-                activeState = TextFormatting.GREEN + "Megaton Raid";
+                activeState = TextFormatting.GREEN + "Annihilation";
                 data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Increase hits by " + TextFormatting.RED + formatting.format(calculatedDmg) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
             }
             else if (projectile) {
@@ -272,7 +280,7 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     private void doSlash(World worldIn, LivingEntity targetIn, LivingEntity attackerIn, int damageBonusIn, int tierIn) {
         targetIn.hurtResistantTime = 0;
-        targetIn.attackEntityFrom(ModDamageTypes.causeIndirectPhys(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
+        targetIn.attackEntityFrom(ModDamageTypes.causeIndirectEntangled(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
         targetIn.hurtResistantTime = 0;
         worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.1f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
     }

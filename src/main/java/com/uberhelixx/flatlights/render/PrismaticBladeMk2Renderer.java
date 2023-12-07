@@ -145,7 +145,7 @@ public class PrismaticBladeMk2Renderer extends LayerRenderer<AbstractClientPlaye
     }
 
     ResourceLocation DAMAGE_LAYER = new ResourceLocation(FlatLights.MOD_ID, "textures/models/power_layers/mk2_damage_mode_layer.png");
-    //ResourceLocation DAMAGE_LAYER = new ResourceLocation(FlatLights.MOD_ID, "textures/models/power_layers/enchanted_item_glint_purple.png");
+
     private ResourceLocation layerTexture() {
         return DAMAGE_LAYER;
     }
