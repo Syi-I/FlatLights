@@ -81,7 +81,7 @@ public final class FlatLightsCommonConfig {
             multilayerReduction = BUILDER.define("MultilayerReduction", true);
 
             BUILDER.comment("Chance for the crafting table jumpscare sound to play. [Default: 1%]");
-            craftingJumpscareChance = BUILDER.defineInRange("CraftingTableJumpscareChance", 12, 0, 100);
+            craftingJumpscareChance = BUILDER.defineInRange("CraftingTableJumpscareChance", 1, 0, 100);
         }
         BUILDER.pop();
 
