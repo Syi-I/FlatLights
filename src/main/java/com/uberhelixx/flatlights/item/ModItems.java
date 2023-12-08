@@ -2,6 +2,7 @@ package com.uberhelixx.flatlights.item;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.armor.*;
+import com.uberhelixx.flatlights.item.tools.HueShiftingVial;
 import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.item.tools.PrismaticSword;
@@ -78,6 +79,8 @@ public class ModItems {
 
     public static final RegistryObject<Item> PRISMA_NUCLEUS = ITEMS.register("prisma_nucleus",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    public static final RegistryObject<Item> HUE_SHIFTING_VIAL = ITEMS.register("hue_shifting_vial",
+            () -> new HueShiftingVial(new Item.Properties().group(ModItemGroup.FLATLIGHTS).maxStackSize(1)));
     public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS).food(new Food.Builder().hunger(30).saturation(36).build())));
 

@@ -320,6 +320,7 @@ public class FlatLights
                 ModItems.PRISMATIC_SWORD.get(),
                 ModItems.PRISMATIC_BLADE.get(),
                 ModItems.PRISMA_NUCLEUS.get(),
+                ModItems.HUE_SHIFTING_VIAL.get(),
                 ModItems.BIG_BREAD.get(),
 
                 ModItems.GUN_RAT.get(), //creative only items
