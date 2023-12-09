@@ -3,9 +3,9 @@ package com.uberhelixx.flatlights.item.tools;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class HueShiftingVial extends Item {
+public class ReusableDye extends Item {
 
-    public HueShiftingVial(Properties properties) {
+    public ReusableDye(Properties properties) {
         super(properties);
     }
 
