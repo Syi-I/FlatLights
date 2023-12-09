@@ -244,7 +244,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SAPPHIRE_PANEL = registerPanel("sapphire_panel", () -> new SlabLightBlock(2));
     public static final RegistryObject<Block> NAVY_BLUE_PANEL = registerPanel("navy_blue_panel", () -> new SlabLightBlock(2));
     public static final RegistryObject<Block> INDIGO_PANEL = registerPanel("indigo_panel", () -> new SlabLightBlock(2));
-    public static final RegistryObject<Block> dark_purple_PANEL = registerPanel("dark_purple_panel", () -> new SlabLightBlock(2));
+    public static final RegistryObject<Block> DARK_PURPLE_PANEL = registerPanel("dark_purple_panel", () -> new SlabLightBlock(2));
     public static final RegistryObject<Block> RED_PURPLE_PANEL = registerPanel("red_purple_panel", () -> new SlabLightBlock(2));
     public static final RegistryObject<Block> DARK_PINK_PANEL = registerPanel("dark_pink_panel", () -> new SlabLightBlock(2));
     public static final RegistryObject<Block> ROSY_PINK_PANEL = registerPanel("rosy_pink_panel", () -> new SlabLightBlock(2));
@@ -280,7 +280,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SAPPHIRE_PILLAR = registerPillar("sapphire_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> NAVY_BLUE_PILLAR = registerPillar("navy_blue_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> INDIGO_PILLAR = registerPillar("indigo_pillar", () -> new PillarLightBlock(4));
-    public static final RegistryObject<Block> dark_purple_PILLAR = registerPillar("dark_purple_pillar", () -> new PillarLightBlock(4));
+    public static final RegistryObject<Block> DARK_PURPLE_PILLAR = registerPillar("dark_purple_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> RED_PURPLE_PILLAR = registerPillar("red_purple_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> DARK_PINK_PILLAR = registerPillar("dark_pink_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> ROSY_PINK_PILLAR = registerPillar("rosy_pink_pillar", () -> new PillarLightBlock(4));
@@ -316,7 +316,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SAPPHIRE_HORIZONTAL_EDGE = registerEdgeH("sapphire_horizontal_edge", () -> new HorizontalEdgeBlock(2));
     public static final RegistryObject<Block> NAVY_BLUE_HORIZONTAL_EDGE = registerEdgeH("navy_blue_horizontal_edge", () -> new HorizontalEdgeBlock(2));
     public static final RegistryObject<Block> INDIGO_HORIZONTAL_EDGE = registerEdgeH("indigo_horizontal_edge", () -> new HorizontalEdgeBlock(2));
-    public static final RegistryObject<Block> dark_purple_HORIZONTAL_EDGE = registerEdgeH("dark_purple_horizontal_edge", () -> new HorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> DARK_PURPLE_HORIZONTAL_EDGE = registerEdgeH("dark_purple_horizontal_edge", () -> new HorizontalEdgeBlock(2));
     public static final RegistryObject<Block> RED_PURPLE_HORIZONTAL_EDGE = registerEdgeH("red_purple_horizontal_edge", () -> new HorizontalEdgeBlock(2));
     public static final RegistryObject<Block> DARK_PINK_HORIZONTAL_EDGE = registerEdgeH("dark_pink_horizontal_edge", () -> new HorizontalEdgeBlock(2));
     public static final RegistryObject<Block> ROSY_PINK_HORIZONTAL_EDGE = registerEdgeH("rosy_pink_horizontal_edge", () -> new HorizontalEdgeBlock(2));
@@ -352,7 +352,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SAPPHIRE_VERTICAL_EDGE = registerEdgeV("sapphire_vertical_edge", () -> new VerticalEdgeBlock(2));
     public static final RegistryObject<Block> NAVY_BLUE_VERTICAL_EDGE = registerEdgeV("navy_blue_vertical_edge", () -> new VerticalEdgeBlock(2));
     public static final RegistryObject<Block> INDIGO_VERTICAL_EDGE = registerEdgeV("indigo_vertical_edge", () -> new VerticalEdgeBlock(2));
-    public static final RegistryObject<Block> dark_purple_VERTICAL_EDGE = registerEdgeV("dark_purple_vertical_edge", () -> new VerticalEdgeBlock(2));
+    public static final RegistryObject<Block> DARK_PURPLE_VERTICAL_EDGE = registerEdgeV("dark_purple_vertical_edge", () -> new VerticalEdgeBlock(2));
     public static final RegistryObject<Block> RED_PURPLE_VERTICAL_EDGE = registerEdgeV("red_purple_vertical_edge", () -> new VerticalEdgeBlock(2));
     public static final RegistryObject<Block> DARK_PINK_VERTICAL_EDGE = registerEdgeV("dark_pink_vertical_edge", () -> new VerticalEdgeBlock(2));
     public static final RegistryObject<Block> ROSY_PINK_VERTICAL_EDGE = registerEdgeV("rosy_pink_vertical_edge", () -> new VerticalEdgeBlock(2));
