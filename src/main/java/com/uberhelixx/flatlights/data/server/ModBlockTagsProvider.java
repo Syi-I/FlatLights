@@ -46,7 +46,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.SAPPHIRE_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.NAVY_BLUE_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.INDIGO_FLATBLOCK.get());
-        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.SHIFTED_PURPLE_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.dark_purple_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.RED_PURPLE_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.DARK_PINK_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.ROSY_PINK_FLATBLOCK.get());
