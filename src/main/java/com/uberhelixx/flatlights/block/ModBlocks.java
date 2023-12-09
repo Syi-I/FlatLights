@@ -136,7 +136,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> SAPPHIRE_FLATBLOCK = registerFlatblock("sapphire_flatblock", FlatBlock::new);
     public static final RegistryObject<Block> NAVY_BLUE_FLATBLOCK = registerFlatblock("navy_blue_flatblock", FlatBlock::new);
     public static final RegistryObject<Block> INDIGO_FLATBLOCK = registerFlatblock("indigo_flatblock", FlatBlock::new);
-    public static final RegistryObject<Block> dark_purple_FLATBLOCK = registerFlatblock("dark_purple_flatblock", FlatBlock::new);
+    public static final RegistryObject<Block> DARK_PURPLE_FLATBLOCK = registerFlatblock("dark_purple_flatblock", FlatBlock::new);
     public static final RegistryObject<Block> RED_PURPLE_FLATBLOCK = registerFlatblock("red_purple_flatblock", FlatBlock::new);
     public static final RegistryObject<Block> DARK_PINK_FLATBLOCK = registerFlatblock("dark_pink_flatblock", FlatBlock::new);
     public static final RegistryObject<Block> ROSY_PINK_FLATBLOCK = registerFlatblock("rosy_pink_flatblock", FlatBlock::new);

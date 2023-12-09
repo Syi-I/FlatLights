@@ -169,7 +169,7 @@ public class FlatLights
                 ModBlocks.SAPPHIRE_FLATBLOCK.get().asItem(),
                 ModBlocks.NAVY_BLUE_FLATBLOCK.get().asItem(),
                 ModBlocks.INDIGO_FLATBLOCK.get().asItem(),
-                ModBlocks.dark_purple_FLATBLOCK.get().asItem(),
+                ModBlocks.DARK_PURPLE_FLATBLOCK.get().asItem(),
                 ModBlocks.RED_PURPLE_FLATBLOCK.get().asItem(),
                 ModBlocks.DARK_PINK_FLATBLOCK.get().asItem(),
                 ModBlocks.ROSY_PINK_FLATBLOCK.get().asItem(),
