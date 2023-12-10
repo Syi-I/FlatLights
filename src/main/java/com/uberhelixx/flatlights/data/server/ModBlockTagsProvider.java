@@ -15,6 +15,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void registerTags() {
+        //default color flatblocks
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.BLACK_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.BLUE_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.BROWN_FLATBLOCK.get());
@@ -31,5 +32,23 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.RED_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.WHITE_FLATBLOCK.get());
         getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.YELLOW_FLATBLOCK.get());
+
+        //shifted flatblocks
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.SALMON_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.GOLD_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.SANDY_YELLOW_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.PALE_YELLOW_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.SPRING_GREEN_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.PASTEL_GREEN_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.TEAL_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.CYAN_BLUE_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.CERULEAN_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.SAPPHIRE_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.NAVY_BLUE_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.INDIGO_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.DARK_PURPLE_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.RED_PURPLE_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.DARK_PINK_FLATBLOCK.get());
+        getOrCreateBuilder(ModTags.Blocks.FLATBLOCKS).add(ModBlocks.ROSY_PINK_FLATBLOCK.get());
     }
 }

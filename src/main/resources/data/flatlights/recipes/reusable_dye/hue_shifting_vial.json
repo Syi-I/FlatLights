@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "flatlights:prismatic_ingot"
+    }
+  ],
+  "result": {
+    "item": "flatlights:hue_shifting_vial",
+    "count": 1
+  }
+}
