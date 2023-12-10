@@ -159,6 +159,24 @@ public class ModBlocks {
     public static final RegistryObject<Block> WHITE_HEXBLOCK = registerBlock("white_hexblock", PlateBlock::new);
     public static final RegistryObject<Block> YELLOW_HEXBLOCK = registerBlock("yellow_hexblock", PlateBlock::new);
 
+    // SHIFTED HEX BLOCKS ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_HEXBLOCK = registerBlock("salmon_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> GOLD_HEXBLOCK = registerBlock("gold_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> SANDY_YELLOW_HEXBLOCK = registerBlock("sandy_yellow_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> PALE_YELLOW_HEXBLOCK = registerBlock("pale_yellow_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> SPRING_GREEN_HEXBLOCK = registerBlock("spring_green_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> PASTEL_GREEN_HEXBLOCK = registerBlock("pastel_green_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> TEAL_HEXBLOCK = registerBlock("teal_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> CYAN_BLUE_HEXBLOCK = registerBlock("cyan_blue_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> CERULEAN_HEXBLOCK = registerBlock("cerulean_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> SAPPHIRE_HEXBLOCK = registerBlock("sapphire_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> NAVY_BLUE_HEXBLOCK = registerBlock("navy_blue_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> INDIGO_HEXBLOCK = registerBlock("indigo_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PURPLE_HEXBLOCK = registerBlock("dark_purple_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> RED_PURPLE_HEXBLOCK = registerBlock("red_purple_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PINK_HEXBLOCK = registerBlock("dark_pink_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> ROSY_PINK_HEXBLOCK = registerBlock("rosy_pink_hexblock", PlateBlock::new);
+
     // LARGE HEXBLOCKS ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_LARGE_HEXBLOCK = registerBlock("black_large_hexblock", PlateBlock::new);
     public static final RegistryObject<Block> BLUE_LARGE_HEXBLOCK = registerBlock("blue_large_hexblock", PlateBlock::new);
@@ -176,6 +194,24 @@ public class ModBlocks {
     public static final RegistryObject<Block> RED_LARGE_HEXBLOCK = registerBlock("red_large_hexblock", PlateBlock::new);
     public static final RegistryObject<Block> WHITE_LARGE_HEXBLOCK = registerBlock("white_large_hexblock", PlateBlock::new);
     public static final RegistryObject<Block> YELLOW_LARGE_HEXBLOCK = registerBlock("yellow_large_hexblock", PlateBlock::new);
+
+    // SHIFTED LARGE HEX BLOCKS ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_LARGE_HEXBLOCK = registerBlock("salmon_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> GOLD_LARGE_HEXBLOCK = registerBlock("gold_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> SANDY_YELLOW_LARGE_HEXBLOCK = registerBlock("sandy_yellow_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> PALE_YELLOW_LARGE_HEXBLOCK = registerBlock("pale_yellow_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> SPRING_GREEN_LARGE_HEXBLOCK = registerBlock("spring_green_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> PASTEL_GREEN_LARGE_HEXBLOCK = registerBlock("pastel_green_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> TEAL_LARGE_HEXBLOCK = registerBlock("teal_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> CYAN_BLUE_LARGE_HEXBLOCK = registerBlock("cyan_blue_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> CERULEAN_LARGE_HEXBLOCK = registerBlock("cerulean_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> SAPPHIRE_LARGE_HEXBLOCK = registerBlock("sapphire_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> NAVY_BLUE_LARGE_HEXBLOCK = registerBlock("navy_blue_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> INDIGO_LARGE_HEXBLOCK = registerBlock("indigo_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PURPLE_LARGE_HEXBLOCK = registerBlock("dark_purple_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> RED_PURPLE_LARGE_HEXBLOCK = registerBlock("red_purple_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PINK_LARGE_HEXBLOCK = registerBlock("dark_pink_large_hexblock", PlateBlock::new);
+    public static final RegistryObject<Block> ROSY_PINK_LARGE_HEXBLOCK = registerBlock("rosy_pink_large_hexblock", PlateBlock::new);
 
     // TILES ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_TILES = registerBlock("black_tiles", PlateBlock::new);
@@ -195,6 +231,24 @@ public class ModBlocks {
     public static final RegistryObject<Block> WHITE_TILES = registerBlock("white_tiles", PlateBlock::new);
     public static final RegistryObject<Block> YELLOW_TILES = registerBlock("yellow_tiles", PlateBlock::new);
 
+    // SHIFTED TILES BLOCKS ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_TILES = registerBlock("salmon_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> GOLD_TILES = registerBlock("gold_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> SANDY_YELLOW_TILES = registerBlock("sandy_yellow_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> PALE_YELLOW_TILES = registerBlock("pale_yellow_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> SPRING_GREEN_TILES = registerBlock("spring_green_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> PASTEL_GREEN_TILES = registerBlock("pastel_green_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> TEAL_TILES = registerBlock("teal_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> CYAN_BLUE_TILES = registerBlock("cyan_blue_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> CERULEAN_TILES = registerBlock("cerulean_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> SAPPHIRE_TILES = registerBlock("sapphire_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> NAVY_BLUE_TILES = registerBlock("navy_blue_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> INDIGO_TILES = registerBlock("indigo_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PURPLE_TILES = registerBlock("dark_purple_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> RED_PURPLE_TILES = registerBlock("red_purple_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PINK_TILES = registerBlock("dark_pink_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> ROSY_PINK_TILES = registerBlock("rosy_pink_tiles", PlateBlock::new);
+
     // LARGE TILES ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_LARGE_TILES = registerBlock("black_large_tiles", PlateBlock::new);
     public static final RegistryObject<Block> BLUE_LARGE_TILES = registerBlock("blue_large_tiles", PlateBlock::new);
@@ -212,6 +266,24 @@ public class ModBlocks {
     public static final RegistryObject<Block> RED_LARGE_TILES = registerBlock("red_large_tiles", PlateBlock::new);
     public static final RegistryObject<Block> WHITE_LARGE_TILES = registerBlock("white_large_tiles", PlateBlock::new);
     public static final RegistryObject<Block> YELLOW_LARGE_TILES = registerBlock("yellow_large_tiles", PlateBlock::new);
+
+    // SHIFTED LARGE TILES BLOCKS ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_LARGE_TILES = registerBlock("salmon_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> GOLD_LARGE_TILES = registerBlock("gold_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> SANDY_YELLOW_LARGE_TILES = registerBlock("sandy_yellow_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> PALE_YELLOW_LARGE_TILES = registerBlock("pale_yellow_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> SPRING_GREEN_LARGE_TILES = registerBlock("spring_green_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> PASTEL_GREEN_LARGE_TILES = registerBlock("pastel_green_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> TEAL_LARGE_TILES = registerBlock("teal_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> CYAN_BLUE_LARGE_TILES = registerBlock("cyan_blue_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> CERULEAN_LARGE_TILES = registerBlock("cerulean_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> SAPPHIRE_LARGE_TILES = registerBlock("sapphire_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> NAVY_BLUE_LARGE_TILES = registerBlock("navy_blue_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> INDIGO_LARGE_TILES = registerBlock("indigo_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PURPLE_LARGE_TILES = registerBlock("dark_purple_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> RED_PURPLE_LARGE_TILES = registerBlock("red_purple_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> DARK_PINK_LARGE_TILES = registerBlock("dark_pink_large_tiles", PlateBlock::new);
+    public static final RegistryObject<Block> ROSY_PINK_LARGE_TILES = registerBlock("rosy_pink_large_tiles", PlateBlock::new);
 
     // PANEL ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_PANEL = registerPanel("black_panel", () -> new SlabLightBlock(2));
