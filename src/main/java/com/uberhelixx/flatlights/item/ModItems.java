@@ -2,10 +2,7 @@ package com.uberhelixx.flatlights.item;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.item.armor.*;
-import com.uberhelixx.flatlights.item.tools.ReusableDye;
-import com.uberhelixx.flatlights.item.tools.PrismaticBlade;
-import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
-import com.uberhelixx.flatlights.item.tools.PrismaticSword;
+import com.uberhelixx.flatlights.item.tools.*;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
@@ -86,6 +83,8 @@ public class ModItems {
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
     public static final RegistryObject<Item> BIG_BREAD = ITEMS.register("bread_but_high_quality",
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS).food(new Food.Builder().hunger(30).saturation(36).build())));
+    public static final RegistryObject<Item> PORTABLE_BLACKHOLE = ITEMS.register("portable_blackhole",
+            () -> new PortableBlackHoleItem(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
     //reusable dyes
     public static final RegistryObject<Item> BLACK_REUSABLE_DYE = ITEMS.register("black_reusable_dye",

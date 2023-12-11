@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.entity.PortableBlackHoleEntity;
 import com.uberhelixx.flatlights.entity.VoidSphereEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -15,31 +16,30 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 import java.awt.*;
 
-public class VoidSphereRenderer extends EntityRenderer<VoidSphereEntity> {
+public class PortableBlackHoleRenderer extends EntityRenderer<PortableBlackHoleEntity> {
     public static final ResourceLocation SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/void_sphere/void_sphere.png");
     public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/void_sphere_wrapper");
 
-    public VoidSphereRenderer(EntityRendererManager renderManagerIn) {
+    public PortableBlackHoleRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
     }
 
     @Override
-    public void render(VoidSphereEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(PortableBlackHoleEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         IBakedModel sphereModel = Minecraft.getInstance().getModelManager().getModel(SPHERE_MODEL);
 
         matrixStackIn.push();
         MatrixStack.Entry currentMatrix = matrixStackIn.getLast();
 
         final float MODEL_SIZE_IN_ORIGINAL_COORDINATES = 1.0F;  // size of the wavefront model
-        final float TARGET_SIZE_WHEN_RENDERED = 1.25F;  // desired size when rendered (in metres)
+        final float TARGET_SIZE_WHEN_RENDERED = 0.75F;  // desired size when rendered (in metres)
 
         final float SCALE_FACTOR = TARGET_SIZE_WHEN_RENDERED / MODEL_SIZE_IN_ORIGINAL_COORDINATES;
         matrixStackIn.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
-        matrixStackIn.translate(0, 0.75, 0);
+        matrixStackIn.translate(0, 0.65, 0);
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-1 * entityIn.ticksExisted));
         float flicker = entityIn.ticksExisted % 2 * 0.08f;
         matrixStackIn.scale(1 - flicker, 1 - flicker, 1 - flicker);
@@ -64,7 +64,7 @@ public class VoidSphereRenderer extends EntityRenderer<VoidSphereEntity> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(VoidSphereEntity entity) {
+    public ResourceLocation getEntityTexture(PortableBlackHoleEntity entity) {
         return SPHERE;
     }
 

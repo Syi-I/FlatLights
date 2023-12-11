@@ -21,31 +21,31 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import java.util.List;
 
-public class VoidSphereEntity extends AbstractArrowEntity {
-    protected VoidSphereEntity(EntityType<? extends AbstractArrowEntity> type, World worldIn) {
+public class PortableBlackHoleEntity extends AbstractArrowEntity {
+    public PortableBlackHoleEntity(EntityType<? extends AbstractArrowEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
-    public VoidSphereEntity(EntityType<? extends AbstractArrowEntity> type, double x, double y, double z, World worldIn) {
+    public PortableBlackHoleEntity(EntityType<? extends AbstractArrowEntity> type, double x, double y, double z, World worldIn) {
         super(type, x, y, z, worldIn);
     }
 
-    public VoidSphereEntity(EntityType<? extends AbstractArrowEntity> type, LivingEntity shooter, World worldIn) {
+    public PortableBlackHoleEntity(EntityType<? extends AbstractArrowEntity> type, LivingEntity shooter, World worldIn) {
         super(type, shooter, worldIn);
     }
 
+    //time the black hole stays in existence
+    int SECONDS = 7;
+    int TICK_MULTI = 20;
     @Override
     public void tick() {
-        //time the black hole stays in existence
-        int SECONDS = 8;
-        int TICK_MULTI = 20;
         //super.tick();
         damageInRadius();
         //spawns particles once a second while the entity exists
-        double PARTICLE_Y_OFFSET = 1;
+        double PARTICLE_Y_OFFSET = 0.65;
         if(this.ticksExisted % 20 == 0) {
             if(world.isRemote()) {
-                double PARTICLE_SPEED_MULTI = 0.9D;
+                double PARTICLE_SPEED_MULTI = 0.75D;
                 for(int i = 0; i < 5; i++) {
                     this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY() + PARTICLE_Y_OFFSET, this.getPosZ(),
                             (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
@@ -71,7 +71,7 @@ public class VoidSphereEntity extends AbstractArrowEntity {
             for(int i = 0; i < 360; i++) {
                 if(i % 10 == 0) {
                     this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH,
-                            this.getPosX(), this.getPosY() + 1, this.getPosZ(),
+                            this.getPosX(), this.getPosY() + PARTICLE_Y_OFFSET, this.getPosZ(),
                             Math.cos(i) * 0.5d, 0.0, Math.sin(i) * 0.5d);
                 }
             }
@@ -103,27 +103,24 @@ public class VoidSphereEntity extends AbstractArrowEntity {
     }
 
     private void damageInRadius() {
-        PlayerEntity shooter = this.getShooter() instanceof PlayerEntity ? (PlayerEntity) this.getShooter() : null;
-        //should always be a player shooting this projectile since it's the unusable dev sword
-        if(shooter == null) {
-            return;
-        }
-        //pull damage tag from sword to set damage values
-        CompoundNBT tag = shooter.getHeldItem(Hand.MAIN_HAND).getItem() instanceof PrismaticBladeMk2 ? shooter.getHeldItem(Hand.MAIN_HAND).getTag() : null;
-        //if tag present with totalBonus then get damage, otherwise just get 1
-        int projectileBonus = tag != null && tag.contains(PrismaticBladeMk2.TOTAL_CORES_TAG) && tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) > 0 ? tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) : 1;
-        int tier = tag != null && tag.contains(PrismaticBladeMk2.TIER_TAG) ? tag.getInt(PrismaticBladeMk2.TIER_TAG) + 1 : 1;
-        float projectileDmg = (projectileBonus * ((float) tier / PrismaticBladeMk2.TOTAL_TIERS)) / 2;
-        List<Entity> entities = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this.getShooter(), this.getBoundingBox().grow(5));
+        //constant values to tweak for black hole parameters
+        //damage that being in the black hole does
+        float PROJECTILE_DMG = 1.5f;
+        //range the black hole searches for entities
+        float SUCC_RADIUS = 4;
+        //how strong the pull is from the black hole
+        double SUCC_POWER = 0.2;
+
+        //gets the entities around the black hole
+        List<Entity> entities = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this.getShooter(), this.getBoundingBox().grow(SUCC_RADIUS));
         for (Entity instance : entities) {
             if (instance instanceof LivingEntity) {
                 //damage mobs in radius
-                if(instance.getDistance(this) <= 2) {
-                    instance.attackEntityFrom(ModDamageTypes.causeIndirectQuantum(this, this.getShooter()), projectileDmg);
+                if(instance.getDistance(this) <= 1.25) {
+                    instance.attackEntityFrom(ModDamageTypes.causeIndirectQuantum(this, this.getShooter()), PROJECTILE_DMG);
                 }
                 //pull mob towards sphere
                 else {
-                    double SUCC_POWER = 0.2;
                     if(this.getPosX() > instance.getPosX() && instance.getMotion().getX() < 1) {
                         instance.setMotion(instance.getMotion().getX() + SUCC_POWER, instance.getMotion().getY(), instance.getMotion().getZ());
                     }
