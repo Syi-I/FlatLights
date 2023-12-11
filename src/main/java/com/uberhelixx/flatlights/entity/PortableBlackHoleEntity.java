@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.entity;
 
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
@@ -106,10 +107,16 @@ public class PortableBlackHoleEntity extends AbstractArrowEntity {
         //constant values to tweak for black hole parameters
         //damage that being in the black hole does
         float PROJECTILE_DMG = 1.5f;
+        if(FlatLightsCommonConfig.portableBlackHoleDamage.get() != null) {
+            PROJECTILE_DMG = FlatLightsCommonConfig.portableBlackHoleDamage.get().floatValue();
+        }
         //range the black hole searches for entities
         float SUCC_RADIUS = 4;
         //how strong the pull is from the black hole
         double SUCC_POWER = 0.2;
+        if(FlatLightsCommonConfig.portableBlackHoleSuckPower.get() != null) {
+            SUCC_POWER = FlatLightsCommonConfig.portableBlackHoleSuckPower.get();
+        }
 
         //gets the entities around the black hole
         List<Entity> entities = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this.getShooter(), this.getBoundingBox().grow(SUCC_RADIUS));

@@ -480,6 +480,7 @@ public class FlatLights
                 ModItems.PRISMATIC_SWORD.get(),
                 ModItems.PRISMATIC_BLADE.get(),
                 ModItems.PRISMA_NUCLEUS.get(),
+                ModItems.PORTABLE_BLACKHOLE.get(),
                 ModItems.BIG_BREAD.get(),
 
                 ModItems.BLACK_REUSABLE_DYE.get(),

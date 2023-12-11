@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.item.tools;
 
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +24,9 @@ public class PortableBlackHoleItem extends Item {
 
         //set item use cooldown so you can't spam blackholes
         int secondCooldown = 10;
+        if(FlatLightsCommonConfig.blackHoleGeneratorCooldown.get() != null) {
+            secondCooldown = FlatLightsCommonConfig.blackHoleGeneratorCooldown.get();
+        }
         int TICK_MULTIPLIER = 20;
         playerIn.getCooldownTracker().setCooldown(this, secondCooldown * TICK_MULTIPLIER);
 
