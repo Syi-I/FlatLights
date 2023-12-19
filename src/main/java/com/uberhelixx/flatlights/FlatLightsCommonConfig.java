@@ -24,6 +24,9 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> pulsingPercent;
     public static final ForgeConfigSpec.ConfigValue<Boolean> multilayerReduction;
     public static final ForgeConfigSpec.ConfigValue<Integer> craftingJumpscareChance;
+    public static final ForgeConfigSpec.ConfigValue<Integer> blackHoleGeneratorCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Double> portableBlackHoleSuckPower;
+    public static final ForgeConfigSpec.ConfigValue<Double> portableBlackHoleDamage;
 
     static {
         BUILDER.push("Stat Balancing");
@@ -66,6 +69,15 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Max percentage of damage the Pulsing Arrows enchant can trigger per hit. (Calculates total dmg% such that pulsingAreaDmg = arrowDmg * (level + 1) * 2 * ((PulsingPercent)/100) ) [Default: 100 -> 100% damage]");
             pulsingPercent = BUILDER.defineInRange("PulsingArrowDamagePercent", 100, 0, 100);
+
+            BUILDER.comment("Cooldown time for the usage of the Portable Black Hole Generator item, in SECONDS.  [Default: 10]");
+            blackHoleGeneratorCooldown = BUILDER.define("BlackHoleGeneratorCooldown", 10);
+
+            BUILDER.comment("How powerful the sucking effect is for the black holes of the Portable Black Hole Generator. Higher means more movement speed when in range of the black hole. (Anything over like, 1, just puts mobs into orbit never to be seen again.)  [Default: 0.2]");
+            portableBlackHoleSuckPower = BUILDER.defineInRange("PortableBlackHoleSuckPower", 0.2, 0.0, Integer.MAX_VALUE);
+
+            BUILDER.comment("Amount of damage the black hole from the Portable Black Hole Generator does each damaging tick.  [Default: 1.5]");
+            portableBlackHoleDamage = BUILDER.defineInRange("PortableBlackHoleDamage", 1.5, 0, Integer.MAX_VALUE);
         }
         BUILDER.pop();
 

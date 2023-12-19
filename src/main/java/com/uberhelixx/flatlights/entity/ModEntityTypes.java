@@ -36,4 +36,14 @@ public class ModEntityTypes {
             () -> EntityType.Builder.create((EntityType.IFactory<ChairEntity>) ChairEntity::new,
                             EntityClassification.MISC).size(0.5F, 0.5F)
                     .build(new ResourceLocation(FlatLights.MOD_ID, "chair_entity").toString()));
+
+    public static final RegistryObject<EntityType<PortableBlackHoleEntity>> PORTABLE_BLACK_HOLE_ENTITY = ENTITY_TYPES.register("portable_black_hole_entity",
+            () -> EntityType.Builder.create((EntityType.IFactory<PortableBlackHoleEntity>) PortableBlackHoleEntity::new,
+                            EntityClassification.MISC).size(1F, 1F)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "portable_black_hole_entity").toString()));
+
+    public static final RegistryObject<EntityType<PortableBlackHoleProjectileEntity>> PORTABLE_BLACK_HOLE_PROJECTILE_ENTITY = ENTITY_TYPES.register("portable_black_hole_projectile_entity",
+            () -> EntityType.Builder.create((EntityType.IFactory<PortableBlackHoleProjectileEntity>) PortableBlackHoleProjectileEntity::new,
+                            EntityClassification.MISC).size(0.5F, 0.5F)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "portable_black_hole_projectile_entity").toString()));
 }
