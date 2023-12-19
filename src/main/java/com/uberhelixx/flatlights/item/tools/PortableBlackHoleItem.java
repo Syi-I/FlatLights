@@ -23,12 +23,12 @@ public class PortableBlackHoleItem extends Item {
         worldIn.playSound((PlayerEntity)null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
         //set item use cooldown so you can't spam blackholes
-        int secondCooldown = 10;
+        int COOLDOWN_SECONDS = 10;
         if(FlatLightsCommonConfig.blackHoleGeneratorCooldown.get() != null) {
-            secondCooldown = FlatLightsCommonConfig.blackHoleGeneratorCooldown.get();
+            COOLDOWN_SECONDS = FlatLightsCommonConfig.blackHoleGeneratorCooldown.get();
         }
         int TICK_MULTIPLIER = 20;
-        playerIn.getCooldownTracker().setCooldown(this, secondCooldown * TICK_MULTIPLIER);
+        playerIn.getCooldownTracker().setCooldown(this, COOLDOWN_SECONDS * TICK_MULTIPLIER);
 
         //summon the throwable item in the direction that the player is looking, kinda like an ender pearl
         if (!worldIn.isRemote) {
