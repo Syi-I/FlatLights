@@ -501,6 +501,8 @@ public class FlatLights
                 ModItems.YELLOW_REUSABLE_DYE.get(),
                 ModItems.HUE_SHIFTING_VIAL.get(),
 
+                ModItems.JOGOAT.get(),
+
                 ModItems.GUN_RAT.get(), //creative only items
                 ModItems.PRISMATIC_BLADEMK2.get(),
                 ModBlocks.MOB_B_GONE.get().asItem(),
