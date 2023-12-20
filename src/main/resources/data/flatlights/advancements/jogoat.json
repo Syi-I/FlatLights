@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "flatlights:jogoat"
+    },
+    "title": {
+      "translate": "advancement.flatlights.jogoat_title",
+      "bold": true
+    },
+    "description": {
+      "translate": "advancement.flatlights.jogoat_desc",
+      "italic": true
+    },
+    "background": "flatlights:textures/block/large_hexblock/teal_large_hexblock.png",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "flatlights:jogoat"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 1000000
+  }
+}

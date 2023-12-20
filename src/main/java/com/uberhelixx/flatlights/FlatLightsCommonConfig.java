@@ -27,6 +27,7 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> blackHoleGeneratorCooldown;
     public static final ForgeConfigSpec.ConfigValue<Double> portableBlackHoleSuckPower;
     public static final ForgeConfigSpec.ConfigValue<Double> portableBlackHoleDamage;
+    public static final ForgeConfigSpec.ConfigValue<Double> jogoatDropChance;
 
     static {
         BUILDER.push("Stat Balancing");
@@ -94,6 +95,9 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Chance for the crafting table jumpscare sound to play. [Default: 1%]");
             craftingJumpscareChance = BUILDER.defineInRange("CraftingTableJumpscareChance", 1, 0, 100);
+
+            BUILDER.comment("Chance for getting Jogoat. [Default: 0.01 -> 1%]");
+            jogoatDropChance = BUILDER.defineInRange("JogoatDropChance", 0.01, 0, 1);
         }
         BUILDER.pop();
 

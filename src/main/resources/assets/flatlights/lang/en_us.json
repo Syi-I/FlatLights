@@ -359,6 +359,8 @@
   "item.flatlights.white_reusable_dye": "White Reusable Dye",
   "item.flatlights.yellow_reusable_dye": "Yellow Reusable Dye",
 
+  "item.flatlights.jogoat": "Jogoat",
+
   "effect.flatlights.armor_shred": "Armor Shred",
   "effect.flatlights.entangled": "Entangled",
   "effect.flatlights.bleed": "Bleeding",
@@ -402,6 +404,9 @@
   "tooltip.flatlights.prismatic_boots_shift": "§5§oPrevents fall damage when worn.",
   "tooltip.flatlights.prismatic_blademk2_shift": "§5§oSurvive or be destroyed, there is no other choice.",
   "tooltip.flatlights.prismatic_blademk2_default": "§5§oDev item where I tested every idea first, unstable and unbalanced.",
+
+  "advancement.flatlights.jogoat_title": "§4Stand proud, you're strong.",
+  "advancement.flatlights.jogoat_desc": "§eWhat... Is this?",
 
   "flatlights.squeak": "Squeak",
   "flatlights.dev_blade_mode_switch": "Swapped blade modes",
