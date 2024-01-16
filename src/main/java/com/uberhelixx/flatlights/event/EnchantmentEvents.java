@@ -8,6 +8,7 @@ import com.uberhelixx.flatlights.enchantments.ModEnchantments;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,7 +49,8 @@ public class EnchantmentEvents {
         }
 
         ItemStack instance = user.getHeldItem(Hand.MAIN_HAND);
-        int level = MiscHelpers.enchantLevelGrabber(instance, ModEnchantments.FLASH_OF_BRILLIANCE.get());
+        //int level = MiscHelpers.enchantLevelGrabber(instance, ModEnchantments.FLASH_OF_BRILLIANCE.get());
+        int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FLASH_OF_BRILLIANCE.get(), instance);
         //check if enchantment is present on mainhand item (the item that killed)
         if(level != 0) {
             double chanceCap = FlatLightsCommonConfig.fobChanceCap.get();
@@ -72,7 +74,7 @@ public class EnchantmentEvents {
         if(event.getSource() != ModDamageTypes.PHYSICAL) {
             for (ItemStack instance : target.getArmorInventoryList()) {
                 //if neutralizer present, cancel initial damage event and trigger equivalent physical damage instead
-                if(MiscHelpers.enchantCheck(instance, ModEnchantments.NEUTRALIZER.get())) {
+                if(EnchantmentHelper.getEnchantmentLevel(ModEnchantments.NEUTRALIZER.get(), instance) > 0) {
                     MiscHelpers.debugLogger("[Neutralizer] Neutralizer enchantment triggered");
                     MiscHelpers.debugLogger("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
                     event.setCanceled(true);
@@ -103,7 +105,8 @@ public class EnchantmentEvents {
             MiscHelpers.debugLogger("[Pulsing Arrow Damage] Shooter of arrow: " + shooter.getName());
             ItemStack bow = shooter.getHeldItemMainhand();
             //check enchantment level from held bow to calculate the splash damage
-            Integer pulseLevel = MiscHelpers.enchantLevelGrabber(bow, ModEnchantments.PULSINGARROW.get());
+            //int pulseLevel = MiscHelpers.enchantLevelGrabber(bow, ModEnchantments.PULSINGARROW.get());
+            int pulseLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.PULSINGARROW.get(), bow);
             if(pulseLevel != 0) {
                 List<Entity> entities = arrow.world.getEntitiesWithinAABBExcludingEntity(arrow, arrow.getBoundingBox().grow(searchRadius, searchRadius, searchRadius));
                 //damage all mobs found in the search radius of the arrow
@@ -226,9 +229,7 @@ public class EnchantmentEvents {
         //make sure user isn't applying more stacks to themselves when damage ticks, if they are bleeding but also have an item with the enchant
         if(user instanceof PlayerEntity && target != user) {
             ItemStack weapon = ((PlayerEntity) user).getHeldItem(Hand.MAIN_HAND);
-            if(weapon.isEnchanted()) {
-                level = MiscHelpers.enchantLevelGrabber(weapon, ModEnchantments.BLEEDING_EDGE.get());
-            }
+            level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLEEDING_EDGE.get(), weapon);
         }
 
         //check if target exists, enchant is applied, if damage is directly from player action
@@ -266,9 +267,7 @@ public class EnchantmentEvents {
         //make sure user isn't applying more stacks to themselves when hit but also have an item with the enchant
         if(user instanceof PlayerEntity && target != user) {
             ItemStack weapon = ((PlayerEntity) user).getHeldItem(Hand.MAIN_HAND);
-            if(weapon.isEnchanted()) {
-                level = MiscHelpers.enchantLevelGrabber(weapon, ModEnchantments.BONESAW.get());
-            }
+            level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BONESAW.get(), weapon);
         }
 
         //check if target exists, enchant is applied, if damage is directly from player action
