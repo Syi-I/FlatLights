@@ -127,6 +127,7 @@ public class FlatLights
         EVENT_BUS.addListener(EnchantmentEvents::bleedingEdgeStacks);
         EVENT_BUS.addListener(EnchantmentEvents::bonesawStacks);
         EVENT_BUS.addListener(BlockEvents::craftingTableSound);
+        EVENT_BUS.addListener(EnchantmentEvents::blackhandKnockback);
     }
 
     public static Comparator<ItemStack> tabSort;

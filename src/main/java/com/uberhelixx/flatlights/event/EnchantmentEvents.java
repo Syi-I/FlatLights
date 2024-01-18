@@ -25,6 +25,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.HashMap;
@@ -285,6 +286,19 @@ public class EnchantmentEvents {
                 //user.sendMessage(message, user.getUniqueID());
                 target.addPotionEffect(new EffectInstance(ModEffects.ARMOR_SHRED.get(), 600, Math.min(level - 1, stackCap)));
             }
+        }
+    }
+
+    //Cancel knockback event for Blackhand enchantment
+    @SubscribeEvent
+    public static void blackhandKnockback(LivingKnockBackEvent event) {
+        LivingEntity user = event.getEntityLiving().getAttackingEntity();
+        ItemStack weapon = null;
+        if(user != null) {
+            weapon = user.getHeldItemMainhand();
+        }
+        if(weapon != null && EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLACKHAND.get(), weapon) > 0) {
+            event.setCanceled(true);
         }
     }
 }
