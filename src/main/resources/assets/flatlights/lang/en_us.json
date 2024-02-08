@@ -365,6 +365,7 @@
   "effect.flatlights.armor_shred": "Armor Shred",
   "effect.flatlights.entangled": "Entangled",
   "effect.flatlights.bleed": "Bleeding",
+  "effect.flatlights.health_reduction": "Health Reduction",
 
   "death.attack.flatlights_quantum": "%1$s absorbed too much quantum energy.",
   "death.attack.flatlights_quantum.player": "%1$s absorbed too much quantum energy from %2$s.",
@@ -393,6 +394,8 @@
   "enchantment.flatlights.pulsing_arrow.desc": "Arrows deal extra splash damage on impact.",
   "enchantment.flatlights.blackhand": "Black Hand",
   "enchantment.flatlights.blackhand.desc": "Melee attacks no longer cause knockback.",
+  "enchantment.flatlights.lethality": "Lethality",
+  "enchantment.flatlights.lethality.desc": "Inflicts [Health Reduction] on the target fro 30 seconds. (Health Reduction: Lowers the target's HP by 20% while in effect)",
 
   "screen.flatlights.plating_machine": "Plating Machine",
   "screen.flatlights.spectrum_anvil": "Spectrum Anvil",

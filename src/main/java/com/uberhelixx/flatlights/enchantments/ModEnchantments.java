@@ -30,4 +30,5 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> SHIMMER2 = registerEnch("shimmer2", Shimmer2Enchantment::new);
     public static final RegistryObject<Enchantment> PULSINGARROW = registerEnch("pulsing_arrow", PulsingArrowEnchantment::new);
     public static final RegistryObject<Enchantment> BLACKHAND = registerEnch("blackhand", BlackhandEnchantment::new);
+    public static final RegistryObject<Enchantment> LETHALITY = registerEnch("lethality", LethalityEnchantment::new);
 }
