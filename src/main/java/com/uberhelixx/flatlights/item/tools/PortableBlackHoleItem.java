@@ -33,7 +33,8 @@ public class PortableBlackHoleItem extends Item {
         //summon the throwable item in the direction that the player is looking, kinda like an ender pearl
         if (!worldIn.isRemote) {
             PortableBlackHoleProjectileEntity blackHoleProjectileEntity = new PortableBlackHoleProjectileEntity(playerIn, worldIn);
-            blackHoleProjectileEntity.setDirectionAndMovement(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.5F, 1.0F);
+            //sets velocity and direction for the projectile
+            blackHoleProjectileEntity.setDirectionAndMovement(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.0F, 0F);
             worldIn.addEntity(blackHoleProjectileEntity);
         }
 

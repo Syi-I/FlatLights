@@ -85,6 +85,8 @@ public class ModItems {
             () -> new BreadButHighQuality(new Item.Properties().group(ModItemGroup.FLATLIGHTS).food(new Food.Builder().hunger(30).saturation(36).build())));
     public static final RegistryObject<Item> PORTABLE_BLACKHOLE = ITEMS.register("portable_blackhole",
             () -> new PortableBlackHoleItem(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+    public static final RegistryObject<Item> GRAVITY_LIFT = SPECIAL_ITEMS.register("gravity_lift",
+            () -> new GravityLiftItem(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
 
     //reusable dyes
     public static final RegistryObject<Item> BLACK_REUSABLE_DYE = ITEMS.register("black_reusable_dye",

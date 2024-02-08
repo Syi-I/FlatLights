@@ -340,6 +340,7 @@
   "item.flatlights.boots_core": "Prismatic Boots Core",
   "item.flatlights.prismatic_sword": "Prismatic Sword",
   "item.flatlights.portable_blackhole": "Portable Black Hole Generator",
+  "item.flatlights.gravity_lift": "Gravity Lift",
 
   "item.flatlights.hue_shifting_vial": "Hue Shifting Vial",
   "item.flatlights.black_reusable_dye": "Black Reusable Dye",
@@ -415,5 +416,6 @@
   "flatlights.void_projectile_shot": "Shot black hole",
   "flatlights.void_fizzle": "Black hole disappears",
   "flatlights.void_hum": "Black hole humming",
-  "flatlights.crafting_table_interact": "Crafting sounds intensify"
+  "flatlights.crafting_table_interact": "Crafting sounds intensify",
+  "flatlights.gravity_lift_hum": "Gravity lift humming"
 }

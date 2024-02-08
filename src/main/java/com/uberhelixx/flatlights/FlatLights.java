@@ -6,6 +6,7 @@ import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.ModEnchantments;
+import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.event.*;
@@ -482,6 +483,7 @@ public class FlatLights
                 ModItems.PRISMATIC_BLADE.get(),
                 ModItems.PRISMA_NUCLEUS.get(),
                 ModItems.PORTABLE_BLACKHOLE.get(),
+                ModItems.GRAVITY_LIFT.get(),
                 ModItems.BIG_BREAD.get(),
 
                 ModItems.BLACK_REUSABLE_DYE.get(),
@@ -535,6 +537,8 @@ public class FlatLights
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHAIR_ENTITY.get(), ChairEntityRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.PORTABLE_BLACK_HOLE_ENTITY.get(), PortableBlackHoleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.PORTABLE_BLACK_HOLE_PROJECTILE_ENTITY.get(), new RegistryEvents.PortableBlackHoleFactory());
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_ENTITY.get(), GravityLiftRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_PROJECTILE_ENTITY.get(), new RegistryEvents.GravityLiftFactory());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
@@ -568,11 +572,20 @@ public class FlatLights
             MiscHelpers.debugLogger("tried to add special model idk");
             ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
             ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
+            ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
         }
 
         public static class PortableBlackHoleFactory implements IRenderFactory<PortableBlackHoleProjectileEntity> {
             @Override
             public EntityRenderer<? super PortableBlackHoleProjectileEntity> createRenderFor(EntityRendererManager manager) {
+                ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+                return new SpriteRenderer<>(manager, itemRenderer);
+            }
+        }
+
+        public static class GravityLiftFactory implements IRenderFactory<GravityLiftProjectileEntity> {
+            @Override
+            public EntityRenderer<? super GravityLiftProjectileEntity> createRenderFor(EntityRendererManager manager) {
                 ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                 return new SpriteRenderer<>(manager, itemRenderer);
             }

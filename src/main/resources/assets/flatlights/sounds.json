@@ -40,5 +40,12 @@
     "sounds": [
       "flatlights:crafting_table_interact"
     ]
+  },
+  "gravity_lift_hum": {
+    "category": "player",
+    "subtitle": "flatlights.gravity_lift_hum",
+    "sounds": [
+      "flatlights:gravity_lift_hum"
+    ]
   }
 }

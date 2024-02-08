@@ -1,0 +1,26 @@
+{
+  "type": "flatlights:spectralizer",
+  "ingredients": [
+    {
+      "tag": "forge:glass_panes"
+    },
+    {
+      "tag": "forge:glass_panes"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "item": "flatlights:prisma_nucleus"
+    },
+    {
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "forge:glass_panes"
+    }
+  ],
+  "output": {
+    "item": "flatlights:gravity_lift"
+  }
+}

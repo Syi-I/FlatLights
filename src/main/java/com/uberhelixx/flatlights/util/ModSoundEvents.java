@@ -26,4 +26,5 @@ public class ModSoundEvents {
     public static final RegistryObject<SoundEvent> VOID_FIZZLE = registerSoundEvent("void_fizzle");
     public static final RegistryObject<SoundEvent> VOID_HUM = registerSoundEvent("void_hum");
     public static final RegistryObject<SoundEvent> CRAFTING_TABLE_INTERACT = registerSoundEvent("crafting_table_interact");
+    public static final RegistryObject<SoundEvent> GRAVITY_LIFT_HUM = registerSoundEvent("gravity_lift_hum");
 }
