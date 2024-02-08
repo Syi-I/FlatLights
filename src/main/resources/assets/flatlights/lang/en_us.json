@@ -368,13 +368,13 @@
 
   "death.attack.flatlights_quantum": "%1$s absorbed too much quantum energy.",
   "death.attack.flatlights_quantum.player": "%1$s absorbed too much quantum energy from %2$s.",
-  "death.attack.flatlights_entangled": "%1$s died from quantum entanglement.",
-  "death.attack.flatlights_entangled.player": "%2$s killed %1$s via quantum entanglement.",
+  "death.attack.flatlights_entangled": "%1$s died from entanglement.",
+  "death.attack.flatlights_entangled.player": "%2$s killed %1$s via entanglement.",
   "death.attack.flatlights_physical": "%1$s was hit with a strong physical impact.",
   "death.attack.flatlights_physical.player": "%2$s hit %1$s with a strong physical impact.",
   "death.attack.flatlights_indirectQuantum": "%1$s absorbed too much quantum energy.",
   "death.attack.flatlights_indirectPhysical": "%1$s was hit with a strong physical impact.",
-  "death.attack.flatlights_indirectEntangled": "%1$s died from quantum entanglement.",
+  "death.attack.flatlights_indirectEntangled": "%1$s died from entanglement.",
   "death.attack.flatlights_indirectBleed": "%1$s bled out.",
 
   "enchantment.flatlights.quantum_strike": "Quantum Strike",
@@ -405,8 +405,10 @@
   "tooltip.flatlights.prismatic_chestplate_shift": "§5§oProvides creative flight when worn.",
   "tooltip.flatlights.prismatic_leggings_shift": "§5§oPrevents Piglins from being hostile on sight when worn.",
   "tooltip.flatlights.prismatic_boots_shift": "§5§oPrevents fall damage when worn.",
-  "tooltip.flatlights.prismatic_blademk2_shift": "§5§oSurvive or be destroyed, there is no other choice.",
+  "tooltip.flatlights.prismatic_blademk2_shift": "§5§oIf you're seeing this and not me, hi. Now stop being nosy.",
   "tooltip.flatlights.prismatic_blademk2_default": "§5§oDev item where I tested every idea first, unstable and unbalanced.",
+  "tooltip.flatlights.portable_black_hole_use": "§5§oCreate a small black hole at the point of impact. The black hole will suck entities towards itself and damage entities it touches.",
+  "tooltip.flatlights.gravity_lift_use": "§5§oRide the gravity lift to reach higher places. Sneak to jump out from the lift early, otherwise the lift throws players out right before it expires.",
 
   "advancement.flatlights.jogoat_title": "§4Stand proud, you're strong.",
   "advancement.flatlights.jogoat_desc": "§eWhat... Is this?",

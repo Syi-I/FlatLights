@@ -31,9 +31,7 @@ public class GravityLiftItem extends Item {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
-            String liftUse = MiscHelpers.coloredText(TextFormatting.DARK_PURPLE, "Ride the gravity lift to reach higher places. Sneak to jump out from the lift early, otherwise the lift throws players out right before it expires.");
-            ITextComponent liftUseTooltip = ITextComponent.getTextComponentOrEmpty(liftUse);
-            tooltip.add(liftUseTooltip);
+            tooltip.add(new TranslationTextComponent("tooltip.flatlights.gravity_lift_use"));
             tooltip.add(getLiftTime());
             tooltip.add(getLiftCooldown());
         }
