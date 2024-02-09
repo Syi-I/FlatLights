@@ -11,7 +11,7 @@ public class WeaponEvents {
     //Prismatic Sword check for left click on full swing to throw bomb
     @SubscribeEvent
     public static void bombSwingTrigger(PlayerInteractEvent.LeftClickEmpty event) {
-        if (!event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.PRISMATIC_SWORD.get()) {
+        if(!event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.PRISMATIC_SWORD.get()) {
             PacketHandler.sendToServer(new PacketLeftClick());
         }
     }

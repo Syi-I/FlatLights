@@ -28,6 +28,8 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> portableBlackHoleSuckPower;
     public static final ForgeConfigSpec.ConfigValue<Double> portableBlackHoleDamage;
     public static final ForgeConfigSpec.ConfigValue<Double> jogoatDropChance;
+    public static final ForgeConfigSpec.ConfigValue<Integer> gravityLiftCooldown;
+    public static final ForgeConfigSpec.ConfigValue<Integer> gravityLiftTime;
 
     static {
         BUILDER.push("Stat Balancing");
@@ -79,6 +81,12 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Amount of damage the black hole from the Portable Black Hole Generator does each damaging tick.  [Default: 1.5]");
             portableBlackHoleDamage = BUILDER.defineInRange("PortableBlackHoleDamage", 1.5, 0, Integer.MAX_VALUE);
+
+            BUILDER.comment("Cooldown time for the usage of the Gravity Lift item, in SECONDS.  [Default: 5]");
+            gravityLiftCooldown = BUILDER.define("GravityLiftCooldown", 5);
+
+            BUILDER.comment("Amount of time that a Gravity Lift will exist for before expiring, in SECONDS.  [Default: 10]");
+            gravityLiftTime = BUILDER.define("GravityLiftTime", 10);
         }
         BUILDER.pop();
 

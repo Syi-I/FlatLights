@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.entity;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -46,4 +47,16 @@ public class ModEntityTypes {
             () -> EntityType.Builder.create((EntityType.IFactory<PortableBlackHoleProjectileEntity>) PortableBlackHoleProjectileEntity::new,
                             EntityClassification.MISC).size(0.5F, 0.5F)
                     .build(new ResourceLocation(FlatLights.MOD_ID, "portable_black_hole_projectile_entity").toString()));
+
+    //defines gravity lift hitbox height
+    public static final float GRAV_LIFT_HEIGHT = 8F;
+    public static final RegistryObject<EntityType<GravityLiftEntity>> GRAVITY_LIFT_ENTITY = ENTITY_TYPES.register("gravity_lift_entity",
+            () -> EntityType.Builder.create((EntityType.IFactory<GravityLiftEntity>) GravityLiftEntity::new,
+                            EntityClassification.MISC).size(0.25F, GRAV_LIFT_HEIGHT)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "gravity_lift_entity").toString()));
+
+    public static final RegistryObject<EntityType<GravityLiftProjectileEntity>> GRAVITY_LIFT_PROJECTILE_ENTITY = ENTITY_TYPES.register("gravity_lift_projectile_entity",
+            () -> EntityType.Builder.create((EntityType.IFactory<GravityLiftProjectileEntity>) GravityLiftProjectileEntity::new,
+                            EntityClassification.MISC).size(0.1F, 0.5F)
+                    .build(new ResourceLocation(FlatLights.MOD_ID, "gravity_lift_projectile_entity").toString()));
 }
