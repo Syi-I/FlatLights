@@ -37,10 +37,10 @@ public class StatTestCommand {
                 theSilly = "Never cook again.";
             }
             else if(rng > 0.8) {
-                theSilly = "Google en passant";
+                theSilly = "Nah, I'd win";
             }
             else if(rng > 0.75) {
-                theSilly = "Okay but have you tried GTNH it's a great beginner modpack";
+                theSilly = "Join the Republic of Greg";
             }
             source.sendFeedback(new StringTextComponent(theSilly), false);
             return -1;

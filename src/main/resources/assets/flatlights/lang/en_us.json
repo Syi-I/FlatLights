@@ -395,7 +395,7 @@
   "enchantment.flatlights.blackhand": "Black Hand",
   "enchantment.flatlights.blackhand.desc": "Melee attacks no longer cause knockback.",
   "enchantment.flatlights.lethality": "Lethality",
-  "enchantment.flatlights.lethality.desc": "Inflicts [Health Reduction] on the target fro 30 seconds. (Health Reduction: Lowers the target's HP by 20% while in effect)",
+  "enchantment.flatlights.lethality.desc": "Inflicts [Health Reduction] on the target for 30 seconds. (Health Reduction: Lowers the target's HP by 20% while in effect)",
 
   "screen.flatlights.plating_machine": "Plating Machine",
   "screen.flatlights.spectrum_anvil": "Spectrum Anvil",
