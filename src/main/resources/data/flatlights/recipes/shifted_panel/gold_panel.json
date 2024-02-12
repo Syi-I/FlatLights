@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "###",
+    "   "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:gold_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:gold_panel",
+    "count": 24
+  }
+}

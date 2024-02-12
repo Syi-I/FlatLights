@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:sapphire_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:sapphire_vertical_edge",
+    "count": 64
+  }
+}
