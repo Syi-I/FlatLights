@@ -393,5 +393,14 @@
 			"translation": [0, -3.25, 0],
 			"scale": [0.8, 0.85, 0.5]
 		}
-	}
+	},
+	"overrides": [
+		{
+			"__comment": "spear form checking nbt",
+			"predicate": {
+				"flatlights:mode": 1
+			},
+			"model": "flatlights:item/mk2_spear_form_final"
+		}
+	]
 }

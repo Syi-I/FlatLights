@@ -547,10 +547,10 @@ public class FlatLights
         {
             ItemModelsProperties.registerProperty(ModItems.PRISMATIC_BLADEMK2.get(),
                     new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
-                        float mk2Mode = 0;
+                        float mk2Mode = 0.0F;
                         if(stack.getTag() != null) {
-                            if (stack.getTag().contains(PrismaticBladeMk2.DAMAGE_MODE_TAG) && stack.getTag().getBoolean(PrismaticBladeMk2.DAMAGE_MODE_TAG)) {
-                                mk2Mode = 1;
+                            if (stack.getTag().contains(PrismaticBladeMk2.SPEAR_MODE_TAG) && stack.getTag().getBoolean(PrismaticBladeMk2.SPEAR_MODE_TAG)) {
+                                mk2Mode = 1.0F;
                             }
                         }
                         return mk2Mode;

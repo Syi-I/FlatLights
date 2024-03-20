@@ -57,7 +57,7 @@ public class PrismaticBladeMk2 extends SwordItem {
     public static final String TOTAL_CORES_TAG = "flatlights.totalCores"; //total number of cores gained = to total damage bonus
     public static final int TIER_MULTIPLIER = 1000; //cores needed per tier to increase tier
     public static final int TOTAL_TIERS = 7; //total tiers available
-    public static final int REACH_DISTANCE = 3; //reach distance modifier for spear mode
+    public static final int REACH_DISTANCE = 4; //reach distance modifier for spear mode
 
     public PrismaticBladeMk2(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
         super(tier, attackDamageIn, attackSpeedIn, builderIn);
@@ -96,7 +96,7 @@ public class PrismaticBladeMk2 extends SwordItem {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot, ItemStack stack) {
         Multimap<Attribute, AttributeModifier> oldMap = super.getAttributeModifiers(equipmentSlot);
         ListMultimap<Attribute, AttributeModifier> newMap = ArrayListMultimap.create();
-        double attackModifier = stack.getTag() != null && stack.getTag().contains(TOTAL_CORES_TAG) ? stack.getTag().getInt(TOTAL_CORES_TAG) * 0.01 : 0;
+        double attackModifier = stack.getTag() != null && stack.getTag().contains(TOTAL_CORES_TAG) ? stack.getTag().getInt(TOTAL_CORES_TAG) * 0.005 : 0;
         double reachModifier = stack.getTag() != null && stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG) ? REACH_DISTANCE : 0;
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
             newMap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(CORE_DAMAGE_MODIFIER, "Core Count Modifier", attackModifier, AttributeModifier.Operation.ADDITION));
@@ -141,21 +141,21 @@ public class PrismaticBladeMk2 extends SwordItem {
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity attacker) {
-        //reach distance from spear mode only
+        //reach distance hitting from spear mode only
         if(stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG)) {
             World world = attacker.world;
             double reach = attacker.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
             MiscHelpers.debugLogger("Reach Range: " + reach);
             double reachSqr = reach * reach;
 
+            //end of the player's view vector
             Vector3d viewVec = attacker.getLook(1.0F);
+            //position of the player's eyes, beginning of the view vector
             Vector3d eyeVec = attacker.getEyePosition(1.0F);
+            //extend the player's view vector range by a factor of the player's modified block reach attribute
             Vector3d targetVec = eyeVec.add(viewVec.x * reach, viewVec.y * reach, viewVec.z * reach);
-            //MiscHelpers.debugLogger("View Vector: " + viewVec);
-            //MiscHelpers.debugLogger("Eye Vector: " + eyeVec);
-            //MiscHelpers.debugLogger("Target Vector: " + targetVec);
 
-            //Expanding the attacker's bounding box by the view vector's scale, and inflating it by 4.0D (x, y, z)
+            //expanding the attacker's bounding box by the view vector's scale, and inflating it by 4.0D (x, y, z)
             AxisAlignedBB viewBB = attacker.getBoundingBox().expand(viewVec.scale(reach)).expand(4.0D, 4.0D, 4.0D);
             EntityRayTraceResult result = ProjectileHelper.rayTraceEntities(world, attacker, eyeVec, targetVec, viewBB, EntityPredicates.NOT_SPECTATING);
 
@@ -163,16 +163,20 @@ public class PrismaticBladeMk2 extends SwordItem {
                 return false;
             }
 
+            //find the entity from the results of the raytrace
             LivingEntity raytraceTarget = (LivingEntity) result.getEntity();
 
+            //need to use squared distance because that's the only way to use the raytraced results
             double distanceToTargetSqr = attacker.getDistanceSq(raytraceTarget);
             MiscHelpers.debugLogger("Reach Squared: " + reachSqr);
             MiscHelpers.debugLogger("Distance to target squared: " + distanceToTargetSqr);
 
+            //did we get an entity from the raytrace result or not
             boolean hitResult = (result != null ? raytraceTarget : null) != null;
 
             float attackDamage = MiscHelpers.getTotalDamage(stack);
             MiscHelpers.debugLogger("Reach Damage: " + attackDamage);
+            //if we hit something along the path of the new vector result, trigger the hit as if the player were hitting the target
             if (hitResult) {
                 if (attacker instanceof PlayerEntity) {
                     if (reachSqr >= distanceToTargetSqr) {
