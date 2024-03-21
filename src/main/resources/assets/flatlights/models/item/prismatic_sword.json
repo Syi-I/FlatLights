@@ -2,5 +2,14 @@
   "parent": "item/handheld",
   "textures": {
     "layer0": "flatlights:item/prismatic_sword"
-  }
+  },
+  "overrides": [
+    {
+      "__comment": "check if bomb throw is enabled or not",
+      "predicate": {
+        "flatlights:mode": 1
+      },
+      "model": "flatlights:item/prismatic_sword_inactive"
+    }
+  ]
 }

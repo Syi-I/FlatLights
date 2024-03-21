@@ -12,6 +12,7 @@ import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.event.*;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.painting.ModPaintings;
 import com.uberhelixx.flatlights.render.*;
@@ -554,6 +555,16 @@ public class FlatLights
                             }
                         }
                         return mk2Mode;
+                    });
+            ItemModelsProperties.registerProperty(ModItems.PRISMATIC_SWORD.get(),
+                    new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
+                        float bombMode = 1.0F;
+                        if(stack.getTag() != null) {
+                            if (stack.getTag().contains(PrismaticSword.BOMB_MODE) && stack.getTag().getBoolean(PrismaticSword.BOMB_MODE)) {
+                                bombMode = 0.0F;
+                            }
+                        }
+                        return bombMode;
                     });
         });
     }
