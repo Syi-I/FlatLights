@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class PrismaticSword extends SwordItem {
+    public static final String BOMB_MODE = "flatlights.bomb_mode"; //bomb shooting mode
 
     public PrismaticSword(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
         super(tier, attackDamageIn, attackSpeedIn, builderIn);
@@ -53,7 +54,7 @@ public class PrismaticSword extends SwordItem {
         if(Screen.hasShiftDown()) {
             String bombSwing = "[" + MiscHelpers.coloredText(TextFormatting.RED, "Inactive") + "] Explosive Swings: Shoots an explosive projectile when swinging this weapon.";
             assert stack.getTag() != null;
-            if(stack.getTag().getBoolean("bomb")) {
+            if(stack.getTag().getBoolean(BOMB_MODE)) {
                 bombSwing = "[" + MiscHelpers.coloredText(TextFormatting.GREEN, "Active") + "] Explosive Swings: Shoots an explosive projectile when swinging this weapon.";
             }
             ITextComponent bombSwingTooltip = ITextComponent.getTextComponentOrEmpty(bombSwing);
@@ -76,13 +77,13 @@ public class PrismaticSword extends SwordItem {
 
             if (sword.getTag() == null) {
                 CompoundNBT newTag = new CompoundNBT();
-                newTag.putBoolean("bomb", true);
+                newTag.putBoolean(BOMB_MODE, true);
                 sword.setTag(newTag);
                 PacketHandler.sendToServer(new PacketWriteNbt(newTag, sword));
             } else {
                 CompoundNBT tag = sword.getTag();
-                boolean active = tag.getBoolean("bomb");
-                tag.putBoolean("bomb", !active);
+                boolean active = tag.getBoolean(BOMB_MODE);
+                tag.putBoolean(BOMB_MODE, !active);
                 sword.setTag(tag);
                 PacketHandler.sendToServer(new PacketWriteNbt(tag, sword));
             }
@@ -95,7 +96,7 @@ public class PrismaticSword extends SwordItem {
         BlockPos pos = player.getPosition();
         CompoundNBT tag = sword.getTag();
         assert tag != null;
-        if(!tag.contains("bomb") || !tag.getBoolean("bomb")) {
+        if(!tag.contains(BOMB_MODE) || !tag.getBoolean(BOMB_MODE)) {
             return;
         }
         if(player.getCooledAttackStrength(0f) != 1) {
@@ -109,7 +110,7 @@ public class PrismaticSword extends SwordItem {
         //spawn projectile
         if(!worldIn.isRemote()){
             BombSwingEntity bomb = new BombSwingEntity(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), player, worldIn);
-            bomb.shoot(look.getX(), look.getY(), look.getZ(), 1.5f, 0);
+            bomb.shoot(look.getX(), look.getY(), look.getZ(), 1.0f, 0);
             worldIn.addEntity(bomb);
         }
         worldIn.playSound(null, pos, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1, (0.75f + (worldIn.rand.nextFloat() * 0.05f)));

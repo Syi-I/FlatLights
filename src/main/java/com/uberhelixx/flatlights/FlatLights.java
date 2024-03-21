@@ -11,6 +11,8 @@ import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.event.*;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.painting.ModPaintings;
 import com.uberhelixx.flatlights.render.*;
@@ -33,8 +35,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -539,6 +541,31 @@ public class FlatLights
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.PORTABLE_BLACK_HOLE_PROJECTILE_ENTITY.get(), new RegistryEvents.PortableBlackHoleFactory());
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_ENTITY.get(), GravityLiftRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_PROJECTILE_ENTITY.get(), new RegistryEvents.GravityLiftFactory());
+
+        //custom item property for manipulating sword to spear mode models
+        event.enqueueWork(() ->
+        {
+            ItemModelsProperties.registerProperty(ModItems.PRISMATIC_BLADEMK2.get(),
+                    new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
+                        float mk2Mode = 0.0F;
+                        if(stack.getTag() != null) {
+                            if (stack.getTag().contains(PrismaticBladeMk2.SPEAR_MODE_TAG) && stack.getTag().getBoolean(PrismaticBladeMk2.SPEAR_MODE_TAG)) {
+                                mk2Mode = 1.0F;
+                            }
+                        }
+                        return mk2Mode;
+                    });
+            ItemModelsProperties.registerProperty(ModItems.PRISMATIC_SWORD.get(),
+                    new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
+                        float bombMode = 1.0F;
+                        if(stack.getTag() != null) {
+                            if (stack.getTag().contains(PrismaticSword.BOMB_MODE) && stack.getTag().getBoolean(PrismaticSword.BOMB_MODE)) {
+                                bombMode = 0.0F;
+                            }
+                        }
+                        return bombMode;
+                    });
+        });
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
@@ -573,6 +600,7 @@ public class FlatLights
             ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
             ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
             ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
+            ModelLoader.addSpecialModel(BombSwingProjectileRenderer.BOMB_MODEL);
         }
 
         public static class PortableBlackHoleFactory implements IRenderFactory<PortableBlackHoleProjectileEntity> {
