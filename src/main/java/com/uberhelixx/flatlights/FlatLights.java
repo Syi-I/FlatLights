@@ -590,6 +590,7 @@ public class FlatLights
             ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
             ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
             ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
+            ModelLoader.addSpecialModel(BombSwingProjectileRenderer.BOMB_MODEL);
         }
 
         public static class PortableBlackHoleFactory implements IRenderFactory<PortableBlackHoleProjectileEntity> {

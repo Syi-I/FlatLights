@@ -109,7 +109,7 @@ public class PrismaticSword extends SwordItem {
         //spawn projectile
         if(!worldIn.isRemote()){
             BombSwingEntity bomb = new BombSwingEntity(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), player, worldIn);
-            bomb.shoot(look.getX(), look.getY(), look.getZ(), 1.5f, 0);
+            bomb.shoot(look.getX(), look.getY(), look.getZ(), 1.0f, 0);
             worldIn.addEntity(bomb);
         }
         worldIn.playSound(null, pos, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1, (0.75f + (worldIn.rand.nextFloat() * 0.05f)));

@@ -24,7 +24,6 @@ public class VoidProjectileRenderer extends EntityRenderer<VoidProjectileEntity>
     public static final ResourceLocation SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/void_sphere/void_sphere.png");
     public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/void_sphere_wrapper");
 
-    //render like an arrow would be
     public VoidProjectileRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
     }
@@ -37,7 +36,7 @@ public class VoidProjectileRenderer extends EntityRenderer<VoidProjectileEntity>
         MatrixStack.Entry currentMatrix = matrixStackIn.getLast();
 
         final float MODEL_SIZE_IN_ORIGINAL_COORDINATES = 1.0F;  // size of the wavefront model
-        final float TARGET_SIZE_WHEN_RENDERED = 0.05F;  // desired size when rendered (in metres)
+        final float TARGET_SIZE_WHEN_RENDERED = 0.025F;  // desired size when rendered (in metres)
 
         final float SCALE_FACTOR = TARGET_SIZE_WHEN_RENDERED / MODEL_SIZE_IN_ORIGINAL_COORDINATES;
         matrixStackIn.scale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
