@@ -1,6 +1,8 @@
 package com.uberhelixx.flatlights.block;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.block.blackout.*;
+import com.uberhelixx.flatlights.block.lights.*;
 import com.uberhelixx.flatlights.item.ModItemGroup;
 import com.uberhelixx.flatlights.item.ModItems;
 import net.minecraft.block.Block;
@@ -140,6 +142,42 @@ public class ModBlocks {
     public static final RegistryObject<Block> RED_PURPLE_FLATBLOCK = registerFlatblock("red_purple_flatblock", FlatBlock::new);
     public static final RegistryObject<Block> DARK_PINK_FLATBLOCK = registerFlatblock("dark_pink_flatblock", FlatBlock::new);
     public static final RegistryObject<Block> ROSY_PINK_FLATBLOCK = registerFlatblock("rosy_pink_flatblock", FlatBlock::new);
+
+    // BLACKOUT FLAT BLOCKS ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_FLATBLOCK_BLACKOUT = registerBlock("black_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> BLUE_FLATBLOCK_BLACKOUT = registerBlock("blue_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> BROWN_FLATBLOCK_BLACKOUT = registerBlock("brown_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> CYAN_FLATBLOCK_BLACKOUT = registerBlock("cyan_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> GRAY_FLATBLOCK_BLACKOUT = registerBlock("gray_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> GREEN_FLATBLOCK_BLACKOUT = registerBlock("green_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> LIGHT_BLUE_FLATBLOCK_BLACKOUT = registerBlock("light_blue_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> LIGHT_GRAY_FLATBLOCK_BLACKOUT = registerBlock("light_gray_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> LIME_FLATBLOCK_BLACKOUT = registerBlock("lime_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> MAGENTA_FLATBLOCK_BLACKOUT = registerBlock("magenta_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> ORANGE_FLATBLOCK_BLACKOUT = registerBlock("orange_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> PINK_FLATBLOCK_BLACKOUT = registerBlock("pink_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> PURPLE_FLATBLOCK_BLACKOUT = registerBlock("purple_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> RED_FLATBLOCK_BLACKOUT = registerBlock("red_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> WHITE_FLATBLOCK_BLACKOUT = registerBlock("white_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> YELLOW_FLATBLOCK_BLACKOUT = registerBlock("yellow_flatblock_blackout", BlackoutFlatBlock::new);
+
+    // BLACKOUT SHIFTED FLAT BLOCKS ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_FLATBLOCK_BLACKOUT = registerBlock("salmon_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> GOLD_FLATBLOCK_BLACKOUT = registerBlock("gold_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> SANDY_YELLOW_FLATBLOCK_BLACKOUT = registerBlock("sandy_yellow_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> PALE_YELLOW_FLATBLOCK_BLACKOUT = registerBlock("pale_yellow_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> SPRING_GREEN_FLATBLOCK_BLACKOUT = registerBlock("spring_green_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> PASTEL_GREEN_FLATBLOCK_BLACKOUT = registerBlock("pastel_green_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> TEAL_FLATBLOCK_BLACKOUT = registerBlock("teal_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> CYAN_BLUE_FLATBLOCK_BLACKOUT = registerBlock("cyan_blue_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> CERULEAN_FLATBLOCK_BLACKOUT = registerBlock("cerulean_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> SAPPHIRE_FLATBLOCK_BLACKOUT = registerBlock("sapphire_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> NAVY_BLUE_FLATBLOCK_BLACKOUT = registerBlock("navy_blue_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> INDIGO_FLATBLOCK_BLACKOUT = registerBlock("indigo_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> DARK_PURPLE_FLATBLOCK_BLACKOUT = registerBlock("dark_purple_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> RED_PURPLE_FLATBLOCK_BLACKOUT = registerBlock("red_purple_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> DARK_PINK_FLATBLOCK_BLACKOUT = registerBlock("dark_pink_flatblock_blackout", BlackoutFlatBlock::new);
+    public static final RegistryObject<Block> ROSY_PINK_FLATBLOCK_BLACKOUT = registerBlock("rosy_pink_flatblock_blackout", BlackoutFlatBlock::new);
 
     // HEX BLOCKS ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_HEXBLOCK = registerBlock("black_hexblock", PlateBlock::new);
@@ -321,6 +359,42 @@ public class ModBlocks {
     public static final RegistryObject<Block> DARK_PINK_PANEL = registerPanel("dark_pink_panel", () -> new SlabLightBlock(2));
     public static final RegistryObject<Block> ROSY_PINK_PANEL = registerPanel("rosy_pink_panel", () -> new SlabLightBlock(2));
 
+    // BLACKOUT PANEL ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_PANEL_BLACKOUT = registerPanel("black_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> BLUE_PANEL_BLACKOUT = registerPanel("blue_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> BROWN_PANEL_BLACKOUT = registerPanel("brown_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> CYAN_PANEL_BLACKOUT = registerPanel("cyan_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> GRAY_PANEL_BLACKOUT = registerPanel("gray_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> GREEN_PANEL_BLACKOUT = registerPanel("green_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_PANEL_BLACKOUT = registerPanel("light_blue_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_PANEL_BLACKOUT = registerPanel("light_gray_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> LIME_PANEL_BLACKOUT = registerPanel("lime_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> MAGENTA_PANEL_BLACKOUT = registerPanel("magenta_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> ORANGE_PANEL_BLACKOUT = registerPanel("orange_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> PINK_PANEL_BLACKOUT = registerPanel("pink_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> PURPLE_PANEL_BLACKOUT = registerPanel("purple_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> RED_PANEL_BLACKOUT = registerPanel("red_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> WHITE_PANEL_BLACKOUT = registerPanel("white_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> YELLOW_PANEL_BLACKOUT = registerPanel("yellow_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+
+    // BLACKOUT SHIFTED PANELS ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_PANEL_BLACKOUT = registerPanel("salmon_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> GOLD_PANEL_BLACKOUT = registerPanel("gold_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> SANDY_YELLOW_PANEL_BLACKOUT = registerPanel("sandy_yellow_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> PALE_YELLOW_PANEL_BLACKOUT = registerPanel("pale_yellow_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> SPRING_GREEN_PANEL_BLACKOUT = registerPanel("spring_green_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> PASTEL_GREEN_PANEL_BLACKOUT = registerPanel("pastel_green_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> TEAL_PANEL_BLACKOUT = registerPanel("teal_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> CYAN_BLUE_PANEL_BLACKOUT = registerPanel("cyan_blue_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> CERULEAN_PANEL_BLACKOUT = registerPanel("cerulean_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> SAPPHIRE_PANEL_BLACKOUT = registerPanel("sapphire_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> NAVY_BLUE_PANEL_BLACKOUT = registerPanel("navy_blue_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> INDIGO_PANEL_BLACKOUT = registerPanel("indigo_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> DARK_PURPLE_PANEL_BLACKOUT = registerPanel("dark_purple_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> RED_PURPLE_PANEL_BLACKOUT = registerPanel("red_purple_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> DARK_PINK_PANEL_BLACKOUT = registerPanel("dark_pink_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+    public static final RegistryObject<Block> ROSY_PINK_PANEL_BLACKOUT = registerPanel("rosy_pink_panel_blackout", () -> new BlackoutSlabLightBlock(2));
+
     // PILLAR ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_PILLAR = registerPillar("black_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> BLUE_PILLAR = registerPillar("blue_pillar", () -> new PillarLightBlock(4));
@@ -356,6 +430,42 @@ public class ModBlocks {
     public static final RegistryObject<Block> RED_PURPLE_PILLAR = registerPillar("red_purple_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> DARK_PINK_PILLAR = registerPillar("dark_pink_pillar", () -> new PillarLightBlock(4));
     public static final RegistryObject<Block> ROSY_PINK_PILLAR = registerPillar("rosy_pink_pillar", () -> new PillarLightBlock(4));
+
+    // BLACKOUT PILLAR ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_PILLAR_BLACKOUT = registerPillar("black_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> BLUE_PILLAR_BLACKOUT = registerPillar("blue_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> BROWN_PILLAR_BLACKOUT = registerPillar("brown_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> CYAN_PILLAR_BLACKOUT = registerPillar("cyan_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> GRAY_PILLAR_BLACKOUT = registerPillar("gray_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> GREEN_PILLAR_BLACKOUT = registerPillar("green_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> LIGHT_BLUE_PILLAR_BLACKOUT = registerPillar("light_blue_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> LIGHT_GRAY_PILLAR_BLACKOUT = registerPillar("light_gray_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> LIME_PILLAR_BLACKOUT = registerPillar("lime_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> MAGENTA_PILLAR_BLACKOUT = registerPillar("magenta_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> ORANGE_PILLAR_BLACKOUT = registerPillar("orange_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> PINK_PILLAR_BLACKOUT = registerPillar("pink_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> PURPLE_PILLAR_BLACKOUT = registerPillar("purple_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> RED_PILLAR_BLACKOUT = registerPillar("red_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> WHITE_PILLAR_BLACKOUT = registerPillar("white_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> YELLOW_PILLAR_BLACKOUT = registerPillar("yellow_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+
+    // BLACKOUT SHIFTED PILLARS ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_PILLAR_BLACKOUT = registerPillar("salmon_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> GOLD_PILLAR_BLACKOUT = registerPillar("gold_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> SANDY_YELLOW_PILLAR_BLACKOUT = registerPillar("sandy_yellow_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> PALE_YELLOW_PILLAR_BLACKOUT = registerPillar("pale_yellow_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> SPRING_GREEN_PILLAR_BLACKOUT = registerPillar("spring_green_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> PASTEL_GREEN_PILLAR_BLACKOUT = registerPillar("pastel_green_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> TEAL_PILLAR_BLACKOUT = registerPillar("teal_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> CYAN_BLUE_PILLAR_BLACKOUT = registerPillar("cyan_blue_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> CERULEAN_PILLAR_BLACKOUT = registerPillar("cerulean_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> SAPPHIRE_PILLAR_BLACKOUT = registerPillar("sapphire_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> NAVY_BLUE_PILLAR_BLACKOUT = registerPillar("navy_blue_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> INDIGO_PILLAR_BLACKOUT = registerPillar("indigo_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> DARK_PURPLE_PILLAR_BLACKOUT = registerPillar("dark_purple_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> RED_PURPLE_PILLAR_BLACKOUT = registerPillar("red_purple_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> DARK_PINK_PILLAR_BLACKOUT = registerPillar("dark_pink_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
+    public static final RegistryObject<Block> ROSY_PINK_PILLAR_BLACKOUT = registerPillar("rosy_pink_pillar_blackout", () -> new BlackoutPillarLightBlock(4));
 
     // HORIZONTAL EDGE ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_HORIZONTAL_EDGE = registerEdgeH("black_horizontal_edge", () -> new HorizontalEdgeBlock(2));
@@ -393,6 +503,42 @@ public class ModBlocks {
     public static final RegistryObject<Block> DARK_PINK_HORIZONTAL_EDGE = registerEdgeH("dark_pink_horizontal_edge", () -> new HorizontalEdgeBlock(2));
     public static final RegistryObject<Block> ROSY_PINK_HORIZONTAL_EDGE = registerEdgeH("rosy_pink_horizontal_edge", () -> new HorizontalEdgeBlock(2));
 
+    // BLACKOUT HORIZONTAL EDGE ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("black_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> BLUE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("blue_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> BROWN_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("brown_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> CYAN_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("cyan_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> GRAY_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("gray_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> GREEN_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("green_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("light_blue_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("light_gray_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> LIME_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("lime_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> MAGENTA_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("magenta_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> ORANGE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("orange_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PINK_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("pink_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PURPLE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("purple_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> RED_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("red_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> WHITE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("white_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> YELLOW_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("yellow_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+
+    // BLACKOUT SHIFTED HORIZONTAL EDGE ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("salmon_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> GOLD_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("gold_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> SANDY_YELLOW_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("sandy_yellow_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PALE_YELLOW_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("pale_yellow_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> SPRING_GREEN_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("spring_green_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> PASTEL_GREEN_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("pastel_green_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> TEAL_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("teal_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> CYAN_BLUE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("cyan_blue_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> CERULEAN_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("cerulean_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> SAPPHIRE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("sapphire_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> NAVY_BLUE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("navy_blue_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> INDIGO_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("indigo_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> DARK_PURPLE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("dark_purple_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> RED_PURPLE_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("red_purple_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> DARK_PINK_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("dark_pink_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+    public static final RegistryObject<Block> ROSY_PINK_HORIZONTAL_EDGE_BLACKOUT = registerEdgeH("rosy_pink_horizontal_edge_blackout", () -> new BlackoutHorizontalEdgeBlock(2));
+
     // VERTICAL EDGE ##############################################################################################################################
     public static final RegistryObject<Block> BLACK_VERTICAL_EDGE = registerEdgeV("black_vertical_edge", () -> new VerticalEdgeBlock(2));
     public static final RegistryObject<Block> BLUE_VERTICAL_EDGE = registerEdgeV("blue_vertical_edge", () -> new VerticalEdgeBlock(2));
@@ -429,6 +575,42 @@ public class ModBlocks {
     public static final RegistryObject<Block> DARK_PINK_VERTICAL_EDGE = registerEdgeV("dark_pink_vertical_edge", () -> new VerticalEdgeBlock(2));
     public static final RegistryObject<Block> ROSY_PINK_VERTICAL_EDGE = registerEdgeV("rosy_pink_vertical_edge", () -> new VerticalEdgeBlock(2));
 
+    // BLACKOUT VERTICAL EDGE ##############################################################################################################################
+    public static final RegistryObject<Block> BLACK_VERTICAL_EDGE_BLACKOUT = registerEdgeV("black_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> BLUE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("blue_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> BROWN_VERTICAL_EDGE_BLACKOUT = registerEdgeV("brown_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> CYAN_VERTICAL_EDGE_BLACKOUT = registerEdgeV("cyan_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> GRAY_VERTICAL_EDGE_BLACKOUT = registerEdgeV("gray_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> GREEN_VERTICAL_EDGE_BLACKOUT = registerEdgeV("green_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_BLUE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("light_blue_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> LIGHT_GRAY_VERTICAL_EDGE_BLACKOUT = registerEdgeV("light_gray_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> LIME_VERTICAL_EDGE_BLACKOUT = registerEdgeV("lime_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> MAGENTA_VERTICAL_EDGE_BLACKOUT = registerEdgeV("magenta_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> ORANGE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("orange_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> PINK_VERTICAL_EDGE_BLACKOUT = registerEdgeV("pink_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> PURPLE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("purple_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> RED_VERTICAL_EDGE_BLACKOUT = registerEdgeV("red_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> WHITE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("white_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> YELLOW_VERTICAL_EDGE_BLACKOUT = registerEdgeV("yellow_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+
+    // BLACKOUT SHIFTED VERTICAL EDGE ##############################################################################################################################
+    public static final RegistryObject<Block> SALMON_VERTICAL_EDGE_BLACKOUT = registerEdgeV("salmon_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> GOLD_VERTICAL_EDGE_BLACKOUT = registerEdgeV("gold_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> SANDY_YELLOW_VERTICAL_EDGE_BLACKOUT = registerEdgeV("sandy_yellow_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> PALE_YELLOW_VERTICAL_EDGE_BLACKOUT = registerEdgeV("pale_yellow_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> SPRING_GREEN_VERTICAL_EDGE_BLACKOUT = registerEdgeV("spring_green_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> PASTEL_GREEN_VERTICAL_EDGE_BLACKOUT = registerEdgeV("pastel_green_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> TEAL_VERTICAL_EDGE_BLACKOUT = registerEdgeV("teal_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> CYAN_BLUE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("cyan_blue_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> CERULEAN_VERTICAL_EDGE_BLACKOUT = registerEdgeV("cerulean_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> SAPPHIRE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("sapphire_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> NAVY_BLUE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("navy_blue_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> INDIGO_VERTICAL_EDGE_BLACKOUT = registerEdgeV("indigo_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> DARK_PURPLE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("dark_purple_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> RED_PURPLE_VERTICAL_EDGE_BLACKOUT = registerEdgeV("red_purple_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> DARK_PINK_VERTICAL_EDGE_BLACKOUT = registerEdgeV("dark_pink_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+    public static final RegistryObject<Block> ROSY_PINK_VERTICAL_EDGE_BLACKOUT = registerEdgeV("rosy_pink_vertical_edge_blackout", () -> new BlackoutVerticalEdgeBlock(2));
+
     // GLASS ##############################################################################################################################
     public static final RegistryObject<Block> GLASS_HEXBLOCK = registerBlock("glass_hexblock", WireGlassBlock::new);
     public static final RegistryObject<Block> GLASS_LARGE_HEXBLOCK = registerBlock("glass_large_hexblock", WireGlassBlock::new);
@@ -439,6 +621,7 @@ public class ModBlocks {
     // EXTRA ##############################################################################################################################
     public static final RegistryObject<Block> LIME_BRICK = registerBlock("lime_brick", PlateBlock::new);
     public static final RegistryObject<Block> PRISMATIC_BLOCK = registerFlatblock("prismatic_block", FlatBlock::new);
+    public static final RegistryObject<Block> PRISMATIC_BLOCK_BLACKOUT = registerBlock("prismatic_block_blackout", BlackoutFlatBlock::new);
     public static final RegistryObject<Block> PLATING_MACHINE = registerSpecialBlock("plating_machine", PlatingMachineBlock::new);
     public static final RegistryObject<Block> SPECTRALIZER = registerSpecialBlock("spectralizer", SpectralizerBlock::new);
     public static final RegistryObject<Block> LIGHT_STORAGE = registerSpecialBlock("light_storage", LightStorageBlock::new);
