@@ -124,6 +124,9 @@ public class ModItems {
     public static final RegistryObject<Item> HUE_SHIFTING_VIAL = ITEMS.register("hue_shifting_vial",
             () -> new ReusableDye(new Item.Properties().group(ModItemGroup.FLATLIGHTS).maxStackSize(1)));
 
+    public static final RegistryObject<Item> BLACKOUT_POWDER = ITEMS.register("blackout_powder",
+            () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
+
     public static final RegistryObject<Item> JOGOAT = ITEMS.register("jogoat",
             () -> new Item(new Item.Properties().group(ModItemGroup.FLATLIGHTS).isImmuneToFire()));
 

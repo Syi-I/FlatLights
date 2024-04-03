@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "flatlights:gold_panel"
+    },
+    {
+      "item": "flatlights:blackout_powder"
+    }
+  ],
+  "result": {
+    "item": "flatlights:gold_panel_blackout",
+    "count": 1
+  }
+}

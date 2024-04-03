@@ -1,9 +1,9 @@
 package com.uberhelixx.flatlights.data.client;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.block.HorizontalEdgeBlock;
+import com.uberhelixx.flatlights.block.lights.HorizontalEdgeBlock;
 import com.uberhelixx.flatlights.block.ModBlocks;
-import com.uberhelixx.flatlights.block.VerticalEdgeBlock;
+import com.uberhelixx.flatlights.block.lights.VerticalEdgeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class ModBlockStateProvider extends BlockStateProvider {
     final String[] blockColors = {"black", "blue", "brown", "cyan", "gray", "green", "light_blue", "light_gray",
             "lime", "magenta", "orange", "pink", "purple", "red", "white", "yellow", "glass"};
-    final String[] blockSuffixes = {"flatblock", "hexblock", "tiles"};
+    final String[] blockSuffixes = {"flatblock", "hexblock", "tiles", "blackout"};
     public ModBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
         super(gen, FlatLights.MOD_ID, exFileHelper);
     }
@@ -442,11 +442,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
             //sort through each basic block type to get texture path for use as a ResourceLocation
             for(String suffix : blockSuffixes) {
                 if(filePath.contains(suffix)) {
+                    //wire glass blocks in the textures/block/glass directory
                     if(filePath.contains("glass")) {
                         texturePath = ("block/" + "glass" + "/" + filePath);
                     }
+                    //large hexblocks and tiles in textures/block/large_<suffix> directory
                     else if(filePath.contains("large")) {
                         texturePath = ("block/" + "large_" + suffix + "/" + filePath);
+                    }
+                    //blackout blocks in textures/block/blackout directory (only blackout flat blocks, not other shapes since those have models)
+                    else if(filePath.contains("blackout")) {
+                        texturePath = ("block/" + "blackout/" + filePath);
                     }
                     else {
                         texturePath = ("block/" + suffix + "/" + filePath);
