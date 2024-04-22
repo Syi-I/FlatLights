@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- Curse of Lifted Pickup Truck (increases armor while also increasing damage taken while wearing a cursed armor piece)
+### Changed
+
+### Fixed
+
 ## [1.22.1] - 2024-04-01
 Ignore the mess of a changelog that is in the initial versions, I was not keeping track of changes well at the time so version bumping was hit or miss
 ### Added

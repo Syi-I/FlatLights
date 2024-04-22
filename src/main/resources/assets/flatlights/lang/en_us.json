@@ -569,6 +569,8 @@
   "enchantment.flatlights.blackhand.desc": "Melee attacks no longer cause knockback.",
   "enchantment.flatlights.lethality": "Lethality",
   "enchantment.flatlights.lethality.desc": "Inflicts [Health Reduction] on the target for 30 seconds. (Health Reduction: Lowers the target's HP by 20% while in effect)",
+  "enchantment.flatlights.lifted_pickup_truck": "Curse of Lifted Pickup Truck",
+  "enchantment.flatlights.lifted_pickup_truck.desc": "Makes oneself appear tougher, attempting to compensate for one's fragile physique.",
 
   "screen.flatlights.plating_machine": "Plating Machine",
   "screen.flatlights.spectrum_anvil": "Spectrum Anvil",

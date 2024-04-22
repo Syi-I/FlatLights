@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.event;
 
+import com.google.common.collect.Multimap;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.effect.EntangledEffect;
@@ -8,11 +9,16 @@ import com.uberhelixx.flatlights.enchantments.ModEnchantments;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
@@ -22,16 +28,11 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class EnchantmentEvents {
 
@@ -66,7 +67,7 @@ public class EnchantmentEvents {
     }
 
     //Neutralizer damage conversion to physical
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void damageSourceConversion(LivingHurtEvent event) {
         LivingEntity target = event.getEntityLiving();
         float damageAmount = event.getAmount();
@@ -299,6 +300,74 @@ public class EnchantmentEvents {
         }
         if(weapon != null && EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BLACKHAND.get(), weapon) > 0) {
             event.setCanceled(true);
+        }
+    }
+
+    protected static final UUID LIFTED_TRUCK_ARMOR = UUID.fromString("2e8190a1-c663-42d9-8921-1251d45c3efa");
+
+    //Apply the extra armor points from the Lifted Pickup Truck curse upon equipping the armor
+    @SubscribeEvent
+    public static void liftedPickupTruckArmor(LivingEquipmentChangeEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        Iterable<ItemStack> armorPieces = entity.getArmorInventoryList();
+
+        //check if entity has modifier from lifted truck curse, remove if it does to reset value and prevent stacking
+        ModifiableAttributeInstance armor = entity.getAttribute(Attributes.ARMOR);
+        if(armor != null) {
+            armor.removeModifier(LIFTED_TRUCK_ARMOR);
+        }
+
+        //check all armor pieces for lifted pickup truck curse and get total armor value
+        double totalArmor = 0;
+        for(ItemStack armorPart : armorPieces) {
+            //if it has the curse, double the armor amount of the piece
+            if(whatArmorSlot(armorPart) != EquipmentSlotType.MAINHAND & armorPart.isEnchanted() && EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFTED_PICKUP_TRUCK.get(), armorPart) > 0) {
+                //get armor attribute from the item in this specific armor slot
+                Multimap<Attribute, AttributeModifier> oldMap = armorPart.getAttributeModifiers(whatArmorSlot(armorPart));
+                //get armor value of the cursed armor piece and double it
+                Collection<AttributeModifier> initialArmorValues = oldMap.get(Attributes.ARMOR);
+                for(AttributeModifier armorPoints : initialArmorValues) {
+                    totalArmor += armorPoints.getAmount();
+                }
+                MiscHelpers.debugLogger("[Lifted Pickup Truck ARMOR] Cursed Armor Total: " + totalArmor);
+            }
+        }
+        //only apply the modifier if there is cursed armor
+        if(totalArmor > 0 && armor != null) {
+            armor.applyNonPersistentModifier(new AttributeModifier(LIFTED_TRUCK_ARMOR, "Lifted Truck Armor Modifier", totalArmor, AttributeModifier.Operation.ADDITION));
+        }
+    }
+
+    //gets the equipment slot of passed through armor if applicable
+    private static EquipmentSlotType whatArmorSlot(ItemStack item) {
+        //if the item stack passed through is armor, return the armor equipment slot
+        if(item.getItem() instanceof ArmorItem) {
+            ArmorItem armorPiece = (ArmorItem)item.getItem();
+            return armorPiece.getEquipmentSlot();
+        }
+
+        //default case for if it isn't an armor piece
+        return EquipmentSlotType.MAINHAND;
+    }
+
+    //Do the increased damage to entities with the Lifted Pickup Truck curse
+    @SubscribeEvent
+    public static void liftedPickupTruckDmg(LivingHurtEvent event) {
+        //multiplier for the increased damage, maybe give a config option in the future
+        float DMG_MULTIPLIER = 3f;
+        LivingEntity target = event.getEntityLiving();
+
+        //get all instances of armor attributes from the target entity
+        ModifiableAttributeInstance armor = target.getAttribute(Attributes.ARMOR);
+
+        //check for existing armor attribute and lifted truck curse modifier
+        if(armor != null && armor.getModifier(LIFTED_TRUCK_ARMOR) != null) {
+            //if there is cursed armor on (value of modifier > 0), then increase damage amount
+            if(Objects.requireNonNull(armor.getModifier(LIFTED_TRUCK_ARMOR)).getAmount() > 0) {
+                MiscHelpers.debugLogger("[Lifted Pickup Truck DAMAGE] Initial Damage: " + event.getAmount());
+                MiscHelpers.debugLogger("[Lifted Pickup Truck DAMAGE] New Damage: " + event.getAmount() * DMG_MULTIPLIER);
+                event.setAmount(event.getAmount() * DMG_MULTIPLIER);
+            }
         }
     }
 }
