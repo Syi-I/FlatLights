@@ -11,6 +11,8 @@ import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.event.*;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.item.curio.BaseCurio;
+import com.uberhelixx.flatlights.item.curio.ModCurios;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
@@ -58,6 +60,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.SlotTypePreset;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -100,6 +104,7 @@ public class FlatLights
         ModEntityTypes.register(eventBus);
         ModSoundEvents.register(eventBus);
         ModPaintings.register(eventBus);
+        ModCurios.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
@@ -689,6 +694,8 @@ public class FlatLights
                 ModBlocks.SPECTRUM_ANVIL.get().asItem(),
                 ModBlocks.LIME_BRICK.get().asItem(),
                 ModBlocks.MOTIVATIONAL_CHAIR.get().asItem());
+
+                ModCurios.DRAGONS_FINAL_CUBE.get().asItem(); //curios
         tabSort = Ordering.explicit(itemOrder).onResultOf(ItemStack::getItem);
     }
 
@@ -740,6 +747,16 @@ public class FlatLights
                         }
                         return bombMode;
                     });
+            ItemModelsProperties.registerProperty(ModCurios.DRAGONS_FINAL_CUBE.get(),
+                    new ResourceLocation(FlatLights.MOD_ID, "tier"), (stack, world, living) -> {
+                        float curioTier = 0.0F;
+                        if(stack.getTag() != null) {
+                            if (stack.getTag().contains(BaseCurio.TIER)) {
+                                curioTier = stack.getTag().getFloat(BaseCurio.TIER);
+                            }
+                        }
+                        return curioTier;
+                    });
         });
     }
 
@@ -747,6 +764,8 @@ public class FlatLights
     {
         // some example code to dispatch IMC to another mod
         InterModComms.sendTo("flatlights", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
+        //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.cube").build());
     }
 
     private void processIMC(final InterModProcessEvent event)
