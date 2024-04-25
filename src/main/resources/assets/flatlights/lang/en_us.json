@@ -598,5 +598,8 @@
   "flatlights.void_fizzle": "Black hole disappears",
   "flatlights.void_hum": "Black hole humming",
   "flatlights.crafting_table_interact": "Crafting sounds intensify",
-  "flatlights.gravity_lift_hum": "Gravity lift humming"
+  "flatlights.gravity_lift_hum": "Gravity lift humming",
+
+  "flatlights.curioset.dragonsfinal": "Dragon's Final Test",
+  "item.flatlights.dragons_final_cube": "Light Cube"
 }

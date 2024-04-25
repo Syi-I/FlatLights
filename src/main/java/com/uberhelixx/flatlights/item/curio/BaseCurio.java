@@ -6,6 +6,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
@@ -16,6 +19,9 @@ public class BaseCurio extends Item implements ICurioItem {
     public BaseCurio(Properties properties) {
         super(properties);
     }
+
+    @Override
+    public boolean isImmuneToFire() { return true; }
 
     //curio tier floats for differentiating item models
     public static final float COMMON_TIER = 0.1f;
@@ -60,11 +66,7 @@ public class BaseCurio extends Item implements ICurioItem {
         //get held itemstack, which should be the input curio
         ItemStack stack = playerIn.getHeldItem(handIn);
 
-        //create new instance of the input curio
-        //ItemStack droppedItem = stack.getItem().getDefaultInstance();
-
         //grab current nbt tag or create a new one if null
-        //CompoundNBT newTag = droppedItem.getTag() != null ? droppedItem.getTag() : new CompoundNBT();
         CompoundNBT newTag = stack.getTag() != null ? stack.getTag() : new CompoundNBT();
 
         //check if tags are present yet, which they shouldn't be if it's a newly picked up item
@@ -74,19 +76,8 @@ public class BaseCurio extends Item implements ICurioItem {
             float curioTier = tierIn != null ? tierIn : rollCurioTier(worldIn);
             newTag.putFloat(BaseCurio.TIER, curioTier);
             newTag.putString(BaseCurio.SET, setIn);
-            //droppedItem.setTag(newTag);
             stack.setTag(newTag);
         }
-
-        //assure that the item to drop exists, then give the player the item with rolled tags/stats
-        //if(droppedItem != null) {
-            //playerIn.dropItem(droppedItem, false, false);
-            //below method doesn't work quite as well since if you have a full inventory the new item gets deleted
-            //playerIn.addItemStackToInventory(droppedItem);
-        //}
-
-        //lower the stack count by 1, lets unclaimed curio be stackable while rolled ones are differentiated by nbt
-        //stack.shrink(1);
     }
 
     //checks the input tag to see if the curio was already rolled or not
@@ -98,5 +89,59 @@ public class BaseCurio extends Item implements ICurioItem {
         }
 
         return (!itemTag.isEmpty() || itemTag.contains(BaseCurio.TIER) || itemTag.contains(BaseCurio.SET));
+    }
+
+    //get curio tier data and format for tooltip
+    public ITextComponent getTierData(ItemStack curio) {
+        //reads nbt data and determines the tier tooltip based off the numbers
+        CompoundNBT tag = curio.getTag();
+        ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
+        if (curio.getTag() != null && curio.getTag().contains(TIER)) {
+            float tier = tag.getFloat(TIER);
+            String tierName;
+            if(tier == COMMON_TIER) {
+                tierName = TextFormatting.GRAY + "Common";
+            }
+            else if(tier == RARE_TIER) {
+                tierName = TextFormatting.BLUE + "Rare";
+            }
+            else if(tier == EPIC_TIER) {
+                tierName = TextFormatting.DARK_PURPLE + "Epic";
+            }
+            else if(tier == LEGENDARY_TIER) {
+                tierName = TextFormatting.GOLD + "Legendary";
+            }
+            else if(tier == GROWTH_TIER) {
+                tierName = TextFormatting.GREEN + "Growth";
+            }
+            else {
+                tierName = "" + TextFormatting.BLACK + TextFormatting.OBFUSCATED + "Unknown";
+            }
+            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Tier: " + tierName + TextFormatting.AQUA + "]");
+        }
+        else {
+            MiscHelpers.debugLogger("[Base Curio] Somehow we failed to put a tier on this curio???");
+            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set: " + TextFormatting.RED + "Bugged Item" + TextFormatting.AQUA + "]");
+        }
+        return data;
+    }
+
+    //get curio set name and format for tooltip
+    public ITextComponent formatSetInfo(ItemStack curio) {
+        //reads nbt data and determines the set name tooltip based off the numbers
+        CompoundNBT tag = curio.getTag();
+        ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
+        if (curio.getTag() != null && curio.getTag().contains(SET)) {
+            //get translation text key from nbt tag
+            String setTranslationText = tag.getString(SET);
+            //get translation text string from key in nbt tag
+            String setName = new TranslationTextComponent(setTranslationText).getString();
+            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set: " + TextFormatting.DARK_AQUA + setName + TextFormatting.AQUA + "]");
+        }
+        else {
+            MiscHelpers.debugLogger("[Base Curio] Somehow we failed to put a set on this curio???");
+            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set: " + TextFormatting.RED + "Bugged Item" + TextFormatting.AQUA + "]");
+        }
+        return data;
     }
 }
