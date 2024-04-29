@@ -601,5 +601,7 @@
   "flatlights.gravity_lift_hum": "Gravity lift humming",
 
   "flatlights.curioset.dragonsfinal": "Dragon's Final Test",
-  "item.flatlights.dragons_final_cube": "Light Cube"
+  "item.flatlights.dragons_final_cube": "Light Cube",
+  "item.flatlights.dragons_final_prism": "Light Prism",
+  "item.flatlights.dragons_final_sphere": "Light Sphere"
 }

@@ -48,6 +48,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -696,6 +697,8 @@ public class FlatLights
                 ModBlocks.MOTIVATIONAL_CHAIR.get().asItem());
 
                 ModCurios.DRAGONS_FINAL_CUBE.get().asItem(); //curios
+                ModCurios.DRAGONS_FINAL_PRISM.get().asItem();
+                ModCurios.DRAGONS_FINAL_SPHERE.get().asItem();
         tabSort = Ordering.explicit(itemOrder).onResultOf(ItemStack::getItem);
     }
 
@@ -747,16 +750,19 @@ public class FlatLights
                         }
                         return bombMode;
                     });
-            ItemModelsProperties.registerProperty(ModCurios.DRAGONS_FINAL_CUBE.get(),
-                    new ResourceLocation(FlatLights.MOD_ID, "tier"), (stack, world, living) -> {
-                        float curioTier = 0.0F;
-                        if(stack.getTag() != null) {
-                            if (stack.getTag().contains(BaseCurio.TIER)) {
-                                curioTier = stack.getTag().getFloat(BaseCurio.TIER);
+            //gives all curios the tier model differentiator
+            for(RegistryObject<Item> entry : ModCurios.CURIOS.getEntries()) {
+                ItemModelsProperties.registerProperty(entry.get(),
+                        new ResourceLocation(FlatLights.MOD_ID, "tier"), (stack, world, living) -> {
+                            float curioTier = 0.0F;
+                            if (stack.getTag() != null) {
+                                if (stack.getTag().contains(BaseCurio.TIER)) {
+                                    curioTier = stack.getTag().getFloat(BaseCurio.TIER);
+                                }
                             }
-                        }
-                        return curioTier;
-                    });
+                            return curioTier;
+                        });
+            }
         });
     }
 
@@ -764,6 +770,8 @@ public class FlatLights
     {
         // some example code to dispatch IMC to another mod
         InterModComms.sendTo("flatlights", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
         //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.cube").build());
     }
