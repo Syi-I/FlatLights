@@ -47,7 +47,7 @@ authors="UberHelixx" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Some not so fancy light blocks to use for decoration in builds, as well as a few random tools.
+Some not so fancy light blocks to use for decoration in builds, along with some miscellaneous items, tools, and enchantments.
 '''
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
@@ -66,6 +66,10 @@ Some not so fancy light blocks to use for decoration in builds, as well as a few
 [[dependencies.flatlights]]
     modId="minecraft"
     mandatory=true
+[[dependencies.flatlights]]
+modId = "curios"
+mandatory = true
+versionRange = "[1.16.5-4.0.5.2,)"
 
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.16.5,1.17)"
