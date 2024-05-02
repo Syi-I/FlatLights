@@ -9,18 +9,22 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * NOTE: for balancing purposes:tm: the curios are put into three rough categories, those being cubes, prisms, and spheres
- * Should only ever have one curio slot of each type, prevents stacking from only using one type of curio to negate everything
+ * NOTE: for balancing purposes:tm: the curios are put into three rough categories, those being cubes, prisms, and spheres.
+ * Should only ever have one curio slot of each type, prevents stacking from only using one type of curio to negate everything.
  * Cube: augments some attribute/stats of the player, such as armor/toughness/speed (likely flat stat increases and not %)
- * Prism: does something for attacking and weapons, such as increasing attack speed/damage/reach
- * Sphere: applies some sort of potion effect(s) or interacts with environmental damage, such as providing water breathing or negating suffocation damage
- * Set bonuses should be a strong buff for wearing a set, could be a basic large % stat increase or some effect that triggers upon meeting requirements
+ * Prism: does something for attacking and weapons, such as increasing attack speed/damage/reach, or add some sort of attacking mechanic
+ * Sphere: adds some sort of potion effect(s) or interacts with the environment, such as providing water breathing or negating suffocation damage
+ * Set bonuses should be a strong buff for wearing a set, could be a basic large % stat increase or some effect that triggers upon meeting requirements.
+ * Set bonus effect goes on the Cube curio only, since that will have the least moving parts as it's only stat increases
  */
 public class BaseCurio extends Item implements ICurioItem {
 
@@ -73,6 +77,10 @@ public class BaseCurio extends Item implements ICurioItem {
     public static final String TIER = "flatlights.curiotier";
     //curio set nbt key, used to determine what set the curio is a part of
     public static final String SET = "flatlights.curioset";
+    //curio slot identifiers
+    public static final String CUBE_SLOT_ID = "flatlights.curios.cube";
+    public static final String PRISM_SLOT_ID = "flatlights.curios.prism";
+    public static final String SPHERE_SLOT_ID = "flatlights.curios.sphere";
     //curio growth tier cap
     public static final String GROWTH_CAP = "flatlights.curioGrowthCap";
     //curio data tracker for the growth stat
@@ -270,7 +278,7 @@ public class BaseCurio extends Item implements ICurioItem {
      * @param curio The curio which we are trying to get the Tier value of
      * @return The matching {@link CurioTier} associated with the float NBT tier data of the curio
      */
-    public CurioTier getCurioTier(ItemStack curio) {
+    public static CurioTier getCurioTier(ItemStack curio) {
         CompoundNBT tag = curio.getTag();
         //make sure the given curio has nbt data
         if(tag != null) {
@@ -330,5 +338,99 @@ public class BaseCurio extends Item implements ICurioItem {
             MiscHelpers.debugLogger("[Base Curio] No matching tier value. Returning multiplier of 0.");
             return 0.0f;
         }
+    }
+
+    /**
+     * Gets the worn curios from only our specific slot types (cube/prism/sphere)
+     * @param playerIn The player whose curios we are checking
+     * @return A list of curios in {@link ItemStack} form, present in the given slot types
+     */
+    public static List<ItemStack> getWornCurios(PlayerEntity playerIn) {
+        List<SlotResult> curioSlots = getWornCurioSlots(playerIn);
+
+        //convert the slot results into actual ItemStack
+        List<ItemStack> curioList = new ArrayList<>();
+        for(int i = 0; i < curioSlots.size(); i++) {
+            curioList.add(curioSlots.get(i).getStack());
+        }
+
+        return curioList;
+    }
+
+    /**
+     * Gets a list of curios in the cube/prism/sphere slot types
+     * @param playerIn The player whose curio slots are being checked
+     * @return A list of {@link SlotResult} for the given player
+     */
+    public static List<SlotResult> getWornCurioSlots(PlayerEntity playerIn) {
+        //get all the curios in slots of our mod's type (cube/prism/sphere slots only)
+        List<SlotResult> cubeSlot = CuriosApi.getCuriosHelper().findCurios(playerIn, CUBE_SLOT_ID);
+        List<SlotResult> prismSlot = CuriosApi.getCuriosHelper().findCurios(playerIn, PRISM_SLOT_ID);
+        List<SlotResult> sphereSlot = CuriosApi.getCuriosHelper().findCurios(playerIn, SPHERE_SLOT_ID);
+
+        //put all curios from each slot type into a list so that we can go through all curios and update the appropriate ones
+        List<SlotResult> curioList = new ArrayList<>();
+        for(int i = 0; i < cubeSlot.size(); i++) {
+            curioList.add(cubeSlot.get(i));
+        }
+        for(int i = 0; i < prismSlot.size(); i++) {
+            curioList.add(prismSlot.get(i));
+        }
+        for(int i = 0; i < sphereSlot.size(); i++) {
+            curioList.add(sphereSlot.get(i));
+        }
+
+        return curioList;
+    }
+
+    /**
+     * Determines whether the player is wearing three curios of the same set
+     * @param playerIn The player whose curios are being checked
+     * @return True if all three curios in our slot types are the same set name, false if not the same set name or not 3 curios
+     */
+    public static boolean canTriggerSetEffect(PlayerEntity playerIn) {
+        //get curios in our specific slot types only
+        List<SlotResult> curios = getWornCurioSlots(playerIn);
+        String cubeSet = null;
+        String prismSet = null;
+        String sphereSet = null;
+        //check the curio in each of the slots to get the set name from nbt if present
+        for(SlotResult curio : curios) {
+            //get slot id from curio to check if we are wearing one of each curio slot
+            String slotID = curio.getSlotContext().getIdentifier();
+            CompoundNBT tag = curio.getStack().getTag();
+            if(slotID.equals(CUBE_SLOT_ID) && tag != null) {
+                cubeSet = tag.getString(SET);
+            }
+            if(slotID.equals(PRISM_SLOT_ID) && tag != null) {
+                prismSet = tag.getString(SET);
+            }
+            if(slotID.equals(SPHERE_SLOT_ID) && tag != null) {
+                sphereSet = tag.getString(SET);
+            }
+        }
+        //make sure these have actual sets and aren't unrolled or something that would for some reason not have a set name
+        if(cubeSet == null || prismSet == null || sphereSet == null) {
+            return false;
+        }
+        //makes sure that all three curios from the different slot types are of the same set name
+        return cubeSet.equals(prismSet) && cubeSet.equals(sphereSet);
+    }
+
+    /**
+     * Gets the set name for the curios from this player, if all three curios are of the same set
+     * @param playerIn The player whose curios are being checked
+     * @return The curio Set Name if all three curios are of the same set, or null otherwise
+     */
+    public static String getSetEffect(PlayerEntity playerIn) {
+        String setName = null;
+        //this is only true if all three curios worn are the same set
+        if(canTriggerSetEffect(playerIn)) {
+            //get all curios and just get the set name from one of them since they should all share the same set
+            List<ItemStack> curios = getWornCurios(playerIn);
+            CompoundNBT firstCurioTag = curios.get(0).getTag();
+            setName = firstCurioTag != null ? firstCurioTag.getString(SET) : null;
+        }
+        return setName;
     }
 }

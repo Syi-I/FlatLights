@@ -66,12 +66,12 @@ Some not so fancy light blocks to use for decoration in builds, along with some 
 [[dependencies.flatlights]]
     modId="minecraft"
     mandatory=true
-[[dependencies.flatlights]]
-modId = "curios"
-mandatory = true
-versionRange = "[1.16.5-4.0.5.2,)"
-
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.flatlights]]
+modId = "curios"
+mandatory = true
+versionRange = "[1.16.5-4.0.5.2,)"

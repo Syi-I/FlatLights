@@ -42,6 +42,7 @@ import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -770,10 +771,12 @@ public class FlatLights
     {
         // some example code to dispatch IMC to another mod
         InterModComms.sendTo("flatlights", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+
+        //register curio slots including the three custom slot types
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
-        //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.cube").build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.cube").icon(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon")).build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.prism").icon(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon")).build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.sphere").icon(new ResourceLocation(MOD_ID, "item/curio/curio_sphere_icon")).build());
     }
 
     private void processIMC(final InterModProcessEvent event)
@@ -799,12 +802,14 @@ public class FlatLights
         @SubscribeEvent
         public static void onModelRegistryEvent(ModelRegistryEvent event) {
             MiscHelpers.debugLogger("tried to add special model idk");
+            //register custom models here
             ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
             ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
             ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
             ModelLoader.addSpecialModel(BombSwingProjectileRenderer.BOMB_MODEL);
         }
 
+        //needed for rendering throwable item
         public static class PortableBlackHoleFactory implements IRenderFactory<PortableBlackHoleProjectileEntity> {
             @Override
             public EntityRenderer<? super PortableBlackHoleProjectileEntity> createRenderFor(EntityRendererManager manager) {
@@ -813,12 +818,21 @@ public class FlatLights
             }
         }
 
+        //needed for rendering throwable item
         public static class GravityLiftFactory implements IRenderFactory<GravityLiftProjectileEntity> {
             @Override
             public EntityRenderer<? super GravityLiftProjectileEntity> createRenderFor(EntityRendererManager manager) {
                 ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                 return new SpriteRenderer<>(manager, itemRenderer);
             }
+        }
+
+        @SubscribeEvent
+        public static void curiosIconRegistryEvent(TextureStitchEvent.Pre event) {
+            //register curio slot custom icons
+            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon"));
+            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon"));
+            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_sphere_icon"));
         }
     }
 }

@@ -68,9 +68,9 @@ public class DragonsFinalPrism extends BaseCurio {
     }
 
     //uuids for the different attribute modifiers
-    protected static final UUID PRISM_ARMOR = UUID.fromString("f568601f-2852-442e-a15c-ccc61ffa9d24");
-    protected static final UUID PRISM_TOUGHNESS = UUID.fromString("95dbb286-e4f6-479c-9013-fadf645330a9");
-    protected static final UUID PRISM_HEALTH = UUID.fromString("2baf0a14-24fb-45cb-a5f8-77bbea5ff87a");
+    protected static final UUID PRISM_ATTACK = UUID.fromString("96367484-5a73-4884-ac17-685d2ea01fc9");
+    protected static final UUID PRISM_ATK_SPEED = UUID.fromString("adb3768a-151e-43e7-a876-a8b0357c2fee");
+    protected static final UUID PRISM_HEALTH = UUID.fromString("441dc661-c111-4b31-8d5d-75532ddbe763");
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
@@ -113,9 +113,8 @@ public class DragonsFinalPrism extends BaseCurio {
             }
 
             //put attribute modifiers onto the new map using the growth modifier value
-            newMap.put(Attributes.ARMOR, new AttributeModifier(PRISM_ARMOR, "Prism Armor Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
-            newMap.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(PRISM_TOUGHNESS, "Prism Toughness Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
-            newMap.put(Attributes.MAX_HEALTH, new AttributeModifier(PRISM_HEALTH, "Prism Health Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(PRISM_ATTACK, "Prism Attack Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(Attributes.ATTACK_SPEED, new AttributeModifier(PRISM_ATK_SPEED, "Prism Attack Speed Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
 
             //put attributes from old map onto new one which is being returned
             for (Attribute attribute : oldMap.keySet()) {

@@ -9,6 +9,7 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -91,22 +92,9 @@ public class DragonsFinalSphere extends BaseCurio {
             //calculate growth modifier value from core count, scale down number
             PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
             if (player != null) {
-                int coresFromPlayer = getCoresFromPlayer(player);
                 int cores = 0;
                 if(stack.getTag().contains(BaseCurio.GROWTH_TRACKER)) {
-                    int growthTracker = stack.getTag().getInt(GROWTH_TRACKER);
-                    //if the tracker is behind compared to the player tracker, update growth tracker and use player tracker value
-                    if(growthTracker < coresFromPlayer) {
-                        CompoundNBT tag = stack.getTag();
-                        tag.putInt(GROWTH_TRACKER, coresFromPlayer);
-                        //you have to send packets to update the tracker data appropriately
-                        PacketHandler.sendToServer(new PacketWriteNbt(tag, stack));
-                        cores = coresFromPlayer;
-                    }
-                    //this should be the normal function
-                    else {
-                        cores = growthTracker;
-                    }
+                    cores = stack.getTag().getInt(GROWTH_TRACKER);
                 }
                 MiscHelpers.debugLogger("[Attribute Mapping] Total Bonus: " + cores * 0.01);
                 growthModifier = cores * 0.01;

@@ -600,6 +600,9 @@
   "flatlights.crafting_table_interact": "Crafting sounds intensify",
   "flatlights.gravity_lift_hum": "Gravity lift humming",
 
+  "curios.identifier.flatlights.curios.cube": "Light Cube",
+  "curios.identifier.flatlights.curios.prism": "Light Prism",
+  "curios.identifier.flatlights.curios.sphere": "Light Sphere",
   "flatlights.curioset.dragonsfinal": "Dragon's Final Test",
   "item.flatlights.dragons_final_cube": "Light Cube",
   "item.flatlights.dragons_final_prism": "Light Prism",
