@@ -7,6 +7,7 @@ import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.ModEnchantments;
 import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
+import com.uberhelixx.flatlights.entity.ModAttributes;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.event.*;
@@ -25,6 +26,7 @@ import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
 import com.uberhelixx.flatlights.util.MiscEventHelpers;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.ModKeybinds;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -107,6 +109,7 @@ public class FlatLights
         ModSoundEvents.register(eventBus);
         ModPaintings.register(eventBus);
         ModCurios.register(eventBus);
+        ModAttributes.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
@@ -728,7 +731,7 @@ public class FlatLights
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_ENTITY.get(), GravityLiftRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_PROJECTILE_ENTITY.get(), new RegistryEvents.GravityLiftFactory());
 
-        //custom item property for manipulating sword to spear mode models
+        //custom item property for manipulating item models
         event.enqueueWork(() ->
         {
             ItemModelsProperties.registerProperty(ModItems.PRISMATIC_BLADEMK2.get(),
@@ -765,6 +768,9 @@ public class FlatLights
                         });
             }
         });
+
+        //keybind setup needs to be done as client setup
+        ModKeybinds.register(event);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
@@ -773,7 +779,7 @@ public class FlatLights
         InterModComms.sendTo("flatlights", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
 
         //register curio slots including the three custom slot types
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
+        //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.cube").icon(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon")).build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.prism").icon(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon")).build());
         InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.sphere").icon(new ResourceLocation(MOD_ID, "item/curio/curio_sphere_icon")).build());

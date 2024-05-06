@@ -108,7 +108,7 @@ public class DragonsFinalPrism extends BaseCurio {
                         cores = growthTracker;
                     }
                 }
-                MiscHelpers.debugLogger("[Attribute Mapping] Total Bonus: " + cores * 0.01);
+                //MiscHelpers.debugLogger("[Attribute Mapping] Total Bonus: " + cores * 0.01);
                 growthModifier = cores * 0.01;
             }
 
@@ -132,12 +132,12 @@ public class DragonsFinalPrism extends BaseCurio {
 
         //check if player even has cores in the first place, return 0 cores if not
         if(!uuidCheck(playerIn.getUniqueID())) {
-            MiscHelpers.debugLogger("[Get Player Cores] Player does not have access to cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] Player does not have access to cores.");
             return 0;
         }
         //check for player persistent nbt, if none return 0 cores
         if (!data.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
-            MiscHelpers.debugLogger("[Get Player Cores] No persisted NBT data, returning 0 cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] No persisted NBT data, returning 0 cores.");
             return 0;
         }
         else {
@@ -146,11 +146,11 @@ public class DragonsFinalPrism extends BaseCurio {
 
         //if core tracker stat tag in data, return core amount from tracker
         if(persistent.contains(PLAYER_CORETRACKER_TAG)) {
-            MiscHelpers.debugLogger("[Get Player Cores] Found Core Tracker data, returning " + persistent.getInt(PLAYER_CORETRACKER_TAG) + " cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] Found Core Tracker data, returning " + persistent.getInt(PLAYER_CORETRACKER_TAG) + " cores.");
             return persistent.getInt(PLAYER_CORETRACKER_TAG);
         }
         else {
-            MiscHelpers.debugLogger("[Get Player Cores] No Core Tracker data, returning 0 cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] No Core Tracker data, returning 0 cores.");
             return 0;
         }
     }

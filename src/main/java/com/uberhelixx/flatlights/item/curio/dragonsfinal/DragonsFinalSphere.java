@@ -3,13 +3,13 @@ package com.uberhelixx.flatlights.item.curio.dragonsfinal;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import com.uberhelixx.flatlights.entity.ModAttributes;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -69,9 +69,8 @@ public class DragonsFinalSphere extends BaseCurio {
     }
 
     //uuids for the different attribute modifiers
-    protected static final UUID SPHERE_ARMOR = UUID.fromString("dc955a56-21a9-4d65-a3e0-9c79e3fce7ca");
-    protected static final UUID SPHERE_TOUGHNESS = UUID.fromString("47f80971-3ca1-44c3-98ed-52404b3c7e41");
-    protected static final UUID SPHERE_HEALTH = UUID.fromString("4539e95f-6988-4f4f-9767-ad96b9ec569a");
+    protected static final UUID SPHERE_DODGE = UUID.fromString("dc955a56-21a9-4d65-a3e0-9c79e3fce7ca");
+    protected static final UUID SPHERE_LUCK = UUID.fromString("47f80971-3ca1-44c3-98ed-52404b3c7e41");
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
@@ -92,18 +91,30 @@ public class DragonsFinalSphere extends BaseCurio {
             //calculate growth modifier value from core count, scale down number
             PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
             if (player != null) {
+                int coresFromPlayer = getCoresFromPlayer(player);
                 int cores = 0;
                 if(stack.getTag().contains(BaseCurio.GROWTH_TRACKER)) {
-                    cores = stack.getTag().getInt(GROWTH_TRACKER);
+                    int growthTracker = stack.getTag().getInt(GROWTH_TRACKER);
+                    //if the tracker is behind compared to the player tracker, update growth tracker and use player tracker value
+                    if(growthTracker < coresFromPlayer) {
+                        CompoundNBT tag = stack.getTag();
+                        tag.putInt(GROWTH_TRACKER, coresFromPlayer);
+                        //you have to send packets to update the tracker data appropriately
+                        PacketHandler.sendToServer(new PacketWriteNbt(tag, stack));
+                        cores = coresFromPlayer;
+                    }
+                    //this should be the normal function
+                    else {
+                        cores = growthTracker;
+                    }
                 }
-                MiscHelpers.debugLogger("[Attribute Mapping] Total Bonus: " + cores * 0.01);
+                //MiscHelpers.debugLogger("[Attribute Mapping] Total Bonus: " + cores * 0.01);
                 growthModifier = cores * 0.01;
             }
 
             //put attribute modifiers onto the new map using the growth modifier value
-            newMap.put(Attributes.ARMOR, new AttributeModifier(SPHERE_ARMOR, "Sphere Armor Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
-            newMap.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(SPHERE_TOUGHNESS, "Sphere Toughness Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
-            newMap.put(Attributes.MAX_HEALTH, new AttributeModifier(SPHERE_HEALTH, "Sphere Health Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(ModAttributes.DODGE_CHANCE.get(), new AttributeModifier(SPHERE_DODGE, "Sphere Dodge Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(Attributes.LUCK, new AttributeModifier(SPHERE_LUCK, "Sphere Luck Modifier", growthModifier, AttributeModifier.Operation.ADDITION));
 
             //put attributes from old map onto new one which is being returned
             for (Attribute attribute : oldMap.keySet()) {
@@ -121,12 +132,12 @@ public class DragonsFinalSphere extends BaseCurio {
 
         //check if player even has cores in the first place, return 0 cores if not
         if(!uuidCheck(playerIn.getUniqueID())) {
-            MiscHelpers.debugLogger("[Get Player Cores] Player does not have access to cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] Player does not have access to cores.");
             return 0;
         }
         //check for player persistent nbt, if none return 0 cores
         if (!data.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
-            MiscHelpers.debugLogger("[Get Player Cores] No persisted NBT data, returning 0 cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] No persisted NBT data, returning 0 cores.");
             return 0;
         }
         else {
@@ -135,11 +146,11 @@ public class DragonsFinalSphere extends BaseCurio {
 
         //if core tracker stat tag in data, return core amount from tracker
         if(persistent.contains(PLAYER_CORETRACKER_TAG)) {
-            MiscHelpers.debugLogger("[Get Player Cores] Found Core Tracker data, returning " + persistent.getInt(PLAYER_CORETRACKER_TAG) + " cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] Found Core Tracker data, returning " + persistent.getInt(PLAYER_CORETRACKER_TAG) + " cores.");
             return persistent.getInt(PLAYER_CORETRACKER_TAG);
         }
         else {
-            MiscHelpers.debugLogger("[Get Player Cores] No Core Tracker data, returning 0 cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] No Core Tracker data, returning 0 cores.");
             return 0;
         }
     }

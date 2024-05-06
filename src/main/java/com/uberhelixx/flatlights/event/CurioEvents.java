@@ -23,7 +23,6 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
-
 public class CurioEvents {
 
     /**
@@ -49,7 +48,7 @@ public class CurioEvents {
                 coreGainText = " cores.";
             }
             ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (gainedCores) + coreGainText);
-            if(!FlatLightsClientConfig.coreNoti.get()) {
+            if(FlatLightsClientConfig.coreNoti.get()) {
                 killer.sendMessage(killMessage, killer.getUniqueID());
             }
 

@@ -3,12 +3,14 @@ package com.uberhelixx.flatlights.item.curio.dragonsfinal;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
-import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -17,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -43,6 +46,8 @@ public class DragonsFinalCube extends BaseCurio {
         //doesn't let you roll again if it already has the roll data
         if(stackTags == null || !rollCheck(stackTags)) {
             setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.DRAGONSFINAL, CurioTier.GROWTH.MODEL_VALUE, Integer.MAX_VALUE);
+            //add in the set effect toggle for curios that have the functionality for the set effect (cubes only)
+            addSetToggle(stack);
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
@@ -58,6 +63,14 @@ public class DragonsFinalCube extends BaseCurio {
             if(stack.getTag().contains(GROWTH_TRACKER)) {
                 tooltip.add(getGrowthTooltip(stack, false) );
             }
+            if(stack.getTag().contains(SET_EFFECT_TOGGLE) && stack.getTag().getBoolean(SET_EFFECT_TOGGLE)) {
+                ITextComponent setTooltipTrue = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set Effect: " + TextFormatting.GREEN + "Reaching the Apex" + TextFormatting.AQUA + "]");
+                tooltip.add(setTooltipTrue);
+            }
+            else {
+                ITextComponent setTooltipTrue = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set Effect: " + TextFormatting.RED + "Reaching the Apex" + TextFormatting.AQUA + "]");
+                tooltip.add(setTooltipTrue);
+            }
         }
         //how to use curio
         else {
@@ -70,6 +83,38 @@ public class DragonsFinalCube extends BaseCurio {
     protected static final UUID CUBE_ARMOR = UUID.fromString("65e1dd35-4826-41fa-a9d3-3011c1a6a5a0");
     protected static final UUID CUBE_TOUGHNESS = UUID.fromString("797a8b01-1f6f-43cd-ade2-f22f5329351d");
     protected static final UUID CUBE_HEALTH = UUID.fromString("bda19a97-255e-45d8-8f85-f15d45b82b77");
+
+    @Override
+    public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
+        if(livingEntity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) livingEntity;
+            CompoundNBT tag = stack.getTag();
+            if(tag != null && !tag.isEmpty()) {
+                //make sure that the worn set effect matches this curio set and the set effect is toggled on
+                if (correctSetEffect(player, CurioSetNames.DRAGONSFINAL) && tag.contains(SET_EFFECT_TOGGLE) && tag.getBoolean(SET_EFFECT_TOGGLE)) {
+                    int growthProgress = getGrowthTracker(stack);
+                    //radius of the effect
+                    double expansionRadius = MathHelper.clamp(growthProgress, 0, 32);
+                    //get all entities around the wearer
+                    List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius));
+                    for (Entity entity : entities) {
+                        //ensure living entity is the only thing we're trying to damage
+                        if (entity instanceof LivingEntity) {
+                            float distance = player.getDistance(entity);
+                            //calculates how close the entity is to the wearer as a percentage
+                            float percentMod = (float) (distance / expansionRadius);
+                            //damage scales off hp difference and the proximity percentage
+                            float dmg = Math.max(player.getMaxHealth() - ((LivingEntity) entity).getMaxHealth(), 0) * percentMod;
+                            if(dmg > 0) {
+                                entity.attackEntityFrom(ModDamageTypes.causeIndirectEntangled(player, player), dmg);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        super.curioTick(identifier, index, livingEntity, stack);
+    }
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
@@ -107,7 +152,7 @@ public class DragonsFinalCube extends BaseCurio {
                         cores = growthTracker;
                     }
                 }
-                MiscHelpers.debugLogger("[Attribute Mapping] Total Bonus: " + cores * 0.01);
+                //MiscHelpers.debugLogger("[Attribute Mapping] Total Bonus: " + cores * 0.01);
                 growthModifier = cores * 0.01;
             }
 
@@ -132,12 +177,12 @@ public class DragonsFinalCube extends BaseCurio {
 
         //check if player even has cores in the first place, return 0 cores if not
         if(!uuidCheck(playerIn.getUniqueID())) {
-            MiscHelpers.debugLogger("[Get Player Cores] Player does not have access to cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] Player does not have access to cores.");
             return 0;
         }
         //check for player persistent nbt, if none return 0 cores
         if (!data.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
-            MiscHelpers.debugLogger("[Get Player Cores] No persisted NBT data, returning 0 cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] No persisted NBT data, returning 0 cores.");
             return 0;
         }
         else {
@@ -146,11 +191,11 @@ public class DragonsFinalCube extends BaseCurio {
 
         //if core tracker stat tag in data, return core amount from tracker
         if(persistent.contains(PLAYER_CORETRACKER_TAG)) {
-            MiscHelpers.debugLogger("[Get Player Cores] Found Core Tracker data, returning " + persistent.getInt(PLAYER_CORETRACKER_TAG) + " cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] Found Core Tracker data, returning " + persistent.getInt(PLAYER_CORETRACKER_TAG) + " cores.");
             return persistent.getInt(PLAYER_CORETRACKER_TAG);
         }
         else {
-            MiscHelpers.debugLogger("[Get Player Cores] No Core Tracker data, returning 0 cores.");
+            //MiscHelpers.debugLogger("[Get Player Cores] No Core Tracker data, returning 0 cores.");
             return 0;
         }
     }

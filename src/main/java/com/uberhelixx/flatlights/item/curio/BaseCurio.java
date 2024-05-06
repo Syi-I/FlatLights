@@ -1,5 +1,7 @@
 package com.uberhelixx.flatlights.item.curio;
 
+import com.uberhelixx.flatlights.network.PacketCurioToggleMessage;
+import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -7,7 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -22,7 +26,7 @@ import java.util.List;
  * Should only ever have one curio slot of each type, prevents stacking from only using one type of curio to negate everything.
  * Cube: augments some attribute/stats of the player, such as armor/toughness/speed (likely flat stat increases and not %)
  * Prism: does something for attacking and weapons, such as increasing attack speed/damage/reach, or add some sort of attacking mechanic
- * Sphere: adds some sort of potion effect(s) or interacts with the environment, such as providing water breathing or negating suffocation damage
+ * Sphere: adds some sort of special effect, such as providing water breathing or negating suffocation damage
  * Set bonuses should be a strong buff for wearing a set, could be a basic large % stat increase or some effect that triggers upon meeting requirements.
  * Set bonus effect goes on the Cube curio only, since that will have the least moving parts as it's only stat increases
  */
@@ -85,6 +89,7 @@ public class BaseCurio extends Item implements ICurioItem {
     public static final String GROWTH_CAP = "flatlights.curioGrowthCap";
     //curio data tracker for the growth stat
     public static final String GROWTH_TRACKER = "flatlights.curioGrowthTracker";
+    public static final String SET_EFFECT_TOGGLE = "flatlights.curioSetToggle";
     //default cap for growth tracker if a value doesn't get specifically passed in
     public static final int DEFAULT_GROWTH_CAP = 1000;
 
@@ -432,5 +437,60 @@ public class BaseCurio extends Item implements ICurioItem {
             setName = firstCurioTag != null ? firstCurioTag.getString(SET) : null;
         }
         return setName;
+    }
+
+    /**
+     * Applies all checks to make sure that the proper curio set is in place to be triggered
+     * @param playerIn Player who is wearing the curios
+     * @param curioSetIn The curio set that should be worn for the effect to trigger
+     * @return True if the curio set is the one that should be triggered, false if the set effect is not the same
+     */
+    public static boolean correctSetEffect(PlayerEntity playerIn, String curioSetIn) {
+        return getSetEffect(playerIn) != null && getSetEffect(playerIn).equals(curioSetIn) && canTriggerSetEffect(playerIn);
+    }
+
+    /**
+     * Gets the value of the Growth Tracker for growth type curios
+     * @param curio The curio whose growth tracker is being checked
+     * @return The value of the growth tracker, or 0 if not a growth type curio
+     */
+    public int getGrowthTracker(ItemStack curio) {
+        CompoundNBT tag = curio.getTag();
+        if(tag == null || tag.isEmpty()) {
+            return 0;
+        }
+        else {
+            if(getCurioTier(curio) == CurioTier.GROWTH && tag.contains(GROWTH_TRACKER) && tag.contains(GROWTH_CAP)) {
+                return tag.getInt(GROWTH_TRACKER);
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Adds NBT data for the set effect toggle keybind
+     * @param curio The curio that we're putting the NBT data on
+     */
+    public void addSetToggle(ItemStack curio) {
+        CompoundNBT tag = curio.getTag();
+        if(tag != null && !tag.isEmpty()) {
+            tag.putBoolean(SET_EFFECT_TOGGLE, false);
+        }
+    }
+
+    /**
+     * Toggles the set effect state of the input curio
+     * @param curioIn The curio that is being toggled
+     * @param playerIn The player wearing the curio who is trying to use the toggle
+     */
+    public static void toggleSetEffect(ItemStack curioIn, PlayerEntity playerIn) {
+        //check if on server and if item is one of our curios
+        if(!playerIn.getEntityWorld().isRemote() && curioIn.getItem() instanceof BaseCurio){
+            //does this curio have the set effect toggle or not, check value if it does
+            boolean active = curioIn.getOrCreateTag().contains(SET_EFFECT_TOGGLE) && curioIn.getOrCreateTag().getBoolean(SET_EFFECT_TOGGLE);
+            //invert boolean state
+            curioIn.getOrCreateTag().putBoolean(SET_EFFECT_TOGGLE, !active);
+            PacketHandler.sendToServer(new PacketCurioToggleMessage(!active));
+        }
     }
 }

@@ -18,7 +18,7 @@ public class ModDamageTypes {
     }
 
     public static DamageSource causeIndirectEntangled(Entity source, @Nullable Entity trueSource) {
-        return (new IndirectEntityDamageSource(FlatLights.MOD_ID + "_indirectEntangled", source, trueSource)).setDamageBypassesArmor();
+        return (new IndirectEntityDamageSource(FlatLights.MOD_ID + "_indirectEntangled", source, trueSource)).setDamageIsAbsolute().setDamageBypassesArmor();
     }
 
     public static DamageSource causeIndirectPhys(Entity source, @Nullable Entity trueSource) {

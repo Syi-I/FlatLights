@@ -142,7 +142,7 @@ public class PrismaticBladeMk2 extends SwordItem {
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity attacker) {
         //reach distance hitting from spear mode only
-        if(stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG)) {
+        if(stack.getTag() != null && stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG)) {
             World world = attacker.world;
             double reach = attacker.getAttributeValue(ForgeMod.REACH_DISTANCE.get());
             MiscHelpers.debugLogger("Reach Range: " + reach);
@@ -325,7 +325,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         if(uuidCheck(playerIn.getUniqueID())) {
             //can't use Screen.hasShiftDown since clientside so it doesn't register
             if (playerIn.isCrouching()) {
-                worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
+                worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
 
                 //gets appropriate tags to check current blade mode (if any), cycles between modes on SHIFT + RCLICK by setting each tag true/false
                 if (blade.getTag() == null) {
