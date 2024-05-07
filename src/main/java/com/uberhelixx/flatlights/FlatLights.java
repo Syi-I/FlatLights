@@ -7,10 +7,13 @@ import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.ModEnchantments;
 import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
+import com.uberhelixx.flatlights.entity.ModAttributes;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.event.*;
 import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.item.curio.BaseCurio;
+import com.uberhelixx.flatlights.item.curio.ModCurios;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
@@ -23,6 +26,7 @@ import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
 import com.uberhelixx.flatlights.util.MiscEventHelpers;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.ModKeybinds;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -40,12 +44,14 @@ import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -58,6 +64,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.SlotTypePreset;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -100,6 +108,8 @@ public class FlatLights
         ModEntityTypes.register(eventBus);
         ModSoundEvents.register(eventBus);
         ModPaintings.register(eventBus);
+        ModCurios.register(eventBus);
+        ModAttributes.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
 
@@ -689,6 +699,10 @@ public class FlatLights
                 ModBlocks.SPECTRUM_ANVIL.get().asItem(),
                 ModBlocks.LIME_BRICK.get().asItem(),
                 ModBlocks.MOTIVATIONAL_CHAIR.get().asItem());
+
+                ModCurios.DRAGONS_FINAL_CUBE.get().asItem(); //curios
+                ModCurios.DRAGONS_FINAL_PRISM.get().asItem();
+                ModCurios.DRAGONS_FINAL_SPHERE.get().asItem();
         tabSort = Ordering.explicit(itemOrder).onResultOf(ItemStack::getItem);
     }
 
@@ -717,7 +731,7 @@ public class FlatLights
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_ENTITY.get(), GravityLiftRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_PROJECTILE_ENTITY.get(), new RegistryEvents.GravityLiftFactory());
 
-        //custom item property for manipulating sword to spear mode models
+        //custom item property for manipulating item models
         event.enqueueWork(() ->
         {
             ItemModelsProperties.registerProperty(ModItems.PRISMATIC_BLADEMK2.get(),
@@ -740,13 +754,35 @@ public class FlatLights
                         }
                         return bombMode;
                     });
+            //gives all curios the tier model differentiator
+            for(RegistryObject<Item> entry : ModCurios.CURIOS.getEntries()) {
+                ItemModelsProperties.registerProperty(entry.get(),
+                        new ResourceLocation(FlatLights.MOD_ID, "tier"), (stack, world, living) -> {
+                            float curioTier = 0.0F;
+                            if (stack.getTag() != null) {
+                                if (stack.getTag().contains(BaseCurio.TIER)) {
+                                    curioTier = stack.getTag().getFloat(BaseCurio.TIER);
+                                }
+                            }
+                            return curioTier;
+                        });
+            }
         });
+
+        //keybind setup needs to be done as client setup
+        ModKeybinds.register(event);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
         // some example code to dispatch IMC to another mod
         InterModComms.sendTo("flatlights", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+
+        //register curio slots including the three custom slot types
+        //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.CURIO.getMessageBuilder().build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.cube").icon(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon")).build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.prism").icon(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon")).build());
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("flatlights.curios.sphere").icon(new ResourceLocation(MOD_ID, "item/curio/curio_sphere_icon")).build());
     }
 
     private void processIMC(final InterModProcessEvent event)
@@ -772,12 +808,14 @@ public class FlatLights
         @SubscribeEvent
         public static void onModelRegistryEvent(ModelRegistryEvent event) {
             MiscHelpers.debugLogger("tried to add special model idk");
+            //register custom models here
             ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
             ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
             ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
             ModelLoader.addSpecialModel(BombSwingProjectileRenderer.BOMB_MODEL);
         }
 
+        //needed for rendering throwable item
         public static class PortableBlackHoleFactory implements IRenderFactory<PortableBlackHoleProjectileEntity> {
             @Override
             public EntityRenderer<? super PortableBlackHoleProjectileEntity> createRenderFor(EntityRendererManager manager) {
@@ -786,12 +824,21 @@ public class FlatLights
             }
         }
 
+        //needed for rendering throwable item
         public static class GravityLiftFactory implements IRenderFactory<GravityLiftProjectileEntity> {
             @Override
             public EntityRenderer<? super GravityLiftProjectileEntity> createRenderFor(EntityRendererManager manager) {
                 ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
                 return new SpriteRenderer<>(manager, itemRenderer);
             }
+        }
+
+        @SubscribeEvent
+        public static void curiosIconRegistryEvent(TextureStitchEvent.Pre event) {
+            //register curio slot custom icons
+            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon"));
+            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon"));
+            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_sphere_icon"));
         }
     }
 }

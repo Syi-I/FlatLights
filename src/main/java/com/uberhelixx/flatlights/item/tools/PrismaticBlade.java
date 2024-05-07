@@ -33,9 +33,9 @@ public class PrismaticBlade extends SwordItem {
         stack.damageItem(0, attacker, (entity) -> {
             entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
         });
-        target.addPotionEffect(new EffectInstance(Effects.GLOWING, 5));
-        target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 3, 4));
-        target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 3, 2));
+        target.addPotionEffect(new EffectInstance(Effects.GLOWING, 100));
+        target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 60, 4));
+        target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 60, 2));
         //deal either x% of max hp as damage or config cap damage, whichever is lower
         target.attackEntityFrom(ModDamageTypes.causeIndirectPhys(attacker, attacker), (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
         attacker.heal((float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));

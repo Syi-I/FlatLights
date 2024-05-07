@@ -2,9 +2,7 @@ package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.entity.BombSwingEntity;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
-import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketLeftClick;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
@@ -27,8 +25,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -73,7 +69,7 @@ public class PrismaticSword extends SwordItem {
 
         if (playerIn.isCrouching()) {
 
-            worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.DEV_BLADE_MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
+            worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
 
             if (sword.getTag() == null) {
                 CompoundNBT newTag = new CompoundNBT();

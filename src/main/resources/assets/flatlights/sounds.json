@@ -6,11 +6,11 @@
       "flatlights:squeak"
     ]
   },
-  "dev_blade_mode_switch": {
+  "mode_switch": {
     "category": "player",
-    "subtitle": "flatlights.dev_blade_mode_switch",
+    "subtitle": "flatlights.mode_switch",
     "sounds": [
-      "flatlights:dev_blade_mode_switch"
+      "flatlights:mode_switch"
     ]
   },
   "void_projectile_shot": {
