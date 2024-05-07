@@ -32,17 +32,18 @@ public class PacketCurioToggleMessage {
                 //should be only clientside stuff
                 PlayerEntity player = Minecraft.getInstance().player;
                 boolean state = msg.toggleState;
-                if(player != null){
-                    if(state){
+                if(player != null) {
+                    if(state) {
                         if(FlatLightsClientConfig.curioToggleMessage.get())
                             player.sendStatusMessage(ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + "Toggled curio effect " + TextFormatting.GREEN + "on"), true);
                         if(FlatLightsClientConfig.curioToggleSound.get())
-                            player.world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 0.4f, 0.01f);
-                    }else{
+                            player.world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 0.4f, 0.55f);
+                    }
+                    else {
                         if(FlatLightsClientConfig.curioToggleMessage.get())
                             player.sendStatusMessage(ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + "Toggled curio effect " + TextFormatting.RED + "off"), true);
                         if(FlatLightsClientConfig.curioToggleSound.get())
-                            player.world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 0.4f, 0.09f);
+                            player.world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 0.4f, 0.01f);
                     }
                 }
             });

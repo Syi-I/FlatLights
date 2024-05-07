@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Curse of Lifted Pickup Truck (increases armor while also increasing damage taken while wearing a cursed armor piece)
+- Curios sets with different rarity tiers and effects, which spawn in generated chests as loot 
 ### Changed
-
+- Improved tooltip displays and toggle notifications for the various items and tools
 ### Fixed
 
 ## [1.22.1] - 2024-04-01
