@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.item.armor;
 import com.google.common.collect.ImmutableMap;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,7 +45,7 @@ public class ModArmorItem extends ArmorItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String setEffect = "[Set Effect]: Provides " + MiscHelpers.coloredText(TextFormatting.GOLD, "Saturation");
+        String setEffect = TextHelpers.labelBrackets("Set Effect", null, "Saturation", TextFormatting.GOLD).getString();
         ITextComponent setEffectTooltip = ITextComponent.getTextComponentOrEmpty(setEffect);
         tooltip.add(setEffectTooltip);
 
@@ -69,11 +70,11 @@ public class ModArmorItem extends ArmorItem {
 
             //capped damage reduction tooltip colors
             if(reductionRatio >= reductionRatioCap) {
-                dmgReduction = "[" + MiscHelpers.coloredText(TextFormatting.GREEN, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + "] bonus damage reduction.";
+                dmgReduction = TextHelpers.labelBrackets("Damage Reduction", null, MiscHelpers.coloredText(TextFormatting.GREEN, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%"), null).getString();
             }
             //not full damage reduction tooltip colors
             else {
-                dmgReduction = "[" + MiscHelpers.coloredText(TextFormatting.RED, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN,FlatLightsCommonConfig.armorDamageReduction.get() + "%") + "] bonus damage reduction.";
+                dmgReduction = TextHelpers.labelBrackets("Damage Reduction", null, MiscHelpers.coloredText(TextFormatting.RED, "" + formatting.format(reductionRatio * 100)) + "/" + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%"), null).getString();
             }
         }
         ITextComponent dmgReductionTooltip = ITextComponent.getTextComponentOrEmpty(dmgReduction);

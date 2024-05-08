@@ -3,14 +3,13 @@ package com.uberhelixx.flatlights.item.tools;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.entity.GravityLiftEntity;
 import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
-import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -32,11 +31,11 @@ public class GravityLiftItem extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.gravity_lift_use"));
-            tooltip.add(getLiftTime());
-            tooltip.add(getLiftCooldown());
         }
         else {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.hold_shift"));
+            tooltip.add(getLiftTime());
+            tooltip.add(getLiftCooldown());
+            tooltip.add(TextHelpers.shiftTooltip("for details"));
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -44,13 +43,13 @@ public class GravityLiftItem extends Item {
     private ITextComponent getLiftTime() {
         int liftTime = GravityLiftEntity.SECONDS;
         String formatting = MiscHelpers.coloredText(TextFormatting.GREEN, "" + liftTime);
-        return ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Lift Lifetime: " + formatting + TextFormatting.WHITE + "s" + TextFormatting.AQUA + "]");
+        return TextHelpers.labelBrackets("Lift Lifetime", null, formatting + TextFormatting.WHITE + "s", null);
     }
 
     private ITextComponent getLiftCooldown() {
         int cooldown = COOLDOWN_SECONDS;
         String formatting = MiscHelpers.coloredText(TextFormatting.GREEN, "" + cooldown);
-        return ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Lift Cooldown: " + formatting + TextFormatting.WHITE + "s" + TextFormatting.AQUA + "]");
+        return TextHelpers.labelBrackets("Lift Cooldown", null, formatting + TextFormatting.WHITE + "s", null);
     }
 
     public static final int COOLDOWN_SECONDS = FlatLightsCommonConfig.gravityLiftCooldown.get() != null ? FlatLightsCommonConfig.gravityLiftCooldown.get() : 5;

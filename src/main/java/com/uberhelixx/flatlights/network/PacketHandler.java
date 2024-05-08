@@ -25,6 +25,8 @@ public final class PacketHandler {
         HANDLER.registerMessage(id++, PacketWriteNbt.class, PacketWriteNbt::encode, PacketWriteNbt::decode, PacketWriteNbt::handle);
         HANDLER.registerMessage(id++, PacketCurioToggle.class, PacketCurioToggle::encode, PacketCurioToggle::decode, PacketCurioToggle::handle);
         HANDLER.registerMessage(id++, PacketCurioToggleMessage.class, PacketCurioToggleMessage::encode, PacketCurioToggleMessage::decode, PacketCurioToggleMessage::handle);
+        HANDLER.registerMessage(id++, PacketGenericToggleMessage.class, PacketGenericToggleMessage::encode, PacketGenericToggleMessage::decode, PacketGenericToggleMessage::handle);
+        HANDLER.registerMessage(id++, PacketGenericPlayerNotification.class, PacketGenericPlayerNotification::encode, PacketGenericPlayerNotification::decode, PacketGenericPlayerNotification::handle);
     }
 
     public static void sendToPlayer(ServerPlayerEntity playerMP, Object toSend) {

@@ -6,10 +6,12 @@ import com.google.common.collect.Multimap;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.VoidProjectileEntity;
+import com.uberhelixx.flatlights.network.PacketGenericToggleMessage;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -41,7 +43,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
@@ -199,6 +202,11 @@ public class PrismaticBladeMk2 extends SwordItem {
             }
             else {
                 tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blademk2_shift"));
+            }
+        }
+        //normally display the stats and shift display hint
+        else {
+            if(Minecraft.getInstance().player != null && MiscHelpers.uuidCheck(Minecraft.getInstance().player.getUniqueID())) {
                 if (stack.getTag() != null && stack.getTag().contains(CURR_CORES_TAG)) {
                     tooltip.add(getTierData(stack));
                     tooltip.add(getCoreData(stack));
@@ -207,9 +215,7 @@ public class PrismaticBladeMk2 extends SwordItem {
                     }
                 }
             }
-        }
-        else {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.hold_shift"));
+            tooltip.add(TextHelpers.shiftTooltip("for details"));
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -230,7 +236,7 @@ public class PrismaticBladeMk2 extends SwordItem {
                 coresText = "" + TextFormatting.GREEN + cores;
             }
             if (cores > 0) {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Cores: " + coresText + TextFormatting.WHITE + totalCoresForLevelup + TextFormatting.AQUA + "]");
+                data = TextHelpers.labelBrackets("Cores", null, coresText + TextFormatting.WHITE + totalCoresForLevelup, null);
             }
         }
         return data;
@@ -272,7 +278,7 @@ public class PrismaticBladeMk2 extends SwordItem {
                     tierName = "" + TextFormatting.BLACK + TextFormatting.OBFUSCATED + "Unknown";
             }
             if (cores > 0) {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Tier: " + tierName + TextFormatting.AQUA + "]");
+                data = TextHelpers.labelBrackets("Tier", null, tierName, null);
             }
         }
         return data;
@@ -298,21 +304,21 @@ public class PrismaticBladeMk2 extends SwordItem {
             if(damage) {
                 float calculatedDmg = totalDmg * ((float)tier / TOTAL_TIERS);
                 activeState = TextFormatting.GREEN + "Annihilation";
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Increase hits by " + TextFormatting.RED + formatting.format(calculatedDmg) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+                data = TextHelpers.labelBrackets("Mode", null, activeState + TextFormatting.WHITE + " | Increase hits by " + TextFormatting.RED + formatting.format(calculatedDmg) + TextFormatting.WHITE + " damage", null);
             }
             else if(projectile) {
                 //black hole does half damage compared to melee since ranged would be just better
                 int projectileBonus = tag != null && tag.contains(TOTAL_CORES_TAG) ? tag.getInt(TOTAL_CORES_TAG) : 1;
                 float projectileDmg = (projectileBonus * ((float)tier / TOTAL_TIERS)) / 2;
                 activeState = TextFormatting.GREEN + "Black Hole";
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Shoot a projectile dealing "  + TextFormatting.RED + formatting.format(projectileDmg) + TextFormatting.WHITE + " damage" + TextFormatting.AQUA + "]");
+                data = TextHelpers.labelBrackets("Mode", null, activeState + TextFormatting.WHITE + " | Shoot a black hole dealing "  + TextFormatting.RED + formatting.format(projectileDmg) + TextFormatting.WHITE + " damage per hit", null);
             }
             else if(spear) {
                 activeState = TextFormatting.GREEN + "Spear";
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.WHITE + " | Increase attack range by " + TextFormatting.RED + REACH_DISTANCE + TextFormatting.WHITE + " blocks" + TextFormatting.AQUA + "]");
+                data = TextHelpers.labelBrackets("Mode", null, activeState + TextFormatting.WHITE + " | Increase attack range by " + TextFormatting.RED + REACH_DISTANCE + TextFormatting.WHITE + " blocks", null);
             }
             else {
-                data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Mode: " + activeState + TextFormatting.AQUA + "]");
+                data = TextHelpers.labelBrackets("Mode", null, activeState, null);
             }
         }
         return data;
@@ -325,8 +331,6 @@ public class PrismaticBladeMk2 extends SwordItem {
         if(uuidCheck(playerIn.getUniqueID())) {
             //can't use Screen.hasShiftDown since clientside so it doesn't register
             if (playerIn.isCrouching()) {
-                worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
-
                 //gets appropriate tags to check current blade mode (if any), cycles between modes on SHIFT + RCLICK by setting each tag true/false
                 if (blade.getTag() == null) {
                     CompoundNBT newTag = new CompoundNBT();
@@ -340,28 +344,34 @@ public class PrismaticBladeMk2 extends SwordItem {
                     boolean dmg = tag.getBoolean(DAMAGE_MODE_TAG);
                     boolean projectile = tag.getBoolean(PROJECTILE_MODE_TAG);
                     boolean spear = tag.getBoolean(SPEAR_MODE_TAG);
+                    String toggleText;
                     if(dmg) {
                         tag.putBoolean(DAMAGE_MODE_TAG, false);
                         tag.putBoolean(PROJECTILE_MODE_TAG, true);
                         tag.putBoolean(SPEAR_MODE_TAG, false);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Black Hole", TextFormatting.GREEN).getString();
                     }
                     else if(projectile) {
                         tag.putBoolean(DAMAGE_MODE_TAG, false);
                         tag.putBoolean(PROJECTILE_MODE_TAG, false);
                         tag.putBoolean(SPEAR_MODE_TAG, true);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Spear", TextFormatting.GREEN).getString();
                     }
                     else if(spear) {
                         tag.putBoolean(DAMAGE_MODE_TAG, false);
                         tag.putBoolean(PROJECTILE_MODE_TAG, false);
                         tag.putBoolean(SPEAR_MODE_TAG, false);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Deactivated", TextFormatting.RED).getString();
                     }
                     else {
                         tag.putBoolean(DAMAGE_MODE_TAG, true);
                         tag.putBoolean(PROJECTILE_MODE_TAG, false);
                         tag.putBoolean(SPEAR_MODE_TAG, false);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Annihilation", TextFormatting.GREEN).getString();
                     }
                     blade.setTag(tag);
                     PacketHandler.sendToServer(new PacketWriteNbt(tag, blade));
+                    PacketHandler.sendToServer(new PacketGenericToggleMessage(toggleText, dmg || projectile || !spear, dmg || projectile || !spear));
                 }
             }
             //shoot projectile if on projectile mode

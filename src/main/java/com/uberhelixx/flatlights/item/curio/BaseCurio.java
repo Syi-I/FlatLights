@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.item.curio;
 import com.uberhelixx.flatlights.network.PacketCurioToggleMessage;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -52,7 +53,7 @@ public class BaseCurio extends Item implements ICurioItem {
         }
         //how to use curio when not rolled yet
         else {
-            ITextComponent useTooltip = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.GRAY + "Right-click to roll." + TextFormatting.AQUA + "]");
+            ITextComponent useTooltip = TextHelpers.genericBrackets("Right-click to roll.", TextFormatting.GRAY);
             tooltip.add(useTooltip);
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
@@ -210,11 +211,12 @@ public class BaseCurio extends Item implements ICurioItem {
             else {
                 tierName = "" + TextFormatting.BLACK + TextFormatting.OBFUSCATED + "Unknown";
             }
-            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Tier: " + tierName + TextFormatting.AQUA + "]");
+            data = TextHelpers.labelBrackets("Tier", null, tierName, null);
         }
         else {
             MiscHelpers.debugLogger("[Base Curio] Somehow we failed to put a tier on this curio???");
-            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Tier: " + TextFormatting.RED + "Bugged Item" + TextFormatting.AQUA + "]");
+            data = TextHelpers.labelBrackets("Tier", null, "Bugged Item", TextFormatting.RED);
+
         }
         return data;
     }
@@ -233,11 +235,11 @@ public class BaseCurio extends Item implements ICurioItem {
             String setTranslationText = tag.getString(SET);
             //get translation text string from key in nbt tag
             String setName = new TranslationTextComponent(setTranslationText).getString();
-            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set: " + TextFormatting.DARK_AQUA + setName + TextFormatting.AQUA + "]");
+            data = TextHelpers.labelBrackets("Set", null, setName, TextFormatting.DARK_AQUA);
         }
         else {
             MiscHelpers.debugLogger("[Base Curio] Somehow we failed to put a set on this curio???");
-            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set: " + TextFormatting.RED + "Bugged Item" + TextFormatting.AQUA + "]");
+            data = TextHelpers.labelBrackets("Set", null, "Bugged Item", TextFormatting.RED);
         }
         return data;
     }
@@ -269,11 +271,11 @@ public class BaseCurio extends Item implements ICurioItem {
             if(!showCap) {
                 formattedTracker = colorProgress + String.valueOf(growthTracker);
             }
-            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Progress: " + formattedTracker + TextFormatting.AQUA + "]");
+            data = TextHelpers.labelBrackets("Progress", null, formattedTracker, null);
         }
         else {
             MiscHelpers.debugLogger("[Base Curio] Why are we calling this for a non growth type curio???");
-            data = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Progress: " + TextFormatting.RED + "Bugged Item" + TextFormatting.AQUA + "]");
+            data = TextHelpers.labelBrackets("Progress", null, "Bugged Item", TextFormatting.RED);
         }
         return data;
     }

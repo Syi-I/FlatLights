@@ -15,9 +15,15 @@ import java.util.function.Supplier;
 public class PacketCurioToggleMessage {
 
     boolean toggleState;
+
+    /**
+     * Toggle notification for curios set effects only
+     * @param stateIn True if being toggled on, false if being toggled off
+     */
     public PacketCurioToggleMessage(boolean stateIn) {
         toggleState = stateIn;
     }
+
     public static void encode(PacketCurioToggleMessage msg, PacketBuffer buf) {
         buf.writeBoolean(msg.toggleState);
     }
@@ -34,16 +40,20 @@ public class PacketCurioToggleMessage {
                 boolean state = msg.toggleState;
                 if(player != null) {
                     if(state) {
-                        if(FlatLightsClientConfig.curioToggleMessage.get())
+                        if(FlatLightsClientConfig.curioToggleMessage.get()) {
                             player.sendStatusMessage(ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + "Toggled curio effect " + TextFormatting.GREEN + "on"), true);
-                        if(FlatLightsClientConfig.curioToggleSound.get())
+                        }
+                        if(FlatLightsClientConfig.curioToggleSound.get()) {
                             player.world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 0.4f, 0.55f);
+                        }
                     }
                     else {
-                        if(FlatLightsClientConfig.curioToggleMessage.get())
+                        if (FlatLightsClientConfig.curioToggleMessage.get()) {
                             player.sendStatusMessage(ITextComponent.getTextComponentOrEmpty(TextFormatting.WHITE + "Toggled curio effect " + TextFormatting.RED + "off"), true);
-                        if(FlatLightsClientConfig.curioToggleSound.get())
+                        }
+                        if(FlatLightsClientConfig.curioToggleSound.get()) {
                             player.world.playSound(player, player.getPosX(), player.getPosY(), player.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 0.4f, 0.01f);
+                        }
                     }
                 }
             });

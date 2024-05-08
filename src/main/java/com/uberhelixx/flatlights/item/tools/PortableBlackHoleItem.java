@@ -1,10 +1,9 @@
 package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.entity.GravityLiftEntity;
-import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,10 +30,10 @@ public class PortableBlackHoleItem extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.portable_black_hole_use"));
-            tooltip.add(getItemCooldown());
         }
         else {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.hold_shift"));
+            tooltip.add(getItemCooldown());
+            tooltip.add(TextHelpers.shiftTooltip("for details"));
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -42,7 +41,7 @@ public class PortableBlackHoleItem extends Item {
     private ITextComponent getItemCooldown() {
         int cooldown = COOLDOWN_SECONDS;
         String formatting = MiscHelpers.coloredText(TextFormatting.GREEN, "" + cooldown);
-        return ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Black Hole Cooldown: " + formatting + TextFormatting.WHITE + "s" + TextFormatting.AQUA + "]");
+        return TextHelpers.labelBrackets("Black Hole Cooldown", null, formatting + TextFormatting.WHITE + "s", null);
     }
 
     //set item use cooldown so you can't spam blackholes

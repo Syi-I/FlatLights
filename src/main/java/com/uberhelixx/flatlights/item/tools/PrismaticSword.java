@@ -2,10 +2,12 @@ package com.uberhelixx.flatlights.item.tools;
 
 import com.uberhelixx.flatlights.entity.BombSwingEntity;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
+import com.uberhelixx.flatlights.network.PacketGenericToggleMessage;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -47,17 +48,23 @@ public class PrismaticSword extends SwordItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        //determine if the sword is activated or deactivated
+        String bombSwing = TextHelpers.labelBrackets("Explosive Swings Mode", null, "Deactivated", TextFormatting.RED).getString();
+        assert stack.getTag() != null;
+        if(stack.getTag().getBoolean(BOMB_MODE)) {
+            bombSwing = TextHelpers.labelBrackets("Explosive Swings Mode", null, "Activated", TextFormatting.GREEN).getString();
+        }
+        ITextComponent bombSwingTooltip = ITextComponent.getTextComponentOrEmpty(bombSwing);
+
+        //if shift is down, show use tooltip, otherwise show short label tooltips
         if(Screen.hasShiftDown()) {
-            String bombSwing = "[" + MiscHelpers.coloredText(TextFormatting.RED, "Inactive") + "] Explosive Swings: Shoots an explosive projectile when swinging this weapon.";
-            assert stack.getTag() != null;
-            if(stack.getTag().getBoolean(BOMB_MODE)) {
-                bombSwing = "[" + MiscHelpers.coloredText(TextFormatting.GREEN, "Active") + "] Explosive Swings: Shoots an explosive projectile when swinging this weapon.";
-            }
-            ITextComponent bombSwingTooltip = ITextComponent.getTextComponentOrEmpty(bombSwing);
-            tooltip.add(bombSwingTooltip);
+            String bombSwingUse = TextFormatting.DARK_PURPLE + "Shoots an explosive projectile when swinging this weapon.";
+            ITextComponent bombSwingUseTooltip = ITextComponent.getTextComponentOrEmpty(bombSwingUse);
+            tooltip.add(bombSwingUseTooltip);
         }
         else {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.hold_shift"));
+            tooltip.add(bombSwingTooltip);
+            tooltip.add(TextHelpers.shiftTooltip("for details"));
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -68,20 +75,23 @@ public class PrismaticSword extends SwordItem {
         ItemStack sword = playerIn.getHeldItem(handIn);
 
         if (playerIn.isCrouching()) {
-
-            worldIn.playSound(null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), ModSoundEvents.MODE_SWITCH.get(), SoundCategory.PLAYERS, 1.25f, (1.0f + (worldIn.rand.nextFloat() * 0.05f)));
-
             if (sword.getTag() == null) {
                 CompoundNBT newTag = new CompoundNBT();
                 newTag.putBoolean(BOMB_MODE, true);
                 sword.setTag(newTag);
                 PacketHandler.sendToServer(new PacketWriteNbt(newTag, sword));
-            } else {
+            }
+            else {
                 CompoundNBT tag = sword.getTag();
                 boolean active = tag.getBoolean(BOMB_MODE);
                 tag.putBoolean(BOMB_MODE, !active);
                 sword.setTag(tag);
                 PacketHandler.sendToServer(new PacketWriteNbt(tag, sword));
+                String toggleText = TextFormatting.WHITE + "Explosive Swings: " + TextHelpers.genericBrackets("Activated", TextFormatting.GREEN).getString();
+                if(active) {
+                    toggleText = TextFormatting.WHITE + "Explosive Swings: " + TextHelpers.genericBrackets("Deactivated", TextFormatting.RED).getString();
+                }
+                PacketHandler.sendToServer(new PacketGenericToggleMessage(toggleText, !active, false));
             }
         }
         return ActionResult.resultPass(sword);

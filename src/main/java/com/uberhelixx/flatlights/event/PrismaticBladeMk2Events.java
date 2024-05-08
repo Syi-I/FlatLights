@@ -4,6 +4,7 @@ import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import net.minecraft.enchantment.Enchantment;
@@ -281,7 +282,7 @@ public class PrismaticBladeMk2Events {
             }
             ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (newCurrCores - oldCurrCores) + coreGainText);
             if(FlatLightsClientConfig.coreNoti.get()) {
-                killer.sendMessage(killMessage, killer.getUniqueID());
+                PacketHandler.sendToServer(new PacketGenericPlayerNotification(killMessage.getString()));
             }
 
             //math for calculating if tier levels up when adding cores after a kill

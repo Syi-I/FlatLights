@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.event;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
+import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import net.minecraft.entity.Entity;
@@ -49,7 +50,7 @@ public class CurioEvents {
             }
             ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (gainedCores) + coreGainText);
             if(FlatLightsClientConfig.coreNoti.get()) {
-                killer.sendMessage(killMessage, killer.getUniqueID());
+                PacketHandler.sendToServer(new PacketGenericPlayerNotification(killMessage.getString()));
             }
 
             for(ItemStack curio : curioList) {

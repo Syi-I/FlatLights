@@ -12,6 +12,10 @@ public final class FlatLightsClientConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> craftingTableJumpscare;
     public static final ForgeConfigSpec.ConfigValue<Boolean> curioToggleMessage;
     public static final ForgeConfigSpec.ConfigValue<Boolean> curioToggleSound;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> genericToggleMessage;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> genericToggleSound;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> genericNotificationText;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> genericNotificationSound;
 
     static {
 
@@ -28,6 +32,18 @@ public final class FlatLightsClientConfig {
 
             BUILDER.comment("Enable or disable playing the sound that triggers from toggling the curio set effect on and off. [Default: true]");
             curioToggleSound = BUILDER.define("CurioToggleSound", true);
+
+            BUILDER.comment("Enable or disable the message notification for toggling the held item's effect on and off. [Default: true]");
+            genericToggleMessage = BUILDER.define("GenericToggleMessage", true);
+
+            BUILDER.comment("Enable or disable playing the sound that triggers from toggling the held item's effect on and off. [Default: true]");
+            genericToggleSound = BUILDER.define("GenericToggleSound", true);
+
+            BUILDER.comment("Enable or disable the message text for generic action notifications. [Default: true]");
+            genericNotificationText = BUILDER.define("GenericNotificationText", true);
+
+            BUILDER.comment("Enable or disable playing the sound that triggers from generic action notifications. [Default: true]");
+            genericNotificationSound = BUILDER.define("GenericNotificationSound", true);
         }
         BUILDER.pop();
 

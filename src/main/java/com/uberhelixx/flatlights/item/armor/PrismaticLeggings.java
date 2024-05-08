@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.item.armor;
 
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -24,9 +25,9 @@ public class PrismaticLeggings extends ModArmorItem {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_leggings_shift"));
         }
         else {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.hold_shift"));
+            super.addInformation(stack, worldIn, tooltip, flagIn);
+            tooltip.add(TextHelpers.shiftTooltip("for details"));
         }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override

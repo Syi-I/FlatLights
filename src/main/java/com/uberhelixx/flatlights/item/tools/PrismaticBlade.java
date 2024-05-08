@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.item.tools;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -46,25 +47,13 @@ public class PrismaticBlade extends SwordItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
             tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blade_shift"));
-            String percentDmg = "Percent Damage: " + MiscHelpers.coloredText(TextFormatting.RED, (FlatLightsCommonConfig.healthDamagePercent.get() * 100) + "%") + " of mob's max HP. (Cap of " + MiscHelpers.coloredText(TextFormatting.RED, FlatLightsCommonConfig.healthDamageCap.get() + "") + " damage.)";
-            ITextComponent percentDmgTooltip = ITextComponent.getTextComponentOrEmpty(percentDmg);
-            tooltip.add(percentDmgTooltip);
         }
         else {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.hold_shift"));
+            String percentDmg = TextHelpers.labelBrackets("Percent Damage", null, MiscHelpers.coloredText(TextFormatting.RED, (FlatLightsCommonConfig.healthDamagePercent.get() * 100) + "%") + " of target's max HP. (Cap of " + MiscHelpers.coloredText(TextFormatting.RED, FlatLightsCommonConfig.healthDamageCap.get() + "") + " damage)", null).getString();
+            ITextComponent percentDmgTooltip = ITextComponent.getTextComponentOrEmpty(percentDmg);
+            tooltip.add(percentDmgTooltip);
+            tooltip.add(TextHelpers.shiftTooltip("for details"));
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
-
-    /*@Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack blade = playerIn.getHeldItem(handIn);
-
-        if(uuidCheck(playerIn.getUniqueID())) {
-
-        }
-
-        return ActionResult.resultPass(blade);
-    }*/
-
 }

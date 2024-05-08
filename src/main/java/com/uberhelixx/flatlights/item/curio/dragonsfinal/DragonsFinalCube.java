@@ -8,6 +8,7 @@ import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
+import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -26,6 +27,7 @@ import net.minecraft.world.World;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,17 +66,20 @@ public class DragonsFinalCube extends BaseCurio {
                 tooltip.add(getGrowthTooltip(stack, false) );
             }
             if(stack.getTag().contains(SET_EFFECT_TOGGLE) && stack.getTag().getBoolean(SET_EFFECT_TOGGLE)) {
-                ITextComponent setTooltipTrue = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set Effect: " + TextFormatting.GREEN + "Reaching the Apex" + TextFormatting.AQUA + "]");
+                //ITextComponent setTooltipTrue = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set Effect: " + TextFormatting.GREEN + "Reaching the Apex" + TextFormatting.AQUA + "]");
+                ITextComponent setTooltipTrue = TextHelpers.labelBrackets("Set Effect", null, "Reaching the Apex", TextFormatting.GREEN);
                 tooltip.add(setTooltipTrue);
             }
             else {
-                ITextComponent setTooltipTrue = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set Effect: " + TextFormatting.RED + "Reaching the Apex" + TextFormatting.AQUA + "]");
-                tooltip.add(setTooltipTrue);
+                //ITextComponent setTooltipFalse = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.WHITE + "Set Effect: " + TextFormatting.RED + "Reaching the Apex" + TextFormatting.AQUA + "]");
+                ITextComponent setTooltipFalse = TextHelpers.labelBrackets("Set Effect", null, "Reaching the Apex", TextFormatting.RED);
+                tooltip.add(setTooltipFalse);
             }
         }
         //how to use curio
         else {
-            ITextComponent useTooltip = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.GRAY + "Right-click to use." + TextFormatting.AQUA + "]");
+            //ITextComponent useTooltip = ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + " [" + TextFormatting.GRAY + "Right-click to use." + TextFormatting.AQUA + "]");
+            ITextComponent useTooltip = TextHelpers.genericBrackets("Right-click to roll.", TextFormatting.GRAY);
             tooltip.add(useTooltip);
         }
     }
