@@ -12,6 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
@@ -91,7 +92,9 @@ public class PrismaticSword extends SwordItem {
                 if(active) {
                     toggleText = TextFormatting.WHITE + "Explosive Swings: " + TextHelpers.genericBrackets("Deactivated", TextFormatting.RED).getString();
                 }
-                PacketHandler.sendToServer(new PacketGenericToggleMessage(toggleText, !active, false));
+                if(!playerIn.getEntityWorld().isRemote()) {
+                    PacketHandler.sendToPlayer((ServerPlayerEntity) playerIn, new PacketGenericToggleMessage(toggleText, !active, false));
+                }
             }
         }
         return ActionResult.resultPass(sword);

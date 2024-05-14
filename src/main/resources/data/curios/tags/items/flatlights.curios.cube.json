@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "flatlights:dragons_final_cube"
+    "flatlights:dragons_final_cube",
+    "flatlights:shore_cube"
   ]
 }

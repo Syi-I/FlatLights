@@ -14,6 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -282,7 +283,9 @@ public class PrismaticBladeMk2Events {
             }
             ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (newCurrCores - oldCurrCores) + coreGainText);
             if(FlatLightsClientConfig.coreNoti.get()) {
-                PacketHandler.sendToServer(new PacketGenericPlayerNotification(killMessage.getString()));
+                if(!killer.getEntityWorld().isRemote()) {
+                    PacketHandler.sendToPlayer((ServerPlayerEntity) killer, new PacketGenericPlayerNotification(killMessage.getString()));
+                }
             }
 
             //math for calculating if tier levels up when adding cores after a kill

@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item.curio.dragonsfinal;
+package com.uberhelixx.flatlights.item.curio.shore;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -8,12 +8,6 @@ import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketWriteNbt;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -25,21 +19,15 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeMod;
 import top.theillusivec4.curios.api.SlotContext;
 
-import javax.annotation.Nullable;
-import javax.swing.*;
 import java.util.List;
 import java.util.UUID;
 
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
-import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
-
-public class DragonsFinalCube extends BaseCurio {
-    public DragonsFinalCube(Properties properties) {
+public class ShoreCube extends BaseCurio {
+    public ShoreCube(Properties properties) {
         super(properties);
     }
 
@@ -51,43 +39,11 @@ public class DragonsFinalCube extends BaseCurio {
 
         //doesn't let you roll again if it already has the roll data
         if(stackTags == null || !CurioUtils.rollCheck(stackTags)) {
-            if(MiscHelpers.uuidCheck(playerIn.getUniqueID())) {
-                CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.DRAGONSFINAL, CurioTier.GROWTH.MODEL_VALUE, Integer.MAX_VALUE);
-            }
-            else {
-                CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.DRAGONSFINAL, null, null);
-            }
+            CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.SHORE, null, null);
             //add in the set effect toggle for curios that have the functionality for the set effect (cubes only)
             CurioUtils.addSetToggle(stack);
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
-    }
-
-    //there's already a tooltip formatting in BaseCurio but this overrides that since Dragon's Final is the test set
-    //normally won't have to do this with other curio sets
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        //info tooltip
-        if(stack.getTag() != null && !stack.getTag().isEmpty()) {
-            tooltip.add(CurioUtils.getSetTooltip(stack));
-            if(worldIn != null && worldIn.isRemote()) {
-                tooltip.add(CurioUtils.getSetEffectTooltip(stack));
-            }
-            tooltip.add(CurioUtils.getTierTooltip(stack));
-            if(stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                if(stack.getTag().getInt(CurioUtils.GROWTH_CAP) == Integer.MAX_VALUE) {
-                    tooltip.add(CurioUtils.getGrowthTooltip(stack, false));
-                }
-                else {
-                    tooltip.add(CurioUtils.getGrowthTooltip(stack, true));
-                }
-            }
-        }
-        //how to use curio
-        else {
-            ITextComponent useTooltip = TextHelpers.genericBrackets("Right-click to roll.", TextFormatting.GRAY);
-            tooltip.add(useTooltip);
-        }
     }
 
     @Override
@@ -123,9 +79,9 @@ public class DragonsFinalCube extends BaseCurio {
     }
 
     //uuids for the different attribute modifiers
-    protected static final UUID CUBE_ARMOR = UUID.fromString("65e1dd35-4826-41fa-a9d3-3011c1a6a5a0");
-    protected static final UUID CUBE_TOUGHNESS = UUID.fromString("797a8b01-1f6f-43cd-ade2-f22f5329351d");
-    protected static final UUID CUBE_HEALTH = UUID.fromString("bda19a97-255e-45d8-8f85-f15d45b82b77");
+    protected static final UUID CUBE_ARMOR = UUID.fromString("ac08573b-be84-4cbd-ad80-f76f324b6b06");
+    protected static final UUID CUBE_TOUGHNESS = UUID.fromString("c518f19a-4ae4-41ad-af84-fbaa438e0e47");
+    protected static final UUID CUBE_SWIM = UUID.fromString("ebd44c13-34a7-4f69-a1d1-c25ff5423f5b");
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
@@ -140,35 +96,21 @@ public class DragonsFinalCube extends BaseCurio {
         }
 
         if(tier != null) {
-            double basePower = tier.TIER_MULTIPLIER;
+            double basePower = CurioUtils.getTierMultiplier(stack);
             double growthModifier = 0;
-            double armorBase = 4;
-            double toughnessBase = 4;
-            double healthBase = 4;
+            double armorBase = 2;
+            double toughnessBase = 6;
+            double swimBase = 1.5;
 
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {
                 growthModifier = 1;
-
                 //calculate growth modifier value from core count, scale down number
                 PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
                 if (player != null) {
-                    int coresFromPlayer = getCoresFromPlayer(player);
                     int cores = 0;
                     if (stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                        int growthTracker = stack.getTag().getInt(CurioUtils.GROWTH_TRACKER);
-                        //if the tracker is behind compared to the player tracker, update growth tracker and use player tracker value
-                        if (growthTracker < coresFromPlayer) {
-                            CompoundNBT tag = stack.getTag();
-                            tag.putInt(CurioUtils.GROWTH_TRACKER, coresFromPlayer);
-                            //you have to send packets to update the tracker data appropriately
-                            PacketHandler.sendToServer(new PacketWriteNbt(tag, stack));
-                            cores = coresFromPlayer;
-                        }
-                        //this should be the normal function
-                        else {
-                            cores = growthTracker;
-                        }
+                        cores = stack.getTag().getInt(CurioUtils.GROWTH_TRACKER);
                     }
                     growthModifier = cores * 0.01;
                 }
@@ -177,7 +119,7 @@ public class DragonsFinalCube extends BaseCurio {
             //put attribute modifiers onto the new map using the growth modifier value
             newMap.put(Attributes.ARMOR, new AttributeModifier(CUBE_ARMOR, "Cube Armor Modifier", (armorBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
             newMap.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(CUBE_TOUGHNESS, "Cube Toughness Modifier", (toughnessBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
-            newMap.put(Attributes.MAX_HEALTH, new AttributeModifier(CUBE_HEALTH, "Cube Health Modifier", (healthBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(CUBE_SWIM, "Cube Swim Modifier", (swimBase * basePower) + (growthModifier / 4), AttributeModifier.Operation.ADDITION));
 
             //put attributes from old map onto new one which is being returned
             for (Attribute attribute : oldMap.keySet()) {
@@ -187,30 +129,5 @@ public class DragonsFinalCube extends BaseCurio {
             return newMap;
         }
         return super.getAttributeModifiers(slotContext, uuid, stack);
-    }
-
-    public int getCoresFromPlayer(PlayerEntity playerIn) {
-        CompoundNBT data = playerIn.getPersistentData();
-        CompoundNBT persistent;
-
-        //check if player even has cores in the first place, return 0 cores if not
-        if(!uuidCheck(playerIn.getUniqueID())) {
-            return 0;
-        }
-        //check for player persistent nbt, if none return 0 cores
-        if (!data.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
-            return 0;
-        }
-        else {
-            persistent = data.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
-        }
-
-        //if core tracker stat tag in data, return core amount from tracker
-        if(persistent.contains(PLAYER_CORETRACKER_TAG)) {
-            return persistent.getInt(PLAYER_CORETRACKER_TAG);
-        }
-        else {
-            return 0;
-        }
     }
 }
