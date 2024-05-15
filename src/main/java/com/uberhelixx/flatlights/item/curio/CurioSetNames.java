@@ -10,10 +10,13 @@ public class CurioSetNames {
     //used for storing translation key names of curio sets to be used everywhere else
     public static final String DRAGONSFINAL = "flatlights.curioset.dragonsfinal";
     public static final String DRAGONSFINAL_EFFECT = "flatlights.curioeffect.dragonsfinal";
+    public static final String DRAGONSFINAL_DESC = "flatlights.curiodesc.dragonsfinal";
     public static final String SHORE = "flatlights.curioset.shore";
     public static final String SHORE_EFFECT = "flatlights.curioeffect.shore";
+    public static final String SHORE_DESC = "flatlights.curiodesc.shore";
 
     public static Map<String, String> setPairs = new HashMap<>();
+    public static Map<String, String> descPairs = new HashMap<>();
 
     /**
      * Pair up the corresponding {@code Set Name} and {@code Set Effect} translation keys
@@ -21,6 +24,9 @@ public class CurioSetNames {
     public static void pairUp() {
         setPairs.put(DRAGONSFINAL, DRAGONSFINAL_EFFECT);
         setPairs.put(SHORE, SHORE_EFFECT);
+
+        descPairs.put(DRAGONSFINAL, DRAGONSFINAL_DESC);
+        descPairs.put(SHORE, SHORE_DESC);
     }
 
     /**
@@ -45,5 +51,14 @@ public class CurioSetNames {
      */
     public static String getEffect(String setIn) {
         return setPairs.get(setIn);
+    }
+
+    /**
+     * Gets the {@code Set Effect Description} which matches the input {@code Set Name} of the curio
+     * @param setIn The name of the curio set that we are getting the set effect description for
+     * @return The translation key of the corresponding set effect description
+     */
+    public static String getDescription(String setIn) {
+        return descPairs.get(setIn);
     }
 }

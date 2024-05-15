@@ -12,6 +12,7 @@ import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -62,18 +63,25 @@ public class DragonsFinalPrism extends BaseCurio {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         //info tooltip
         if(stack.getTag() != null && !stack.getTag().isEmpty()) {
-            tooltip.add(CurioUtils.getSetTooltip(stack));
-            if(worldIn != null && worldIn.isRemote()) {
-                tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+            if(!Screen.hasShiftDown()) {
+                tooltip.add(CurioUtils.getSetTooltip(stack));
+                if (worldIn != null && worldIn.isRemote()) {
+                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+                }
+                tooltip.add(CurioUtils.getTierTooltip(stack));
+                if (stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
+                    if (stack.getTag().getInt(CurioUtils.GROWTH_CAP) == Integer.MAX_VALUE) {
+                        tooltip.add(CurioUtils.getGrowthTooltip(stack, false));
+                    } else {
+                        tooltip.add(CurioUtils.getGrowthTooltip(stack, true));
+                    }
+                }
             }
-            tooltip.add(CurioUtils.getTierTooltip(stack));
-            if(stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                if(stack.getTag().getInt(CurioUtils.GROWTH_CAP) == Integer.MAX_VALUE) {
-                    tooltip.add(CurioUtils.getGrowthTooltip(stack, false));
+            else {
+                if (worldIn != null && worldIn.isRemote()) {
+                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
                 }
-                else {
-                    tooltip.add(CurioUtils.getGrowthTooltip(stack, true));
-                }
+                tooltip.add(CurioUtils.getSetDescriptionTooltip(stack));
             }
         }
         //how to use curio

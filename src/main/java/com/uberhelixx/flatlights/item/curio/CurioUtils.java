@@ -252,6 +252,21 @@ public class CurioUtils {
     }
 
     /**
+     * Gets the curio's {@code Set Effect Description} based off the input curio's {@code Set Name}
+     * @param curio The curio whose description tooltip is being created
+     * @return The formatted tooltip for the {@code Set Effect Description} as an {@link ITextComponent}
+     */
+    public static ITextComponent getSetDescriptionTooltip(ItemStack curio) {
+        CompoundNBT tag = curio.getTag();
+        String setEffect = "Nothing";
+        TextFormatting color = TextFormatting.DARK_PURPLE;
+        if(tag != null && !tag.isEmpty()) {
+            setEffect = new TranslationTextComponent(CurioSetNames.getDescription(CurioSetNames.getName(curio))).getString();
+        }
+        return TextHelpers.labelBrackets("Effect Description", null, setEffect, color);
+    }
+
+    /**
      * Gets the Tier of a curio and returns the associated curio tier value
      * @param curio The curio which we are trying to get the Tier value of
      * @return The matching {@link CurioTier} associated with the float NBT tier data of the curio

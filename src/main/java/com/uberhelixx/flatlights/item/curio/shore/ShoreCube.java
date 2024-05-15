@@ -3,7 +3,7 @@ package com.uberhelixx.flatlights.item.curio.shore;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
@@ -16,6 +16,8 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
@@ -53,22 +55,21 @@ public class ShoreCube extends BaseCurio {
             CompoundNBT tag = stack.getTag();
             if(tag != null && !tag.isEmpty()) {
                 //make sure that the worn set effect matches this curio set and the set effect is toggled on
-                if (CurioUtils.correctSetEffect(player, CurioSetNames.DRAGONSFINAL) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                if(CurioUtils.correctSetEffect(player, CurioSetNames.SHORE) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
                     int growthProgress = CurioUtils.getGrowthTracker(stack);
+                    //bare minimum radius of effect, either from config file or 16 if config value is incorrect somehow
+                    double baseRadius = FlatLightsCommonConfig.shoreSetRadius.get() > 0 ? FlatLightsCommonConfig.shoreSetRadius.get() : 16;
+                    //max radius of effect, cannot be smaller than the base radius
+                    double maxRadius = FlatLightsCommonConfig.shoreSetRadiusMax.get() >= baseRadius ? FlatLightsCommonConfig.shoreSetRadiusMax.get() : 32;
                     //radius of the effect
-                    double expansionRadius = MathHelper.clamp(growthProgress, 0, 32);
+                    double expansionRadius = MathHelper.clamp(growthProgress + baseRadius, baseRadius, maxRadius);
                     //get all entities around the wearer
                     List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius));
-                    for (Entity entity : entities) {
-                        //ensure living entity is the only thing we're trying to damage
-                        if (entity instanceof LivingEntity) {
-                            float distance = player.getDistance(entity);
-                            //calculates how close the entity is to the wearer as a percentage
-                            float percentMod = (float) (distance / expansionRadius);
-                            //damage scales off hp difference and the proximity percentage
-                            float dmg = Math.max(player.getMaxHealth() - ((LivingEntity) entity).getMaxHealth(), 0) * percentMod;
-                            if(dmg > 0) {
-                                entity.attackEntityFrom(ModDamageTypes.causeIndirectEntangled(player, player), dmg);
+                    for(Entity entity : entities) {
+                        //ensure living entity is the only thing we're adding slowness to
+                        if(entity instanceof LivingEntity) {
+                            if(entity.isInWater() || player.getEntityWorld().isRaining()) {
+                                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 3, false, true));
                             }
                         }
                     }

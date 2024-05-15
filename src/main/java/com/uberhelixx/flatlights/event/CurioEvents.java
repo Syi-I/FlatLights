@@ -2,26 +2,33 @@ package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.List;
 
@@ -80,6 +87,39 @@ public class CurioEvents {
 
                         //send packet to server to indicate that the curio nbt is changed
                         PacketHandler.sendToServer(new PacketWriteNbt(tag, curio));
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void shoreEffect(LivingHurtEvent event) {
+        //only check for players doing damage since they are the only ones who wear curios and trigger effects
+        if(event.getSource().getTrueSource() instanceof PlayerEntity) {
+            PlayerEntity attacker = (PlayerEntity) event.getSource().getTrueSource();
+            LivingEntity target = event.getEntityLiving();
+
+            //get the cube slot curio from the player
+            List<SlotResult> curioSlots = CurioUtils.getWornCurioSlots(attacker);
+            ItemStack curioCube = null;
+            for(SlotResult result : curioSlots) {
+                if(result.getSlotContext().getIdentifier().equals(CurioUtils.CUBE_SLOT_ID)) {
+                    curioCube = result.getStack();
+                }
+            }
+            if(curioCube != null) {
+                CompoundNBT tag = curioCube.getTag();
+                if(tag != null && !tag.isEmpty()) {
+                    //make sure that the worn set effect matches this curio set and the set effect is toggled on
+                    if(CurioUtils.correctSetEffect(attacker, CurioSetNames.SHORE) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                        //if attacker or enemy is in water, or raining in world, multiply damage amount by config value (default = 3)
+                        if(attacker.isInWater() || target.isInWater() || attacker.getEntityWorld().isRaining()) {
+                            float dmgMultiplier = FlatLightsCommonConfig.shoreSetDmg.get() >= 1 ? FlatLightsCommonConfig.shoreSetDmg.get() : 3;
+                            float newDmg = event.getAmount() * dmgMultiplier;
+                            event.setAmount(newDmg);
+                            MiscHelpers.debugLogger("[Shore Effect Event] Big Water Damage: " + newDmg);
+                        }
                     }
                 }
             }

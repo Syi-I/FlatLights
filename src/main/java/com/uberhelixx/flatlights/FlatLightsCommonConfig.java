@@ -30,6 +30,11 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> jogoatDropChance;
     public static final ForgeConfigSpec.ConfigValue<Integer> gravityLiftCooldown;
     public static final ForgeConfigSpec.ConfigValue<Integer> gravityLiftTime;
+    public static final ForgeConfigSpec.ConfigValue<Float> shoreSetDmg;
+    public static final ForgeConfigSpec.ConfigValue<Double> shoreSetRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> shoreSetRadiusMax;
+    public static final ForgeConfigSpec.ConfigValue<Double> dragonsfinalSetRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> dragonsfinalSetRadiusMax;
 
     static {
         BUILDER.push("Stat Balancing");
@@ -87,6 +92,21 @@ public final class FlatLightsCommonConfig {
 
             BUILDER.comment("Amount of time that a Gravity Lift will exist for before expiring, in SECONDS.  [Default: 10]");
             gravityLiftTime = BUILDER.define("GravityLiftTime", 10);
+
+            BUILDER.comment("Damage multiplier for the 'On the Forgotten Shore' curio set effect. Has to be >= 1, otherwise uses default value of 3. [Default: 3]");
+            shoreSetDmg = BUILDER.define("ShoreSetDmg", 3.0f);
+
+            BUILDER.comment("Base effect radius for the 'On the Forgotten Shore' curio set effect. [Default: 16 blocks]");
+            shoreSetRadius = BUILDER.defineInRange("ShoreSetRadius", 16.0, 1.0, Integer.MAX_VALUE);
+
+            BUILDER.comment("Max effect radius for the 'On the Forgotten Shore' curio set effect. Only matters for 'Growth' tier curios, cannot be smaller than the base radius otherwise it uses default values. [Default: 32 blocks]");
+            shoreSetRadiusMax = BUILDER.defineInRange("ShoreSetRadius", 32.0, 1.0, Integer.MAX_VALUE);
+
+            BUILDER.comment("Base effect radius for the 'Dragon's Final Test' curio set effect. [Default: 6 blocks]");
+            dragonsfinalSetRadius = BUILDER.defineInRange("DragonsFinalSetRadius", 6.0, 1.0, Integer.MAX_VALUE);
+
+            BUILDER.comment("Max effect radius for the 'Dragon's Final Test' curio set effect. Only matters for 'Growth' tier curios, cannot be smaller than the base radius otherwise it uses default values. [Default: 32 blocks]");
+            dragonsfinalSetRadiusMax = BUILDER.defineInRange("DragonsFinalSetRadiusMax", 32.0, 1.0, Integer.MAX_VALUE);
         }
         BUILDER.pop();
 

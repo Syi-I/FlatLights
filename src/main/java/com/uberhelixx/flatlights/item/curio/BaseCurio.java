@@ -1,7 +1,7 @@
 package com.uberhelixx.flatlights.item.curio;
 
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,13 +36,21 @@ public class BaseCurio extends Item implements ICurioItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         //basic info tooltip
         if(stack.getTag() != null && !stack.getTag().isEmpty()) {
-            tooltip.add(CurioUtils.getSetTooltip(stack));
-            if(worldIn != null && worldIn.isRemote()) {
-                tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+            if(!Screen.hasShiftDown()) {
+                tooltip.add(CurioUtils.getSetTooltip(stack));
+                if (worldIn != null && worldIn.isRemote()) {
+                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+                }
+                tooltip.add(CurioUtils.getTierTooltip(stack));
+                if (stack.getTag().getFloat(CurioUtils.TIER) == CurioTier.GROWTH.MODEL_VALUE && stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
+                    tooltip.add(CurioUtils.getGrowthTooltip(stack, true));
+                }
             }
-            tooltip.add(CurioUtils.getTierTooltip(stack));
-            if(stack.getTag().getFloat(CurioUtils.TIER) == CurioTier.GROWTH.MODEL_VALUE && stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                tooltip.add(CurioUtils.getGrowthTooltip(stack, true) );
+            else {
+                if (worldIn != null && worldIn.isRemote()) {
+                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+                }
+                tooltip.add(CurioUtils.getSetDescriptionTooltip(stack));
             }
         }
         //how to use curio when not rolled yet

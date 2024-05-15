@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.item.curio.dragonsfinal;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
@@ -13,6 +14,7 @@ import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -69,18 +71,25 @@ public class DragonsFinalCube extends BaseCurio {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         //info tooltip
         if(stack.getTag() != null && !stack.getTag().isEmpty()) {
-            tooltip.add(CurioUtils.getSetTooltip(stack));
-            if(worldIn != null && worldIn.isRemote()) {
-                tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+            if(!Screen.hasShiftDown()) {
+                tooltip.add(CurioUtils.getSetTooltip(stack));
+                if (worldIn != null && worldIn.isRemote()) {
+                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+                }
+                tooltip.add(CurioUtils.getTierTooltip(stack));
+                if (stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
+                    if (stack.getTag().getInt(CurioUtils.GROWTH_CAP) == Integer.MAX_VALUE) {
+                        tooltip.add(CurioUtils.getGrowthTooltip(stack, false));
+                    } else {
+                        tooltip.add(CurioUtils.getGrowthTooltip(stack, true));
+                    }
+                }
             }
-            tooltip.add(CurioUtils.getTierTooltip(stack));
-            if(stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                if(stack.getTag().getInt(CurioUtils.GROWTH_CAP) == Integer.MAX_VALUE) {
-                    tooltip.add(CurioUtils.getGrowthTooltip(stack, false));
+            else {
+                if (worldIn != null && worldIn.isRemote()) {
+                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
                 }
-                else {
-                    tooltip.add(CurioUtils.getGrowthTooltip(stack, true));
-                }
+                tooltip.add(CurioUtils.getSetDescriptionTooltip(stack));
             }
         }
         //how to use curio
@@ -97,15 +106,19 @@ public class DragonsFinalCube extends BaseCurio {
             CompoundNBT tag = stack.getTag();
             if(tag != null && !tag.isEmpty()) {
                 //make sure that the worn set effect matches this curio set and the set effect is toggled on
-                if (CurioUtils.correctSetEffect(player, CurioSetNames.DRAGONSFINAL) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                if(CurioUtils.correctSetEffect(player, CurioSetNames.DRAGONSFINAL) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
                     int growthProgress = CurioUtils.getGrowthTracker(stack);
+                    //bare minimum radius of effect, either from config file or 6 if config is an incorrect value somehow
+                    double baseRadius = FlatLightsCommonConfig.dragonsfinalSetRadius.get() > 0 ? FlatLightsCommonConfig.dragonsfinalSetRadius.get() : 6;
+                    //max radius of effect, makes sure the max radius is not smaller than the base radius
+                    double maxRadius = FlatLightsCommonConfig.dragonsfinalSetRadiusMax.get() >= baseRadius ? FlatLightsCommonConfig.dragonsfinalSetRadiusMax.get() : 32;
                     //radius of the effect
-                    double expansionRadius = MathHelper.clamp(growthProgress, 0, 32);
+                    double expansionRadius = MathHelper.clamp(growthProgress + baseRadius, baseRadius, maxRadius);
                     //get all entities around the wearer
                     List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius));
-                    for (Entity entity : entities) {
+                    for(Entity entity : entities) {
                         //ensure living entity is the only thing we're trying to damage
-                        if (entity instanceof LivingEntity) {
+                        if(entity instanceof LivingEntity) {
                             float distance = player.getDistance(entity);
                             //calculates how close the entity is to the wearer as a percentage
                             float percentMod = (float) (distance / expansionRadius);
