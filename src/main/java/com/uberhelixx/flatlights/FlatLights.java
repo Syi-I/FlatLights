@@ -34,10 +34,11 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.client.renderer.entity.SpriteRenderer;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
@@ -60,6 +61,7 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
@@ -137,6 +139,8 @@ public class FlatLights
         EVENT_BUS.addListener(EnchantmentEvents::blackhandKnockback);
         EVENT_BUS.addListener(EnchantmentEvents::liftedPickupTruckArmor);
         EVENT_BUS.addListener(EnchantmentEvents::liftedPickupTruckDmg);
+        //EVENT_BUS.addListener(EffectRenderer::addEntangledEffect);
+        //EVENT_BUS.addListener(EffectRenderer::removeEntangledEffect);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -152,6 +156,21 @@ public class FlatLights
         for (PlayerRenderer render : new PlayerRenderer[] {skinMap.get("default"), skinMap.get("slim")}) {
             render.addLayer(new PrismaticBladeMk2Renderer(render));
             //render.addLayer(new BladeStanceRenderer(render));
+            render.addLayer(new DragonSphereRenderer(render));
+        }
+
+        
+        //this gets all the entities and puts a new render layer on to every living entity
+        for(EntityType<?> entity : ForgeRegistries.ENTITIES) {
+            //EntityClassification type = entity.getClassification();
+            //if(type != EntityClassification.MISC || type == EntityClassification.getClassificationByName("player")) {
+                EntityRenderer<?> entityRenderer = Minecraft.getInstance().getRenderManager().renderers.get(entity);
+                if(entityRenderer instanceof LivingRenderer) {
+                    LOGGER.info("added layer to " + entity.toString());
+                    LivingRenderer<LivingEntity, EntityModel<LivingEntity>> livingRenderer = (LivingRenderer<LivingEntity, EntityModel<LivingEntity>>) entityRenderer;
+                    livingRenderer.addLayer(new EffectRenderer(livingRenderer));
+                }
+            //}
         }
     }
 
@@ -262,6 +281,8 @@ public class FlatLights
             ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
             ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
             ModelLoader.addSpecialModel(BombSwingProjectileRenderer.BOMB_MODEL);
+            ModelLoader.addSpecialModel(DragonSphereRenderer.INNER_SPHERE_MODEL);
+            ModelLoader.addSpecialModel(DragonSphereRenderer.OUTER_SPHERE_MODEL);
         }
 
         //needed for rendering throwable item

@@ -13,7 +13,6 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -33,7 +32,6 @@ import net.minecraft.world.World;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
-import javax.swing.*;
 import java.util.List;
 import java.util.UUID;
 

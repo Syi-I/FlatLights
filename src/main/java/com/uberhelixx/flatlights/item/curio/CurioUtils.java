@@ -6,6 +6,7 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -485,5 +486,23 @@ public class CurioUtils {
                 PacketHandler.sendToPlayer((ServerPlayerEntity) playerIn, new PacketGenericPlayerNotification("Cannot toggle curio set effect"));
             }
         }
+    }
+
+    /**
+     * Gets the curio from the specific slot ID
+     * @param playerIn The player whose curios are being searched
+     * @param slotIn The slot ID for the curio we are searching for (CUBE_SLOT_ID/PRISM_SLOT_ID/SPHERE_SLOT_ID)
+     * @return The curio from the specific slot, or {@code null} if no item in the specified slot
+     */
+    public static ItemStack getCurioFromSlot(PlayerEntity playerIn, String slotIn) {
+        //get the specific slot curio from the player
+        List<SlotResult> curioSlots = CurioUtils.getWornCurioSlots(playerIn);
+        ItemStack curio = null;
+        for(SlotResult result : curioSlots) {
+            if(result.getSlotContext().getIdentifier().equals(slotIn)) {
+                curio = result.getStack();
+            }
+        }
+        return curio;
     }
 }

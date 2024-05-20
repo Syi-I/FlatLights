@@ -3,32 +3,33 @@ package com.uberhelixx.flatlights.event;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
+import com.uberhelixx.flatlights.render.EffectRenderer;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.List;
 
@@ -101,13 +102,7 @@ public class CurioEvents {
             LivingEntity target = event.getEntityLiving();
 
             //get the cube slot curio from the player
-            List<SlotResult> curioSlots = CurioUtils.getWornCurioSlots(attacker);
-            ItemStack curioCube = null;
-            for(SlotResult result : curioSlots) {
-                if(result.getSlotContext().getIdentifier().equals(CurioUtils.CUBE_SLOT_ID)) {
-                    curioCube = result.getStack();
-                }
-            }
+            ItemStack curioCube = CurioUtils.getCurioFromSlot(attacker, CurioUtils.CUBE_SLOT_ID);
             if(curioCube != null) {
                 CompoundNBT tag = curioCube.getTag();
                 if(tag != null && !tag.isEmpty()) {
