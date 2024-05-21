@@ -2,6 +2,8 @@ package com.uberhelixx.flatlights.capability;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.effect.ModEffects;
+import com.uberhelixx.flatlights.network.PacketEntangledUpdate;
+import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -9,6 +11,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -16,9 +20,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
     
@@ -72,7 +79,7 @@ public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
         public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
             //make sure we only put entangled state on living entities
             if (event.getObject() instanceof LivingEntity) {
-                MiscHelpers.debugLogger("added entangled state to mob");
+                MiscHelpers.debugLogger("[attach capability event] added entangled state to mob");
                 event.addCapability(ID, new EntangledStateProvider());
             }
         }
@@ -86,24 +93,12 @@ public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
                 if(getEntangledState(entity).isPresent()) {
                     getEntangledState(entity).ifPresent(entangledState -> {
                         entangledState.setEntangledState(true);
+                        MiscHelpers.debugLogger("[added potion effect] changed entangled state to true");
                     });
-                    MiscHelpers.debugLogger("changed entangled state to true");
-                    
-                }
-            }
-        }
-        
-        @SubscribeEvent
-        public static void removeEntangledEffect(PotionEvent.PotionRemoveEvent event) {
-            //check if the mob is removing entangled potion effect
-            if(event.getPotion() != null && event.getPotion().equals(ModEffects.ENTANGLED.get())) {
-                LivingEntity entity = event.getEntityLiving();
-                //check entangled state capability and set to false
-                if(getEntangledState(entity).isPresent()) {
-                    getEntangledState(entity).ifPresent(entangledState -> {
-                        entangledState.setEntangledState(false);
-                    });
-                    MiscHelpers.debugLogger("changed entangled state to false");
+                    if(!entity.getEntityWorld().isRemote()) {
+                        Supplier<Entity> supplier = () -> entity;
+                        PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entity.getEntityId(), true));
+                    }
                     
                 }
             }

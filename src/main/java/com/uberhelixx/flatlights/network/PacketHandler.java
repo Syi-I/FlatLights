@@ -1,10 +1,12 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.FlatLights;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public final class PacketHandler {
@@ -28,18 +30,42 @@ public final class PacketHandler {
         HANDLER.registerMessage(id++, PacketGenericToggleMessage.class, PacketGenericToggleMessage::encode, PacketGenericToggleMessage::decode, PacketGenericToggleMessage::handle);
         HANDLER.registerMessage(id++, PacketGenericPlayerNotification.class, PacketGenericPlayerNotification::encode, PacketGenericPlayerNotification::decode, PacketGenericPlayerNotification::handle);
         HANDLER.registerMessage(id++, PacketReachHit.class, PacketReachHit::encode, PacketReachHit::decode, PacketReachHit::handle);
+        HANDLER.registerMessage(id++, PacketEntangledUpdate.class, PacketEntangledUpdate::encode, PacketEntangledUpdate::decode, PacketEntangledUpdate::handle);
     }
-
+    
+    /**
+     * Send a packet to the client player
+     * @param playerMP The server player entity who is sending this message
+     * @param toSend The message packet to send
+     */
     public static void sendToPlayer(ServerPlayerEntity playerMP, Object toSend) {
         HANDLER.sendTo(toSend, playerMP.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
     }
-
+    
+    /**
+     * Send a packet to a specific {@link PacketDistributor}
+     * @param packetTarget The distributor that we are sending the packet to
+     * @param toSend The message packet to send
+     */
+    public static void sendToDistributor(PacketDistributor.PacketTarget packetTarget, Object toSend) {
+        HANDLER.send(packetTarget, toSend);
+    }
+    
+    /**
+     * Send a packet to any player that is not the server host
+     * @param playerMP The player client that we are sending the message to
+     * @param toSend The message packet to send
+     */
     public static void sendNonLocal(ServerPlayerEntity playerMP, Object toSend) {
         if (playerMP.server.isDedicatedServer() || !playerMP.getGameProfile().getName().equals(playerMP.server.getServerOwner())) {
             sendToPlayer(playerMP, toSend);
         }
     }
-
+    
+    /**
+     * Send a packet to the server from the client
+     * @param msg The message packet to send
+     */
     public static void sendToServer(Object msg) {
         HANDLER.sendToServer(msg);
     }

@@ -8,6 +8,8 @@ import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.network.PacketEntangledUpdate;
+import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -19,7 +21,9 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
@@ -31,8 +35,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public class EffectRenderer extends LayerRenderer<LivingEntity, EntityModel<LivingEntity>> {
@@ -44,11 +50,14 @@ public class EffectRenderer extends LayerRenderer<LivingEntity, EntityModel<Livi
     public void render(MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight, LivingEntity entityIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         //cannot tell what active effects are on an entity clientside, need some sort of packet serverside to ask and track this first?
         //shows up on anything but slimes so far, ig it has another layer that renders above this one
-        if(!entityIn.getTags().isEmpty()) {
-            MiscHelpers.debugLogger("entity tag is not empty");
-            Set<String> tags = entityIn.getTags();
+        //if(!entityIn.getTags().isEmpty()) {
+            //MiscHelpers.debugLogger("entity tag is not empty");
+            //Set<String> tags = entityIn.getTags();
+        
             boolean hasEntangled = false;
             if(EntangledStateProvider.getEntangledState(entityIn).isPresent()) {
+                //MiscHelpers.debugLogger("has capability");
+                
                 EntangledStateProvider.getEntangledState(entityIn).ifPresent(entangled -> {
                     if(entangled.isEntangled()) {
                         float tickTime = (float) entityIn.ticksExisted + partialTicks;
@@ -75,7 +84,7 @@ public class EffectRenderer extends LayerRenderer<LivingEntity, EntityModel<Livi
                 entityModel.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, (float) (rgbChannels + 0.49 * MathHelper.cos(tickTime / 10)), rgbChannels, rgbChannels, 1.0F);
                 MiscHelpers.debugLogger("should be rendering effect layer now");
             }
-        }
+        //}
     }
 
     ResourceLocation DAMAGE_LAYER = new ResourceLocation(FlatLights.MOD_ID, "textures/models/power_layers/mk2_damage_mode_layer.png");
