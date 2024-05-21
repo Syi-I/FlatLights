@@ -1,6 +1,8 @@
 package com.uberhelixx.flatlights;
 
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.capability.EntangledStateCapability;
+import com.uberhelixx.flatlights.capability.EntangledStateProvider;
 import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
@@ -172,6 +174,9 @@ public class FlatLights
                 }
             //}
         }
+        
+        EntangledStateCapability.register();
+        EVENT_BUS.register(EntangledStateProvider.EntangledStateProviderEventHandler.class);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

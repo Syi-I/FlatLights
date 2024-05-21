@@ -3,7 +3,7 @@ package com.uberhelixx.flatlights.capability;
 import net.minecraft.nbt.CompoundNBT;
 
 public interface IEntangled {
-    public static String ENTANGLED_KEY = "flatlights.entangled";
+    public static final String ENTANGLED_KEY = "flatlights.entangled";
     
     default boolean isEntangled() {
         return false;
@@ -11,9 +11,6 @@ public interface IEntangled {
     
     default void readEntangledState(CompoundNBT nbt) {
     }
-    
-    //default void setEntangledState(CompoundNBT nbt) {
-    //}
     
     default void setEntangledState(boolean state) {
     }
