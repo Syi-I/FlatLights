@@ -79,6 +79,8 @@ public class ShoreSphere extends BaseCurio {
 
     //uuids for the different attribute modifiers
     protected static final UUID SPHERE_DODGE = UUID.fromString("1551a215-c483-4afd-aa7a-ffe01e4859ad");
+    protected static final UUID SPHERE_LOOT_ROLLS = UUID.fromString("6e9f8a60-1a8a-4cb8-b963-53473d67990a");
+    protected static final UUID SPHERE_LOOT_CHANCE = UUID.fromString("996d721e-075a-4bcf-b3d0-856ce0110e27");
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
@@ -96,6 +98,8 @@ public class ShoreSphere extends BaseCurio {
             double basePower = CurioUtils.getTierMultiplier(stack);
             double growthModifier = 0;
             double dodgeBase = 8;
+            double rollAmountBase = 2;
+            double rollChanceBase = 10;
 
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {
@@ -113,6 +117,8 @@ public class ShoreSphere extends BaseCurio {
             }
             //put attribute modifiers onto the new map using the growth modifier value
             newMap.put(ModAttributes.DODGE_CHANCE.get(), new AttributeModifier(SPHERE_DODGE, "Sphere Dodge Modifier",(dodgeBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(ModAttributes.LOOT_ROLL_AMOUNT.get(), new AttributeModifier(SPHERE_LOOT_ROLLS, "Sphere Roll Amount Modifier",(rollAmountBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(ModAttributes.LOOT_ROLL_CHANCE.get(), new AttributeModifier(SPHERE_LOOT_CHANCE, "Sphere Roll Chance Modifier",(rollChanceBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
 
             //put attributes from old map onto new one which is being returned
             for (Attribute attribute : oldMap.keySet()) {

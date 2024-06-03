@@ -605,6 +605,10 @@
 
   "flatlights.dodge_chance": "Dodge Chance %",
   "flatlights.emotional_dmg": "Emotional Damage",
+  "flatlights.xp_boost": "XP Boost",
+  "flatlights.healing_boost": "Healing Boost",
+  "flatlights.loot_roll_amount": "Bonus Loot Rolls",
+  "flatlights.loot_roll_chance": "Bonus Loot Roll Chance %",
 
   "curios.identifier.flatlights.curios.cube": "Light Cube",
   "curios.identifier.flatlights.curios.prism": "Light Prism",

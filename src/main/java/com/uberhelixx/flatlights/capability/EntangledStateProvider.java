@@ -79,7 +79,7 @@ public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
         public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
             //make sure we only put entangled state on living entities
             if (event.getObject() instanceof LivingEntity) {
-                MiscHelpers.debugLogger("[attach capability event] added entangled state to mob");
+                //MiscHelpers.debugLogger("[attach capability event] added entangled state to mob");
                 event.addCapability(ID, new EntangledStateProvider());
             }
         }
