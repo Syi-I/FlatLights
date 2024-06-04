@@ -42,9 +42,9 @@ public class CurioUtils {
     public static final int DEFAULT_GROWTH_CAP = 1000;
 
     //percent chances to roll each tier
-    public static final float RARE_CHANCE = 40.0f;
-    public static final float EPIC_CHANCE = 20.0f;
-    public static final float LEGENDARY_CHANCE = 5.0f;
+    public static final float RARE_CHANCE = 45.0f;
+    public static final float EPIC_CHANCE = 25.0f;
+    public static final float LEGENDARY_CHANCE = 10.0f;
     public static final float GROWTH_CHANCE = 1.0f;
 
     /**
@@ -53,21 +53,21 @@ public class CurioUtils {
      * @return The float value associated with the rolled Tier, for use in the curio's NBT
      */
     public static float rollCurioTier(World worldIn) {
-        double nextRoll = worldIn.rand.nextFloat() * 100;
-        //roll above 99 for growth
-        if(nextRoll >= 100 - GROWTH_CHANCE) {
+        float nextRoll = worldIn.rand.nextFloat() * 100;
+        //roll below GROWTH_CHANCE for growth
+        if(nextRoll <= GROWTH_CHANCE) {
             return CurioTier.GROWTH.MODEL_VALUE;
         }
-        //roll above 95 for legendary
-        if(nextRoll >= 100 - LEGENDARY_CHANCE) {
+        //roll below LEGENDARY_CHANCE for legendary
+        else if(nextRoll <= LEGENDARY_CHANCE) {
             return CurioTier.LEGENDARY.MODEL_VALUE;
         }
-        //roll above 80 for epic
-        else if(nextRoll >= 100 - EPIC_CHANCE) {
+        //roll below EPIC_CHANCE for epic
+        else if(nextRoll <= EPIC_CHANCE) {
             return CurioTier.EPIC.MODEL_VALUE;
         }
-        //roll above 60 for rare
-        else if(nextRoll >= 100 - RARE_CHANCE) {
+        //roll below RARE_CHANCE for rare
+        else if(nextRoll <= RARE_CHANCE) {
             return CurioTier.RARE.MODEL_VALUE;
         }
         //defaults to common tier if not
