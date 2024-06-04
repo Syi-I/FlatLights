@@ -119,7 +119,7 @@ public class DragonsFinalCube extends BaseCurio {
                         if(entity instanceof LivingEntity) {
                             float distance = player.getDistance(entity);
                             //calculates how close the entity is to the wearer as a percentage
-                            float percentMod = (float) (distance / expansionRadius);
+                            float percentMod = 1 - (float) (distance / expansionRadius);
                             //damage scales off hp difference and the proximity percentage
                             float dmg = Math.max(player.getMaxHealth() - ((LivingEntity) entity).getMaxHealth(), 0) * percentMod;
                             if(dmg > 0) {

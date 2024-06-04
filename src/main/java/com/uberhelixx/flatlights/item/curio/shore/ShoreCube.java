@@ -69,7 +69,22 @@ public class ShoreCube extends BaseCurio {
                         //ensure living entity is the only thing we're adding slowness to
                         if(entity instanceof LivingEntity) {
                             if(entity.isInWater() || player.getEntityWorld().isRaining()) {
-                                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 3, false, true));
+                                float distance = player.getDistance(entity);
+                                //calculates how close the entity is to the wearer as a percentage
+                                float percentMod = 1 - (float) (distance / expansionRadius);
+                                //see how close the entity is to the wearer, scale slowness potency off that
+                                if(percentMod >= 0.75) {
+                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 3, false, true));
+                                }
+                                else if(percentMod >= 0.5) {
+                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 2, false, true));
+                                }
+                                else if(percentMod >= 0.25) {
+                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 1, false, true));
+                                }
+                                else {
+                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 0, false, true));
+                                }
                             }
                         }
                     }
