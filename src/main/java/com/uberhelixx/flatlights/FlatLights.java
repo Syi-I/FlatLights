@@ -3,6 +3,8 @@ package com.uberhelixx.flatlights;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.capability.EntangledStateCapability;
 import com.uberhelixx.flatlights.capability.EntangledStateProvider;
+import com.uberhelixx.flatlights.capability.RisingHeatStateCapability;
+import com.uberhelixx.flatlights.capability.RisingHeatStateProvider;
 import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
@@ -38,7 +40,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -164,19 +165,20 @@ public class FlatLights
         
         //this gets all the entities and puts a new render layer on to every living entity
         for(EntityType<?> entity : ForgeRegistries.ENTITIES) {
-            //EntityClassification type = entity.getClassification();
-            //if(type != EntityClassification.MISC || type == EntityClassification.getClassificationByName("player")) {
-                EntityRenderer<?> entityRenderer = Minecraft.getInstance().getRenderManager().renderers.get(entity);
-                if(entityRenderer instanceof LivingRenderer) {
-                    LOGGER.info("added layer to " + entity.toString());
-                    LivingRenderer<LivingEntity, EntityModel<LivingEntity>> livingRenderer = (LivingRenderer<LivingEntity, EntityModel<LivingEntity>>) entityRenderer;
-                    livingRenderer.addLayer(new EffectRenderer(livingRenderer));
-                }
-            //}
+            EntityRenderer<?> entityRenderer = Minecraft.getInstance().getRenderManager().renderers.get(entity);
+            if(entityRenderer instanceof LivingRenderer) {
+                LOGGER.info("added layers to " + entity.toString());
+                LivingRenderer<LivingEntity, EntityModel<LivingEntity>> livingRenderer = (LivingRenderer<LivingEntity, EntityModel<LivingEntity>>) entityRenderer;
+                //vvv add render layers here vvv
+                livingRenderer.addLayer(new EntangledEffectRenderer(livingRenderer));
+                livingRenderer.addLayer(new RisingHeatEffectRenderer(livingRenderer));
+            }
         }
         
         EntangledStateCapability.register();
         EVENT_BUS.register(EntangledStateProvider.EntangledStateProviderEventHandler.class);
+        RisingHeatStateCapability.register();
+        EVENT_BUS.register(RisingHeatStateProvider.RisingHeatStateProviderEventHandler.class);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

@@ -94,12 +94,11 @@ public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
                     getEntangledState(entity).ifPresent(entangledState -> {
                         entangledState.setEntangledState(true);
                         MiscHelpers.debugLogger("[added potion effect] changed entangled state to true");
+                        if(!entity.getEntityWorld().isRemote()) {
+                            Supplier<Entity> supplier = () -> entity;
+                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entity.getEntityId(), true));
+                        }
                     });
-                    if(!entity.getEntityWorld().isRemote()) {
-                        Supplier<Entity> supplier = () -> entity;
-                        PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entity.getEntityId(), true));
-                    }
-                    
                 }
             }
         }

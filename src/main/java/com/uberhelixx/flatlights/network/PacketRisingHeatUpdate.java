@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.capability.EntangledStateCapability;
+import com.uberhelixx.flatlights.capability.RisingHeatStateCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -10,25 +11,25 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class PacketEntangledUpdate {
+public class PacketRisingHeatUpdate {
     
     int entityID;
     boolean state;
     
-    public PacketEntangledUpdate(int id, boolean stateIn) {
+    public PacketRisingHeatUpdate(int id, boolean stateIn) {
         entityID = id;
         state = stateIn;
     }
-    public static void encode(PacketEntangledUpdate msg, PacketBuffer buf) {
+    public static void encode(PacketRisingHeatUpdate msg, PacketBuffer buf) {
         buf.writeInt(msg.entityID);
         buf.writeBoolean(msg.state);
     }
 
-    public static PacketEntangledUpdate decode(PacketBuffer buf) {
-        return new PacketEntangledUpdate(buf.readInt(), buf.readBoolean());
+    public static PacketRisingHeatUpdate decode(PacketBuffer buf) {
+        return new PacketRisingHeatUpdate(buf.readInt(), buf.readBoolean());
     }
 
-    public static void handle(PacketEntangledUpdate msg, Supplier<NetworkEvent.Context> ctx) {
+    public static void handle(PacketRisingHeatUpdate msg, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection().getReceptionSide().isClient()) {
             ctx.get().enqueueWork(() -> {
                 //should be only clientside stuff
@@ -38,8 +39,8 @@ public class PacketEntangledUpdate {
                     Entity entity = player.getEntityWorld().getEntityByID(msg.entityID);
                     if(entity instanceof LivingEntity) {
                         LivingEntity livingEntity = (LivingEntity) entity;
-                        livingEntity.getCapability(EntangledStateCapability.CAPABILITY_ENTANGLED_STATE).ifPresent(entangledState -> {
-                            entangledState.setEntangledState(state);
+                        livingEntity.getCapability(RisingHeatStateCapability.CAPABILITY_HEATED_STATE).ifPresent(heatedState -> {
+                            heatedState.setHeatState(state);
                         });
                     }
                 }
@@ -47,5 +48,4 @@ public class PacketEntangledUpdate {
         }
         ctx.get().setPacketHandled(true);
     }
-
 }

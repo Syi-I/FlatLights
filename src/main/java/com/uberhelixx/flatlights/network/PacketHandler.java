@@ -31,6 +31,7 @@ public final class PacketHandler {
         HANDLER.registerMessage(id++, PacketGenericPlayerNotification.class, PacketGenericPlayerNotification::encode, PacketGenericPlayerNotification::decode, PacketGenericPlayerNotification::handle);
         HANDLER.registerMessage(id++, PacketReachHit.class, PacketReachHit::encode, PacketReachHit::decode, PacketReachHit::handle);
         HANDLER.registerMessage(id++, PacketEntangledUpdate.class, PacketEntangledUpdate::encode, PacketEntangledUpdate::decode, PacketEntangledUpdate::handle);
+        HANDLER.registerMessage(id++, PacketRisingHeatUpdate.class, PacketRisingHeatUpdate::encode, PacketRisingHeatUpdate::decode, PacketRisingHeatUpdate::handle);
     }
     
     /**

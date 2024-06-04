@@ -8,6 +8,10 @@ import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.network.PacketEntangledUpdate;
+import com.uberhelixx.flatlights.network.PacketHandler;
+import com.uberhelixx.flatlights.network.PacketRisingHeatUpdate;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -23,10 +27,14 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fml.network.PacketDistributor;
 import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
+
+import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;
 
 public class SunCube extends BaseCurio {
     public SunCube(Properties properties) {
@@ -59,20 +67,48 @@ public class SunCube extends BaseCurio {
             CompoundNBT tag = stack.getTag();
             if(tag != null && !tag.isEmpty()) {
                 //make sure that the worn set effect matches this curio set and the set effect is toggled on
-                if(CurioUtils.correctSetEffect(player, CurioSetNames.SUN) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                if(CurioUtils.correctSetEffect(player, CurioSetNames.SUN) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
                     int growthProgress = CurioUtils.getGrowthTracker(stack);
-                    //bare minimum radius of effect, either from config file or 16 if config value is incorrect somehow
-                    double baseRadius = FlatLightsCommonConfig.shoreSetRadius.get() > 0 ? FlatLightsCommonConfig.shoreSetRadius.get() : 5;
+                    //bare minimum radius of effect, either from config file or 8 if config value is incorrect somehow
+                    double baseRadius = FlatLightsCommonConfig.sunSetRadius.get() > 0 ? FlatLightsCommonConfig.sunSetRadius.get() : 8;
                     //max radius of effect, cannot be smaller than the base radius
-                    double maxRadius = FlatLightsCommonConfig.shoreSetRadiusMax.get() >= baseRadius ? FlatLightsCommonConfig.shoreSetRadiusMax.get() : 10;
+                    double maxRadius = FlatLightsCommonConfig.sunSetRadiusMax.get() >= baseRadius ? FlatLightsCommonConfig.sunSetRadiusMax.get() : 32;
                     //radius of the effect
                     double expansionRadius = MathHelper.clamp(growthProgress + baseRadius, baseRadius, maxRadius);
                     //get all entities around the wearer
-                    List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius));
+                    List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius + 1));
                     for(Entity entity : entities) {
                         //ensure living entity is the only thing we're adding the capability to
                         if(entity instanceof LivingEntity) {
-                        
+                            LivingEntity le = (LivingEntity) entity;
+                            float distance = player.getDistance(entity);
+                            //set mob to heat state true if distance is within the radius
+                            if(getHeatedState(le).isPresent() && distance < expansionRadius && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                                getHeatedState(le).ifPresent(heatedState -> {
+                                    if(!heatedState.isHeated()) {
+                                        heatedState.setHeatState(true);
+                                        MiscHelpers.debugLogger("[sun set effect] changed heat state to true");
+                                        if(!le.getEntityWorld().isRemote()) {
+                                            Supplier<Entity> supplier = () -> le;
+                                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getEntityId(), true));
+                                        }
+                                    }
+                                });
+                            }
+                            //if distance is farther than the radius, set heat state to false
+                            //causes issues if more than one person is using the same set, but with it toggled on vs off, causing flickering back and forth between states
+                            if(getHeatedState(le).isPresent() && (distance > expansionRadius && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) || !tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                                getHeatedState(le).ifPresent(heatedState -> {
+                                    if(heatedState.isHeated()) {
+                                        heatedState.setHeatState(false);
+                                        MiscHelpers.debugLogger("[sun set effect] changed heat state to false");
+                                        if(!le.getEntityWorld().isRemote()) {
+                                            Supplier<Entity> supplier = () -> le;
+                                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getEntityId(), false));
+                                        }
+                                    }
+                                });
+                            }
                         }
                     }
                 }

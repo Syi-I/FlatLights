@@ -39,6 +39,8 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> maxLootRollChance;
     public static final ForgeConfigSpec.ConfigValue<Float> sunSetDmgMulti;
     public static final ForgeConfigSpec.ConfigValue<Float> sunSetBurningDmg;
+    public static final ForgeConfigSpec.ConfigValue<Double> sunSetRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> sunSetRadiusMax;
 
     static {
         BUILDER.push("Stat Balancing");
@@ -104,7 +106,7 @@ public final class FlatLightsCommonConfig {
             shoreSetRadius = BUILDER.defineInRange("ShoreSetRadius", 16.0, 1.0, Integer.MAX_VALUE);
 
             BUILDER.comment("Max effect radius for the 'On the Forgotten Shore' curio set effect. Only matters for 'Growth' tier curios, cannot be smaller than the base radius otherwise it uses default values. [Default: 32 blocks]");
-            shoreSetRadiusMax = BUILDER.defineInRange("ShoreSetRadius", 32.0, 1.0, Integer.MAX_VALUE);
+            shoreSetRadiusMax = BUILDER.defineInRange("ShoreSetRadiusMax", 32.0, 1.0, Integer.MAX_VALUE);
 
             BUILDER.comment("Base effect radius for the 'Dragon's Final Test' curio set effect. [Default: 6 blocks]");
             dragonsfinalSetRadius = BUILDER.defineInRange("DragonsFinalSetRadius", 6.0, 1.0, Integer.MAX_VALUE);
@@ -122,7 +124,13 @@ public final class FlatLightsCommonConfig {
             sunSetDmgMulti = BUILDER.define("SunSetDmgMulti", 1.75f);
             
             BUILDER.comment("Damage addition for the 'Radiance of the False Sun' curio set effect. [Default: 3]");
-            sunSetBurningDmg = BUILDER.define("SunSetDmgMulti", 3f);
+            sunSetBurningDmg = BUILDER.define("SunSetBurningDmg", 3f);
+            
+            BUILDER.comment("Base effect radius for the 'Radiance of the False Sun' curio set effect. [Default: 8 blocks]");
+            sunSetRadius = BUILDER.defineInRange("SunSetRadius", 8.0, 1.0, Integer.MAX_VALUE);
+            
+            BUILDER.comment("Max effect radius for the 'Radiance of the False Sun' curio set effect. Only matters for 'Growth' tier curios, cannot be smaller than the base radius otherwise it uses default values. [Default: 32 blocks]");
+            sunSetRadiusMax = BUILDER.defineInRange("SunSetRadiusMax", 32.0, 1.0, Integer.MAX_VALUE);
         }
         BUILDER.pop();
 
