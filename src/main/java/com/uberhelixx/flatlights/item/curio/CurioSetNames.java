@@ -11,9 +11,14 @@ public class CurioSetNames {
     public static final String DRAGONSFINAL = "flatlights.curioset.dragonsfinal";
     public static final String DRAGONSFINAL_EFFECT = "flatlights.curioeffect.dragonsfinal";
     public static final String DRAGONSFINAL_DESC = "flatlights.curiodesc.dragonsfinal";
+    
     public static final String SHORE = "flatlights.curioset.shore";
     public static final String SHORE_EFFECT = "flatlights.curioeffect.shore";
     public static final String SHORE_DESC = "flatlights.curiodesc.shore";
+    
+    public static final String SUN = "flatlights.curioset.sun";
+    public static final String SUN_EFFECT = "flatlights.curioeffect.sun";
+    public static final String SUN_DESC = "flatlights.curiodesc.sun";
 
     public static Map<String, String> setPairs = new HashMap<>();
     public static Map<String, String> descPairs = new HashMap<>();
@@ -24,9 +29,11 @@ public class CurioSetNames {
     public static void pairUp() {
         setPairs.put(DRAGONSFINAL, DRAGONSFINAL_EFFECT);
         setPairs.put(SHORE, SHORE_EFFECT);
+        setPairs.put(SUN, SUN_EFFECT);
 
         descPairs.put(DRAGONSFINAL, DRAGONSFINAL_DESC);
         descPairs.put(SHORE, SHORE_DESC);
+        descPairs.put(SUN, SUN_DESC);
     }
 
     /**

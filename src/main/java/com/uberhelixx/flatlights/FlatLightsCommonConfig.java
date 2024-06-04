@@ -37,6 +37,8 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> dragonsfinalSetRadiusMax;
     public static final ForgeConfigSpec.ConfigValue<Integer> maxLootRolls;
     public static final ForgeConfigSpec.ConfigValue<Double> maxLootRollChance;
+    public static final ForgeConfigSpec.ConfigValue<Float> sunSetDmgMulti;
+    public static final ForgeConfigSpec.ConfigValue<Float> sunSetBurningDmg;
 
     static {
         BUILDER.push("Stat Balancing");
@@ -115,6 +117,12 @@ public final class FlatLightsCommonConfig {
             
             BUILDER.comment("Max percent chance increase for the 'Loot Roll Chance' attribute, which determines bonus loot rolls triggering. [Default: 10%]");
             maxLootRollChance = BUILDER.defineInRange("MaxLootRollChance", 10.0, 0, 100);
+            
+            BUILDER.comment("Damage multiplier for the 'Radiance of the False Sun' curio set effect. Has to be >= 1, otherwise uses default value of 1.75. [Default: 1.75]");
+            sunSetDmgMulti = BUILDER.define("SunSetDmgMulti", 1.75f);
+            
+            BUILDER.comment("Damage addition for the 'Radiance of the False Sun' curio set effect. [Default: 3]");
+            sunSetBurningDmg = BUILDER.define("SunSetDmgMulti", 3f);
         }
         BUILDER.pop();
 

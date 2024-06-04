@@ -1,39 +1,28 @@
-package com.uberhelixx.flatlights.item.curio.shore;
+package com.uberhelixx.flatlights.item.curio.sun;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import com.uberhelixx.flatlights.entity.ModAttributes;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeMod;
 import top.theillusivec4.curios.api.SlotContext;
 
-import java.util.Objects;
 import java.util.UUID;
 
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
-import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
-
-public class ShoreSphere extends BaseCurio {
-    public ShoreSphere(Properties properties) {
+public class SunPrism extends BaseCurio {
+    public SunPrism(Properties properties) {
         super(properties);
     }
 
@@ -45,40 +34,13 @@ public class ShoreSphere extends BaseCurio {
 
         //doesn't let you roll again if it already has the roll data
         if(stackTags == null || !CurioUtils.rollCheck(stackTags)) {
-            CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.SHORE, null, null);
+            CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.SUN, null, null);
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
 
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
-        if (player != null) {
-            player.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, Integer.MAX_VALUE, 0, true, false));
-        }
-        super.onEquip(slotContext, prevStack, stack);
-    }
-
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
-        if(player != null && hasWaterBreathing(player)) {
-            player.removePotionEffect(Effects.WATER_BREATHING);
-        }
-        super.onUnequip(slotContext, newStack, stack);
-    }
-
-    /**
-     * Determines if the wearer has the water breathing potion effect
-     * @param playerIn The player whose potion effects are being checked
-     * @return True if the player does NOT have water breathing, false if water breathing
-     */
-    private static boolean hasWaterBreathing(PlayerEntity playerIn) {
-        return !Objects.equals(playerIn.getActivePotionEffect(Effects.WATER_BREATHING), null);
-    }
-
     //uuids for the different attribute modifiers
-    protected static final UUID SPHERE_DODGE = UUID.fromString("1551a215-c483-4afd-aa7a-ffe01e4859ad");
+    protected static final UUID PRISM_ATTACK = UUID.fromString("d21d7059-ad2d-445b-8994-98a0a201a194");
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
@@ -95,12 +57,11 @@ public class ShoreSphere extends BaseCurio {
         if(tier != null) {
             double basePower = CurioUtils.getTierMultiplier(stack);
             double growthModifier = 0;
-            double dodgeBase = 8;
+            double attackBase = 4;
 
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {
                 growthModifier = 1;
-
                 //calculate growth modifier value from core count, scale down number
                 PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
                 if (player != null) {
@@ -111,8 +72,9 @@ public class ShoreSphere extends BaseCurio {
                     growthModifier = cores * 0.01;
                 }
             }
+
             //put attribute modifiers onto the new map using the growth modifier value
-            newMap.put(ModAttributes.DODGE_CHANCE.get(), new AttributeModifier(SPHERE_DODGE, "Sphere Dodge Modifier",(dodgeBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(PRISM_ATTACK, "Prism Attack Modifier",(attackBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
             
             //put attributes from old map onto new one which is being returned
             for (Attribute attribute : oldMap.keySet()) {

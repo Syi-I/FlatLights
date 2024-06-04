@@ -564,7 +564,10 @@ public class FlatLightsTabSort {
             ModCurios.DRAGONS_FINAL_SPHERE.get(),
             ModCurios.SHORE_CUBE.get(),
             ModCurios.SHORE_PRISM.get(),
-            ModCurios.SHORE_SPHERE.get()
+            ModCurios.SHORE_SPHERE.get(),
+            ModCurios.SUN_CUBE.get(),
+            ModCurios.SUN_PRISM.get(),
+            ModCurios.SUN_SPHERE.get()
             );
         tabSort = Ordering.explicit(itemOrder).onResultOf(ItemStack::getItem);
     }

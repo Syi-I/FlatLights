@@ -8,6 +8,9 @@ import com.uberhelixx.flatlights.item.curio.dragonsfinal.DragonsFinalSphere;
 import com.uberhelixx.flatlights.item.curio.shore.ShoreCube;
 import com.uberhelixx.flatlights.item.curio.shore.ShorePrism;
 import com.uberhelixx.flatlights.item.curio.shore.ShoreSphere;
+import com.uberhelixx.flatlights.item.curio.sun.SunCube;
+import com.uberhelixx.flatlights.item.curio.sun.SunPrism;
+import com.uberhelixx.flatlights.item.curio.sun.SunSphere;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -36,4 +39,11 @@ public class ModCurios {
             () -> new ShorePrism(new Item.Properties().group(ModItemGroup.FLATLIGHTS).maxStackSize(1)));
     public static final RegistryObject<Item> SHORE_SPHERE = CURIOS.register("shore_sphere",
             () -> new ShoreSphere(new Item.Properties().group(ModItemGroup.FLATLIGHTS).maxStackSize(1)));
+    
+    public static final RegistryObject<Item> SUN_CUBE = CURIOS.register("sun_cube",
+            () -> new SunCube(new Item.Properties().group(ModItemGroup.FLATLIGHTS).maxStackSize(1)));
+    public static final RegistryObject<Item> SUN_PRISM = CURIOS.register("sun_prism",
+            () -> new SunPrism(new Item.Properties().group(ModItemGroup.FLATLIGHTS).maxStackSize(1)));
+    public static final RegistryObject<Item> SUN_SPHERE = CURIOS.register("sun_sphere",
+            () -> new SunSphere(new Item.Properties().group(ModItemGroup.FLATLIGHTS).maxStackSize(1)));
 }

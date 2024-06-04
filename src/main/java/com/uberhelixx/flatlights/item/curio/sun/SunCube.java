@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item.curio.shore;
+package com.uberhelixx.flatlights.item.curio.sun;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -28,8 +28,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import java.util.List;
 import java.util.UUID;
 
-public class ShoreCube extends BaseCurio {
-    public ShoreCube(Properties properties) {
+public class SunCube extends BaseCurio {
+    public SunCube(Properties properties) {
         super(properties);
     }
 
@@ -41,13 +41,17 @@ public class ShoreCube extends BaseCurio {
 
         //doesn't let you roll again if it already has the roll data
         if(stackTags == null || !CurioUtils.rollCheck(stackTags)) {
-            CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.SHORE, null, null);
+            CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.SUN, null, null);
             //add in the set effect toggle for curios that have the functionality for the set effect (cubes only)
             CurioUtils.addSetToggle(stack);
         }
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }
 
+    //uuids for the different attribute modifiers
+    protected static final UUID CUBE_ARMOR = UUID.fromString("edb8f5f5-e2de-44a0-a0b2-f42a08294f1b");
+    protected static final UUID CUBE_HEALTH = UUID.fromString("2fb3dec2-991e-4f7d-93cc-d480075b16f0");
+    
     @Override
     public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
         if(livingEntity instanceof PlayerEntity) {
@@ -55,37 +59,20 @@ public class ShoreCube extends BaseCurio {
             CompoundNBT tag = stack.getTag();
             if(tag != null && !tag.isEmpty()) {
                 //make sure that the worn set effect matches this curio set and the set effect is toggled on
-                if(CurioUtils.correctSetEffect(player, CurioSetNames.SHORE) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                if(CurioUtils.correctSetEffect(player, CurioSetNames.SUN) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
                     int growthProgress = CurioUtils.getGrowthTracker(stack);
                     //bare minimum radius of effect, either from config file or 16 if config value is incorrect somehow
-                    double baseRadius = FlatLightsCommonConfig.shoreSetRadius.get() > 0 ? FlatLightsCommonConfig.shoreSetRadius.get() : 16;
+                    double baseRadius = FlatLightsCommonConfig.shoreSetRadius.get() > 0 ? FlatLightsCommonConfig.shoreSetRadius.get() : 5;
                     //max radius of effect, cannot be smaller than the base radius
-                    double maxRadius = FlatLightsCommonConfig.shoreSetRadiusMax.get() >= baseRadius ? FlatLightsCommonConfig.shoreSetRadiusMax.get() : 32;
+                    double maxRadius = FlatLightsCommonConfig.shoreSetRadiusMax.get() >= baseRadius ? FlatLightsCommonConfig.shoreSetRadiusMax.get() : 10;
                     //radius of the effect
                     double expansionRadius = MathHelper.clamp(growthProgress + baseRadius, baseRadius, maxRadius);
                     //get all entities around the wearer
                     List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius));
                     for(Entity entity : entities) {
-                        //ensure living entity is the only thing we're adding slowness to
+                        //ensure living entity is the only thing we're adding the capability to
                         if(entity instanceof LivingEntity) {
-                            if(entity.isInWater() || player.getEntityWorld().isRaining()) {
-                                float distance = player.getDistance(entity);
-                                //calculates how close the entity is to the wearer as a percentage
-                                float percentMod = 1 - (float) (distance / expansionRadius);
-                                //see how close the entity is to the wearer, scale slowness potency off that
-                                if(percentMod >= 0.75) {
-                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 3, false, true));
-                                }
-                                else if(percentMod >= 0.5) {
-                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 2, false, true));
-                                }
-                                else if(percentMod >= 0.25) {
-                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 1, false, true));
-                                }
-                                else {
-                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 600, 0, false, true));
-                                }
-                            }
+                        
                         }
                     }
                 }
@@ -93,12 +80,7 @@ public class ShoreCube extends BaseCurio {
         }
         super.curioTick(identifier, index, livingEntity, stack);
     }
-
-    //uuids for the different attribute modifiers
-    protected static final UUID CUBE_ARMOR = UUID.fromString("ac08573b-be84-4cbd-ad80-f76f324b6b06");
-    protected static final UUID CUBE_TOUGHNESS = UUID.fromString("c518f19a-4ae4-41ad-af84-fbaa438e0e47");
-    protected static final UUID CUBE_SWIM = UUID.fromString("ebd44c13-34a7-4f69-a1d1-c25ff5423f5b");
-
+    
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
         //get old attribute modifiers and create a new map to modify
@@ -115,8 +97,7 @@ public class ShoreCube extends BaseCurio {
             double basePower = CurioUtils.getTierMultiplier(stack);
             double growthModifier = 0;
             double armorBase = 4;
-            double toughnessBase = 6;
-            double swimBase = 1.5;
+            double healthBase = 8;
 
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {
@@ -134,9 +115,8 @@ public class ShoreCube extends BaseCurio {
 
             //put attribute modifiers onto the new map using the growth modifier value
             newMap.put(Attributes.ARMOR, new AttributeModifier(CUBE_ARMOR, "Cube Armor Modifier", (armorBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
-            newMap.put(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(CUBE_TOUGHNESS, "Cube Toughness Modifier", (toughnessBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
-            newMap.put(ForgeMod.SWIM_SPEED.get(), new AttributeModifier(CUBE_SWIM, "Cube Swim Modifier", (swimBase * basePower) + (growthModifier / 4), AttributeModifier.Operation.ADDITION));
-
+            newMap.put(Attributes.MAX_HEALTH, new AttributeModifier(CUBE_HEALTH, "Cube Health Modifier", (healthBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
+            
             //put attributes from old map onto new one which is being returned
             for (Attribute attribute : oldMap.keySet()) {
                 newMap.putAll(attribute, oldMap.get(attribute));

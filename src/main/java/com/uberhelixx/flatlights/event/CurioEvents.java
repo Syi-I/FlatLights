@@ -19,12 +19,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -114,6 +116,61 @@ public class CurioEvents {
                             float newDmg = event.getAmount() * dmgMultiplier;
                             event.setAmount(newDmg);
                             MiscHelpers.debugLogger("[Shore Effect Event] Big Water Damage: " + newDmg);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void sunHitEffect(LivingHurtEvent event) {
+        //only check for players doing damage since they are the only ones who wear curios and trigger effects
+        if(event.getSource().getTrueSource() instanceof PlayerEntity) {
+            PlayerEntity attacker = (PlayerEntity) event.getSource().getTrueSource();
+            LivingEntity target = event.getEntityLiving();
+            
+            //get the cube slot curio from the player
+            ItemStack curioCube = CurioUtils.getCurioFromSlot(attacker, CurioUtils.CUBE_SLOT_ID);
+            if(curioCube != null) {
+                CompoundNBT tag = curioCube.getTag();
+                if(tag != null && !tag.isEmpty()) {
+                    //make sure that the worn set effect matches this curio set and the set effect is toggled on
+                    if(CurioUtils.correctSetEffect(attacker, CurioSetNames.SUN) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                        //if enemy is on fire then do multiplier damage
+                        if(target.isBurning()) {
+                            float dmgMultiplier = FlatLightsCommonConfig.sunSetDmgMulti.get() >= 1 ? FlatLightsCommonConfig.sunSetDmgMulti.get() : 1.75f;
+                            float newDmg = event.getAmount() * dmgMultiplier;
+                            event.setAmount(newDmg);
+                            MiscHelpers.debugLogger("[Sun Effect Event] Big Fire Damage Hit: " + newDmg);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void burningDmg(LivingDamageEvent event) {
+        //only check for players doing damage since they are the only ones who wear curios and trigger effects
+        if(event.getSource().getTrueSource() instanceof PlayerEntity) {
+            PlayerEntity attacker = (PlayerEntity) event.getSource().getTrueSource();
+            LivingEntity target = event.getEntityLiving();
+            DamageSource source = event.getSource();
+            
+            //get the cube slot curio from the player
+            ItemStack curioCube = CurioUtils.getCurioFromSlot(attacker, CurioUtils.CUBE_SLOT_ID);
+            if(curioCube != null) {
+                CompoundNBT tag = curioCube.getTag();
+                if(tag != null && !tag.isEmpty()) {
+                    //make sure that the worn set effect matches this curio set and the set effect is toggled on
+                    if(CurioUtils.correctSetEffect(attacker, CurioSetNames.SUN) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                        //if enemy is burning and the damage source is some sort of fire damage (fire damage or lava damage), add some more flat damage on
+                        if(target.isBurning() && (source.equals(DamageSource.IN_FIRE) || source.equals(DamageSource.LAVA) || source.equals(DamageSource.ON_FIRE))) {
+                            float bonusFireDmg = FlatLightsCommonConfig.sunSetBurningDmg.get() >= 1 ? FlatLightsCommonConfig.sunSetBurningDmg.get() : 3f;
+                            float newDmg = event.getAmount() + bonusFireDmg;
+                            event.setAmount(newDmg);
+                            MiscHelpers.debugLogger("[Sun Effect Event] Big Fire Damage Addon: " + newDmg);
                         }
                     }
                 }
