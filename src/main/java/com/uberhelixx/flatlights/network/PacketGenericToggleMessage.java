@@ -39,7 +39,7 @@ public class PacketGenericToggleMessage {
     }
 
     public static void handle(PacketGenericToggleMessage msg, Supplier<NetworkEvent.Context> ctx) {
-        if (ctx.get().getDirection().getReceptionSide().isServer()) {
+        if (ctx.get().getDirection().getReceptionSide().isClient()) {
             ctx.get().enqueueWork(() -> {
                 //should be only clientside stuff
                 PlayerEntity player = Minecraft.getInstance().player;

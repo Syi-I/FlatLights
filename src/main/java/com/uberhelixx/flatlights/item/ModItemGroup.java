@@ -1,6 +1,6 @@
 package com.uberhelixx.flatlights.item;
 
-import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.FlatLightsTabSort;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -15,7 +15,7 @@ public class ModItemGroup {
         public void fill(NonNullList<ItemStack> items)
         {
             super.fill(items);
-            items.sort(FlatLights.tabSort);
+            items.sort(FlatLightsTabSort.tabSort);
         }
     };
 }

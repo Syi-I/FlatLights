@@ -1,11 +1,18 @@
 package com.uberhelixx.flatlights.effect;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.capability.EntangledStateProvider;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
+import com.uberhelixx.flatlights.network.PacketEntangledUpdate;
+import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
+import net.minecraftforge.fml.network.PacketDistributor;
+
+import java.util.function.Supplier;
 
 public class EntangledEffect extends Effect {
     private static final String ENTANGLED_TEAM = "entangledMobs";
@@ -27,6 +34,18 @@ public class EntangledEffect extends Effect {
             if (entityLivingBaseIn.getTeam() == entityLivingBaseIn.getEntityWorld().getScoreboard().getTeam(ENTANGLED_TEAM)) {
                 entityLivingBaseIn.getEntityWorld().getScoreboard().removePlayerFromTeam(entityLivingBaseIn.getCachedUniqueIdString(), entityLivingBaseIn.getEntityWorld().getScoreboard().getTeam(ENTANGLED_TEAM));
             }
+        }
+        if(EntangledStateProvider.getEntangledState(entityLivingBaseIn).isPresent()) {
+            EntangledStateProvider.getEntangledState(entityLivingBaseIn).ifPresent(entangledState -> {
+                entangledState.setEntangledState(false);
+                MiscHelpers.debugLogger("[entangled effect] changed entangled state to false");
+                
+            });
+            if(!entityLivingBaseIn.getEntityWorld().isRemote()) {
+                Supplier<Entity> supplier = () -> entityLivingBaseIn;
+                PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entityLivingBaseIn.getEntityId(), false));
+            }
+            
         }
         super.performEffect(entityLivingBaseIn, amplifier);
     }

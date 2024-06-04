@@ -21,6 +21,7 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
@@ -184,7 +185,8 @@ public class PrismaticBladeMk2 extends SwordItem {
                 if (attacker instanceof PlayerEntity) {
                     if (reachSqr >= distanceToTargetSqr) {
                         raytraceTarget.hurtResistantTime = 0;
-                        raytraceTarget.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) attacker), attackDamage);
+                        //raytraceTarget.attackEntityFrom(DamageSource.causePlayerDamage((PlayerEntity) attacker), attackDamage);
+                        ((PlayerEntity) attacker).attackTargetEntityWithCurrentItem(raytraceTarget);
                         raytraceTarget.hurtResistantTime = 0;
                     }
                 }
@@ -371,7 +373,9 @@ public class PrismaticBladeMk2 extends SwordItem {
                     }
                     blade.setTag(tag);
                     PacketHandler.sendToServer(new PacketWriteNbt(tag, blade));
-                    PacketHandler.sendToServer(new PacketGenericToggleMessage(toggleText, dmg || projectile || !spear, dmg || projectile || !spear));
+                    if(!playerIn.getEntityWorld().isRemote()) {
+                        PacketHandler.sendToPlayer((ServerPlayerEntity) playerIn, new PacketGenericToggleMessage(toggleText, dmg || projectile || !spear, dmg || projectile || !spear));
+                    }
                 }
             }
             //shoot projectile if on projectile mode

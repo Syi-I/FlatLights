@@ -10,15 +10,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Curse of Lifted Pickup Truck (increases armor while also increasing damage taken while wearing a cursed armor piece)
 - Curios sets with different rarity tiers and effects, which spawn in generated chests as loot
   - Dragon's Final Test curio set (basic but well-rounded stat increases, set effect projects an aura which damages weaker entities around the wearer)
+  - On the Forgotten Shore curio set (water focused buffs for movement and survivability, set effect provides extreme damage boost when in water or rain)
+- New notification system for various actions, such as toggling a tool's ability on and off or activating a curio's effect
+- Various new stats for players that can be gained via the different curio sets (dodge chance, xp boost, healing boost, bonus loot roll amounts and chance)
 
 ### Changed
 - Improved tooltip displays and toggle notifications for the various items and tools utilizing action bar text
 - Fixed tooltip styling to be more uniform across items
 
 ### Fixed
+- Entangled effect linked damage triggering on mobs that do not have the potion effect active
 
 ### Planned
-- On the Forgotten Shore curio set (water focused buffs for movement and survivability, set effect provides extreme damage boost when in water or rain)
 - Radiance of the False Sun curio set (fire focused buffs for damage and survivability, set effect provides fire immunity)
 
 ## [1.22.1] - 2024-04-01

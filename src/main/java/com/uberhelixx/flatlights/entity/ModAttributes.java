@@ -4,6 +4,8 @@ import com.uberhelixx.flatlights.FlatLights;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -25,7 +27,19 @@ public class ModAttributes {
             () -> new RangedAttribute(FlatLights.MOD_ID + ".dodge_chance", 0, 0, 100).setShouldWatch(true));
 
     public static final RegistryObject<Attribute> EMOTIONAL_DMG = ATTRIBUTES.register("emotional_dmg",
-            () -> new RangedAttribute(FlatLights.MOD_ID + ".emotional_dmg", 0, 0, 100).setShouldWatch(true));
+            () -> new RangedAttribute(FlatLights.MOD_ID + ".emotional_dmg", 0, 0, Integer.MAX_VALUE).setShouldWatch(true));
+    
+    public static final RegistryObject<Attribute> XP_BOOST = ATTRIBUTES.register("xp_boost",
+            () -> new RangedAttribute(FlatLights.MOD_ID + ".xp_boost", 0, 0, Integer.MAX_VALUE).setShouldWatch(true));
+    
+    public static final RegistryObject<Attribute> HEALING_BOOST = ATTRIBUTES.register("healing_boost",
+            () -> new RangedAttribute(FlatLights.MOD_ID + ".healing_boost", 0, 0, Integer.MAX_VALUE).setShouldWatch(true));
+    
+    public static final RegistryObject<Attribute> LOOT_ROLL_AMOUNT = ATTRIBUTES.register("loot_roll_amount",
+            () -> new RangedAttribute(FlatLights.MOD_ID + ".loot_roll_amount", 0, 0, Integer.MAX_VALUE).setShouldWatch(true));
+    
+    public static final RegistryObject<Attribute> LOOT_ROLL_CHANCE = ATTRIBUTES.register("loot_roll_chance",
+            () -> new RangedAttribute(FlatLights.MOD_ID + ".loot_roll_chance", 0, 0, 100).setShouldWatch(true));
 
 
     @SubscribeEvent
@@ -34,6 +48,10 @@ public class ModAttributes {
             if (entityType == EntityType.PLAYER) {
                 event.add(entityType, DODGE_CHANCE.get());
                 event.add(entityType, EMOTIONAL_DMG.get());
+                event.add(entityType, XP_BOOST.get());
+                event.add(entityType, HEALING_BOOST.get());
+                event.add(entityType, LOOT_ROLL_AMOUNT.get());
+                event.add(entityType, LOOT_ROLL_CHANCE.get());
             }
         }
     }

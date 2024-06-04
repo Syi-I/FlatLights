@@ -134,7 +134,7 @@ public class EnchantmentEvents {
         LivingEntity target = event.getEntityLiving();
         double searchRadius = FlatLightsCommonConfig.entangledRange.get();
         //stop this from infinitely looping damage
-        if(event.getSource() != ModDamageTypes.ENTANGLED) {
+        if(event.getSource() != ModDamageTypes.ENTANGLED && target.isPotionActive(ModEffects.ENTANGLED.get())) {
             //grab all nearby entities within the search radius and apply an instance of entangled damage
             List<Entity> entities = target.world.getEntitiesWithinAABBExcludingEntity(target, target.getBoundingBox().grow(searchRadius, searchRadius, searchRadius));
             for (Entity instance : entities) {

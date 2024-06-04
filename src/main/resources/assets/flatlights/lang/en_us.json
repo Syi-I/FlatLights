@@ -603,8 +603,12 @@
   "key.category.flatlights": "FlatLights",
   "key.flatlights.curio_toggle": "Toggle Curio Set Effect",
 
-  "flatlights.dodge_chance": "Dodge Chance",
+  "flatlights.dodge_chance": "Dodge Chance %",
   "flatlights.emotional_dmg": "Emotional Damage",
+  "flatlights.xp_boost": "XP Boost",
+  "flatlights.healing_boost": "Healing Boost",
+  "flatlights.loot_roll_amount": "Bonus Loot Rolls",
+  "flatlights.loot_roll_chance": "Bonus Loot Roll Chance %",
 
   "curios.identifier.flatlights.curios.cube": "Light Cube",
   "curios.identifier.flatlights.curios.prism": "Light Prism",
@@ -612,8 +616,18 @@
   "curios.modifiers.flatlights.curios.cube": "Light Cube",
   "curios.modifiers.flatlights.curios.prism": "Light Prism",
   "curios.modifiers.flatlights.curios.sphere": "Light Sphere",
+
   "flatlights.curioset.dragonsfinal": "Dragon's Final Test",
+  "flatlights.curioset.shore": "On the Forgotten Shore",
+  "flatlights.curioeffect.dragonsfinal": "Reaching the Apex",
+  "flatlights.curioeffect.shore": "Domain of Still Waters",
+  "flatlights.curiodesc.dragonsfinal": "Enemies within a certain range of the wearer take damage proportional to the difference between the wearer's max HP, and the target's max HP. This effect gets stronger the closer the target is to the wearer.",
+  "flatlights.curiodesc.shore": "If it is raining or a target is in water while near the wearer, applies Slowness to the nearby targets. Also, if it is raining or either the wearer or target is in water, deal increased damage to the target.",
+
   "item.flatlights.dragons_final_cube": "Light Cube",
   "item.flatlights.dragons_final_prism": "Light Prism",
-  "item.flatlights.dragons_final_sphere": "Light Sphere"
+  "item.flatlights.dragons_final_sphere": "Light Sphere",
+  "item.flatlights.shore_cube": "Light Cube",
+  "item.flatlights.shore_prism": "Light Prism",
+  "item.flatlights.shore_sphere": "Light Sphere"
 }

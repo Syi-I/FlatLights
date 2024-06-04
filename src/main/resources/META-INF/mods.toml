@@ -74,4 +74,4 @@ Some not so fancy light blocks to use for decoration in builds, along with some 
 [[dependencies.flatlights]]
 modId = "curios"
 mandatory = true
-versionRange = "[1.16.5-4.0.5.2,)"
+versionRange = "[1.16.5-4.1.0.0,)"
