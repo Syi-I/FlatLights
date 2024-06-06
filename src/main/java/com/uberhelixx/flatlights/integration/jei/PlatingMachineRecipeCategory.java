@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
-import com.uberhelixx.flatlights.data.recipes.SpectralizerRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;

@@ -1,15 +1,11 @@
 package com.uberhelixx.flatlights.network;
 
-import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -17,7 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class PacketReachHit {

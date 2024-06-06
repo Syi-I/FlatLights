@@ -2,7 +2,6 @@ package com.uberhelixx.flatlights.util;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.block.Mob_B_Gone;
-import com.uberhelixx.flatlights.block.PlatingMachineBlock;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import net.minecraft.block.Block;

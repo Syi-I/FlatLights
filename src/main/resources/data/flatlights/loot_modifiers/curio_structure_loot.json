@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "condition": "location_check",
+      "block": "forge:chests/wooden"
+    },
+    {
+      "condition": "location_check",
+      "block": "forge:chests/trapped"
+    }
+  ],
+  "dragon_cube": "flatlights:dragons_final_cube",
+  "dragon_prism": "flatlights:dragons_final_prism",
+  "dragon_sphere": "flatlights:dragons_final_sphere",
+  "shore_cube": "flatlights:shore_cube",
+  "shore_prism": "flatlights:shore_prism",
+  "shore_sphere": "flatlights:shore_sphere",
+  "sun_cube": "flatlights:sun_cube",
+  "sun_prism": "flatlights:sun_prism",
+  "sun_sphere": "flatlights:sun_sphere"
+}

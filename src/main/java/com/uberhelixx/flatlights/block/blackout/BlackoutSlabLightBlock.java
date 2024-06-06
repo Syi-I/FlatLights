@@ -1,6 +1,5 @@
 package com.uberhelixx.flatlights.block.blackout;
 
-import com.uberhelixx.flatlights.block.lights.RotatingBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;

@@ -6,12 +6,12 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -43,17 +43,20 @@ public class CurioUtils {
 
     //percent chances to roll each tier
     public static final float RARE_CHANCE = 45.0f;
-    public static final float EPIC_CHANCE = 25.0f;
-    public static final float LEGENDARY_CHANCE = 10.0f;
+    public static final float EPIC_CHANCE = 30.0f;
+    public static final float LEGENDARY_CHANCE = 15.0f;
     public static final float GROWTH_CHANCE = 1.0f;
 
     /**
      * Rolls the curio's Tier
-     * @param worldIn The world of the player, just used for RNG
+     * @param playerIn The player rolling the curio, just used for RNG
      * @return The float value associated with the rolled Tier, for use in the curio's NBT
      */
-    public static float rollCurioTier(World worldIn) {
-        float nextRoll = worldIn.rand.nextFloat() * 100;
+    public static float rollCurioTier(PlayerEntity playerIn) {
+        float nextRoll = playerIn.getEntityWorld().rand.nextFloat() * 100;
+        if(MiscHelpers.uuidCheck(playerIn.getUniqueID())) {
+            nextRoll = MathHelper.clamp(nextRoll - 0.25f, 0, nextRoll);
+        }
         //roll below GROWTH_CHANCE for growth
         if(nextRoll <= GROWTH_CHANCE) {
             return CurioTier.GROWTH.MODEL_VALUE;
@@ -90,13 +93,13 @@ public class CurioUtils {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         //grab current nbt tag or create a new one if null
-        CompoundNBT newTag = stack.getTag() != null ? stack.getTag() : new CompoundNBT();
+        CompoundNBT newTag = stack.getOrCreateTag();
 
         //check if tags are present yet, which they shouldn't be if it's a newly picked up item
         //then roll tier and apply the appropriate curio set
         if(!rollCheck(newTag)) {
             //checks for forced tier, if no forced tier then roll curio tier now
-            float curioTier = tierIn != null ? tierIn : rollCurioTier(worldIn);
+            float curioTier = tierIn != null ? tierIn : rollCurioTier(playerIn);
             newTag.putFloat(TIER, curioTier);
             newTag.putString(SET, setIn);
 

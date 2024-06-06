@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.FlatLights;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;

@@ -4,19 +4,13 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.uberhelixx.flatlights.entity.ModAttributes;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
@@ -28,9 +22,6 @@ import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.Objects;
 import java.util.UUID;
-
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
-import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class ShoreSphere extends BaseCurio {
     public ShoreSphere(Properties properties) {

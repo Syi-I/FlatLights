@@ -8,7 +8,6 @@ import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketRisingHeatUpdate;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.entity.Entity;
@@ -29,10 +28,8 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;
 

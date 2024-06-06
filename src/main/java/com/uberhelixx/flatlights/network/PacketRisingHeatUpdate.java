@@ -1,6 +1,5 @@
 package com.uberhelixx.flatlights.network;
 
-import com.uberhelixx.flatlights.capability.EntangledStateCapability;
 import com.uberhelixx.flatlights.capability.RisingHeatStateCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

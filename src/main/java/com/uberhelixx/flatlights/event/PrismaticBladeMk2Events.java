@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
-import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;

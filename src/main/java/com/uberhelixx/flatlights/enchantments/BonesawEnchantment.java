@@ -1,17 +1,8 @@
 package com.uberhelixx.flatlights.enchantments;
 
-import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.effect.ModEffects;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.text.ITextComponent;
-
-import java.util.Objects;
 
 public class BonesawEnchantment extends Enchantment {
     public BonesawEnchantment() {

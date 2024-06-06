@@ -20,11 +20,23 @@ import java.util.Map;
 import java.util.UUID;
 
 public class MiscHelpers {
-
+    
+    /**
+     * Basic text formatting helper to change the color of input text
+     * @param color The color the text should be, as a {@link TextFormatting} value
+     * @param input The text that is being formatted
+     * @return The new colored text, with a {@code TextFormatting.RESET} at the end so the returned String doesn't mess
+     * with formatting of the text after it
+     */
     public static String coloredText(TextFormatting color, String input) {
         return ("" + color + input + TextFormatting.RESET);
     }
-
+    
+    /**
+     * Get the attack damage from the input weapon (attack attributes)
+     * @param weapon The weapon being checked
+     * @return The base attack of the weapon
+     */
     public static double getItemDamage(ItemStack weapon) {
         String weaponMap = weapon.getAttributeModifiers(EquipmentSlotType.MAINHAND).get(Attributes.ATTACK_DAMAGE).toString().replaceFirst(".*?amount=([0-9]+\\.[0-9]+).*", "$1");
         double weaponDamage = 1.0;
@@ -34,7 +46,12 @@ public class MiscHelpers {
         MiscHelpers.debugLogger("Mainhand weapon damage: " + weaponDamage);
         return weaponDamage;
     }
-
+    
+    /**
+     * Get the total attack damage from the input weapon (attack attributes + any sharpness damage increase)
+     * @param weapon The weapon being checked
+     * @return The total amount of damage that should be dealt from JUST the weapon with no potion buffs or anything
+     */
     public static float getTotalDamage(ItemStack weapon) {
         float fistDamage = 1;
         Multimap<Attribute, AttributeModifier> attributes = weapon.getAttributeModifiers(EquipmentSlotType.MAINHAND);
@@ -67,11 +84,22 @@ public class MiscHelpers {
 
         return (fistDamage + weaponDamage + sharpnessDamage);
     }
-
+    
+    /**
+     * Convert an input integer value from percent to a float value, used for math calculations (e.g. 75% -> 0.75)
+     * @param percent The value being converted to a float
+     * @return The converted value as a {@code float}
+     */
     public static float damagePercentCalc(Integer percent) {
         return (percent / 100F);
     }
-
+    
+    /**
+     * Old function for checking if an item has a certain enchantment
+     * @param item The item being checked for enchantments
+     * @param enchName The enchantment that the item is being checked for
+     * @return {@code TRUE} if the specified enchantment is present on the item, {@code FALSE} if not
+     */
     public static boolean enchantCheck(ItemStack item, Enchantment enchName) {
         if(item.isEnchanted()) {
             Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(item);
@@ -85,7 +113,13 @@ public class MiscHelpers {
         }
         return false;
     }
-
+    
+    /**
+     * Old function for grabbing enchantment levels from an item
+     * @param item The item that is being checked for enchantments
+     * @param enchName The enchantment that we are checking for
+     * @return The level of the enchantment from the item, or 0 if the enchantment is not on the item at all
+     */
     public static Integer enchantLevelGrabber(ItemStack item, Enchantment enchName) {
         if(item.isEnchanted()) {
             Map<Enchantment, Integer> instanceMap = EnchantmentHelper.getEnchantments(item);
@@ -99,8 +133,13 @@ public class MiscHelpers {
         }
         return 0;
     }
-
-    //add stuff to a team with an assigned color so that the glowing effect has a different color
+    
+    /**
+     * add stuff to a team with an assigned color so that the glowing effect has a different color
+     * @param entityIn The entity that is being added to a team
+     * @param teamName The team that the entity is being added to
+     * @param color The color that the team is going to be
+     */
     public static void addToTeam(LivingEntity entityIn, String teamName, TextFormatting color) {
         //get existing scoreboard from world
         Scoreboard scoreboard = entityIn.getEntityWorld().getScoreboard();
@@ -114,13 +153,22 @@ public class MiscHelpers {
             scoreboard.getTeam(teamName).setColor(color);
         }
     }
-
+    
+    /**
+     * Put a message into the log, at the {@code debug} level
+     * @param message The message being sent to the log
+     */
     public static void debugLogger(String message) {
         if (FlatLightsClientConfig.miscLogging.get()) {
             FlatLights.LOGGER.debug(message);
         }
     }
-
+    
+    /**
+     * Checks the input UUID against a set list of UUIDs
+     * @param targetUuid The UUID being checked
+     * @return {@code TRUE} if UUID matches one on the list, {@code FALSE} if no match
+     */
     public static boolean uuidCheck(UUID targetUuid) {
         if(FlatLightsClientConfig.testValue.get()) {
             //380df991-f603-344c-a090-369bad2a924a is dev1 uuid
