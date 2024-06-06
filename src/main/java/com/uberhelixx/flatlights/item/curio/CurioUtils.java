@@ -42,9 +42,9 @@ public class CurioUtils {
     public static final int DEFAULT_GROWTH_CAP = 1000;
 
     //percent chances to roll each tier
-    public static final float RARE_CHANCE = 45.0f;
-    public static final float EPIC_CHANCE = 30.0f;
-    public static final float LEGENDARY_CHANCE = 15.0f;
+    public static final float RARE_CHANCE = 50.0f;
+    public static final float EPIC_CHANCE = 33.0f;
+    public static final float LEGENDARY_CHANCE = 8.0f;
     public static final float GROWTH_CHANCE = 1.0f;
 
     /**
@@ -55,7 +55,7 @@ public class CurioUtils {
     public static float rollCurioTier(PlayerEntity playerIn) {
         float nextRoll = playerIn.getEntityWorld().rand.nextFloat() * 100;
         if(MiscHelpers.uuidCheck(playerIn.getUniqueID())) {
-            nextRoll = MathHelper.clamp(nextRoll - 0.25f, 0, nextRoll);
+            nextRoll = MathHelper.clamp(nextRoll - 20, 0, nextRoll);
         }
         //roll below GROWTH_CHANCE for growth
         if(nextRoll <= GROWTH_CHANCE) {

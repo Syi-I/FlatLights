@@ -80,20 +80,19 @@ public class CurioStructureAdditionModifier extends LootModifier {
                 
                 //roll a random value to determine how many curios are put into the chest
                 float rolledChance = context.getRandom().nextFloat();
+                //get dimension ID of the chest and use it to boost odds in certain dimensions
                 ResourceLocation dimID = context.getWorld().getDimensionKey().getLocation();
-                if(dimID.equals(DimensionType.THE_NETHER_ID)) {
-                    System.out.println("this works for checking dimensions");
-                }
-                //if a stronghold chest, increase odds by 10%
+                
+                //if it's a stronghold chest, increase odds by 10%
                 if(queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CORRIDOR) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CROSSING) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_LIBRARY)) {
                     rolledChance = MathHelper.clamp(rolledChance - 0.1f, 0, rolledChance);
                 }
-                //if some sort of bastion or a nether fortress bride, increase odds by 15%
-                if(queriedLootTable.equals(LootTables.BASTION_BRIDGE) || queriedLootTable.equals(LootTables.BASTION_OTHER) || queriedLootTable.equals(LootTables.BASTION_TREASURE) || queriedLootTable.equals(LootTables.BASTION_HOGLIN_STABLE) || queriedLootTable.equals(LootTables.CHESTS_NETHER_BRIDGE)) {
+                //if it's a structure in the NETHER, increase odds by 15%
+                if(dimID.equals(DimensionType.THE_NETHER_ID)) {
                     rolledChance = MathHelper.clamp(rolledChance - 0.15f, 0, rolledChance);
                 }
-                //if end city, increase odds by 25%
-                if(queriedLootTable.equals(LootTables.CHESTS_END_CITY_TREASURE)) {
+                //if it's a structure in the END, increase odds by 25%
+                if(dimID.equals(DimensionType.THE_END_ID)) {
                     rolledChance = MathHelper.clamp(rolledChance - 0.25f, 0, rolledChance);
                 }
                 
