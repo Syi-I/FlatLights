@@ -110,8 +110,8 @@ public class DragonsFinalSphere extends BaseCurio {
         if(tier != null) {
             double basePower = tier.TIER_MULTIPLIER;
             double growthModifier = 0;
-            double luckValue = 1;
-            double dodgeValue = 12;
+            double luckValue = 2;
+            double dodgeValue = 10;
 
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {

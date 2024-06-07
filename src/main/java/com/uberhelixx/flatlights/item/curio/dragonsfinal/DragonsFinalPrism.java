@@ -110,7 +110,7 @@ public class DragonsFinalPrism extends BaseCurio {
             double basePower = tier.TIER_MULTIPLIER;
             double growthModifier = 0;
             double attackBase = 2;
-            double speedBase = 0.5;
+            double speedBase = 1;
 
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {
