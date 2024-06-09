@@ -6,12 +6,12 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -42,32 +42,35 @@ public class CurioUtils {
     public static final int DEFAULT_GROWTH_CAP = 1000;
 
     //percent chances to roll each tier
-    public static final float RARE_CHANCE = 40.0f;
-    public static final float EPIC_CHANCE = 20.0f;
-    public static final float LEGENDARY_CHANCE = 5.0f;
+    public static final float RARE_CHANCE = 50.0f;
+    public static final float EPIC_CHANCE = 33.0f;
+    public static final float LEGENDARY_CHANCE = 8.0f;
     public static final float GROWTH_CHANCE = 1.0f;
 
     /**
      * Rolls the curio's Tier
-     * @param worldIn The world of the player, just used for RNG
+     * @param playerIn The player rolling the curio, just used for RNG
      * @return The float value associated with the rolled Tier, for use in the curio's NBT
      */
-    public static float rollCurioTier(World worldIn) {
-        double nextRoll = worldIn.rand.nextFloat() * 100;
-        //roll above 99 for growth
-        if(nextRoll >= 100 - GROWTH_CHANCE) {
+    public static float rollCurioTier(PlayerEntity playerIn) {
+        float nextRoll = playerIn.getEntityWorld().rand.nextFloat() * 100;
+        if(MiscHelpers.uuidCheck(playerIn.getUniqueID())) {
+            nextRoll = MathHelper.clamp(nextRoll - 20, 0, nextRoll);
+        }
+        //roll below GROWTH_CHANCE for growth
+        if(nextRoll <= GROWTH_CHANCE) {
             return CurioTier.GROWTH.MODEL_VALUE;
         }
-        //roll above 95 for legendary
-        if(nextRoll >= 100 - LEGENDARY_CHANCE) {
+        //roll below LEGENDARY_CHANCE for legendary
+        else if(nextRoll <= LEGENDARY_CHANCE) {
             return CurioTier.LEGENDARY.MODEL_VALUE;
         }
-        //roll above 80 for epic
-        else if(nextRoll >= 100 - EPIC_CHANCE) {
+        //roll below EPIC_CHANCE for epic
+        else if(nextRoll <= EPIC_CHANCE) {
             return CurioTier.EPIC.MODEL_VALUE;
         }
-        //roll above 60 for rare
-        else if(nextRoll >= 100 - RARE_CHANCE) {
+        //roll below RARE_CHANCE for rare
+        else if(nextRoll <= RARE_CHANCE) {
             return CurioTier.RARE.MODEL_VALUE;
         }
         //defaults to common tier if not
@@ -90,13 +93,13 @@ public class CurioUtils {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         //grab current nbt tag or create a new one if null
-        CompoundNBT newTag = stack.getTag() != null ? stack.getTag() : new CompoundNBT();
+        CompoundNBT newTag = stack.getOrCreateTag();
 
         //check if tags are present yet, which they shouldn't be if it's a newly picked up item
         //then roll tier and apply the appropriate curio set
         if(!rollCheck(newTag)) {
             //checks for forced tier, if no forced tier then roll curio tier now
-            float curioTier = tierIn != null ? tierIn : rollCurioTier(worldIn);
+            float curioTier = tierIn != null ? tierIn : rollCurioTier(playerIn);
             newTag.putFloat(TIER, curioTier);
             newTag.putString(SET, setIn);
 
@@ -429,7 +432,7 @@ public class CurioUtils {
     }
 
     /**
-     * Applies all checks to make sure that the proper curio set is in place to be triggered
+     * Applies all checks to make sure that the proper curio set is in place and can be triggered
      * @param playerIn Player who is wearing the curios
      * @param curioSetIn The curio set that should be worn for the effect to trigger
      * @return True if the curio set is the one that should be triggered, false if the set effect is not the same

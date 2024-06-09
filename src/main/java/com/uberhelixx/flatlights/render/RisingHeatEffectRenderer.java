@@ -3,7 +3,7 @@ package com.uberhelixx.flatlights.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.capability.EntangledStateProvider;
+import com.uberhelixx.flatlights.capability.RisingHeatStateProvider;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
@@ -17,8 +17,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class EffectRenderer extends LayerRenderer<LivingEntity, EntityModel<LivingEntity>> {
-    public EffectRenderer(IEntityRenderer<LivingEntity, EntityModel<LivingEntity>> entityModel) {
+public class RisingHeatEffectRenderer extends LayerRenderer<LivingEntity, EntityModel<LivingEntity>> {
+    public RisingHeatEffectRenderer(IEntityRenderer<LivingEntity, EntityModel<LivingEntity>> entityModel) {
         super(entityModel);
     }
 
@@ -27,30 +27,30 @@ public class EffectRenderer extends LayerRenderer<LivingEntity, EntityModel<Livi
         //cannot tell what active effects are on an entity clientside, need some sort of packet serverside to ask and track this first?
         //using capabilities, track a state of the mob updating the capability on both serverside and clientside synced together, then can read that state to determine if the effect should render
         //shows up on anything but slimes so far, ig it has another layer that renders above this one
-        if(EntangledStateProvider.getEntangledState(entityIn).isPresent()) {
-            EntangledStateProvider.getEntangledState(entityIn).ifPresent(entangled -> {
-                if(entangled.isEntangled()) {
+        if(RisingHeatStateProvider.getHeatedState(entityIn).isPresent()) {
+            RisingHeatStateProvider.getHeatedState(entityIn).ifPresent(heated -> {
+                if(heated.isHeated()) {
                     float tickTime = (float) entityIn.ticksExisted + partialTicks;
                     EntityModel<LivingEntity> entityModel = this.getEntityModel();
                     entityModel.setLivingAnimations(entityIn, limbSwing, limbSwingAmount, partialTicks);
                     this.getEntityModel().copyModelAttributesTo(entityModel);
                     IVertexBuilder ivertexbuilder = buffer.getBuffer(RenderType.getEnergySwirl(this.layerTexture(), this.layerPosition(tickTime), tickTime * 0.01F));
                     entityModel.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                    float rgbChannels = 0.75f;
+                    float rgbChannels = 0.5f  + 0.35f * MathHelper.cos(tickTime / 5);
                     entityModel.render(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, rgbChannels, rgbChannels, rgbChannels, 1.0F);
                 }
             });
         }
     }
 
-    ResourceLocation ENTANGLED_LAYER = new ResourceLocation(FlatLights.MOD_ID, "textures/models/power_layers/entangled_layer.png");
+    ResourceLocation HEATED_LAYER = new ResourceLocation(FlatLights.MOD_ID, "textures/models/power_layers/rising_heat_layer.png");
 
     private ResourceLocation layerTexture() {
-        return ENTANGLED_LAYER;
+        return HEATED_LAYER;
     }
 
     private float layerPosition(float f) {
-        return MathHelper.cos(f * 0.02F) * 3.0F + MathHelper.sin(f * 0.02F) * 3.0F;
+        return MathHelper.sin(f * 0.02F) * 3.0F;
         //return f * 0.015f;
         //return MathHelper.cos(f * 0.02F) * 3.0F;
     }

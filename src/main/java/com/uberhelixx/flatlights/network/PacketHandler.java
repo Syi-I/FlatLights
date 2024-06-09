@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.FlatLights;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -31,6 +30,7 @@ public final class PacketHandler {
         HANDLER.registerMessage(id++, PacketGenericPlayerNotification.class, PacketGenericPlayerNotification::encode, PacketGenericPlayerNotification::decode, PacketGenericPlayerNotification::handle);
         HANDLER.registerMessage(id++, PacketReachHit.class, PacketReachHit::encode, PacketReachHit::decode, PacketReachHit::handle);
         HANDLER.registerMessage(id++, PacketEntangledUpdate.class, PacketEntangledUpdate::encode, PacketEntangledUpdate::decode, PacketEntangledUpdate::handle);
+        HANDLER.registerMessage(id++, PacketRisingHeatUpdate.class, PacketRisingHeatUpdate::encode, PacketRisingHeatUpdate::decode, PacketRisingHeatUpdate::handle);
     }
     
     /**

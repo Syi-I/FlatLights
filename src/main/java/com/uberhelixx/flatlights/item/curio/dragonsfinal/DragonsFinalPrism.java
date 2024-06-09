@@ -11,7 +11,6 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -111,7 +110,7 @@ public class DragonsFinalPrism extends BaseCurio {
             double basePower = tier.TIER_MULTIPLIER;
             double growthModifier = 0;
             double attackBase = 2;
-            double speedBase = 0.5;
+            double speedBase = 1;
 
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {

@@ -1,8 +1,8 @@
 package com.uberhelixx.flatlights.data.client;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.block.lights.HorizontalEdgeBlock;
 import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.block.lights.HorizontalEdgeBlock;
 import com.uberhelixx.flatlights.block.lights.VerticalEdgeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

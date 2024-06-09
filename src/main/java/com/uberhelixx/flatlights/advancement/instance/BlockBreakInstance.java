@@ -5,9 +5,7 @@ import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.LogicalSide;
 
 public class BlockBreakInstance extends CriterionInstance {
     public BlockBreakInstance(ResourceLocation criterion, EntityPredicate.AndPredicate playerCondition) {

@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
-import com.uberhelixx.flatlights.util.ModSoundEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;

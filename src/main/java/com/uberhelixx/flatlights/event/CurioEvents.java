@@ -3,28 +3,26 @@ package com.uberhelixx.flatlights.event;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
-import com.uberhelixx.flatlights.render.EffectRenderer;
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -32,6 +30,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
+
+import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;
 
 @Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
 public class CurioEvents {
@@ -118,6 +118,53 @@ public class CurioEvents {
                     }
                 }
             }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void sunHitEffect(LivingHurtEvent event) {
+        //only check for players doing damage since they are the only ones who wear curios and trigger effects
+        if(event.getSource().getTrueSource() instanceof PlayerEntity) {
+            PlayerEntity attacker = (PlayerEntity) event.getSource().getTrueSource();
+            LivingEntity target = event.getEntityLiving();
+            
+            //get the cube slot curio from the player
+            ItemStack curioCube = CurioUtils.getCurioFromSlot(attacker, CurioUtils.CUBE_SLOT_ID);
+            if(curioCube != null) {
+                CompoundNBT tag = curioCube.getTag();
+                if(tag != null && !tag.isEmpty()) {
+                    //make sure that the worn set effect matches this curio set and the set effect is toggled on
+                    if(CurioUtils.correctSetEffect(attacker, CurioSetNames.SUN) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE) && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                        //if enemy is on fire then do multiplier damage
+                        if(target.isBurning()) {
+                            float dmgMultiplier = FlatLightsCommonConfig.sunSetDmgMulti.get() >= 1 ? FlatLightsCommonConfig.sunSetDmgMulti.get() : 1.75f;
+                            float newDmg = event.getAmount() * dmgMultiplier;
+                            event.setAmount(newDmg);
+                            MiscHelpers.debugLogger("[Sun Effect Event] Big Fire Damage Hit: " + newDmg);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void burningDmg(LivingDamageEvent event) {
+        //this should only trigger for mobs with the Rising Heat state being TRUE (they have a visual effect indicator)
+        LivingEntity target = event.getEntityLiving();
+        DamageSource source = event.getSource();
+        if(getHeatedState(target).isPresent()) {
+            getHeatedState(target).ifPresent(heatedState -> {
+                if(heatedState.isHeated()) {
+                    //if enemy is burning and the damage source is some sort of fire damage (fire damage or lava damage), add some more flat damage on
+                    if(target.isBurning() && (source.equals(DamageSource.IN_FIRE) || source.equals(DamageSource.LAVA) || source.equals(DamageSource.ON_FIRE))) {
+                        float bonusFireDmg = FlatLightsCommonConfig.sunSetBurningDmg.get() >= 1 ? FlatLightsCommonConfig.sunSetBurningDmg.get() : 3f;
+                        float newDmg = event.getAmount() + bonusFireDmg;
+                        event.setAmount(newDmg);
+                        MiscHelpers.debugLogger("[Sun Effect Event] Big Fire Damage Addon: " + newDmg);
+                    }
+                }
+            });
         }
     }
 }

@@ -5,9 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-import net.minecraft.util.DamageSource;
-
-import java.util.Objects;
 
 public class BleedEffect extends Effect {
     protected BleedEffect(EffectType typeIn, int liquidColorIn) {

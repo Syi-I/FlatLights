@@ -4,19 +4,13 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.uberhelixx.flatlights.entity.ModAttributes;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.item.curio.CurioTier;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
@@ -28,9 +22,6 @@ import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.Objects;
 import java.util.UUID;
-
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
-import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class ShoreSphere extends BaseCurio {
     public ShoreSphere(Properties properties) {
@@ -79,8 +70,6 @@ public class ShoreSphere extends BaseCurio {
 
     //uuids for the different attribute modifiers
     protected static final UUID SPHERE_DODGE = UUID.fromString("1551a215-c483-4afd-aa7a-ffe01e4859ad");
-    protected static final UUID SPHERE_LOOT_ROLLS = UUID.fromString("6e9f8a60-1a8a-4cb8-b963-53473d67990a");
-    protected static final UUID SPHERE_LOOT_CHANCE = UUID.fromString("996d721e-075a-4bcf-b3d0-856ce0110e27");
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {

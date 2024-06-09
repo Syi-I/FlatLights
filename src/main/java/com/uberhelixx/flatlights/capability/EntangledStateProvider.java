@@ -11,8 +11,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -21,7 +19,6 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,12 +91,11 @@ public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
                     getEntangledState(entity).ifPresent(entangledState -> {
                         entangledState.setEntangledState(true);
                         MiscHelpers.debugLogger("[added potion effect] changed entangled state to true");
+                        if(!entity.getEntityWorld().isRemote()) {
+                            Supplier<Entity> supplier = () -> entity;
+                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entity.getEntityId(), true));
+                        }
                     });
-                    if(!entity.getEntityWorld().isRemote()) {
-                        Supplier<Entity> supplier = () -> entity;
-                        PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entity.getEntityId(), true));
-                    }
-                    
                 }
             }
         }

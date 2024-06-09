@@ -7,22 +7,67 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Curse of Lifted Pickup Truck (increases armor while also increasing damage taken while wearing a cursed armor piece)
-- Curios sets with different rarity tiers and effects, which spawn in generated chests as loot
-  - Dragon's Final Test curio set (basic but well-rounded stat increases, set effect projects an aura which damages weaker entities around the wearer)
-  - On the Forgotten Shore curio set (water focused buffs for movement and survivability, set effect provides extreme damage boost when in water or rain)
+- **Curse of Lifted Pickup Truck** 
+  - Increases armor points of the cursed armor piece, while also increasing damage taken by the wearer while wearing a cursed armor piece
+- Curio sets with different rarity tiers and effects, which spawn in generated chests as loot
+  - Curios have a chance to generate in any structure's loot chests
+  - Roll found curios to determine what rarity `Tier` it is
+    - The `Tier` of the curio will increase the stat buff values by a certain amount
+    - `Tiers` include: **Common < Rare < Epic < Legendary < Growth**
+  - Specially added curio slots for the added curios: **Light Cube, Light Prism, Light Sphere**
+  - Each `Curio Set` has a special `Set Effect`
+    - Activates if the player is wearing a curio in each of the three added slots, and are all from the same `Curio Set`
+    - `Set Effects` can be toggled with a keybind, in case an effect gets too annoying in certain scenarios such as being at your base
+  - Various new stats for players that can be gained via the different `Curio Sets`
+    - **Dodge Chance %**
+      - A percentage chance to completely mitigate damage taken
+    - **XP Boost**
+      - Boosts the amount of XP that is gained from picking up XP orbs by a flat amount
+    - **Healing Boost**
+      - Boosts the amount of healing that is received by a flat amount
+    - **Bonus Loot Rolls**
+      - Increases the number of times the loot table of killed mobs is rolled by a flat amount 
+    - **Bonus Loot Roll Chance %**
+      - The percent chance of triggering the Bonus Loot Rolls effect
+  - Curio Set: **Dragon's Final Test**
+    - Basic but well-rounded stat increases, providing a decent all around combat strength buff
+    - Set Effect: **(Erosion Aura)** Projects an aura around the wearer which damages entities with lower HP than the wearer
+  - Curio Set: **On the Forgotten Shore**
+    - Water focused buffs for movement and survivability
+    - Set Effect: **(Domain of Still Waters)** Provides an extreme damage boost to the wearer when either the wearer or target is in water or rain
+  - Curio Set: **Radiance of the False Sun**
+    - Fire focused buffs for damage, health, and healing
+    - Set Effect: **(Rising Heat)** Provides boosted damage to burning mobs and increases fire damage to nearby mobs
 - New notification system for various actions, such as toggling a tool's ability on and off or activating a curio's effect
-- Various new stats for players that can be gained via the different curio sets (dodge chance, xp boost, healing boost, bonus loot roll amounts and chance)
+- The `Motivational Chair` block now has a 40% chance to generate in structure loot chests instead of being a creative only item
 
 ### Changed
 - Improved tooltip displays and toggle notifications for the various items and tools utilizing action bar text
 - Fixed tooltip styling to be more uniform across items
+- Rearranged layout of the config files for better organization and readability
 
 ### Fixed
-- Entangled effect linked damage triggering on mobs that do not have the potion effect active
+- `Entangled` effect's linked damage triggering on mobs that do not have the potion effect active anymore
 
 ### Planned
-- Radiance of the False Sun curio set (fire focused buffs for damage and survivability, set effect provides fire immunity)
+- Curio Set: **Relic Hunter's Resolution**
+  - Focuses on movement and looting/luck for better exploration and treasure hunting
+  - Set Effect: undecided
+- Curio Set: **Insight of the Arcane Technician**
+  - Focuses on potion effect buffs and xp gain
+  - Set Effect: **(Spec Bump)** Increases enchantment levels of worn equipment by a flat amount
+- Curio Set: undecided (something about blacksmith/forging idk)
+  - Focuses on armor stat improvement and durability
+  - Set Effect: **(Smithing Efficiency)** Lowers the XP cost of using anvils
+- Curio Set: **Elusive Assassin**
+  - Dodge and movement related buffs, applying negative potion effects
+  - Set Effect: **(Foul Play)** Increases the damage dealt to a target based on the number of negative potion effects that are applied
+- Curio Set: undecided
+  - Speed related buffs
+  - Set Effect: **(Speed of Silence)** Increases the damage dealt by a factor of the wearer's movement speed
+- Rudimentary power generator that just eats items and gives 1 rf per item or something silly
+- Power transfer cable for the power generator
+- Powered item repairer
 
 ## [1.22.1] - 2024-04-01
 Ignore the mess of a changelog that is in the initial versions, I was not keeping track of changes well at the time so version bumping was hit or miss

@@ -15,8 +15,10 @@ import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -27,11 +29,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
+import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -66,7 +70,7 @@ public class PrismaticBladeMk2 extends SwordItem {
     public PrismaticBladeMk2(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
         super(tier, attackDamageIn, attackSpeedIn, builderIn);
     }
-
+    
     @Override
     public boolean isDamageable() {
         return false;
@@ -92,7 +96,174 @@ public class PrismaticBladeMk2 extends SwordItem {
             entityIn.attackEntityFrom(DamageSource.OUT_OF_WORLD, ((LivingEntity) entityIn).getMaxHealth() / 5);
         }
     }
-
+    
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack blade = playerIn.getHeldItem(handIn);
+        if(uuidCheck(playerIn.getUniqueID())) {
+            //can't use Screen.hasShiftDown since clientside so it doesn't register
+            if (playerIn.isCrouching()) {
+                //gets appropriate tags to check current blade mode (if any), cycles between modes on SHIFT + RCLICK by setting each tag true/false
+                //check to see if the sword has no NBT yet, or if it has NBT but not the mode cycle tags yet
+                if (!blade.hasTag() || blade.getTag() == null || (blade.hasTag() && !blade.getTag().contains(DAMAGE_MODE_TAG))) {
+                    //get the current tags or create a new one, then add on the mode state booleans and update server
+                    CompoundNBT newTag = blade.getOrCreateTag();
+                    newTag.putBoolean(DAMAGE_MODE_TAG, false);
+                    newTag.putBoolean(PROJECTILE_MODE_TAG, false);
+                    newTag.putBoolean(SPEAR_MODE_TAG, false);
+                    blade.setTag(newTag);
+                    PacketHandler.sendToServer(new PacketWriteNbt(newTag, blade));
+                }
+                else {
+                    CompoundNBT tag = blade.getTag();
+                    boolean dmg = tag.getBoolean(DAMAGE_MODE_TAG);
+                    boolean projectile = tag.getBoolean(PROJECTILE_MODE_TAG);
+                    boolean spear = tag.getBoolean(SPEAR_MODE_TAG);
+                    String toggleText;
+                    //if currently in damage mode, cycle to projectile mode next
+                    if(dmg) {
+                        tag.putBoolean(DAMAGE_MODE_TAG, false);
+                        tag.putBoolean(PROJECTILE_MODE_TAG, true);
+                        tag.putBoolean(SPEAR_MODE_TAG, false);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Black Hole", TextFormatting.GREEN).getString();
+                    }
+                    //if currently in projectile mode, cycle to spear mode next
+                    else if(projectile) {
+                        tag.putBoolean(DAMAGE_MODE_TAG, false);
+                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
+                        tag.putBoolean(SPEAR_MODE_TAG, true);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Spear", TextFormatting.GREEN).getString();
+                    }
+                    //if currently in spear mode, cycle to inactive mode next
+                    else if(spear) {
+                        tag.putBoolean(DAMAGE_MODE_TAG, false);
+                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
+                        tag.putBoolean(SPEAR_MODE_TAG, false);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Deactivated", TextFormatting.RED).getString();
+                    }
+                    //if currently inactive, cycle to damage mode next
+                    else {
+                        tag.putBoolean(DAMAGE_MODE_TAG, true);
+                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
+                        tag.putBoolean(SPEAR_MODE_TAG, false);
+                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Annihilation", TextFormatting.GREEN).getString();
+                    }
+                    //update tag on server
+                    blade.setTag(tag);
+                    PacketHandler.sendToServer(new PacketWriteNbt(tag, blade));
+                    //clientside mode cycling notification
+                    if(!playerIn.getEntityWorld().isRemote()) {
+                        PacketHandler.sendToPlayer((ServerPlayerEntity) playerIn, new PacketGenericToggleMessage(toggleText, dmg || projectile || !spear, dmg || projectile || !spear));
+                    }
+                }
+            }
+            else {
+                //standard right click use functions
+                if(blade.getTag() != null && !playerIn.isCrouching()) {
+                    //shoot projectile if on projectile mode
+                    if (blade.getTag().contains(PROJECTILE_MODE_TAG) && blade.getTag().getBoolean(PROJECTILE_MODE_TAG)) {
+                        shootProjectile(worldIn, playerIn, playerIn.getPosition());
+                    }
+                    //try doing spear launch if on spear mode
+                    if(blade.getTag().contains(SPEAR_MODE_TAG) && blade.getTag().getBoolean(SPEAR_MODE_TAG)) {
+                        playerIn.setActiveHand(handIn);
+                        return ActionResult.resultConsume(blade);
+                    }
+                    //if inactive try doing a block action (like a shield does)
+                    if(isInactive(blade)){
+                        playerIn.setActiveHand(handIn);
+                        return ActionResult.resultConsume(blade);
+                    }
+                }
+            }
+        }
+        return ActionResult.resultPass(blade);
+    }
+    
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        //if the item stack is in spear mode, return SPEAR use action instead of default
+        if(stack.getTag() != null) {
+            if(stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG)) {
+                return UseAction.SPEAR;
+            }
+            if(isInactive(stack)) {
+                return UseAction.BLOCK;
+            }
+        }
+        return super.getUseAction(stack);
+    }
+    
+    @Override
+    public int getUseDuration(ItemStack stack) {
+        //if the item stack is in spear mode, return a different use duration
+        if(stack.getTag() != null) {
+            if(stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG)) {
+                //same duration as a vanilla trident has
+                return 72000;
+            }
+            //if weapon is inactive, allow for blocking
+            if(isInactive(stack)) {
+                return 72000;
+            }
+        }
+        return super.getUseDuration(stack);
+    }
+    
+    @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+        if(stack.hasTag() && stack.getTag() != null) {
+            //check if the weapon is in spear mode or not
+            if (stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG)) {
+                //make sure this is a player using the item and not something else
+                if (entityLiving instanceof PlayerEntity) {
+                    PlayerEntity playerEntity = (PlayerEntity) entityLiving;
+                    int timeUsed = this.getUseDuration(stack) - timeLeft;
+                    //check how long it's been since starting to use the item
+                    if (timeUsed >= 2) {
+                        //get riptide level if present, to modify launch velocity
+                        int riptideModifier = EnchantmentHelper.getRiptideModifier(stack) > 0 ? EnchantmentHelper.getRiptideModifier(stack) + 4 : 4;
+                        //haha yeah let's pretend that this unbreakable item can break for a second
+                        if (!worldIn.isRemote) {
+                            stack.damageItem(0, playerEntity, (player) -> {
+                                player.sendBreakAnimation(entityLiving.getActiveHand());
+                            });
+                        }
+                        
+                        //vvv actual logic for launching the player and doing the riptide spin attack vvv
+                        float yaw = playerEntity.rotationYaw;
+                        float pitch = playerEntity.rotationPitch;
+                        
+                        //calculate xyz directions from player's view direction, for setting player velocity later
+                        float xDir = -MathHelper.sin(yaw * ((float) Math.PI / 180F)) * MathHelper.cos(pitch * ((float) Math.PI / 180F));
+                        float yDir = -MathHelper.sin(pitch * ((float) Math.PI / 180F));
+                        float zDir = MathHelper.cos(yaw * ((float) Math.PI / 180F)) * MathHelper.cos(pitch * ((float) Math.PI / 180F));
+                        float f4 = MathHelper.sqrt(xDir * xDir + yDir * yDir + zDir * zDir);
+                        float f5 = 3.0F * ((1.0F + (float) riptideModifier) / 4.0F);
+                        xDir = xDir * (f5 / f4);
+                        yDir = yDir * (f5 / f4);
+                        zDir = zDir * (f5 / f4);
+                        
+                        //throw the player in this direction based off where the player is looking
+                        playerEntity.addVelocity((double) xDir, (double) yDir, (double) zDir);
+                        //the actual spinning riptide attack and how long it lasts
+                        playerEntity.startSpinAttack(15);
+                        
+                        //get the player off the ground a bit if they are standing instead of in the air
+                        if (playerEntity.isOnGround()) {
+                            playerEntity.move(MoverType.SELF, new Vector3d(0.0D, 1.1999999F, 0.0D));
+                        }
+                        
+                        //sound effect that plays when using the weapon
+                        SoundEvent soundEvent = SoundEvents.ITEM_TRIDENT_RIPTIDE_3;
+                        worldIn.playMovingSound(null, playerEntity, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
+                    }
+                }
+            }
+        }
+        super.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft);
+    }
+    
     protected static final UUID REACH_DISTANCE_MODIFIER = UUID.fromString("b350e405-3366-4d1e-8f6d-120faf06245d");
     protected static final UUID CORE_DAMAGE_MODIFIER = UUID.fromString("dc616e19-90c0-4648-b332-41736925da4e");
     @Nonnull
@@ -103,7 +274,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         double attackModifier = stack.getTag() != null && stack.getTag().contains(TOTAL_CORES_TAG) ? stack.getTag().getInt(TOTAL_CORES_TAG) * 0.005 : 0;
         double reachModifier = stack.getTag() != null && stack.getTag().contains(SPEAR_MODE_TAG) && stack.getTag().getBoolean(SPEAR_MODE_TAG) ? REACH_DISTANCE : 0;
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-            newMap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(CORE_DAMAGE_MODIFIER, "Core Count Modifier", attackModifier, AttributeModifier.Operation.ADDITION));
+            newMap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(CORE_DAMAGE_MODIFIER, "Core Count Modifier", attackModifier, AttributeModifier.Operation.MULTIPLY_TOTAL));
             newMap.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(REACH_DISTANCE_MODIFIER, "Reach Modifier", reachModifier, AttributeModifier.Operation.ADDITION));
         }
         for (Attribute attribute : oldMap.keySet()) {
@@ -209,9 +380,13 @@ public class PrismaticBladeMk2 extends SwordItem {
         //normally display the stats and shift display hint
         else {
             if(Minecraft.getInstance().player != null && MiscHelpers.uuidCheck(Minecraft.getInstance().player.getUniqueID())) {
-                if (stack.getTag() != null && stack.getTag().contains(CURR_CORES_TAG)) {
-                    tooltip.add(getTierData(stack));
-                    tooltip.add(getCoreData(stack));
+                if (stack.hasTag() && stack.getTag() != null) {
+                    //display core data if present
+                    if(stack.getTag().contains(CURR_CORES_TAG)) {
+                        tooltip.add(getTierData(stack));
+                        tooltip.add(getCoreData(stack));
+                    }
+                    //display blade mode if present
                     if (stack.getTag().contains(DAMAGE_MODE_TAG) || stack.getTag().contains(PROJECTILE_MODE_TAG) || stack.getTag().contains(SPEAR_MODE_TAG)) {
                         tooltip.add(getSwordState(stack));
                     }
@@ -221,8 +396,12 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
-
-    //core count tooltip formatting
+    
+    /**
+     * Core count tooltip formatting
+     * @param tool The tool getting the formatted tooltip
+     * @return The formatted tooltip containing the amount of Cores the tool accumulated out of the total Cores for the tier
+     */
     private static ITextComponent getCoreData(ItemStack tool) {
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
@@ -243,9 +422,13 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
         return data;
     }
-
-    //tier level tooltip formatting
-    //if the amount of tiers changes have to manually add things here so that it still has names and formatting, otherwise any amount of tiers over 7 is unknown
+    
+    /**
+     * Tier level tooltip formatting
+     * If the amount of tiers changes, have to manually add things here so that it still has names and formatting, otherwise any amount of tiers over 7 defaults to {@code Unknown}
+     * @param tool The tool that is getting the formatted tooltip
+     * @return The formatted tooltip containing the item's tier level
+     */
     private static ITextComponent getTierData(ItemStack tool) {
         //reads nbt data and determines the tier tooltip based off the numbers
         CompoundNBT tag = tool.getTag();
@@ -285,8 +468,12 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
         return data;
     }
-
-    //blade mode tooltip check and formatting
+    
+    /**
+     * Blade mode tooltip check and formatting
+     * @param tool The tool that is getting this tooltip
+     * @return The formatted tooltip that contains the mode of the sword
+     */
     private static ITextComponent getSwordState(ItemStack tool) {
         CompoundNBT tag = tool.getTag();
         ITextComponent data = ITextComponent.getTextComponentOrEmpty("");
@@ -317,7 +504,7 @@ public class PrismaticBladeMk2 extends SwordItem {
             }
             else if(spear) {
                 activeState = TextFormatting.GREEN + "Spear";
-                data = TextHelpers.labelBrackets("Mode", null, activeState + TextFormatting.WHITE + " | Increase attack range by " + TextFormatting.RED + REACH_DISTANCE + TextFormatting.WHITE + " blocks", null);
+                data = TextHelpers.labelBrackets("Mode", null, activeState + TextFormatting.WHITE + " | Perform a leaping attack", null);
             }
             else {
                 data = TextHelpers.labelBrackets("Mode", null, activeState, null);
@@ -325,79 +512,28 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
         return data;
     }
-
-    //right click functions for the blade
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack blade = playerIn.getHeldItem(handIn);
-        if(uuidCheck(playerIn.getUniqueID())) {
-            //can't use Screen.hasShiftDown since clientside so it doesn't register
-            if (playerIn.isCrouching()) {
-                //gets appropriate tags to check current blade mode (if any), cycles between modes on SHIFT + RCLICK by setting each tag true/false
-                if (blade.getTag() == null) {
-                    CompoundNBT newTag = new CompoundNBT();
-                    newTag.putBoolean(DAMAGE_MODE_TAG, false);
-                    newTag.putBoolean(PROJECTILE_MODE_TAG, false);
-                    newTag.putBoolean(SPEAR_MODE_TAG, false);
-                    blade.setTag(newTag);
-                    PacketHandler.sendToServer(new PacketWriteNbt(newTag, blade));
-                } else {
-                    CompoundNBT tag = blade.getTag();
-                    boolean dmg = tag.getBoolean(DAMAGE_MODE_TAG);
-                    boolean projectile = tag.getBoolean(PROJECTILE_MODE_TAG);
-                    boolean spear = tag.getBoolean(SPEAR_MODE_TAG);
-                    String toggleText;
-                    if(dmg) {
-                        tag.putBoolean(DAMAGE_MODE_TAG, false);
-                        tag.putBoolean(PROJECTILE_MODE_TAG, true);
-                        tag.putBoolean(SPEAR_MODE_TAG, false);
-                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Black Hole", TextFormatting.GREEN).getString();
-                    }
-                    else if(projectile) {
-                        tag.putBoolean(DAMAGE_MODE_TAG, false);
-                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
-                        tag.putBoolean(SPEAR_MODE_TAG, true);
-                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Spear", TextFormatting.GREEN).getString();
-                    }
-                    else if(spear) {
-                        tag.putBoolean(DAMAGE_MODE_TAG, false);
-                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
-                        tag.putBoolean(SPEAR_MODE_TAG, false);
-                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Deactivated", TextFormatting.RED).getString();
-                    }
-                    else {
-                        tag.putBoolean(DAMAGE_MODE_TAG, true);
-                        tag.putBoolean(PROJECTILE_MODE_TAG, false);
-                        tag.putBoolean(SPEAR_MODE_TAG, false);
-                        toggleText = TextFormatting.WHITE + "Mode Cycled: " + TextHelpers.genericBrackets("Annihilation", TextFormatting.GREEN).getString();
-                    }
-                    blade.setTag(tag);
-                    PacketHandler.sendToServer(new PacketWriteNbt(tag, blade));
-                    if(!playerIn.getEntityWorld().isRemote()) {
-                        PacketHandler.sendToPlayer((ServerPlayerEntity) playerIn, new PacketGenericToggleMessage(toggleText, dmg || projectile || !spear, dmg || projectile || !spear));
-                    }
-                }
-            }
-            //shoot projectile if on projectile mode
-            else {
-                if(blade.getTag() != null && !playerIn.isCrouching()) {
-                    if (blade.getTag().contains(PROJECTILE_MODE_TAG) && blade.getTag().getBoolean(PROJECTILE_MODE_TAG)) {
-                        shootProjectile(worldIn, playerIn, playerIn.getPosition());
-                    }
-                }
-            }
-        }
-        return ActionResult.resultPass(blade);
-    }
-
+    
+    /**
+     * Does the additional slash damage for the blade's damage mode
+     * @param worldIn World that the player is in, used for sound event
+     * @param targetIn Target being attacked by the slash
+     * @param attackerIn The attacker who is performing the slash
+     * @param damageBonusIn The amount of damage that is being dealt from the slash
+     * @param tierIn The tier of the sword, used in the damage calculation
+     */
     private void doSlash(World worldIn, LivingEntity targetIn, LivingEntity attackerIn, int damageBonusIn, int tierIn) {
         targetIn.hurtResistantTime = 0;
         targetIn.attackEntityFrom(ModDamageTypes.causeIndirectEntangled(attackerIn, attackerIn), damageBonusIn * ((float)tierIn / TOTAL_TIERS));
         targetIn.hurtResistantTime = 0;
         worldIn.playSound(null, targetIn.getPosX(), targetIn.getPosY(), targetIn.getPosZ(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.1f, (1.0f + (worldIn.rand.nextFloat() * 0.3f)) * 0.99f);
     }
-
-    //summon and shoot projectile for the projectile mode
+    
+    /**
+     * Summon and shoot projectile for the projectile mode
+     * @param worldIn World that the projectile is being summoned in
+     * @param player Player who is shooting the projectile
+     * @param pos Position where the projectile is being summoned
+     */
     private void shootProjectile(World worldIn, PlayerEntity player, BlockPos pos) {
         //get direction player is looking currently
         Vector3d look = player.getLookVec();
@@ -413,5 +549,17 @@ public class PrismaticBladeMk2 extends SwordItem {
         //do backwards dash
         double dashFactor = -2.0;
         player.setMotion(look.normalize().mul(dashFactor, dashFactor, dashFactor));
+    }
+    
+    /**
+     * Checks if the input item stack has the mode cycle boolean tags, and if they are all false
+     * @param stack The item stack being checked
+     * @return TRUE if all mode cycle boolean tags are set to false, FALSE if any of the mode cycle tags are set to true
+     */
+    private boolean isInactive(ItemStack stack) {
+        if (stack.hasTag() && stack.getTag() != null) {
+            return (stack.getTag().contains(DAMAGE_MODE_TAG) || stack.getTag().contains(PROJECTILE_MODE_TAG) || stack.getTag().contains(SPEAR_MODE_TAG)) && (!stack.getTag().getBoolean(DAMAGE_MODE_TAG) && !stack.getTag().getBoolean(PROJECTILE_MODE_TAG) && !stack.getTag().getBoolean(SPEAR_MODE_TAG));
+        }
+        return true;
     }
 }

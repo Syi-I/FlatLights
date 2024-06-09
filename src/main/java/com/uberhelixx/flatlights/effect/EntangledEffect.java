@@ -39,13 +39,11 @@ public class EntangledEffect extends Effect {
             EntangledStateProvider.getEntangledState(entityLivingBaseIn).ifPresent(entangledState -> {
                 entangledState.setEntangledState(false);
                 MiscHelpers.debugLogger("[entangled effect] changed entangled state to false");
-                
+                if(!entityLivingBaseIn.getEntityWorld().isRemote()) {
+                    Supplier<Entity> supplier = () -> entityLivingBaseIn;
+                    PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entityLivingBaseIn.getEntityId(), false));
+                }
             });
-            if(!entityLivingBaseIn.getEntityWorld().isRemote()) {
-                Supplier<Entity> supplier = () -> entityLivingBaseIn;
-                PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entityLivingBaseIn.getEntityId(), false));
-            }
-            
         }
         super.performEffect(entityLivingBaseIn, amplifier);
     }

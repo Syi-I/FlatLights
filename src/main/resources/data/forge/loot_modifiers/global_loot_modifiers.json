@@ -1,6 +1,8 @@
 {
   "replace": false,
   "entries": [
-    "flatlights:jogoat_fire"
+    "flatlights:jogoat_fire",
+    "flatlights:curio_structure_loot",
+    "flatlights:jogoat_structure_loot"
   ]
 }

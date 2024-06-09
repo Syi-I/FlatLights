@@ -59,4 +59,13 @@ public class TextHelpers {
         //otherwise just add the SHIFT tooltip hint
         return ITextComponent.getTextComponentOrEmpty(TextFormatting.GOLD + "[" + TextFormatting.WHITE + "Shift" + TextFormatting.GOLD + "]");
     }
+    
+    /**
+     * Creates a tooltip component for potion effects, similar to what stat attributes look like (e.g. +2 Attack Damage, in blue text at the bottom of a tooltip description)
+     * @param attribute The potion effect name that is being formatted to look like an attribute
+     * @return The formatted tooltip as an {@link ITextComponent}
+     */
+    public static ITextComponent potionAttribute(String attribute) {
+        return ITextComponent.getTextComponentOrEmpty(TextFormatting.BLUE + "+Potion Effect: " + attribute);
+    }
 }

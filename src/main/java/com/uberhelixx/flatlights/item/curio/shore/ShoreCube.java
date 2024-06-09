@@ -114,7 +114,7 @@ public class ShoreCube extends BaseCurio {
         if(tier != null) {
             double basePower = CurioUtils.getTierMultiplier(stack);
             double growthModifier = 0;
-            double armorBase = 2;
+            double armorBase = 4;
             double toughnessBase = 6;
             double swimBase = 1.5;
 

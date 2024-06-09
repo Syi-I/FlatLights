@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.entity;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;

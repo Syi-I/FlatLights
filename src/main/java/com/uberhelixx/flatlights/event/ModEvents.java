@@ -1,21 +1,11 @@
 package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.commands.StatTestCommand;
-import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -23,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.*;
+import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
 
 @Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
 public class ModEvents {

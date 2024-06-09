@@ -2,14 +2,8 @@ package com.uberhelixx.flatlights.enchantments;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-
-import java.util.Map;
 
 public class LiftedPickupTruckEnchantment extends Enchantment {
     public LiftedPickupTruckEnchantment() {

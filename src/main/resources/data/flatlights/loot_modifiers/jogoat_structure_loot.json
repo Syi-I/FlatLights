@@ -1,0 +1,13 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:location_check",
+      "block": "forge:chests/wooden"
+    },
+    {
+      "condition": "minecraft:location_check",
+      "block": "forge:chests/trapped"
+    }
+  ],
+  "addition": "flatlights:jogoat"
+}

@@ -5,8 +5,6 @@ import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.network.PacketGenericToggleMessage;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import com.uberhelixx.flatlights.util.ModSoundEvents;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;

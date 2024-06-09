@@ -1,7 +1,6 @@
 package com.uberhelixx.flatlights.entity;
 
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
