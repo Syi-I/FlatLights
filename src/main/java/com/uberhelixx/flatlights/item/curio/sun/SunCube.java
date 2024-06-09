@@ -26,8 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 import top.theillusivec4.curios.api.SlotContext;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;
@@ -73,11 +72,61 @@ public class SunCube extends BaseCurio {
                     double expansionRadius = MathHelper.clamp(growthProgress + baseRadius, baseRadius, maxRadius);
                     //get all entities around the wearer
                     List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius + 1));
+                    
+                    //main function for applying the SUN set effect
                     for(Entity entity : entities) {
                         //ensure living entity is the only thing we're adding the capability to
                         if(entity instanceof LivingEntity) {
                             LivingEntity le = (LivingEntity) entity;
-                            float distance = player.getDistance(entity);
+                            float distance = player.getDistance(le);
+                            boolean otherEffectUsers = false;
+                            
+                            //get surrounding players for this specific entity, to check if anyone else could influence the RisingHeatState
+                            List<PlayerEntity> surroundingPlayers = player.getEntityWorld().getEntitiesWithinAABB(PlayerEntity.class, le.getBoundingBox().grow(maxRadius));
+                            //leaves only players in the list of surrounding entities
+                            //surroundingPlayers.removeIf(nextEntity -> !(nextEntity instanceof PlayerEntity));
+                            //getting any nearby players who could also be triggering the SUN set effect
+                            List<PlayerEntity> activeSunEffectPlayers = new ArrayList<>();
+                            for(PlayerEntity playerToCheck : surroundingPlayers) {
+                                //make sure we aren't checking the actual wearer over and over
+                                if(!playerToCheck.equals(player)) {
+                                    //have to get the players' cube to check if they have the SUN set and if the effect is toggled on
+                                    //PlayerEntity playerToCheck = (PlayerEntity) nextEntity;
+                                    ItemStack cubeCurio = CurioUtils.getCurioFromSlot(playerToCheck, CurioUtils.CUBE_SLOT_ID);
+                                    CompoundNBT checkPlayerTag = cubeCurio.hasTag() ? cubeCurio.getTag() : null;
+                                    //check if the other player(s) in the radius can trigger the SUN set's effect
+                                    if(checkPlayerTag != null && CurioUtils.correctSetEffect(playerToCheck, CurioSetNames.SUN) && checkPlayerTag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
+                                        //if player being checked has the SUN effect toggled on, add to the list of players
+                                        if(checkPlayerTag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                                            activeSunEffectPlayers.add(playerToCheck);
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            //check only if there are players with the sun effect active
+                            if(!activeSunEffectPlayers.isEmpty()) {
+                                //go through each of the players with the active effect, check if the radius can overlap or not
+                                for(PlayerEntity nextPlayer : activeSunEffectPlayers) {
+                                    ItemStack cubeCurio = CurioUtils.getCurioFromSlot(nextPlayer, CurioUtils.CUBE_SLOT_ID);
+                                    int nextPlayerGrowthTracker = CurioUtils.getGrowthTracker(cubeCurio);
+                                    //there is another player whose active effect radius overlaps with the entity, so don't set state to false
+                                    //larger radius from this player than the wearer guarantees to overlap the areas
+                                    if(nextPlayerGrowthTracker >= growthProgress) {
+                                        otherEffectUsers = true;
+                                    }
+                                    else {
+                                        float nextPlayerDistance = nextPlayer.getDistance(le);
+                                        //radius of the effect
+                                        double nextPlayerExpansionRadius = MathHelper.clamp(nextPlayerGrowthTracker + baseRadius, baseRadius, maxRadius);
+                                        //same distance check for the other players in the wearer's radius, if their AOE is smaller than the wearers (doesn't guarantee overlap)
+                                        if(nextPlayerDistance < nextPlayerExpansionRadius) {
+                                            otherEffectUsers = true;
+                                        }
+                                    }
+                                }
+                            }
+                            
                             //set mob to heat state true if distance is within the radius
                             if(getHeatedState(le).isPresent() && distance < expansionRadius && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
                                 getHeatedState(le).ifPresent(heatedState -> {
@@ -93,7 +142,7 @@ public class SunCube extends BaseCurio {
                             }
                             //if distance is farther than the radius, set heat state to false
                             //causes issues if more than one person is using the same set, but with it toggled on vs off, causing flickering back and forth between states
-                            if(getHeatedState(le).isPresent() && (distance > expansionRadius && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) || !tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                            if(getHeatedState(le).isPresent() && ((distance > expansionRadius && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) || !tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) && !otherEffectUsers) {
                                 getHeatedState(le).ifPresent(heatedState -> {
                                     if(heatedState.isHeated()) {
                                         heatedState.setHeatState(false);

@@ -432,7 +432,7 @@ public class CurioUtils {
     }
 
     /**
-     * Applies all checks to make sure that the proper curio set is in place to be triggered
+     * Applies all checks to make sure that the proper curio set is in place and can be triggered
      * @param playerIn Player who is wearing the curios
      * @param curioSetIn The curio set that should be worn for the effect to trigger
      * @return True if the curio set is the one that should be triggered, false if the set effect is not the same
