@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.event;
 
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
@@ -11,7 +12,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BlockEvents {
 
     public static void craftingTableSound (PlayerInteractEvent.RightClickBlock event) {

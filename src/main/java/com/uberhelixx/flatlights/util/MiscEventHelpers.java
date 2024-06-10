@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.util;
 
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.block.Mob_B_Gone;
 import com.uberhelixx.flatlights.block.SpectrumAnvilBlock;
@@ -8,7 +9,9 @@ import net.minecraft.block.Block;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MiscEventHelpers {
     @SubscribeEvent
     public static void indevPlaced(BlockEvent.EntityPlaceEvent event) {

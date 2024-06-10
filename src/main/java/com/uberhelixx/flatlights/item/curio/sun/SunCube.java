@@ -82,16 +82,16 @@ public class SunCube extends BaseCurio {
                             boolean otherEffectUsers = false;
                             
                             //get surrounding players for this specific entity, to check if anyone else could influence the RisingHeatState
-                            List<PlayerEntity> surroundingPlayers = player.getEntityWorld().getEntitiesWithinAABB(PlayerEntity.class, le.getBoundingBox().grow(maxRadius));
+                            List<Entity> surroundingPlayers = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, le.getBoundingBox().grow(maxRadius + 1));
                             //leaves only players in the list of surrounding entities
-                            //surroundingPlayers.removeIf(nextEntity -> !(nextEntity instanceof PlayerEntity));
+                            surroundingPlayers.removeIf(nextEntity -> !(nextEntity instanceof PlayerEntity));
                             //getting any nearby players who could also be triggering the SUN set effect
                             List<PlayerEntity> activeSunEffectPlayers = new ArrayList<>();
-                            for(PlayerEntity playerToCheck : surroundingPlayers) {
-                                //make sure we aren't checking the actual wearer over and over
-                                if(!playerToCheck.equals(player)) {
+                            for(Entity nextEntity : surroundingPlayers) {
+                                //make sure we aren't checking the actual wearer or the entity we are checking the surroundings of over and over
+                                if(!nextEntity.equals(player) && !nextEntity.equals(le)) {
                                     //have to get the players' cube to check if they have the SUN set and if the effect is toggled on
-                                    //PlayerEntity playerToCheck = (PlayerEntity) nextEntity;
+                                    PlayerEntity playerToCheck = (PlayerEntity) nextEntity;
                                     ItemStack cubeCurio = CurioUtils.getCurioFromSlot(playerToCheck, CurioUtils.CUBE_SLOT_ID);
                                     CompoundNBT checkPlayerTag = cubeCurio.hasTag() ? cubeCurio.getTag() : null;
                                     //check if the other player(s) in the radius can trigger the SUN set's effect
@@ -112,7 +112,7 @@ public class SunCube extends BaseCurio {
                                     int nextPlayerGrowthTracker = CurioUtils.getGrowthTracker(cubeCurio);
                                     //there is another player whose active effect radius overlaps with the entity, so don't set state to false
                                     //larger radius from this player than the wearer guarantees to overlap the areas
-                                    if(nextPlayerGrowthTracker >= growthProgress) {
+                                    if(nextPlayerGrowthTracker > growthProgress) {
                                         otherEffectUsers = true;
                                     }
                                     else {
@@ -142,7 +142,7 @@ public class SunCube extends BaseCurio {
                             }
                             //if distance is farther than the radius, set heat state to false
                             //causes issues if more than one person is using the same set, but with it toggled on vs off, causing flickering back and forth between states
-                            if(getHeatedState(le).isPresent() && ((distance > expansionRadius && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) || !tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) && !otherEffectUsers) {
+                            if(getHeatedState(le).isPresent() && (((distance > expansionRadius && tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) || !tag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE))) && !otherEffectUsers) {
                                 getHeatedState(le).ifPresent(heatedState -> {
                                     if(heatedState.isHeated()) {
                                         heatedState.setHeatState(false);

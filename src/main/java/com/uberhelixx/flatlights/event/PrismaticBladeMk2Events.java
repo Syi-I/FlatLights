@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.event;
 
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
@@ -30,6 +31,7 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,6 +41,7 @@ import java.util.Objects;
 import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.*;
 import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
+@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PrismaticBladeMk2Events {
     //makes it so you can't drop the item when it belongs to you (it becomes invincible and you immediately pick it up)
     @SubscribeEvent

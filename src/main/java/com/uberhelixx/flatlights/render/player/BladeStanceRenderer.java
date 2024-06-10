@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.render;
+package com.uberhelixx.flatlights.render.player;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.uberhelixx.flatlights.item.ModItems;

@@ -15,7 +15,7 @@ import net.minecraftforge.server.command.ConfigCommand;
 
 import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
+@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
 
     //registers the command, can do multiple different commands here if there are eventually more

@@ -33,7 +33,7 @@ import java.util.List;
 
 import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
+@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CurioEvents {
 
     /**

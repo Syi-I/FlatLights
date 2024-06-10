@@ -13,7 +13,6 @@ import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
 import com.uberhelixx.flatlights.entity.ModAttributes;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
-import com.uberhelixx.flatlights.event.*;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.item.curio.ModCurios;
@@ -22,12 +21,15 @@ import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.painting.ModPaintings;
 import com.uberhelixx.flatlights.render.*;
+import com.uberhelixx.flatlights.render.player.DragonSphereRenderer;
+import com.uberhelixx.flatlights.render.player.PlayerEntangledEffectRenderer;
+import com.uberhelixx.flatlights.render.player.PlayerRisingHeatEffectRenderer;
+import com.uberhelixx.flatlights.render.player.PrismaticBladeMk2Renderer;
 import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
 import com.uberhelixx.flatlights.screen.SpectralizerScreen;
 import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
-import com.uberhelixx.flatlights.util.MiscEventHelpers;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModKeybinds;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
@@ -111,39 +113,6 @@ public class FlatLights
         ModAttributes.register(eventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");
-
-        //events
-        EVENT_BUS.addListener(AnvilEvents::EnchantDouble);
-        EVENT_BUS.addListener(AnvilEvents::BreadEnchant);
-        EVENT_BUS.addListener(ArmorEvents::DamageReduction);
-        EVENT_BUS.addListener(ArmorEvents::chestplateEquip);
-        EVENT_BUS.addListener(ArmorEvents::helmetEquip);
-        EVENT_BUS.addListener(ArmorEvents::negateFallDamage);
-        EVENT_BUS.addListener(PrismaticBladeMk2Events::EnchantStack);
-        EVENT_BUS.addListener(PrismaticBladeMk2Events::handlePlayerDropsEvent);
-        EVENT_BUS.addListener(PrismaticBladeMk2Events::handlePlayerCloneEvent);
-        EVENT_BUS.addListener(PrismaticBladeMk2Events::killMobs);
-        EVENT_BUS.addListener(PrismaticBladeMk2Events::droppedItem);
-        EVENT_BUS.addListener(PrismaticBladeMk2Events::onPlayerJoin);
-        EVENT_BUS.addListener(AnvilEvents::LevelCapping);
-        EVENT_BUS.addListener(MiscEventHelpers::indevPlaced);
-        EVENT_BUS.addListener(MiscEventHelpers::quantumDmgCheck);
-        EVENT_BUS.addListener(MiscEventHelpers::entangledDmgCheck);
-        EVENT_BUS.addListener(EnchantmentEvents::entangleDmg);
-        EVENT_BUS.addListener(EnchantmentEvents::damageSourceConversion);
-        EVENT_BUS.addListener(EnchantmentEvents::xpDropMultiplier);
-        EVENT_BUS.addListener(EnchantmentEvents::shimmerOverload);
-        EVENT_BUS.addListener(EnchantmentEvents::arrowPulseDmg);
-        EVENT_BUS.addListener(WeaponEvents::bombSwingTrigger);
-        EVENT_BUS.addListener(EnchantmentEvents::removeFromEntangledTeam);
-        EVENT_BUS.addListener(EnchantmentEvents::bleedingEdgeStacks);
-        EVENT_BUS.addListener(EnchantmentEvents::bonesawStacks);
-        EVENT_BUS.addListener(BlockEvents::craftingTableSound);
-        EVENT_BUS.addListener(EnchantmentEvents::blackhandKnockback);
-        EVENT_BUS.addListener(EnchantmentEvents::liftedPickupTruckArmor);
-        EVENT_BUS.addListener(EnchantmentEvents::liftedPickupTruckDmg);
-        //EVENT_BUS.addListener(EffectRenderer::addEntangledEffect);
-        //EVENT_BUS.addListener(EffectRenderer::removeEntangledEffect);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -160,6 +129,8 @@ public class FlatLights
             render.addLayer(new PrismaticBladeMk2Renderer(render));
             //render.addLayer(new BladeStanceRenderer(render));
             render.addLayer(new DragonSphereRenderer(render));
+            render.addLayer(new PlayerRisingHeatEffectRenderer(render));
+            render.addLayer(new PlayerEntangledEffectRenderer(render));
         }
 
         

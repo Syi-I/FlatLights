@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.event;
 
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.item.ModItems;
 import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
@@ -12,6 +13,7 @@ import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.Objects;
 
@@ -19,6 +21,7 @@ import static com.uberhelixx.flatlights.item.armor.ModArmorItem.*;
 import static com.uberhelixx.flatlights.item.armor.PrismaticChestplate.onEquip;
 import static com.uberhelixx.flatlights.item.armor.PrismaticChestplate.onUnequip;
 
+@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ArmorEvents {
 
     //Prismatic Armor, reduce incoming damage amount based on armor total, requires at least one piece of prisma armor on to work
