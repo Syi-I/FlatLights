@@ -4,6 +4,7 @@ import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -65,6 +67,28 @@ public class AttributeFunctions {
             //add boosted xp to the base xp
             int boostedXp = baseXp + Math.round((float) xpBoost);
             event.setAmount(boostedXp);
+        }
+    }
+    
+    //I don't know if the above XP event leads to any sort of infinite xp exploit using some xp storage device so this is a backup attempt if needed
+    public static void xpOrbBoost(PlayerXpEvent.PickupXp event) {
+        event.setCanceled(true);
+        double x = event.getOrb().getPosX();
+        double y = event.getOrb().getPosY();
+        double z = event.getOrb().getPosZ();
+        World world = event.getOrb().getEntityWorld();
+        PlayerEntity player = event.getPlayer();
+        double xpBoost = 0;
+        //check if the player has xp boost or not, then do stuff if they have it
+        if(checkAttribute(player, ModAttributes.XP_BOOST.get())) {
+            //this should only be changed by small, whole values since xp is lots of tiny ints
+            xpBoost = player.getAttribute(ModAttributes.XP_BOOST.get()).getValue();
+            //add boosted xp to the base xp and create a new xp orb
+            int addedXp = (int) Math.round(xpBoost) + event.getOrb().getXpValue();
+            ExperienceOrbEntity newOrb = new ExperienceOrbEntity(world, x, y, z, addedXp);
+            //remove the old xp orb and summon in the new orb instead
+            event.getOrb().remove();
+            world.addEntity(newOrb);
         }
     }
     

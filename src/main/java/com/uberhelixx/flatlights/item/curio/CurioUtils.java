@@ -42,9 +42,10 @@ public class CurioUtils {
     public static final int DEFAULT_GROWTH_CAP = 1000;
 
     //percent chances to roll each tier
-    public static final float RARE_CHANCE = 50.0f;
-    public static final float EPIC_CHANCE = 33.0f;
-    public static final float LEGENDARY_CHANCE = 8.0f;
+    public static final float COMMON_CHANCE = 45.0f;
+    public static final float RARE_CHANCE = 30.0f;
+    public static final float EPIC_CHANCE = 15.0f;
+    public static final float LEGENDARY_CHANCE = 9.0f;
     public static final float GROWTH_CHANCE = 1.0f;
 
     /**
@@ -55,27 +56,27 @@ public class CurioUtils {
     public static float rollCurioTier(PlayerEntity playerIn) {
         float nextRoll = playerIn.getEntityWorld().rand.nextFloat() * 100;
         if(MiscHelpers.uuidCheck(playerIn.getUniqueID())) {
-            nextRoll = MathHelper.clamp(nextRoll - 20, 0, nextRoll);
+            nextRoll = MathHelper.clamp(nextRoll + 20, 0, nextRoll);
         }
-        //roll below GROWTH_CHANCE for growth
-        if(nextRoll <= GROWTH_CHANCE) {
-            return CurioTier.GROWTH.MODEL_VALUE;
+        //0-45 common chance roll
+        if(nextRoll < COMMON_CHANCE) {
+            return CurioTier.COMMON.MODEL_VALUE;
         }
-        //roll below LEGENDARY_CHANCE for legendary
-        else if(nextRoll <= LEGENDARY_CHANCE) {
-            return CurioTier.LEGENDARY.MODEL_VALUE;
-        }
-        //roll below EPIC_CHANCE for epic
-        else if(nextRoll <= EPIC_CHANCE) {
-            return CurioTier.EPIC.MODEL_VALUE;
-        }
-        //roll below RARE_CHANCE for rare
-        else if(nextRoll <= RARE_CHANCE) {
+        //45-75 rare chance roll
+        else if(nextRoll < COMMON_CHANCE + RARE_CHANCE) {
             return CurioTier.RARE.MODEL_VALUE;
         }
-        //defaults to common tier if not
+        //75-90 epic chance roll
+        else if(nextRoll < COMMON_CHANCE + RARE_CHANCE + EPIC_CHANCE) {
+            return CurioTier.EPIC.MODEL_VALUE;
+        }
+        //90-99 legendary chance roll
+        else if(nextRoll < COMMON_CHANCE + RARE_CHANCE + EPIC_CHANCE + LEGENDARY_CHANCE) {
+            return CurioTier.LEGENDARY.MODEL_VALUE;
+        }
+        //99-100 growth chance roll
         else {
-            return CurioTier.COMMON.MODEL_VALUE;
+            return CurioTier.GROWTH.MODEL_VALUE;
         }
     }
 

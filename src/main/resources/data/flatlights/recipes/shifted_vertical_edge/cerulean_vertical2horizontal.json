@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "flatlights:cerulean_horizontal_edge"
+    }
+  ],
+  "result": {
+    "item": "flatlights:cerulean_vertical_edge",
+    "count": 1
+  }
+}
