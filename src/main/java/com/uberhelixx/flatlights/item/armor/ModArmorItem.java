@@ -6,6 +6,7 @@ import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
@@ -24,6 +25,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class ModArmorItem extends ArmorItem {
     private static final Map<IArmorMaterial, Effect> MATERIAL_TO_EFFECT_MAP =
@@ -35,10 +37,10 @@ public class ModArmorItem extends ArmorItem {
         super(material, slot, settings);
     }
 
-    @Override
+    /*@Override
     public boolean isDamageable() {
         return false;
-    }
+    }*/
 
     @Override
     public boolean isEnchantable(ItemStack stack) { return true; }
@@ -93,7 +95,13 @@ public class ModArmorItem extends ArmorItem {
 
         super.onArmorTick(stack, world, player);
     }
-
+    
+    //stops durability damage while allowing for `BREAKABLE` type enchantments to still apply to the armor, vs isDamageable preventing that if set to TRUE
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+        return super.damageItem(stack, 0, entity, onBroken);
+    }
+    
     void evaluateArmorEffects(PlayerEntity player) {
         for (Map.Entry<IArmorMaterial, Effect> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
             IArmorMaterial mapArmorMaterial = entry.getKey();
