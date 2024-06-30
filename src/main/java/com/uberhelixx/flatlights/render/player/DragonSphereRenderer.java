@@ -19,10 +19,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 import java.awt.*;
 
+@OnlyIn(Dist.CLIENT)
 public class DragonSphereRenderer extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> {
     public static final ResourceLocation INNER_SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/inner_sphere/inner_sphere.png");
     public static final ResourceLocation INNER_SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/inner_sphere_wrapper");
