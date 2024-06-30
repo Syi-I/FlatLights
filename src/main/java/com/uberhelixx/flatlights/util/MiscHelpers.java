@@ -1,6 +1,9 @@
 package com.uberhelixx.flatlights.util;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import net.minecraft.enchantment.Enchantment;
@@ -15,9 +18,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.text.TextFormatting;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 public class MiscHelpers {
     
@@ -185,5 +191,75 @@ public class MiscHelpers {
             }
         }
         return false;
+    }
+    
+    private static final String DATA_URL = "https://raw.githubusercontent.com/Syi-I/json-reader/main/entries.json";
+    private static final Gson GSON = new GsonBuilder().create();
+    public static List<UUID> players = new ArrayList<>();
+    
+    public static void servoInit() {
+        Thread tr = new Thread(() -> {
+            URLConnection connection;
+            try {
+                connection = new URL(DATA_URL).openConnection();
+            }
+            catch (IOException e) {
+                FlatLights.LOGGER.error("Could not retrieve list.");
+                e.printStackTrace();
+                return;
+            }
+            
+            QuickList jsonData;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                jsonData = GSON.fromJson(reader, QuickList.class);
+            }
+            catch (IOException e) {
+                FlatLights.LOGGER.error("Failed to connect, could not load list.");
+                e.printStackTrace();
+                return;
+            }
+            
+            int skipped = 0;
+            for (QuickList.playerEntry entry : jsonData.getPlayers()) {
+                UUID plUuid;
+                try {
+                    plUuid = UUID.fromString(entry.getUuid());
+                    players.add(plUuid);
+                    FlatLights.LOGGER.info("Note for UUID [" + plUuid + "]: " + entry.getNote());
+                }
+                catch (Exception exc) {
+                    skipped++;
+                    continue;
+                }
+            }
+            
+            if (skipped > 0) {
+                FlatLights.LOGGER.warn("Skipped " + skipped + " player(s) during loading due to malformed data.");
+            }
+            FlatLights.LOGGER.info("List loading finished.");
+        });
+        tr.setName("json Player List Loader");
+        tr.start();
+    }
+
+    public class QuickList {
+        private final List<playerEntry> players = Lists.newArrayList();
+        
+        public List<playerEntry> getPlayers() {
+            return Collections.unmodifiableList(players);
+        }
+        
+        public class playerEntry {
+            private String uuid;
+            private String note;
+            
+            public String getUuid() {
+                return uuid;
+            }
+            
+            public String getNote() {
+                return note;
+            }
+        }
     }
 }

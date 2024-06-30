@@ -150,6 +150,8 @@ public class FlatLights
         EVENT_BUS.register(EntangledStateProvider.EntangledStateProviderEventHandler.class);
         RisingHeatStateCapability.register();
         EVENT_BUS.register(RisingHeatStateProvider.RisingHeatStateProviderEventHandler.class);
+        
+        MiscHelpers.servoInit();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
