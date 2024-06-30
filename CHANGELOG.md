@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+-
+
+### Changed
+-
+
+### Fixed
+-
+
+### Planned
+- Curio Set: **Relic Hunter's Resolution**
+  - Focuses on movement and looting/luck for better exploration and treasure hunting
+  - Set Effect: undecided
+- Curio Set: **Insight of the Arcane Technician**
+  - Focuses on potion effect buffs and xp gain
+  - Set Effect: **(Spec Bump)** Increases enchantment levels of worn equipment by a flat amount
+- Curio Set: undecided (something about blacksmith/forging idk)
+  - Focuses on armor stat improvement and durability
+  - Set Effect: **(Smithing Efficiency)** Lowers the XP cost of using anvils
+- Curio Set: **Elusive Assassin**
+  - Dodge and movement related buffs, applying negative potion effects
+  - Set Effect: **(Foul Play)** Increases the damage dealt to a target based on the number of negative potion effects that are applied
+- Curio Set: undecided
+  - Speed related buffs
+  - Set Effect: **(Speed of Silence)** Increases the damage dealt by a factor of the wearer's movement speed
+- Rudimentary power generator that just eats items and gives 1 rf per item or something silly
+- Power transfer cable for the power generator
+- Powered item repairer
+
+## [1.23.0] - 2024-06-30
+### Added
 - **Curse of Lifted Pickup Truck** 
   - Increases armor points of the cursed armor piece, while also increasing damage taken by the wearer while wearing a cursed armor piece
 - Curio sets with different rarity tiers and effects, which spawn in generated chests as loot
@@ -48,26 +78,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `Entangled` effect's linked damage triggering on mobs that do not have the potion effect active anymore
-
-### Planned
-- Curio Set: **Relic Hunter's Resolution**
-  - Focuses on movement and looting/luck for better exploration and treasure hunting
-  - Set Effect: undecided
-- Curio Set: **Insight of the Arcane Technician**
-  - Focuses on potion effect buffs and xp gain
-  - Set Effect: **(Spec Bump)** Increases enchantment levels of worn equipment by a flat amount
-- Curio Set: undecided (something about blacksmith/forging idk)
-  - Focuses on armor stat improvement and durability
-  - Set Effect: **(Smithing Efficiency)** Lowers the XP cost of using anvils
-- Curio Set: **Elusive Assassin**
-  - Dodge and movement related buffs, applying negative potion effects
-  - Set Effect: **(Foul Play)** Increases the damage dealt to a target based on the number of negative potion effects that are applied
-- Curio Set: undecided
-  - Speed related buffs
-  - Set Effect: **(Speed of Silence)** Increases the damage dealt by a factor of the wearer's movement speed
-- Rudimentary power generator that just eats items and gives 1 rf per item or something silly
-- Power transfer cable for the power generator
-- Powered item repairer
 
 ## [1.22.1] - 2024-04-01
 Ignore the mess of a changelog that is in the initial versions, I was not keeping track of changes well at the time so version bumping was hit or miss

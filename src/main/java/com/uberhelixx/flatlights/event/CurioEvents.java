@@ -54,11 +54,11 @@ public class CurioEvents {
             int gainedCores = Math.max((Math.round(((LivingEntity) mob).getMaxHealth() / 20)), 1);
 
             //kill text notification formatting stuff
-            String coreGainText = " core.";
+            String coreGainText = " point.";
             if(gainedCores > 1) {
-                coreGainText = " cores.";
+                coreGainText = " points.";
             }
-            ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (gainedCores) + coreGainText);
+            ITextComponent killMessage = new StringTextComponent("You have slain a creature and gained " + (gainedCores) + " progress" + coreGainText);
             if(FlatLightsClientConfig.coreNoti.get()) {
                 if(!killer.getEntityWorld().isRemote()) {
                     PacketHandler.sendToPlayer((ServerPlayerEntity) killer, new PacketGenericPlayerNotification(killMessage.getString()));
