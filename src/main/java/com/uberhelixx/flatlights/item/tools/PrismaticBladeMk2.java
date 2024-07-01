@@ -9,10 +9,10 @@ import com.uberhelixx.flatlights.entity.VoidProjectileEntity;
 import com.uberhelixx.flatlights.network.PacketGenericToggleMessage;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -112,7 +112,9 @@ public class PrismaticBladeMk2 extends SwordItem {
                     newTag.putBoolean(PROJECTILE_MODE_TAG, false);
                     newTag.putBoolean(SPEAR_MODE_TAG, false);
                     blade.setTag(newTag);
-                    PacketHandler.sendToServer(new PacketWriteNbt(newTag, blade));
+                    if(playerIn.getEntityWorld().isRemote()) {
+                        PacketHandler.sendToServer(new PacketWriteNbt(newTag, blade));
+                    }
                 }
                 else {
                     CompoundNBT tag = blade.getTag();
@@ -150,7 +152,9 @@ public class PrismaticBladeMk2 extends SwordItem {
                     }
                     //update tag on server
                     blade.setTag(tag);
-                    PacketHandler.sendToServer(new PacketWriteNbt(tag, blade));
+                    if(playerIn.getEntityWorld().isRemote()) {
+                        PacketHandler.sendToServer(new PacketWriteNbt(tag, blade));
+                    }
                     //clientside mode cycling notification
                     if(!playerIn.getEntityWorld().isRemote()) {
                         PacketHandler.sendToPlayer((ServerPlayerEntity) playerIn, new PacketGenericToggleMessage(toggleText, dmg || projectile || !spear, dmg || projectile || !spear));
@@ -370,7 +374,7 @@ public class PrismaticBladeMk2 extends SwordItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if(Screen.hasShiftDown()) {
             //check for if this player is able to use the item in the first place, if not give the default tooltip with no information
-            if(Minecraft.getInstance().player != null && !MiscHelpers.uuidCheck(Minecraft.getInstance().player.getUniqueID())) {
+            if(ClientUtils.getPlayer() != null && !MiscHelpers.uuidCheck(ClientUtils.getPlayer().getUniqueID())) {
                 tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blademk2_default"));
             }
             else {
@@ -379,7 +383,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         }
         //normally display the stats and shift display hint
         else {
-            if(Minecraft.getInstance().player != null && MiscHelpers.uuidCheck(Minecraft.getInstance().player.getUniqueID())) {
+            if(ClientUtils.getPlayer() != null && MiscHelpers.uuidCheck(ClientUtils.getPlayer().getUniqueID())) {
                 if (stack.hasTag() && stack.getTag() != null) {
                     //display core data if present
                     if(stack.getTag().contains(CURR_CORES_TAG)) {

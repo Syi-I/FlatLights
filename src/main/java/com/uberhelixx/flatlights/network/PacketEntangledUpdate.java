@@ -2,7 +2,6 @@ package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.capability.EntangledStateCapability;
 import com.uberhelixx.flatlights.util.ClientUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

@@ -2,9 +2,9 @@ package com.uberhelixx.flatlights.item.armor;
 
 import com.google.common.collect.ImmutableMap;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,8 +52,8 @@ public class ModArmorItem extends ArmorItem {
         tooltip.add(setEffectTooltip);
 
         String dmgReduction = "Up to " + MiscHelpers.coloredText(TextFormatting.GREEN, FlatLightsCommonConfig.armorDamageReduction.get() + "%") + " bonus damage reduction when full set is equipped.";
-        if(Minecraft.getInstance().player != null) {
-            int armorTotal = Minecraft.getInstance().player.getTotalArmorValue();
+        if(ClientUtils.getPlayer() != null) {
+            int armorTotal = ClientUtils.getPlayer().getTotalArmorValue();
             int armorVsDiamondTotal = armorTotal - 20;
             float reductionRatioCap = FlatLightsCommonConfig.armorDamageReduction.get() / 100f;
             float reductionRatio;

@@ -225,7 +225,9 @@ public class PrismaticBladeMk2Events {
                 newTag.putInt(TIER_TAG, 1);
                 newTag.putInt(TOTAL_CORES_TAG, 0);
                 tool.setTag(newTag);
-                PacketHandler.sendToServer(new PacketWriteNbt(newTag, tool));
+                if(killer.getEntityWorld().isRemote()) {
+                    PacketHandler.sendToServer(new PacketWriteNbt(newTag, tool));
+                }
             }
             CompoundNBT tag = tool.getTag();
             if (tag == null) {
@@ -305,7 +307,9 @@ public class PrismaticBladeMk2Events {
             tag.putInt(CURR_CORES_TAG, newCurrCores);
             tag.putInt(TIER_TAG, newTier);
             tool.setTag(tag);
-            PacketHandler.sendToServer(new PacketWriteNbt(tag, tool));
+            if(killer.getEntityWorld().isRemote()) {
+                PacketHandler.sendToServer(new PacketWriteNbt(tag, tool));
+            }
         }
     }
 }

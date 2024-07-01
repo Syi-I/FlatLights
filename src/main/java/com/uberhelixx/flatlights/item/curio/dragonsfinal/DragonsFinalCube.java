@@ -173,7 +173,9 @@ public class DragonsFinalCube extends BaseCurio {
                             CompoundNBT tag = stack.getTag();
                             tag.putInt(CurioUtils.GROWTH_TRACKER, coresFromPlayer);
                             //you have to send packets to update the tracker data appropriately
-                            PacketHandler.sendToServer(new PacketWriteNbt(tag, stack));
+                            if(player.getEntityWorld().isRemote()) {
+                                PacketHandler.sendToServer(new PacketWriteNbt(tag, stack));
+                            }
                             cores = coresFromPlayer;
                         }
                         //this should be the normal function

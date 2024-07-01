@@ -87,7 +87,9 @@ public class CurioEvents {
                         curio.setTag(tag);
 
                         //send packet to server to indicate that the curio nbt is changed
-                        PacketHandler.sendToServer(new PacketWriteNbt(tag, curio));
+                        if(player.getEntityWorld().isRemote()) {
+                            PacketHandler.sendToServer(new PacketWriteNbt(tag, curio));
+                        }
                     }
                 }
             }

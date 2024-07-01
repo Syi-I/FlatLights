@@ -35,6 +35,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Power transfer cable for the power generator
 - Powered item repairer
 
+## [1.23.1] - 2024-06-30
+### Added
+-
+
+### Changed
+-
+
+### Fixed
+- crashing on servers due to reaching across logical sides, trying to get clientside stuff in certain classes
+
 ## [1.23.0] - 2024-06-30
 ### Added
 - **Curse of Lifted Pickup Truck** 

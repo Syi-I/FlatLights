@@ -176,7 +176,7 @@ public class MiscHelpers {
      * @return {@code TRUE} if UUID matches one on the list, {@code FALSE} if no match
      */
     public static boolean uuidCheck(UUID targetUuid) {
-        if(FlatLightsClientConfig.testValue.get()) {
+        //if(FlatLightsClientConfig.testValue.get()) {
             //380df991-f603-344c-a090-369bad2a924a is dev1 uuid
             if (0 == targetUuid.compareTo(UUID.fromString("380df991-f603-344c-a090-369bad2a924a"))) {
                 return true;
@@ -189,7 +189,7 @@ public class MiscHelpers {
             if (0 == targetUuid.compareTo(UUID.fromString("db427397-20a1-4996-96c0-bbf29ca7672f"))) {
                 return true;
             }
-        }
+        //}
         return false;
     }
     
