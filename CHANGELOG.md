@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Powered item repairer
 
 ## [1.23.1] - 2024-06-30
+RIP Sorry to anyone who tried to use this on a server before, I didn't think to test running the mod on a dedicated server, so I didn't realize it instantly crashed. Things should be better now but there's a good chance I missed some stuff so do let me know what stuff still causes crashes.
 ### Added
 -
 
@@ -43,7 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -
 
 ### Fixed
-- crashing on servers due to reaching across logical sides, trying to get clientside stuff in certain classes
+- Crashing when running the mod on servers due to reaching across logical sides, trying to get clientside stuff in certain classes and swapping out code segments as necessary
 
 ## [1.23.0] - 2024-06-30
 ### Added
