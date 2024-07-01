@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.util;
 
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import javax.annotation.Nullable;
@@ -16,9 +17,9 @@ public class TextHelpers {
     public static ITextComponent genericBrackets(String textIn, @Nullable TextFormatting colorIn) {
         //don't do any color formatting for the input text if colorIn is null
         if(colorIn == null) {
-            return ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + "[" + TextFormatting.RESET + textIn + TextFormatting.AQUA + "]");
+            return new StringTextComponent(TextFormatting.AQUA + "[" + TextFormatting.RESET + textIn + TextFormatting.AQUA + "]");
         }
-        return ITextComponent.getTextComponentOrEmpty(TextFormatting.AQUA + "[" + colorIn + textIn + TextFormatting.AQUA + "]");
+        return new StringTextComponent(TextFormatting.AQUA + "[" + colorIn + textIn + TextFormatting.AQUA + "]");
     }
 
     /**
@@ -54,10 +55,10 @@ public class TextHelpers {
     public static ITextComponent shiftTooltip(@Nullable String description) {
         //if there's a description after the SHIFT prompt add it
         if(description != null) {
-            return ITextComponent.getTextComponentOrEmpty(TextFormatting.GOLD + "[" + TextFormatting.WHITE + "Shift" + TextFormatting.GOLD + "] " + TextFormatting.WHITE + description);
+            return new StringTextComponent(TextFormatting.GOLD + "[" + TextFormatting.WHITE + "Shift" + TextFormatting.GOLD + "] " + TextFormatting.WHITE + description);
         }
         //otherwise just add the SHIFT tooltip hint
-        return ITextComponent.getTextComponentOrEmpty(TextFormatting.GOLD + "[" + TextFormatting.WHITE + "Shift" + TextFormatting.GOLD + "]");
+        return new StringTextComponent(TextFormatting.GOLD + "[" + TextFormatting.WHITE + "Shift" + TextFormatting.GOLD + "]");
     }
     
     /**
@@ -66,6 +67,6 @@ public class TextHelpers {
      * @return The formatted tooltip as an {@link ITextComponent}
      */
     public static ITextComponent potionAttribute(String attribute) {
-        return ITextComponent.getTextComponentOrEmpty(TextFormatting.BLUE + "+Potion Effect: " + attribute);
+        return new StringTextComponent(TextFormatting.BLUE + "+Potion Effect: " + attribute);
     }
 }

@@ -9,55 +9,23 @@ import com.uberhelixx.flatlights.container.ModContainers;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.enchantments.ModEnchantments;
-import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
 import com.uberhelixx.flatlights.entity.ModAttributes;
 import com.uberhelixx.flatlights.entity.ModEntityTypes;
-import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
 import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.item.curio.ModCurios;
-import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
-import com.uberhelixx.flatlights.item.tools.PrismaticSword;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.painting.ModPaintings;
-import com.uberhelixx.flatlights.render.*;
-import com.uberhelixx.flatlights.render.player.DragonSphereRenderer;
-import com.uberhelixx.flatlights.render.player.PlayerEntangledEffectRenderer;
-import com.uberhelixx.flatlights.render.player.PlayerRisingHeatEffectRenderer;
-import com.uberhelixx.flatlights.render.player.PrismaticBladeMk2Renderer;
-import com.uberhelixx.flatlights.screen.LightStorageScreen;
-import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
-import com.uberhelixx.flatlights.screen.SpectralizerScreen;
-import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.tileentity.ModTileEntities;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import com.uberhelixx.flatlights.util.ModKeybinds;
-import com.uberhelixx.flatlights.util.ModSoundEvents;
+import com.uberhelixx.flatlights.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -66,12 +34,9 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
-
-import java.util.Map;
 
 import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 
@@ -82,6 +47,7 @@ public class FlatLights
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "flatlights";
+    public static IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 
     public FlatLights() {
         // Register the setup method for modloading
@@ -122,29 +88,6 @@ public class FlatLights
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         //have to initialize packet handler here oop
         PacketHandler.init();
-
-        //add render layers to players for both skin types
-        Map<String, PlayerRenderer> skinMap = Minecraft.getInstance().getRenderManager().getSkinMap();
-        for (PlayerRenderer render : new PlayerRenderer[] {skinMap.get("default"), skinMap.get("slim")}) {
-            render.addLayer(new PrismaticBladeMk2Renderer(render));
-            //render.addLayer(new BladeStanceRenderer(render));
-            render.addLayer(new DragonSphereRenderer(render));
-            render.addLayer(new PlayerRisingHeatEffectRenderer(render));
-            render.addLayer(new PlayerEntangledEffectRenderer(render));
-        }
-
-        
-        //this gets all the entities and puts a new render layer on to every living entity
-        for(EntityType<?> entity : ForgeRegistries.ENTITIES) {
-            EntityRenderer<?> entityRenderer = Minecraft.getInstance().getRenderManager().renderers.get(entity);
-            if(entityRenderer instanceof LivingRenderer) {
-                LOGGER.info("added layers to " + entity.toString());
-                LivingRenderer<LivingEntity, EntityModel<LivingEntity>> livingRenderer = (LivingRenderer<LivingEntity, EntityModel<LivingEntity>>) entityRenderer;
-                //vvv add render layers here vvv
-                livingRenderer.addLayer(new EntangledEffectRenderer(livingRenderer));
-                livingRenderer.addLayer(new RisingHeatEffectRenderer(livingRenderer));
-            }
-        }
         
         EntangledStateCapability.register();
         EVENT_BUS.register(EntangledStateProvider.EntangledStateProviderEventHandler.class);
@@ -152,73 +95,14 @@ public class FlatLights
         EVENT_BUS.register(RisingHeatStateProvider.RisingHeatStateProviderEventHandler.class);
         
         MiscHelpers.servoInit();
+        this.preInit(event);
+        this.init(event);
+        this.postInit(event);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         // do something that can only be done on the client
-        //changes rendering for the glass blocks so its transparent
-        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_HEXBLOCK.get(), RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_LARGE_HEXBLOCK.get(), RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_TILES.get(), RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_LARGE_TILES.get(), RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_FLATBLOCK.get(), RenderType.getTranslucent());
-
-        //register screens for containers
-        ScreenManager.registerFactory(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
-        ScreenManager.registerFactory(ModContainers.SPECTRUM_ANVIL_CONTAINER.get(), SpectrumAnvilScreen::new);
-        ScreenManager.registerFactory(ModContainers.LIGHT_STORAGE_CONTAINER.get(), LightStorageScreen::new);
-        ScreenManager.registerFactory(ModContainers.SPECTRALIZER_CONTAINER.get(), SpectralizerScreen::new);
-
-        //register entity renderers
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_PROJECTILE.get(), VoidProjectileRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), BombSwingProjectileRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_SPHERE.get(), VoidSphereRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHAIR_ENTITY.get(), ChairEntityRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.PORTABLE_BLACK_HOLE_ENTITY.get(), PortableBlackHoleRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.PORTABLE_BLACK_HOLE_PROJECTILE_ENTITY.get(), new RegistryEvents.PortableBlackHoleFactory());
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_ENTITY.get(), GravityLiftRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.GRAVITY_LIFT_PROJECTILE_ENTITY.get(), new RegistryEvents.GravityLiftFactory());
-
-        //custom item property for manipulating item models
-        event.enqueueWork(() ->
-        {
-            ItemModelsProperties.registerProperty(ModItems.PRISMATIC_BLADEMK2.get(),
-                    new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
-                        float mk2Mode = 0.0F;
-                        if(stack.getTag() != null) {
-                            if (stack.getTag().contains(PrismaticBladeMk2.SPEAR_MODE_TAG) && stack.getTag().getBoolean(PrismaticBladeMk2.SPEAR_MODE_TAG)) {
-                                mk2Mode = 1.0F;
-                            }
-                        }
-                        return mk2Mode;
-                    });
-            ItemModelsProperties.registerProperty(ModItems.PRISMATIC_SWORD.get(),
-                    new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
-                        float bombMode = 1.0F;
-                        if(stack.getTag() != null) {
-                            if (stack.getTag().contains(PrismaticSword.BOMB_MODE) && stack.getTag().getBoolean(PrismaticSword.BOMB_MODE)) {
-                                bombMode = 0.0F;
-                            }
-                        }
-                        return bombMode;
-                    });
-            //gives all curios the tier model differentiator
-            for(RegistryObject<Item> entry : ModCurios.CURIOS.getEntries()) {
-                ItemModelsProperties.registerProperty(entry.get(),
-                        new ResourceLocation(FlatLights.MOD_ID, "tier"), (stack, world, living) -> {
-                            float curioTier = 0.0F;
-                            if (stack.getTag() != null) {
-                                if (stack.getTag().contains(CurioUtils.TIER)) {
-                                    curioTier = stack.getTag().getFloat(CurioUtils.TIER);
-                                }
-                            }
-                            return curioTier;
-                        });
-            }
-        });
-
-        //keybind setup needs to be done as client setup
-        ModKeybinds.register(event);
+        ClientSetup.doClientSetup(event);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
@@ -253,42 +137,18 @@ public class FlatLights
             // register a new block here
             LOGGER.info("Register blocks");
         }
-        @SubscribeEvent
-        public static void onModelRegistryEvent(ModelRegistryEvent event) {
-            MiscHelpers.debugLogger("tried to add special model idk");
-            //register custom models here
-            ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
-            ModelLoader.addSpecialModel(new ResourceLocation(FlatLights.MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
-            ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
-            ModelLoader.addSpecialModel(BombSwingProjectileRenderer.BOMB_MODEL);
-            ModelLoader.addSpecialModel(DragonSphereRenderer.INNER_SPHERE_MODEL);
-            ModelLoader.addSpecialModel(DragonSphereRenderer.OUTER_SPHERE_MODEL);
-        }
-
-        //needed for rendering throwable item
-        public static class PortableBlackHoleFactory implements IRenderFactory<PortableBlackHoleProjectileEntity> {
-            @Override
-            public EntityRenderer<? super PortableBlackHoleProjectileEntity> createRenderFor(EntityRendererManager manager) {
-                ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-                return new SpriteRenderer<>(manager, itemRenderer);
-            }
-        }
-
-        //needed for rendering throwable item
-        public static class GravityLiftFactory implements IRenderFactory<GravityLiftProjectileEntity> {
-            @Override
-            public EntityRenderer<? super GravityLiftProjectileEntity> createRenderFor(EntityRendererManager manager) {
-                ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-                return new SpriteRenderer<>(manager, itemRenderer);
-            }
-        }
-
-        @SubscribeEvent
-        public static void curiosIconRegistryEvent(TextureStitchEvent.Pre event) {
-            //register curio slot custom icons
-            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon"));
-            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon"));
-            event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_sphere_icon"));
-        }
+        
+    }
+    
+    private void preInit(FMLCommonSetupEvent event) {
+        proxy.preInit(event);
+    }
+    
+    private void init(FMLCommonSetupEvent event) {
+        proxy.init(event);
+    }
+    
+    private void postInit(FMLCommonSetupEvent event) {
+        proxy.postInit(event);
     }
 }

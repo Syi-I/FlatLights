@@ -1,7 +1,7 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.capability.RisingHeatStateCapability;
-import net.minecraft.client.Minecraft;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +32,7 @@ public class PacketRisingHeatUpdate {
         if (ctx.get().getDirection().getReceptionSide().isClient()) {
             ctx.get().enqueueWork(() -> {
                 //should be only clientside stuff
-                PlayerEntity player = Minecraft.getInstance().player;
+                PlayerEntity player = ClientUtils.getPlayer();
                 boolean state = msg.state;
                 if(player != null) {
                     Entity entity = player.getEntityWorld().getEntityByID(msg.entityID);

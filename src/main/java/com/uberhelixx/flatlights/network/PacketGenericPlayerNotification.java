@@ -1,7 +1,7 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
-import net.minecraft.client.Minecraft;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
@@ -36,7 +36,7 @@ public class PacketGenericPlayerNotification {
         if (ctx.get().getDirection().getReceptionSide().isClient()) {
             ctx.get().enqueueWork(() -> {
                 //should be only clientside stuff
-                PlayerEntity player = Minecraft.getInstance().player;
+                PlayerEntity player = ClientUtils.getPlayer();
                 String notification = msg.messageText;
                 if(player != null) {
                     if(FlatLightsClientConfig.genericNotificationText.get()) {

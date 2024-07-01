@@ -3,9 +3,9 @@ package com.uberhelixx.flatlights.item.curio;
 import com.uberhelixx.flatlights.network.PacketCurioToggleMessage;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -244,7 +244,7 @@ public class CurioUtils {
             //if set effect toggle-able curio, choose green(on) or red(off), otherwise leave aqua for things without the set effect
             if(tag.contains(SET_EFFECT_TOGGLE)) {
                 //determines if effect is enabled or disabled, for choosing tooltip color
-                if(tag.getBoolean(SET_EFFECT_TOGGLE) && canTriggerSetEffect(Minecraft.getInstance().player)) {
+                if(tag.getBoolean(SET_EFFECT_TOGGLE) && canTriggerSetEffect(ClientUtils.getPlayer())) {
                     color = TextFormatting.GREEN;
                 }
                 else {

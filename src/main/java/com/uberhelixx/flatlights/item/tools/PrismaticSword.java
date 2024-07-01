@@ -78,14 +78,18 @@ public class PrismaticSword extends SwordItem {
                 CompoundNBT newTag = new CompoundNBT();
                 newTag.putBoolean(BOMB_MODE, true);
                 sword.setTag(newTag);
-                PacketHandler.sendToServer(new PacketWriteNbt(newTag, sword));
+                if(playerIn.getEntityWorld().isRemote()) {
+                    PacketHandler.sendToServer(new PacketWriteNbt(newTag, sword));
+                }
             }
             else {
                 CompoundNBT tag = sword.getTag();
                 boolean active = tag.getBoolean(BOMB_MODE);
                 tag.putBoolean(BOMB_MODE, !active);
                 sword.setTag(tag);
-                PacketHandler.sendToServer(new PacketWriteNbt(tag, sword));
+                if(playerIn.getEntityWorld().isRemote()) {
+                    PacketHandler.sendToServer(new PacketWriteNbt(tag, sword));
+                }
                 String toggleText = TextFormatting.WHITE + "Explosive Swings: " + TextHelpers.genericBrackets("Activated", TextFormatting.GREEN).getString();
                 if(active) {
                     toggleText = TextFormatting.WHITE + "Explosive Swings: " + TextHelpers.genericBrackets("Deactivated", TextFormatting.RED).getString();

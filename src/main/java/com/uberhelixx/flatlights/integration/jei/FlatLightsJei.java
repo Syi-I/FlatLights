@@ -5,12 +5,12 @@ import com.uberhelixx.flatlights.block.ModBlocks;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
 import com.uberhelixx.flatlights.data.recipes.SpectralizerRecipe;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.util.ResourceLocation;
@@ -39,7 +39,7 @@ public class FlatLightsJei implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().world).getRecipeManager();
+        RecipeManager rm = Objects.requireNonNull(ClientUtils.getWorld()).getRecipeManager();
         registration.addRecipes(rm.getRecipesForType(ModRecipeTypes.SPECTRALIZER_RECIPE).stream()
                 .filter(r -> r instanceof SpectralizerRecipe).collect(Collectors.toList()), SpectralizerRecipeCategory.UID);
         registration.addRecipes(rm.getRecipesForType(ModRecipeTypes.PLATING_RECIPE).stream()

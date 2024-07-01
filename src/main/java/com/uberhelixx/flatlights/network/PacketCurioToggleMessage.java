@@ -1,8 +1,8 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
@@ -36,7 +36,7 @@ public class PacketCurioToggleMessage {
         if (ctx.get().getDirection().getReceptionSide().isClient()) {
             ctx.get().enqueueWork(() -> {
                 //should be only clientside stuff
-                PlayerEntity player = Minecraft.getInstance().player;
+                PlayerEntity player = ClientUtils.getPlayer();
                 boolean state = msg.toggleState;
                 if(player != null) {
                     if(state) {
