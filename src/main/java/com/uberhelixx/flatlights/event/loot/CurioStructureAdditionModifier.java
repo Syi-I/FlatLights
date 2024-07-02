@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.uberhelixx.flatlights.FlatLights.LOGGER;
+
 public class CurioStructureAdditionModifier extends LootModifier {
     //list of items that have a chance of being added to the loot pool
     private final List<Item> itemsToAdd;
@@ -93,16 +95,16 @@ public class CurioStructureAdditionModifier extends LootModifier {
        
         if(!(new HashSet<>(generatedLoot).containsAll(additionalItems))) {
             for(ItemStack item : generatedLoot) {
-                MiscHelpers.debugLogger("[Structure Chest] Base Generated Item: " + item.toString());
+                LOGGER.info("[Structure Chest] Base Generated Item: " + item.toString());
             }
             for(ItemStack item : additionalItems) {
-                MiscHelpers.debugLogger("[Structure Chest] Additional Item: " + item.toString());
+                LOGGER.info("[Structure Chest] Additional Item: " + item.toString());
             }
             generatedLoot.addAll(additionalItems);
-            MiscHelpers.debugLogger("[Structure Chest] Added extra items to loot table.");
+            LOGGER.info("[Structure Chest] Added extra items to loot table.");
             return generatedLoot;
         }
-        MiscHelpers.debugLogger("[Structure Chest] Unmodified loot table returned.");
+        LOGGER.info("[Structure Chest] Unmodified loot table returned.");
         //return the modified list of loot
         //List<ItemStack> duplicateChest = new ArrayList<>();
         return generatedLoot;
