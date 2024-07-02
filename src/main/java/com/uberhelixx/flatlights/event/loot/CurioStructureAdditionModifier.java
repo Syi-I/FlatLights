@@ -70,60 +70,50 @@ public class CurioStructureAdditionModifier extends LootModifier {
             if other structures use minecarts then whatever those just don't get loot I guess there isn't a good way to
             detect minecarts only with loot conditions unless I make a custom one or something
              */
-            if(chest != null) {
-                CompoundNBT chestNbt = chest.getTileData();
-                System.out.println("Chest NBT: " + chestNbt.toString());
-                if(!chestNbt.contains(MODIFIED_CHEST_NBTKEY)) {
-                    if ((chest instanceof LockableLootTileEntity && !(chest instanceof DispenserTileEntity || chest instanceof HopperTileEntity)) || queriedLootTable.equals(LootTables.CHESTS_ABANDONED_MINESHAFT)) {
-                        //some free glowstone dust as a treat
-                        additionalItems.add(new ItemStack(Items.GLOWSTONE_DUST.getItem(), context.getRandom().nextInt(16) + 24));
-                        
-                        //chance of finding a chair in loot, can get 1-4 of them
-                        if (context.getRandom().nextFloat() < 0.4) {
-                            additionalItems.add(new ItemStack(ModBlocks.MOTIVATIONAL_CHAIR.get().asItem(), context.getRandom().nextInt(3) + 1));
-                        }
-                        
-                        //roll a random value to determine how many curios are put into the chest
-                        float rolledChance = context.getRandom().nextFloat();
-                        //get dimension ID of the chest and use it to boost odds in certain dimensions
-                        ResourceLocation dimID = context.getWorld().getDimensionKey().getLocation();
-                        
-                        //if it's a stronghold chest, increase odds by 10%
-                        if (queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CORRIDOR) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CROSSING) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_LIBRARY)) {
-                            rolledChance = MathHelper.clamp(rolledChance - 0.1f, 0, rolledChance);
-                        }
-                        //if it's a structure in the NETHER, increase odds by 15%
-                        if (dimID.equals(DimensionType.THE_NETHER_ID)) {
-                            rolledChance = MathHelper.clamp(rolledChance - 0.15f, 0, rolledChance);
-                        }
-                        //if it's a structure in the END, increase odds by 25%
-                        if (dimID.equals(DimensionType.THE_END_ID)) {
-                            rolledChance = MathHelper.clamp(rolledChance - 0.25f, 0, rolledChance);
-                        }
-                        
-                        //we do it like this since otherwise you would just generate multiple of the same curio by changing the count
-                        //also lets you tune how often you would find more curios
-                        //85% chance to get 1
-                        if (rolledChance < 0.85) {
-                            //gets a random curio from the passed in list 'addition'
-                            additionalItems.add(new ItemStack(itemsToAdd.get(context.getRandom().nextInt(curios.length)), 1));
-                        }
-                        //50% chance to get 2
-                        if (rolledChance < 0.5) {
-                            additionalItems.add(new ItemStack(itemsToAdd.get(context.getRandom().nextInt(curios.length)), 1));
-                        }
-                        //30% chance to get 3
-                        if (rolledChance < 0.3) {
-                            additionalItems.add(new ItemStack(itemsToAdd.get(context.getRandom().nextInt(curios.length)), 1));
-                        }
-                        System.out.println("Created modified loot table.");
-                        System.out.println("Chest position at X: " + chestPos.getX() + ", Y: " + chestPos.getY() + ", Z: " + chestPos.getZ());
-                        chestNbt.putBoolean(MODIFIED_CHEST_NBTKEY, true);
-                        chest.write(chestNbt);
-                        chest.getUpdatePacket();
-                        chest.markDirty();
-                    }
+            if ((chest instanceof LockableLootTileEntity && !(chest instanceof DispenserTileEntity || chest instanceof HopperTileEntity)) || queriedLootTable.equals(LootTables.CHESTS_ABANDONED_MINESHAFT)) {
+                //some free glowstone dust as a treat
+                additionalItems.add(new ItemStack(Items.GLOWSTONE_DUST.getItem(), context.getRandom().nextInt(16) + 24));
+                
+                //chance of finding a chair in loot, can get 1-4 of them
+                if (context.getRandom().nextFloat() < 0.4) {
+                    additionalItems.add(new ItemStack(ModBlocks.MOTIVATIONAL_CHAIR.get().asItem(), context.getRandom().nextInt(3) + 1));
                 }
+                
+                //roll a random value to determine how many curios are put into the chest
+                float rolledChance = context.getRandom().nextFloat();
+                //get dimension ID of the chest and use it to boost odds in certain dimensions
+                ResourceLocation dimID = context.getWorld().getDimensionKey().getLocation();
+                
+                //if it's a stronghold chest, increase odds by 10%
+                if (queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CORRIDOR) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CROSSING) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_LIBRARY)) {
+                    rolledChance = MathHelper.clamp(rolledChance - 0.1f, 0, rolledChance);
+                }
+                //if it's a structure in the NETHER, increase odds by 15%
+                if (dimID.equals(DimensionType.THE_NETHER_ID)) {
+                    rolledChance = MathHelper.clamp(rolledChance - 0.15f, 0, rolledChance);
+                }
+                //if it's a structure in the END, increase odds by 25%
+                if (dimID.equals(DimensionType.THE_END_ID)) {
+                    rolledChance = MathHelper.clamp(rolledChance - 0.25f, 0, rolledChance);
+                }
+                
+                //we do it like this since otherwise you would just generate multiple of the same curio by changing the count
+                //also lets you tune how often you would find more curios
+                //85% chance to get 1
+                if (rolledChance < 0.85) {
+                    //gets a random curio from the passed in list 'addition'
+                    additionalItems.add(new ItemStack(itemsToAdd.get(context.getRandom().nextInt(curios.length)), 1));
+                }
+                //50% chance to get 2
+                if (rolledChance < 0.5) {
+                    additionalItems.add(new ItemStack(itemsToAdd.get(context.getRandom().nextInt(curios.length)), 1));
+                }
+                //30% chance to get 3
+                if (rolledChance < 0.3) {
+                    additionalItems.add(new ItemStack(itemsToAdd.get(context.getRandom().nextInt(curios.length)), 1));
+                }
+                System.out.println("Created modified loot table.");
+                System.out.println("Chest position at X: " + chestPos.getX() + ", Y: " + chestPos.getY() + ", Z: " + chestPos.getZ());
             }
         }
        
