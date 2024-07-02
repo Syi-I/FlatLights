@@ -7,12 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootTables;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class CurioStructureAdditionModifier extends LootModifier {
+public class CurioMineshaftAdditionModifier extends LootModifier {
     //list of items that have a chance of being added to the loot pool
     private final List<Item> itemsToAdd;
     //this string array must be in the exact same order as in 'resources > data > flatlights > loot_modifiers > curio_structure_loot.json'
@@ -36,7 +33,7 @@ public class CurioStructureAdditionModifier extends LootModifier {
 
     //this is being used for structure chest loot not block drops
     //passes in conditions to check before modifying the loot that is generated, and what item(s) to be added
-    protected CurioStructureAdditionModifier(ILootCondition[] conditionsIn, List<Item> addition) {
+    protected CurioMineshaftAdditionModifier(ILootCondition[] conditionsIn, List<Item> addition) {
         super(conditionsIn);
         this.itemsToAdd = addition;
     }
@@ -47,8 +44,6 @@ public class CurioStructureAdditionModifier extends LootModifier {
         //generatedLoot is the loot that would be dropped before adding new items here
         //can add based on chance (some conditional if statement) or guarantee (no condition checks)
         List<ItemStack> additionalItems = new ArrayList<>();
-        //the loot table that we are trying to modify
-        ResourceLocation queriedLootTable = context.getQueriedLootTableId();
         //some free glowstone dust as a treat
         additionalItems.add(new ItemStack(Items.GLOWSTONE_DUST.getItem(), context.getRandom().nextInt(16) + 24));
         
@@ -59,21 +54,6 @@ public class CurioStructureAdditionModifier extends LootModifier {
         
         //roll a random value to determine how many curios are put into the chest
         float rolledChance = context.getRandom().nextFloat();
-        //get dimension ID of the chest and use it to boost odds in certain dimensions
-        ResourceLocation dimID = context.getWorld().getDimensionKey().getLocation();
-        
-        //if it's a stronghold chest, increase odds by 10%
-        if (queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CORRIDOR) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CROSSING) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_LIBRARY)) {
-            rolledChance = MathHelper.clamp(rolledChance - 0.1f, 0, rolledChance);
-        }
-        //if it's a structure in the NETHER, increase odds by 15%
-        if (dimID.equals(DimensionType.THE_NETHER_ID)) {
-            rolledChance = MathHelper.clamp(rolledChance - 0.15f, 0, rolledChance);
-        }
-        //if it's a structure in the END, increase odds by 25%
-        if (dimID.equals(DimensionType.THE_END_ID)) {
-            rolledChance = MathHelper.clamp(rolledChance - 0.25f, 0, rolledChance);
-        }
         
         //we do it like this since otherwise you would just generate multiple of the same curio by changing the count
         //also lets you tune how often you would find more curios
@@ -93,36 +73,36 @@ public class CurioStructureAdditionModifier extends LootModifier {
        
         if(!(new HashSet<>(generatedLoot).containsAll(additionalItems))) {
             for(ItemStack item : generatedLoot) {
-                MiscHelpers.debugLogger("[Structure Chest] Base Generated Item: " + item.toString());
+                MiscHelpers.debugLogger("[Mineshaft] Base Generated Item: " + item.toString());
             }
             for(ItemStack item : additionalItems) {
-                MiscHelpers.debugLogger("[Structure Chest] Additional Item: " + item.toString());
+                MiscHelpers.debugLogger("[Mineshaft] Additional Item: " + item.toString());
             }
             generatedLoot.addAll(additionalItems);
-            MiscHelpers.debugLogger("[Structure Chest] Added extra items to loot table.");
+            MiscHelpers.debugLogger("[Mineshaft] Added extra items to loot table.");
             return generatedLoot;
         }
-        MiscHelpers.debugLogger("[Structure Chest] Unmodified loot table returned.");
+        MiscHelpers.debugLogger("[Mineshaft] Unmodified loot table returned.");
         //return the modified list of loot
         //List<ItemStack> duplicateChest = new ArrayList<>();
         return generatedLoot;
     }
 
-    public static class Serializer extends GlobalLootModifierSerializer<CurioStructureAdditionModifier> {
+    public static class Serializer extends GlobalLootModifierSerializer<CurioMineshaftAdditionModifier> {
 
         @Override
-        public CurioStructureAdditionModifier read(ResourceLocation name, JsonObject object, ILootCondition[] conditionsIn) {
+        public CurioMineshaftAdditionModifier read(ResourceLocation name, JsonObject object, ILootCondition[] conditionsIn) {
             //list of items from the json file
             //gets each curio from the json file via the String array 'curios' which has the same keys
             List<Item> addition = new ArrayList<>();
             for(String curioName : curios) {
                 addition.add(ForgeRegistries.ITEMS.getValue(new ResourceLocation(JSONUtils.getString(object, curioName))));
             }
-            return new CurioStructureAdditionModifier(conditionsIn, addition);
+            return new CurioMineshaftAdditionModifier(conditionsIn, addition);
         }
 
         @Override
-        public JsonObject write(CurioStructureAdditionModifier instance) {
+        public JsonObject write(CurioMineshaftAdditionModifier instance) {
             JsonObject json = makeConditions(instance.conditions);
             //makes the list in the same order as the json, based on the 'curios' String array
             for(int i = 0; i < curios.length; i++) {

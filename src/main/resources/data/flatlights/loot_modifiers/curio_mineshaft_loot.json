@@ -1,12 +1,8 @@
 {
   "conditions": [
     {
-      "condition": "flatlights:generic_structure_chest",
-      "block": "forge:chests/wooden"
-    },
-    {
-      "condition": "flatlights:generic_structure_chest",
-      "block": "forge:chests/trapped"
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/abandoned_mineshaft"
     }
   ],
   "dragon_cube": "flatlights:dragons_final_cube",

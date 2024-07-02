@@ -15,6 +15,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
+import static com.uberhelixx.flatlights.FlatLights.LOGGER;
+
 public class SpectralizerContainer extends Container {
     private final TileEntity tileEntity;
     private final PlayerEntity playerEntity;
@@ -144,7 +146,7 @@ public class SpectralizerContainer extends Container {
                 return ItemStack.EMPTY;
             }
         } else {
-            System.out.println("Invalid slotIndex:" + index);
+            LOGGER.error("Invalid slotIndex:" + index);
             return ItemStack.EMPTY;
         }
         // If stack size == 0 (the entire stack was moved) set slot contents to null

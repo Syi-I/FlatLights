@@ -1,10 +1,12 @@
 package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLights;
+import com.uberhelixx.flatlights.event.loot.ChestCheckCondition;
+import com.uberhelixx.flatlights.event.loot.CurioMineshaftAdditionModifier;
 import com.uberhelixx.flatlights.event.loot.CurioStructureAdditionModifier;
 import com.uberhelixx.flatlights.event.loot.JogoatAdditionModifier;
-import com.uberhelixx.flatlights.event.loot.JogoatStructureAdditionModifier;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,7 +24,9 @@ public class ModEventBusEvents {
         event.getRegistry().registerAll(
             new JogoatAdditionModifier.Serializer().setRegistryName(new ResourceLocation(FlatLights.MOD_ID,"jogoat_fire"))
             ,new CurioStructureAdditionModifier.Serializer().setRegistryName(new ResourceLocation(FlatLights.MOD_ID,"curio_structure_loot"))
+            ,new CurioMineshaftAdditionModifier.Serializer().setRegistryName(new ResourceLocation(FlatLights.MOD_ID,"curio_mineshaft_loot"))
             //,new JogoatStructureAdditionModifier.Serializer().setRegistryName(new ResourceLocation(FlatLights.MOD_ID,"jogoat_structure_loot"))
         );
+        Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation("flatlights:generic_structure_chest"), ChestCheckCondition.GENERIC_STRUCTURE_CHEST);
     }
 }

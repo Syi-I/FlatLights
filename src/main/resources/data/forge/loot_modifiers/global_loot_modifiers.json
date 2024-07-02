@@ -2,6 +2,7 @@
   "replace": false,
   "entries": [
     "flatlights:jogoat_fire",
-    "flatlights:curio_structure_loot"
+    "flatlights:curio_structure_loot",
+    "flatlights:curio_mineshaft_loot"
   ]
 }
