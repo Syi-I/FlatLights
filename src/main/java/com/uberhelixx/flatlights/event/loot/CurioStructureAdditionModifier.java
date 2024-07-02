@@ -95,16 +95,16 @@ public class CurioStructureAdditionModifier extends LootModifier {
        
         if(!(new HashSet<>(generatedLoot).containsAll(additionalItems))) {
             for(ItemStack item : generatedLoot) {
-                LOGGER.info("[Structure Chest] Base Generated Item: " + item.toString());
+                MiscHelpers.debugLogger("[Structure Chest] Base Generated Item: " + item.toString());
             }
             for(ItemStack item : additionalItems) {
-                LOGGER.info("[Structure Chest] Additional Item: " + item.toString());
+                MiscHelpers.debugLogger("[Structure Chest] Additional Item: " + item.toString());
             }
             generatedLoot.addAll(additionalItems);
-            LOGGER.info("[Structure Chest] Added extra items to loot table.");
+            MiscHelpers.debugLogger("[Structure Chest] Added extra items to loot table.");
             return generatedLoot;
         }
-        LOGGER.info("[Structure Chest] Unmodified loot table returned.");
+        MiscHelpers.debugLogger("[Structure Chest] Unmodified loot table returned.");
         //return the modified list of loot
         //List<ItemStack> duplicateChest = new ArrayList<>();
         return generatedLoot;
