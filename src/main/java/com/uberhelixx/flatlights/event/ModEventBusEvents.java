@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.event;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.event.loot.CurioStructureAdditionModifier;
 import com.uberhelixx.flatlights.event.loot.JogoatAdditionModifier;
+import com.uberhelixx.flatlights.event.loot.JogoatStructureAdditionModifier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;

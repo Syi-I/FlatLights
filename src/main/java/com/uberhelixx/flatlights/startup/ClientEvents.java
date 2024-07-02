@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.util;
+package com.uberhelixx.flatlights.startup;
 
 import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
@@ -6,6 +6,7 @@ import com.uberhelixx.flatlights.render.BombSwingProjectileRenderer;
 import com.uberhelixx.flatlights.render.GravityLiftRenderer;
 import com.uberhelixx.flatlights.render.VoidSphereRenderer;
 import com.uberhelixx.flatlights.render.player.DragonSphereRenderer;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;

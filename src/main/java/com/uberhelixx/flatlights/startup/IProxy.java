@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.util;
+package com.uberhelixx.flatlights.startup;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 

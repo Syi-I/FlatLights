@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.util;
+package com.uberhelixx.flatlights.startup;
 
 import com.uberhelixx.flatlights.render.EntangledEffectRenderer;
 import com.uberhelixx.flatlights.render.RisingHeatEffectRenderer;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static com.uberhelixx.flatlights.FlatLights.LOGGER;
 
-public class ClientProxy implements IProxy{
+public class ClientProxy implements IProxy {
     
     @Override
     public void preInit(FMLCommonSetupEvent event) {
