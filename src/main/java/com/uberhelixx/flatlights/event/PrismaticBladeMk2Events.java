@@ -38,7 +38,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.uberhelixx.flatlights.FlatLights.LOGGER;
 import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.*;
 import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 

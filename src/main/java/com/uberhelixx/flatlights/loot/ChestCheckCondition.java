@@ -1,13 +1,10 @@
-package com.uberhelixx.flatlights.event.loot;
+package com.uberhelixx.flatlights.loot;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.minecraft.advancements.criterion.LocationPredicate;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.tileentity.DispenserTileEntity;
 import net.minecraft.tileentity.HopperTileEntity;
@@ -41,6 +38,11 @@ public class ChestCheckCondition implements ILootCondition {
    public boolean test(LootContext lootContext) {
       Vector3d vector3d = lootContext.get(LootParameters.ORIGIN);
       if(vector3d == null) {
+         return false;
+      }
+      
+      if(lootContext.getQueriedLootTableId().equals(LootTables.CHESTS_ABANDONED_MINESHAFT)) {
+         //LOGGER.info("[Chest Loot Condition] We are spamming the mineshaft carts trying to put loot in. Instead, we are making duplicate item entries in all the chest minecarts. God why.");
          return false;
       }
       

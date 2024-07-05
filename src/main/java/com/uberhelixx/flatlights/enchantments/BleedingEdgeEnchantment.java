@@ -6,7 +6,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 
 public class BleedingEdgeEnchantment extends Enchantment {
     public BleedingEdgeEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentType.WEAPON, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
+        super(Rarity.RARE, EnchantmentType.WEAPON, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
     }
 
     @Override

@@ -6,7 +6,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 
 public class BonesawEnchantment extends Enchantment {
     public BonesawEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentType.WEAPON, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
+        super(Rarity.RARE, EnchantmentType.WEAPON, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
     }
 
     @Override

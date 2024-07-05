@@ -9,7 +9,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class FlashOfBrillianceEnchantment extends Enchantment {
     public FlashOfBrillianceEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentType.WEAPON, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
+        super(Rarity.UNCOMMON, EnchantmentType.WEAPON, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
     }
 
     @Override

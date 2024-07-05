@@ -19,6 +19,8 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.Collection;
@@ -30,6 +32,11 @@ public class QuantumStrikeEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() { return 5; }
+    
+    @Override
+    public ITextComponent getDisplayName(int level) {
+        return ((IFormattableTextComponent) super.getDisplayName(level)).mergeStyle(TextFormatting.BLUE);
+    }
 
     public void onEntityDamaged(LivingEntity user, Entity target, int level) {
         if(target instanceof LivingEntity) {

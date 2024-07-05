@@ -1,9 +1,6 @@
-package com.uberhelixx.flatlights.event;
+package com.uberhelixx.flatlights.loot;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.event.loot.ChestCheckCondition;
-import com.uberhelixx.flatlights.event.loot.CurioStructureAdditionModifier;
-import com.uberhelixx.flatlights.event.loot.JogoatAdditionModifier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
@@ -15,7 +12,7 @@ import javax.annotation.Nonnull;
 
 //MOD event bus for registering stuff, otherwise use Bus.FORGE
 @Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModEventBusEvents {
+public class RegisterLootModifierSerializer {
 
     @SubscribeEvent
     public static void registerModifierSerializers(@Nonnull final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
@@ -25,6 +22,8 @@ public class ModEventBusEvents {
             ,new CurioStructureAdditionModifier.Serializer().setRegistryName(new ResourceLocation(FlatLights.MOD_ID,"curio_structure_loot"))
             //,new JogoatStructureAdditionModifier.Serializer().setRegistryName(new ResourceLocation(FlatLights.MOD_ID,"jogoat_structure_loot"))
         );
+        
+        //register the custom loot condition types here
         Registry.register(Registry.LOOT_CONDITION_TYPE, new ResourceLocation("flatlights:generic_structure_chest"), ChestCheckCondition.GENERIC_STRUCTURE_CHEST);
     }
 }

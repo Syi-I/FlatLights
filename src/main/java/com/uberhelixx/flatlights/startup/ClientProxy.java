@@ -29,6 +29,7 @@ public class ClientProxy implements IProxy {
     
     @Override
     public void init(FMLCommonSetupEvent event) {
+        LOGGER.info("[Common Setup] Adding player render layers");
         Map<String, PlayerRenderer> skinMap = Minecraft.getInstance().getRenderManager().getSkinMap();
         for (PlayerRenderer render : new PlayerRenderer[] {skinMap.get("default"), skinMap.get("slim")}) {
             render.addLayer(new PrismaticBladeMk2Renderer(render));
@@ -38,6 +39,7 @@ public class ClientProxy implements IProxy {
             render.addLayer(new PlayerEntangledEffectRenderer(render));
         }
         
+        LOGGER.info("[Common Setup] Adding entity render layers");
         //this gets all the entities and puts a new render layer on to every living entity
         for(EntityType<?> entity : ForgeRegistries.ENTITIES) {
             EntityRenderer<?> entityRenderer = Minecraft.getInstance().getRenderManager().renderers.get(entity);
