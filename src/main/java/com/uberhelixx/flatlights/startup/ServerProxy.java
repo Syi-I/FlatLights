@@ -1,8 +1,8 @@
-package com.uberhelixx.flatlights.util;
+package com.uberhelixx.flatlights.startup;
 
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-public class ServerProxy implements IProxy{
+public class ServerProxy implements IProxy {
     @Override
     public void preInit(FMLCommonSetupEvent event) {
     

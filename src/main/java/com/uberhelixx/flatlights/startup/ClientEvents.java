@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.util;
+package com.uberhelixx.flatlights.startup;
 
 import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
 import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
@@ -6,6 +6,7 @@ import com.uberhelixx.flatlights.render.BombSwingProjectileRenderer;
 import com.uberhelixx.flatlights.render.GravityLiftRenderer;
 import com.uberhelixx.flatlights.render.VoidSphereRenderer;
 import com.uberhelixx.flatlights.render.player.DragonSphereRenderer;
+import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -20,13 +21,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.common.Mod;
 
+import static com.uberhelixx.flatlights.FlatLights.LOGGER;
 import static com.uberhelixx.flatlights.FlatLights.MOD_ID;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
     @SubscribeEvent
     public static void onModelRegistryEvent(ModelRegistryEvent event) {
-        MiscHelpers.debugLogger("tried to add special model idk");
+        LOGGER.info("[Model Registry Event] tried to add special models idk");
         //register custom models here
         ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
         ModelLoader.addSpecialModel(new ResourceLocation(MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
@@ -56,6 +58,7 @@ public class ClientEvents {
     
     @SubscribeEvent
     public static void curiosIconRegistryEvent(TextureStitchEvent.Pre event) {
+        LOGGER.info("[Texture Stitch Event] Adding new curio icons");
         //register curio slot custom icons
         event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon"));
         event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon"));

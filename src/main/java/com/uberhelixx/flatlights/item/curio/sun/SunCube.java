@@ -26,7 +26,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 import top.theillusivec4.curios.api.SlotContext;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;

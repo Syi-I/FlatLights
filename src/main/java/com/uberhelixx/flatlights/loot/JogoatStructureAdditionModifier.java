@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.event.loot;
+package com.uberhelixx.flatlights.loot;
 
 import com.google.gson.JsonObject;
 import net.minecraft.item.Item;

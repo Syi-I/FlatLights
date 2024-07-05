@@ -12,11 +12,13 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BlockEvents {
 
+    @SubscribeEvent
     public static void craftingTableSound (PlayerInteractEvent.RightClickBlock event) {
         //get world
         World world = event.getWorld();

@@ -9,7 +9,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class Shimmer2Enchantment extends Enchantment {
     public Shimmer2Enchantment() {
-        super(Rarity.VERY_RARE, EnchantmentType.BREAKABLE, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
+        super(Rarity.RARE, EnchantmentType.BREAKABLE, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
     }
 
     @Override

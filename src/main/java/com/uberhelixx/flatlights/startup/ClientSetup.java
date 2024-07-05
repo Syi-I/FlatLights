@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.util;
+package com.uberhelixx.flatlights.startup;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.block.ModBlocks;
@@ -14,6 +14,7 @@ import com.uberhelixx.flatlights.screen.LightStorageScreen;
 import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
 import com.uberhelixx.flatlights.screen.SpectralizerScreen;
 import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
+import com.uberhelixx.flatlights.util.ModKeybinds;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;

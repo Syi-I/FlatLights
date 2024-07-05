@@ -35,6 +35,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Power transfer cable for the power generator
 - Powered item repairer
 
+## [1.23.2] - 2024-07-05
+### Added
+-
+
+### Changed
+- Made global loot modifier for adding curios to structure loot better and more streamlined, should now be able to adjust the rates and amounts of curios that are added to structure loot using the json file.
+- Made enchantment `Quantum Strike` have a blue display name since it's one of the more significant enchantments to get and it's very rare, so this makes it easier to see when you do get it.
+- Lowered the rarity of some enchantments since I realized how rare `very_rare` actually is, and all the enchantments that Flat Lights adds were at the `very_rare` rarity before this.
+
+### Fixed
+- Global loot modifier for curios was spamming duplicate items in abandoned mineshaft chest minecarts only, for some reason, so we fixed this by using a custom loot condition and also no longer trying to put loot into abandoned mineshafts. You can still find curios in any other structures, and curios should still generate in other mods' structures as loot assuming those use chests/barrels to store the loot in. We just aren't messing with minecart chests anymore because apparently those suck a little bit. (RIP abandoned mineshaft log spam you will not be missed)
+
+
 ## [1.23.1] - 2024-06-30
 RIP Sorry to anyone who tried to use this on a server before, I didn't think to test running the mod on a dedicated server, so I didn't realize it instantly crashed. Things should be better now but there's a good chance I missed some stuff so do let me know what stuff still causes crashes.
 ### Added

@@ -113,8 +113,10 @@ public class PrismaticBladeMk2Events {
         }
         for (int i = 0; i < oldPlayer.inventory.mainInventory.size(); ++i) {
             ItemStack stack = oldPlayer.inventory.mainInventory.get(i);
-            if (addToPlayerInventory(player, stack)) {
-                oldPlayer.inventory.mainInventory.set(i, ItemStack.EMPTY);
+            if(stack.getItem() instanceof PrismaticBladeMk2) {
+                if (addToPlayerInventory(player, stack)) {
+                    oldPlayer.inventory.mainInventory.set(i, ItemStack.EMPTY);
+                }
             }
         }
     }
@@ -141,8 +143,13 @@ public class PrismaticBladeMk2Events {
             }
         }
     }
-
-    //function to actually find and add specific items to the player inventory
+    
+    /**
+     * function to actually find and add specific items to the player inventory
+     * @param player The player whose inventory is being checked for items to copy
+     * @param stack The {@link ItemStack} being copied
+     * @return TRUE if item is added to the player inventory, FALSE if no item is added or if player or stack is empty
+     */
     private static boolean addToPlayerInventory(PlayerEntity player, ItemStack stack) {
         if (stack.isEmpty() || player == null) {
             return false;
