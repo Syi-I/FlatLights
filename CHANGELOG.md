@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
--
+- Random curio loot box item so that it's easier to carry all the curio loot found in structures while exploring.
 
 ### Changed
--
+- Curio structure loot from individual curios to the random curio loot box item for better inventory storage.
+- Method of applying potion effects from certain items, wearable gear like curios and armor, now reapplies effects per tick instead of just on equip/unequip. This is due to some other mod interactions causing you to lose the effects under some circumstances, leading to constantly equipping and unequipping gear to regain the effects which is annoying.
 
 ### Fixed
 -
@@ -31,6 +32,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Curio Set: undecided
   - Speed related buffs
   - Set Effect: **(Speed of Silence)** Increases the damage dealt by a factor of the wearer's movement speed
+- Curio Set: **Seven Star Hero**
+  - Low level generic combat buffs, loot focused sphere stats
+  - Set Effect: **(Dao of Fortune)** x% chance to survive a lethal attack
 - Rudimentary power generator that just eats items and gives 1 rf per item or something silly
 - Power transfer cable for the power generator
 - Powered item repairer
