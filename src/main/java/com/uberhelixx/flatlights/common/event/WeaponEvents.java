@@ -1,7 +1,7 @@
 package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.common.item.ModItems;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketLeftClick;
 import com.uberhelixx.flatlights.network.PacketReachHit;
@@ -10,7 +10,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WeaponEvents {
 
     //Prismatic Sword check for left click on full swing to throw bomb

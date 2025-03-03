@@ -3,7 +3,7 @@ package com.uberhelixx.flatlights.enchantments;
 import com.uberhelixx.flatlights.FlatLights;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class ModEnchantments {
 
     public static final DeferredRegister<Enchantment> ENCHANTMENTS
-            = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, FlatLights.MODID);
 
     private static <T extends Enchantment>RegistryObject<T> registerEnch(String name, Supplier<T> ench) {
         return ENCHANTMENTS.register(name, ench);

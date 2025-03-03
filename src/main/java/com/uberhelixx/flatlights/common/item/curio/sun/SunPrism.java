@@ -1,21 +1,21 @@
-package com.uberhelixx.flatlights.item.curio.sun;
+package com.uberhelixx.flatlights.common.item.curio.sun;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import com.uberhelixx.flatlights.item.curio.BaseCurio;
-import com.uberhelixx.flatlights.item.curio.CurioSetNames;
-import com.uberhelixx.flatlights.item.curio.CurioTier;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import com.uberhelixx.flatlights.common.item.curio.BaseCurio;
+import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
+import com.uberhelixx.flatlights.common.item.curio.CurioTier;
+import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.UUID;

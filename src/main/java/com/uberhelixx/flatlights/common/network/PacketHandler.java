@@ -1,19 +1,19 @@
 package com.uberhelixx.flatlights.network;
 
 import com.uberhelixx.flatlights.FlatLights;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkDirection;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.world.entity.player.ServerPlayerEntity;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public final class PacketHandler {
 
     private static final String CHANNELS = "10";
     private static final String CHANNEL_NAME = "channel";
     public static final SimpleChannel HANDLER = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(FlatLights.MOD_ID, CHANNEL_NAME),
+            new ResourceLocation(FlatLights.MODID, CHANNEL_NAME),
             () -> CHANNELS,
             CHANNELS::equals,
             CHANNELS::equals

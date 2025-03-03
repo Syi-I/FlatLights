@@ -2,12 +2,12 @@ package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.armor.PrismaticHelm;
+import com.uberhelixx.flatlights.common.item.ModItems;
+import com.uberhelixx.flatlights.common.item.armor.PrismaticHelm;
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -17,11 +17,11 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Objects;
 
-import static com.uberhelixx.flatlights.item.armor.ModArmorItem.*;
-import static com.uberhelixx.flatlights.item.armor.PrismaticChestplate.onEquip;
-import static com.uberhelixx.flatlights.item.armor.PrismaticChestplate.onUnequip;
+import static com.uberhelixx.flatlights.common.item.armor.ModArmorItem.*;
+import static com.uberhelixx.flatlights.common.item.armor.PrismaticChestplate.onEquip;
+import static com.uberhelixx.flatlights.common.item.armor.PrismaticChestplate.onUnequip;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ArmorEvents {
 
     //Prismatic Armor, reduce incoming damage amount based on armor total, requires at least one piece of prisma armor on to work

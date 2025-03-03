@@ -1,15 +1,15 @@
-package com.uberhelixx.flatlights.block;
+package com.uberhelixx.flatlights.common.block;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.block.blackout.*;
-import com.uberhelixx.flatlights.block.lights.*;
-import com.uberhelixx.flatlights.item.ModItemGroup;
-import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.common.block.blackout.*;
+import com.uberhelixx.flatlights.common.block.lights.*;
+import com.uberhelixx.flatlights.common.item.ModItemGroup;
+import com.uberhelixx.flatlights.common.item.ModItems;
 import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -19,7 +19,7 @@ public class ModBlocks {
 
     //different DeferredRegisters for the various block types to try and make datagen easier
     public static final DeferredRegister<Block> BLOCKS
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MODID);
     //helper function for registering block as an item, so it exists as a drop and can actually be crafted/used
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block) {
         ModItems.BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().group(ModItemGroup.FLATLIGHTS)));
@@ -32,7 +32,7 @@ public class ModBlocks {
     }
 
     public static final DeferredRegister<Block> SPECIAL_BLOCKS
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MODID);
     private static <T extends Block>RegistryObject<T> registerSpecialBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = SPECIAL_BLOCKS.register(name, block);
         registerSpecialBlockItem(name, toReturn);
@@ -43,7 +43,7 @@ public class ModBlocks {
     }
 
     public static final DeferredRegister<Block> PANELS
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MODID);
     private static <T extends Block>RegistryObject<T> registerPanel(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = PANELS.register(name, block);
         registerPanelItem(name, toReturn);
@@ -54,7 +54,7 @@ public class ModBlocks {
     }
 
     public static final DeferredRegister<Block> FLATBLOCKS
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MODID);
     private static <T extends Block>RegistryObject<T> registerFlatblock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = FLATBLOCKS.register(name, block);
         registerFlatblockItem(name, toReturn);
@@ -65,7 +65,7 @@ public class ModBlocks {
     }
 
     public static final DeferredRegister<Block> PILLARS
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MODID);
     private static <T extends Block>RegistryObject<T> registerPillar(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = PILLARS.register(name, block);
         registerPillarItem(name, toReturn);
@@ -76,7 +76,7 @@ public class ModBlocks {
     }
 
     public static final DeferredRegister<Block> HORIZONTAL_EDGES
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MODID);
     private static <T extends Block>RegistryObject<T> registerEdgeH(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = HORIZONTAL_EDGES.register(name, block);
         registerEdgeHItem(name, toReturn);
@@ -87,7 +87,7 @@ public class ModBlocks {
     }
 
     public static final DeferredRegister<Block> VERTICAL_EDGES
-            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.BLOCKS, FlatLights.MODID);
     private static <T extends Block>RegistryObject<T> registerEdgeV(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = VERTICAL_EDGES.register(name, block);
         registerEdgeVItem(name, toReturn);

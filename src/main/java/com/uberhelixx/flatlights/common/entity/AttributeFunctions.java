@@ -1,18 +1,18 @@
-package com.uberhelixx.flatlights.entity;
+package com.uberhelixx.flatlights.common.entity;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.item.ExperienceOrbEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.item.ExperienceOrbEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID)
 public class AttributeFunctions {
     
     /**
@@ -107,7 +107,7 @@ public class AttributeFunctions {
         }
     }
     
-    private static final String ITEM_MARKER = FlatLights.MOD_ID + ".marker";
+    private static final String ITEM_MARKER = FlatLights.MODID + ".marker";
     
     @SubscribeEvent
     public static void markBaseLoot(LivingDeathEvent event) {

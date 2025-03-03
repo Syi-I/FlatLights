@@ -1,15 +1,15 @@
-package com.uberhelixx.flatlights.item.tools;
+package com.uberhelixx.flatlights.common.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.entity.GravityLiftEntity;
-import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
+import com.uberhelixx.flatlights.common.entity.GravityLiftEntity;
+import com.uberhelixx.flatlights.common.entity.GravityLiftProjectileEntity;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -17,7 +17,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;

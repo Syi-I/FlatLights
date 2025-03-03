@@ -1,12 +1,12 @@
 package com.uberhelixx.flatlights.loot;
 
-import com.uberhelixx.flatlights.block.ModBlocks;
-import com.uberhelixx.flatlights.item.curio.ModCurios;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import com.uberhelixx.flatlights.common.block.ModBlocks;
+import com.uberhelixx.flatlights.common.item.curio.ModCurios;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;

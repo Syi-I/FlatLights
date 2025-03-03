@@ -1,8 +1,8 @@
 package com.uberhelixx.flatlights.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 public class ClientUtils {
     
@@ -10,11 +10,11 @@ public class ClientUtils {
         return Minecraft.getInstance();
     }
     
-    public static PlayerEntity getPlayer() {
+    public static Player getPlayer() {
         return getMinecraft().player;
     }
     
-    public static World getWorld() {
-        return getPlayer().world;
+    public static Level getWorld() {
+        return getPlayer().level();
     }
 }

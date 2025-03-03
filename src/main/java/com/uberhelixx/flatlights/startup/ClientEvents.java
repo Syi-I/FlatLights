@@ -1,18 +1,18 @@
 package com.uberhelixx.flatlights.startup;
 
-import com.uberhelixx.flatlights.entity.GravityLiftProjectileEntity;
-import com.uberhelixx.flatlights.entity.PortableBlackHoleProjectileEntity;
-import com.uberhelixx.flatlights.render.BombSwingProjectileRenderer;
-import com.uberhelixx.flatlights.render.GravityLiftRenderer;
-import com.uberhelixx.flatlights.render.VoidSphereRenderer;
-import com.uberhelixx.flatlights.render.player.DragonSphereRenderer;
+import com.uberhelixx.flatlights.common.entity.GravityLiftProjectileEntity;
+import com.uberhelixx.flatlights.common.entity.PortableBlackHoleProjectileEntity;
+import com.uberhelixx.flatlights.client.renderer.BombSwingProjectileRenderer;
+import com.uberhelixx.flatlights.client.renderer.GravityLiftRenderer;
+import com.uberhelixx.flatlights.client.renderer.VoidSphereRenderer;
+import com.uberhelixx.flatlights.client.renderer.player.DragonSphereRenderer;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.common.Mod;
 
 import static com.uberhelixx.flatlights.FlatLights.LOGGER;
-import static com.uberhelixx.flatlights.FlatLights.MOD_ID;
+import static com.uberhelixx.flatlights.FlatLights.MODID;
 
 @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
@@ -31,7 +31,7 @@ public class ClientEvents {
         LOGGER.info("[Model Registry Event] tried to add special models idk");
         //register custom models here
         ModelLoader.addSpecialModel(VoidSphereRenderer.SPHERE_MODEL);
-        ModelLoader.addSpecialModel(new ResourceLocation(MOD_ID, "block/motivational_chair/motivational_chair_wrapper"));
+        ModelLoader.addSpecialModel(new ResourceLocation(MODID, "block/motivational_chair/motivational_chair_wrapper"));
         ModelLoader.addSpecialModel(GravityLiftRenderer.LIFT_BASE_MODEL);
         ModelLoader.addSpecialModel(BombSwingProjectileRenderer.BOMB_MODEL);
         ModelLoader.addSpecialModel(DragonSphereRenderer.INNER_SPHERE_MODEL);
@@ -60,8 +60,8 @@ public class ClientEvents {
     public static void curiosIconRegistryEvent(TextureStitchEvent.Pre event) {
         LOGGER.info("[Texture Stitch Event] Adding new curio icons");
         //register curio slot custom icons
-        event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_cube_icon"));
-        event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_prism_icon"));
-        event.addSprite(new ResourceLocation(MOD_ID, "item/curio/curio_sphere_icon"));
+        event.addSprite(new ResourceLocation(MODID, "item/curio/curio_cube_icon"));
+        event.addSprite(new ResourceLocation(MODID, "item/curio/curio_prism_icon"));
+        event.addSprite(new ResourceLocation(MODID, "item/curio/curio_sphere_icon"));
     }
 }

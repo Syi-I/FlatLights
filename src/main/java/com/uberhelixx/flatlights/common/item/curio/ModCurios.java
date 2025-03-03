@@ -1,27 +1,27 @@
-package com.uberhelixx.flatlights.item.curio;
+package com.uberhelixx.flatlights.common.item.curio;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.item.ModItemGroup;
-import com.uberhelixx.flatlights.item.curio.dragonsfinal.DragonsFinalCube;
-import com.uberhelixx.flatlights.item.curio.dragonsfinal.DragonsFinalPrism;
-import com.uberhelixx.flatlights.item.curio.dragonsfinal.DragonsFinalSphere;
-import com.uberhelixx.flatlights.item.curio.shore.ShoreCube;
-import com.uberhelixx.flatlights.item.curio.shore.ShorePrism;
-import com.uberhelixx.flatlights.item.curio.shore.ShoreSphere;
-import com.uberhelixx.flatlights.item.curio.sun.SunCube;
-import com.uberhelixx.flatlights.item.curio.sun.SunPrism;
-import com.uberhelixx.flatlights.item.curio.sun.SunSphere;
-import net.minecraft.item.Item;
+import com.uberhelixx.flatlights.common.item.ModItemGroup;
+import com.uberhelixx.flatlights.common.item.curio.dragonsfinal.DragonsFinalCube;
+import com.uberhelixx.flatlights.common.item.curio.dragonsfinal.DragonsFinalPrism;
+import com.uberhelixx.flatlights.common.item.curio.dragonsfinal.DragonsFinalSphere;
+import com.uberhelixx.flatlights.common.item.curio.shore.ShoreCube;
+import com.uberhelixx.flatlights.common.item.curio.shore.ShorePrism;
+import com.uberhelixx.flatlights.common.item.curio.shore.ShoreSphere;
+import com.uberhelixx.flatlights.common.item.curio.sun.SunCube;
+import com.uberhelixx.flatlights.common.item.curio.sun.SunPrism;
+import com.uberhelixx.flatlights.common.item.curio.sun.SunSphere;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import static com.uberhelixx.flatlights.item.ModItems.ITEMS;
+import static com.uberhelixx.flatlights.common.item.ModItems.ITEMS;
 
 public class ModCurios {
     public static final DeferredRegister<Item> CURIOS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
 
     public static void register(IEventBus eventBus) {
         CURIOS.register(eventBus);

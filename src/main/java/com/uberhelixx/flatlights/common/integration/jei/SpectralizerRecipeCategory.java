@@ -2,7 +2,7 @@ package com.uberhelixx.flatlights.integration.jei;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.common.block.ModBlocks;
 import com.uberhelixx.flatlights.data.recipes.SpectralizerRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -12,12 +12,12 @@ import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 
 public class SpectralizerRecipeCategory implements IRecipeCategory<SpectralizerRecipe> {
-    public static final ResourceLocation UID = new ResourceLocation(FlatLights.MOD_ID, "spectralizer");
-    public static final ResourceLocation TEXTURE = new ResourceLocation(FlatLights.MOD_ID, "textures/gui/spectralizer_gui.png");
+    public static final ResourceLocation UID = new ResourceLocation(FlatLights.MODID, "spectralizer");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(FlatLights.MODID, "textures/gui/spectralizer_gui.png");
     private final IDrawable background;
     private final IDrawable icon;
     private final IDrawableStatic outlineRed;

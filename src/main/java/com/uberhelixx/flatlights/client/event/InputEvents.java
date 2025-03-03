@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.event;
+package com.uberhelixx.flatlights.client.event;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.network.PacketCurioToggle;
@@ -10,7 +10,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class InputEvents {
     @SubscribeEvent
     public static void onKeyPress(InputEvent.KeyInputEvent event) {

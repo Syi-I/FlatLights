@@ -1,12 +1,12 @@
 package com.uberhelixx.flatlights.capability;
 
 import com.uberhelixx.flatlights.FlatLights;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 public class RisingHeatStateProvider implements ICapabilitySerializable<INBT> {
     
-    public static final ResourceLocation ID = new ResourceLocation(FlatLights.MOD_ID, "rising_heat_state");
+    public static final ResourceLocation ID = new ResourceLocation(FlatLights.MODID, "rising_heat_state");
     private final Direction NO_SPECIFIC_SIDE = null;
     private RisingHeatState risingHeatState = new RisingHeatState();
     
@@ -58,7 +58,7 @@ public class RisingHeatStateProvider implements ICapabilitySerializable<INBT> {
     /**
      * Event handler for the {@link IRisingHeat} capability.
      */
-    @Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
+    @Mod.EventBusSubscriber(modid = FlatLights.MODID)
     public static class RisingHeatStateProviderEventHandler {
         
         /**

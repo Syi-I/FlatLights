@@ -1,15 +1,15 @@
-package com.uberhelixx.flatlights.painting;
+package com.uberhelixx.flatlights.common.painting;
 
 import com.uberhelixx.flatlights.FlatLights;
-import net.minecraft.entity.item.PaintingType;
+import net.minecraft.world.entity.item.PaintingType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModPaintings {
     public static final DeferredRegister<PaintingType> PAINTING_TYPES =
-            DeferredRegister.create(ForgeRegistries.PAINTING_TYPES, FlatLights.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.PAINTING_TYPES, FlatLights.MODID);
 
     public static void register(IEventBus eventBus) {
         PAINTING_TYPES.register(eventBus);

@@ -1,9 +1,9 @@
 package com.uberhelixx.flatlights.tileentity;
 
-import com.uberhelixx.flatlights.block.LightStorageBlock;
+import com.uberhelixx.flatlights.common.block.LightStorageBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;

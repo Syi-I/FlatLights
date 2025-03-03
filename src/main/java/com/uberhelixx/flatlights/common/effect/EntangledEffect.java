@@ -6,11 +6,11 @@ import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
 import com.uberhelixx.flatlights.network.PacketEntangledUpdate;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 

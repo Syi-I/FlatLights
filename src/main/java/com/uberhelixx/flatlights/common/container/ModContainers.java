@@ -1,18 +1,18 @@
-package com.uberhelixx.flatlights.container;
+package com.uberhelixx.flatlights.common.container;
 
 import com.uberhelixx.flatlights.FlatLights;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModContainers {
     public static DeferredRegister<ContainerType<?>> CONTAINERS
-            = DeferredRegister.create(ForgeRegistries.CONTAINERS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.CONTAINERS, FlatLights.MODID);
 
     public static final RegistryObject<ContainerType<PlatingMachineContainer>> PLATING_MACHINE_CONTAINER
             = CONTAINERS.register("plating_machine_container", () -> IForgeContainerType.create(((windowId, inv, data) -> {

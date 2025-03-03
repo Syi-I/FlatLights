@@ -1,18 +1,18 @@
 package com.uberhelixx.flatlights.effect;
 
 import com.uberhelixx.flatlights.FlatLights;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModEffects {
     public static final DeferredRegister<Effect> POTIONS
-            = DeferredRegister.create(ForgeRegistries.POTIONS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.POTIONS, FlatLights.MODID);
 
     public static void register(IEventBus eventBus) {
         POTIONS.register(eventBus);

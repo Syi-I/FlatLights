@@ -5,11 +5,11 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
+import static com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
 
 public class StatTestCommand {
     public StatTestCommand(CommandDispatcher<CommandSource> dispatcher) {

@@ -1,16 +1,16 @@
-package com.uberhelixx.flatlights.screen;
+package com.uberhelixx.flatlights.client.screen;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.container.LightStorageContainer;
+import com.uberhelixx.flatlights.common.container.LightStorageContainer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.PlayerInventory;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 
 public class LightStorageScreen extends ContainerScreen<LightStorageContainer> {
-    private final ResourceLocation GUI = new ResourceLocation(FlatLights.MOD_ID, "textures/gui/light_storage_gui.png");
+    private final ResourceLocation GUI = new ResourceLocation(FlatLights.MODID, "textures/gui/light_storage_gui.png");
 
     public LightStorageScreen(LightStorageContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);

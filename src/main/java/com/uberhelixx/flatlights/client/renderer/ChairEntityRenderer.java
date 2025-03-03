@@ -1,18 +1,18 @@
-package com.uberhelixx.flatlights.render;
+package com.uberhelixx.flatlights.client.renderer;
 
-import com.uberhelixx.flatlights.entity.ChairEntity;
+import com.uberhelixx.flatlights.common.entity.ChairEntity;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
 public class ChairEntityRenderer extends EntityRenderer<ChairEntity> {
 
-    public ChairEntityRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn);
+    public ChairEntityRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(ChairEntity entity) {
+    public ResourceLocation getTextureLocation(ChairEntity entity) {
         return null;
     }
 

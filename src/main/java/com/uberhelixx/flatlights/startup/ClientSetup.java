@@ -1,27 +1,27 @@
 package com.uberhelixx.flatlights.startup;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.block.ModBlocks;
-import com.uberhelixx.flatlights.container.ModContainers;
-import com.uberhelixx.flatlights.entity.ModEntityTypes;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
-import com.uberhelixx.flatlights.item.curio.ModCurios;
-import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
-import com.uberhelixx.flatlights.item.tools.PrismaticSword;
-import com.uberhelixx.flatlights.render.*;
-import com.uberhelixx.flatlights.screen.LightStorageScreen;
-import com.uberhelixx.flatlights.screen.PlatingMachineScreen;
-import com.uberhelixx.flatlights.screen.SpectralizerScreen;
-import com.uberhelixx.flatlights.screen.SpectrumAnvilScreen;
+import com.uberhelixx.flatlights.common.block.ModBlocks;
+import com.uberhelixx.flatlights.common.container.ModContainers;
+import com.uberhelixx.flatlights.common.entity.ModEntityTypes;
+import com.uberhelixx.flatlights.common.item.ModItems;
+import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.common.item.curio.ModCurios;
+import com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.common.item.tools.PrismaticSword;
+import com.uberhelixx.flatlights.client.renderer.*;
+import com.uberhelixx.flatlights.client.screen.LightStorageScreen;
+import com.uberhelixx.flatlights.client.screen.PlatingMachineScreen;
+import com.uberhelixx.flatlights.client.screen.SpectralizerScreen;
+import com.uberhelixx.flatlights.client.screen.SpectrumAnvilScreen;
 import com.uberhelixx.flatlights.util.ModKeybinds;
-import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.world.item.Item;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -36,10 +36,10 @@ public class ClientSetup {
         RenderTypeLookup.setRenderLayer(ModBlocks.GLASS_FLATBLOCK.get(), RenderType.getTranslucent());
         
         //register screens for containers
-        ScreenManager.registerFactory(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
-        ScreenManager.registerFactory(ModContainers.SPECTRUM_ANVIL_CONTAINER.get(), SpectrumAnvilScreen::new);
-        ScreenManager.registerFactory(ModContainers.LIGHT_STORAGE_CONTAINER.get(), LightStorageScreen::new);
-        ScreenManager.registerFactory(ModContainers.SPECTRALIZER_CONTAINER.get(), SpectralizerScreen::new);
+        MenuScreens.register(ModContainers.PLATING_MACHINE_CONTAINER.get(), PlatingMachineScreen::new);
+        MenuScreens.register(ModContainers.SPECTRUM_ANVIL_CONTAINER.get(), SpectrumAnvilScreen::new);
+        MenuScreens.register(ModContainers.LIGHT_STORAGE_CONTAINER.get(), LightStorageScreen::new);
+        MenuScreens.register(ModContainers.SPECTRALIZER_CONTAINER.get(), SpectralizerScreen::new);
         
         //register entity renderers
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.VOID_PROJECTILE.get(), VoidProjectileRenderer::new);
@@ -54,8 +54,8 @@ public class ClientSetup {
         //custom item property for manipulating item models
         event.enqueueWork(() ->
         {
-            ItemModelsProperties.registerProperty(ModItems.PRISMATIC_BLADEMK2.get(),
-                    new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
+            ItemProperties.register(ModItems.PRISMATIC_BLADEMK2.get(),
+                    new ResourceLocation(FlatLights.MODID, "mode"), (stack, world, living, id) -> {
                         float mk2Mode = 0.0F;
                         if(stack.getTag() != null) {
                             if (stack.getTag().contains(PrismaticBladeMk2.SPEAR_MODE_TAG) && stack.getTag().getBoolean(PrismaticBladeMk2.SPEAR_MODE_TAG)) {
@@ -64,8 +64,8 @@ public class ClientSetup {
                         }
                         return mk2Mode;
                     });
-            ItemModelsProperties.registerProperty(ModItems.PRISMATIC_SWORD.get(),
-                    new ResourceLocation(FlatLights.MOD_ID, "mode"), (stack, world, living) -> {
+            ItemProperties.register(ModItems.PRISMATIC_SWORD.get(),
+                    new ResourceLocation(FlatLights.MODID, "mode"), (stack, world, living, id) -> {
                         float bombMode = 1.0F;
                         if(stack.getTag() != null) {
                             if (stack.getTag().contains(PrismaticSword.BOMB_MODE) && stack.getTag().getBoolean(PrismaticSword.BOMB_MODE)) {
@@ -76,8 +76,8 @@ public class ClientSetup {
                     });
             //gives all curios the tier model differentiator
             for(RegistryObject<Item> entry : ModCurios.CURIOS.getEntries()) {
-                ItemModelsProperties.registerProperty(entry.get(),
-                        new ResourceLocation(FlatLights.MOD_ID, "tier"), (stack, world, living) -> {
+                ItemProperties.register(entry.get(),
+                        new ResourceLocation(FlatLights.MODID, "tier"), (stack, world, living, id) -> {
                             float curioTier = 0.0F;
                             if (stack.getTag() != null) {
                                 if (stack.getTag().contains(CurioUtils.TIER)) {

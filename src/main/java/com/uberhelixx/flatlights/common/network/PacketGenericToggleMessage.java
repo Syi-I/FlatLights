@@ -3,11 +3,11 @@ package com.uberhelixx.flatlights.network;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 

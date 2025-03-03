@@ -1,8 +1,8 @@
 package com.uberhelixx.flatlights.common.item;
 
-import com.uberhelixx.flatlights.block.ModBlocks;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.crafting.Ingredient;
+import com.uberhelixx.flatlights.common.block.ModBlocks;
+import net.minecraft.world.item.IItemTier;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;
 
 import java.util.function.Supplier;

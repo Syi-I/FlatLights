@@ -1,19 +1,19 @@
-package com.uberhelixx.flatlights.entity;
+package com.uberhelixx.flatlights.common.entity;
 
-import com.uberhelixx.flatlights.item.ModItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.network.IPacket;
+import com.uberhelixx.flatlights.common.item.ModItems;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.projectile.ProjectileItemEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

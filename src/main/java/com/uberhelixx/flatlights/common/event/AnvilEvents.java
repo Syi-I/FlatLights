@@ -2,14 +2,14 @@ package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.container.SpectrumAnvilContainer;
-import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.common.container.SpectrumAnvilContainer;
+import com.uberhelixx.flatlights.common.item.ModItems;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AnvilEvents {
 
     //prismatic blade enchantment doubling/multiplying (based on config cap)

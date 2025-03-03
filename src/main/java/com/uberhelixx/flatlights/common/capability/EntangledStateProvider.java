@@ -5,12 +5,12 @@ import com.uberhelixx.flatlights.effect.ModEffects;
 import com.uberhelixx.flatlights.network.PacketEntangledUpdate;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -18,7 +18,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 
 public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
     
-    public static final ResourceLocation ID = new ResourceLocation(FlatLights.MOD_ID, "entangled_state");
+    public static final ResourceLocation ID = new ResourceLocation(FlatLights.MODID, "entangled_state");
     private final Direction NO_SPECIFIC_SIDE = null;
     private EntangledState entangledState = new EntangledState();
     
@@ -65,7 +65,7 @@ public class EntangledStateProvider implements ICapabilitySerializable<INBT> {
     /**
      * Event handler for the {@link IEntangled} capability.
      */
-    @Mod.EventBusSubscriber(modid = FlatLights.MOD_ID)
+    @Mod.EventBusSubscriber(modid = FlatLights.MODID)
     public static class EntangledStateProviderEventHandler {
         
         /**

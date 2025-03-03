@@ -1,23 +1,23 @@
-package com.uberhelixx.flatlights.block;
+package com.uberhelixx.flatlights.common.block;
 
-import com.uberhelixx.flatlights.entity.ChairEntity;
+import com.uberhelixx.flatlights.common.entity.ChairEntity;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.item.BlockItemUseContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

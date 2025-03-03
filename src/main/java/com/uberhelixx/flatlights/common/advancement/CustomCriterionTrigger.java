@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.advancement;
+package com.uberhelixx.flatlights.common.advancement;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -6,7 +6,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.Map;

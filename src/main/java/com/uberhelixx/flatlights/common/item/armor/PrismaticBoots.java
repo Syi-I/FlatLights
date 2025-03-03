@@ -1,14 +1,14 @@
-package com.uberhelixx.flatlights.item.armor;
+package com.uberhelixx.flatlights.common.item.armor;
 
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.IArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;

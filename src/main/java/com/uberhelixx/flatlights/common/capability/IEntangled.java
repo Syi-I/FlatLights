@@ -1,6 +1,6 @@
 package com.uberhelixx.flatlights.capability;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.CompoundTag;
 
 public interface IEntangled {
     public static final String ENTANGLED_KEY = "flatlights.entangled";

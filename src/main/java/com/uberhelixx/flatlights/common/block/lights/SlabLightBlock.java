@@ -1,12 +1,12 @@
-package com.uberhelixx.flatlights.block.lights;
+package com.uberhelixx.flatlights.common.block.lights;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.world.item.BlockItemUseContext;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 

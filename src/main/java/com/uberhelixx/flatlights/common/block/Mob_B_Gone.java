@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.block;
+package com.uberhelixx.flatlights.common.block;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.util.MiscHelpers;
@@ -7,9 +7,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;

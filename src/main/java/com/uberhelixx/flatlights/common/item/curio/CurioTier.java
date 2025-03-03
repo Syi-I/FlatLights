@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item.curio;
+package com.uberhelixx.flatlights.common.item.curio;
 
 /**
  * Curio Tier values with associated item model texture override float values and curio buff tier multipliers

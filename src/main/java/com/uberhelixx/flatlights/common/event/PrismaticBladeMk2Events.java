@@ -2,28 +2,28 @@ package com.uberhelixx.flatlights.event;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.common.item.ModItems;
+import com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.PlayerInventory;
+import net.minecraft.world.entity.player.ServerPlayerEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -38,10 +38,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.*;
+import static com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2.*;
 import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PrismaticBladeMk2Events {
     //makes it so you can't drop the item when it belongs to you (it becomes invincible and you immediately pick it up)
     @SubscribeEvent

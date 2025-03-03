@@ -1,11 +1,11 @@
-package com.uberhelixx.flatlights.advancement.instance;
+package com.uberhelixx.flatlights.common.advancement.instance;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.entity.player.ServerPlayerEntity;
 import net.minecraft.loot.ConditionArraySerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class BlockBreakInstance extends CriterionInstance {
     public BlockBreakInstance(ResourceLocation criterion, EntityPredicate.AndPredicate playerCondition) {

@@ -1,23 +1,23 @@
-package com.uberhelixx.flatlights.entity;
+package com.uberhelixx.flatlights.common.entity;
 
 import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
-import com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2;
+import com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.util.ModSoundEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.projectile.AbstractArrowEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 

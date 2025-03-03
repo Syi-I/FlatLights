@@ -1,7 +1,7 @@
-package com.uberhelixx.flatlights.item.curio;
+package com.uberhelixx.flatlights.common.item.curio;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
 import java.util.HashMap;
 import java.util.Map;

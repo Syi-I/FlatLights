@@ -1,7 +1,7 @@
 package com.uberhelixx.flatlights.integration.jei;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.common.block.ModBlocks;
 import com.uberhelixx.flatlights.data.recipes.ModRecipeTypes;
 import com.uberhelixx.flatlights.data.recipes.PlatingMachineRecipe;
 import com.uberhelixx.flatlights.data.recipes.SpectralizerRecipe;
@@ -11,9 +11,9 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class FlatLightsJei implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(FlatLights.MOD_ID, "jei_plugin");
+        return new ResourceLocation(FlatLights.MODID, "jei_plugin");
     }
 
     @Override

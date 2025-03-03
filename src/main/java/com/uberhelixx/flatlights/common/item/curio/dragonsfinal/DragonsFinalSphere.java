@@ -1,37 +1,37 @@
-package com.uberhelixx.flatlights.item.curio.dragonsfinal;
+package com.uberhelixx.flatlights.common.item.curio.dragonsfinal;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
-import com.uberhelixx.flatlights.entity.ModAttributes;
-import com.uberhelixx.flatlights.item.curio.BaseCurio;
-import com.uberhelixx.flatlights.item.curio.CurioSetNames;
-import com.uberhelixx.flatlights.item.curio.CurioTier;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.common.entity.ModAttributes;
+import com.uberhelixx.flatlights.common.item.curio.BaseCurio;
+import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
+import com.uberhelixx.flatlights.common.item.curio.CurioTier;
+import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
+import static com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2.PLAYER_CORETRACKER_TAG;
 import static com.uberhelixx.flatlights.util.MiscHelpers.uuidCheck;
 
 public class DragonsFinalSphere extends BaseCurio {

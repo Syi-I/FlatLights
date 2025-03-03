@@ -1,9 +1,9 @@
-package com.uberhelixx.flatlights.render.player;
+package com.uberhelixx.flatlights.client.renderer.player;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.uberhelixx.flatlights.item.ModItems;
-import com.uberhelixx.flatlights.item.curio.CurioSetNames;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.common.item.ModItems;
+import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
+import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -12,8 +12,8 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

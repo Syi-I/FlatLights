@@ -1,7 +1,7 @@
 package com.uberhelixx.flatlights;
 
 import com.google.common.collect.Ordering;
-import com.uberhelixx.flatlights.block.ModBlocks;
+import com.uberhelixx.flatlights.common.block.ModBlocks;
 import com.uberhelixx.flatlights.common.item.ModItems;
 import com.uberhelixx.flatlights.common.item.curio.ModCurios;
 import net.minecraft.world.item.Item;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FlatLightsTabSort {
     public static Comparator<ItemStack> tabSort;
 

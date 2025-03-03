@@ -1,9 +1,9 @@
-package com.uberhelixx.flatlights.render;
+package com.uberhelixx.flatlights.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.entity.PortableBlackHoleEntity;
+import com.uberhelixx.flatlights.common.entity.PortableBlackHoleEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -12,15 +12,15 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 import java.awt.*;
 
 public class PortableBlackHoleRenderer extends EntityRenderer<PortableBlackHoleEntity> {
-    public static final ResourceLocation SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/void_sphere/void_sphere.png");
-    public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/void_sphere_wrapper");
+    public static final ResourceLocation SPHERE = new ResourceLocation(FlatLights.MODID, "textures/models/void_sphere/void_sphere.png");
+    public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MODID, "entity/void_sphere_wrapper");
 
     public PortableBlackHoleRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);

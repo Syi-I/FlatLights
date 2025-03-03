@@ -1,14 +1,14 @@
-package com.uberhelixx.flatlights.entity;
+package com.uberhelixx.flatlights.common.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrowEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 
 public class BombSwingEntity extends AbstractArrowEntity {
     protected BombSwingEntity(EntityType<? extends AbstractArrowEntity> type, World worldIn) {

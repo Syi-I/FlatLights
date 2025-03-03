@@ -1,8 +1,8 @@
 package com.uberhelixx.flatlights.common.item;
 
 import com.uberhelixx.flatlights.FlatLightsTabSort;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemGroup;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 public class ModItemGroup {

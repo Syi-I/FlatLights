@@ -1,10 +1,10 @@
-package com.uberhelixx.flatlights.render.player;
+package com.uberhelixx.flatlights.client.renderer.player;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.item.curio.CurioSetNames;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
+import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,11 +27,11 @@ import java.awt.*;
 
 @OnlyIn(Dist.CLIENT)
 public class DragonSphereRenderer extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> {
-    public static final ResourceLocation INNER_SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/inner_sphere/inner_sphere.png");
-    public static final ResourceLocation INNER_SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/inner_sphere_wrapper");
+    public static final ResourceLocation INNER_SPHERE = new ResourceLocation(FlatLights.MODID, "textures/models/inner_sphere/inner_sphere.png");
+    public static final ResourceLocation INNER_SPHERE_MODEL = new ResourceLocation(FlatLights.MODID, "entity/inner_sphere_wrapper");
 
-    public static final ResourceLocation OUTER_SPHERE = new ResourceLocation(FlatLights.MOD_ID, "textures/models/outer_sphere/outer_sphere.png");
-    public static final ResourceLocation OUTER_SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/outer_sphere_wrapper");
+    public static final ResourceLocation OUTER_SPHERE = new ResourceLocation(FlatLights.MODID, "textures/models/outer_sphere/outer_sphere.png");
+    public static final ResourceLocation OUTER_SPHERE_MODEL = new ResourceLocation(FlatLights.MODID, "entity/outer_sphere_wrapper");
 
     public DragonSphereRenderer(IEntityRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> playerModel) {
         super(playerModel);

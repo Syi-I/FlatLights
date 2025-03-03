@@ -1,9 +1,9 @@
 package com.uberhelixx.flatlights.network;
 
-import com.uberhelixx.flatlights.item.tools.PrismaticSword;
+import com.uberhelixx.flatlights.common.item.tools.PrismaticSword;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 

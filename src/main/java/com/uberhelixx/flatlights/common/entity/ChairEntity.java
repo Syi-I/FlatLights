@@ -1,62 +1,63 @@
-package com.uberhelixx.flatlights.entity;
+package com.uberhelixx.flatlights.common.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
 public class ChairEntity extends Entity {
     private BlockPos source;
 
-    public ChairEntity(World world)
+    public ChairEntity(Level level)
     {
-        super(ModEntityTypes.CHAIR_ENTITY.get(), world);
-        this.noClip = true;
+        super(ModEntityTypes.CHAIR_ENTITY.get(), level);
+        this.noPhysics = true;
     }
 
-    private ChairEntity(World world, BlockPos source, double yOffset)
+    private ChairEntity(Level level, BlockPos source, double yOffset)
     {
-        this(world);
+        this(level);
         this.source = source;
-        this.setPosition(source.getX() + 0.5, source.getY() + yOffset, source.getZ() + 0.5);
+        this.setPos(source.getX() + 0.5, source.getY() + yOffset, source.getZ() + 0.5);
     }
 
-    public ChairEntity(EntityType<ChairEntity> chairEntityEntityType, World world) {
-        super(chairEntityEntityType, world);
+    public ChairEntity(EntityType<ChairEntity> chairEntityEntityType, Level level) {
+        super(chairEntityEntityType, level);
 
     }
-
+    
     @Override
-    protected void registerData() {
-
+    protected void defineSynchedData() {
+    
     }
-
+    
     @Override
     public void tick()
     {
         super.tick();
         if(source == null)
         {
-            source = this.getPosition();
+            source = this.blockPosition();
         }
-        if(!this.world.isRemote())
+        if(!this.level().isClientSide)
         {
             //remove this entity if nothing is sitting in it or actual chair block is removed
-            if(this.getPassengers().isEmpty() || this.world.isAirBlock(source))
+            if(this.getPassengers().isEmpty() || this.level().isEmptyBlock(source))
             {
-                this.remove();
-                world.updateComparatorOutputLevel(getPosition(), world.getBlockState(getPosition()).getBlock());
+                this.remove(RemovalReason.DISCARDED);
+                level().updateNeighbourForOutputSignal(blockPosition(), level().getBlockState(blockPosition()).getBlock());
             }
             //if someone is sitting in the chair give regen and saturation
             if(!this.getPassengers().isEmpty()) {
@@ -65,26 +66,26 @@ public class ChairEntity extends Entity {
                     if(passenger instanceof LivingEntity) {
                         //amount of seconds that this potion effect should last is multiplied by 20 since 20 ticks per second ingame
                         int seconds = 1;
-                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.REGENERATION, seconds * 20, 2, true, false));
-                        ((LivingEntity) passenger).addPotionEffect(new EffectInstance(Effects.SATURATION, seconds * 20, 0, true, false));
+                        ((LivingEntity) passenger).addEffect(new MobEffectInstance(MobEffects.REGENERATION, seconds * 20, 2, true, false));
+                        ((LivingEntity) passenger).addEffect(new MobEffectInstance(MobEffects.SATURATION, seconds * 20, 0, true, false));
                     }
                 }
             }
         }
     }
-
+    
     @Override
-    protected void readAdditional(CompoundNBT compound) {
-
+    protected void readAdditionalSaveData(CompoundTag compoundTag) {
+    
+    }
+    
+    @Override
+    protected void addAdditionalSaveData(CompoundTag compoundTag) {
+    
     }
 
     @Override
-    protected void writeAdditional(CompoundNBT compound) {
-
-    }
-
-    @Override
-    public double getMountedYOffset()
+    public double getPassengersRidingOffset()
     {
         return 0.0;
     }
@@ -96,30 +97,30 @@ public class ChairEntity extends Entity {
 
     //make into rideable entity
     @Override
-    protected boolean canBeRidden(Entity entity)
+    protected boolean canRide(Entity entity)
     {
         return true;
     }
 
     @Override
-    public IPacket<?> createSpawnPacket()
+    public Packet<ClientGamePacketListener> getAddEntityPacket()
     {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     //makes chair entity for player to sit in
-    public static ActionResultType create(World world, BlockPos pos, double yOffset, PlayerEntity player)
+    public static InteractionResult create(Level level, BlockPos pos, double yOffset, Player player)
     {
-        if(!world.isRemote())
+        if(!level.isClientSide)
         {
-            List<ChairEntity> seats = world.getEntitiesWithinAABB(ChairEntity.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0));
+            List<ChairEntity> seats = level.getEntitiesOfClass(ChairEntity.class, new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1.0, pos.getY() + 1.0, pos.getZ() + 1.0));
             if(seats.isEmpty())
             {
-                ChairEntity chair = new ChairEntity(world, pos, yOffset);
-                world.addEntity(chair);
+                ChairEntity chair = new ChairEntity(level, pos, yOffset);
+                level.addFreshEntity(chair);
                 player.startRiding(chair, false);
             }
         }
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 }

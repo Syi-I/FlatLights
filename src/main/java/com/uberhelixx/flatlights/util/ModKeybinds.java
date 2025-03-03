@@ -19,6 +19,6 @@ public class ModKeybinds {
     }
 
     private static KeyBinding create(String name, int key) {
-        return new KeyBinding("key." + FlatLights.MOD_ID + "." + name, key, "key.category." + FlatLights.MOD_ID);
+        return new KeyBinding("key." + FlatLights.MODID + "." + name, key, "key.category." + FlatLights.MODID);
     }
 }

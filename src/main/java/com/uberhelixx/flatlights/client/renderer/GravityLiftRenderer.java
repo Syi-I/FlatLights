@@ -1,10 +1,10 @@
-package com.uberhelixx.flatlights.render;
+package com.uberhelixx.flatlights.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.entity.GravityLiftEntity;
-import com.uberhelixx.flatlights.entity.ModEntityTypes;
+import com.uberhelixx.flatlights.common.entity.GravityLiftEntity;
+import com.uberhelixx.flatlights.common.entity.ModEntityTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -14,15 +14,15 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.vector.*;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 import java.awt.*;
 
 public class GravityLiftRenderer extends EntityRenderer<GravityLiftEntity> {
-    public static final ResourceLocation BEAM = new ResourceLocation(FlatLights.MOD_ID, "textures/models/gravity_lift/lift.png");
-    public static final ResourceLocation LIFT_BASE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/gravity_lift");
+    public static final ResourceLocation BEAM = new ResourceLocation(FlatLights.MODID, "textures/models/gravity_lift/lift.png");
+    public static final ResourceLocation LIFT_BASE_MODEL = new ResourceLocation(FlatLights.MODID, "entity/gravity_lift");
 
     public GravityLiftRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);

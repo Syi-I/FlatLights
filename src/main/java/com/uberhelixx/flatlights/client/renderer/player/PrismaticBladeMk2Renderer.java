@@ -1,9 +1,9 @@
-package com.uberhelixx.flatlights.render.player;
+package com.uberhelixx.flatlights.client.renderer.player;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.common.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -16,11 +16,11 @@ import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.player.PlayerInventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,8 +29,8 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 
 import java.awt.*;
 
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.DAMAGE_MODE_TAG;
-import static com.uberhelixx.flatlights.item.tools.PrismaticBladeMk2.PROJECTILE_MODE_TAG;
+import static com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2.DAMAGE_MODE_TAG;
+import static com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2.PROJECTILE_MODE_TAG;
 
 @OnlyIn(Dist.CLIENT)
 public class PrismaticBladeMk2Renderer extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>> {
@@ -144,7 +144,7 @@ public class PrismaticBladeMk2Renderer extends LayerRenderer<AbstractClientPlaye
         return f * 0.015f;
     }
 
-    ResourceLocation DAMAGE_LAYER = new ResourceLocation(FlatLights.MOD_ID, "textures/models/power_layers/mk2_damage_mode_layer.png");
+    ResourceLocation DAMAGE_LAYER = new ResourceLocation(FlatLights.MODID, "textures/models/power_layers/mk2_damage_mode_layer.png");
 
     private ResourceLocation layerTexture() {
         return DAMAGE_LAYER;
@@ -154,5 +154,5 @@ public class PrismaticBladeMk2Renderer extends LayerRenderer<AbstractClientPlaye
         return this.getEntityModel();
     }
 
-    public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/void_sphere_wrapper");
+    public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MODID, "entity/void_sphere_wrapper");
 }

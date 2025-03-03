@@ -1,10 +1,10 @@
-package com.uberhelixx.flatlights.item.armor;
+package com.uberhelixx.flatlights.common.item.armor;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.item.ModItems;
+import com.uberhelixx.flatlights.common.item.ModItems;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.world.item.IArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -69,7 +69,7 @@ public enum ModArmorMaterial implements IArmorMaterial {
     @Override
     @OnlyIn(Dist.CLIENT)
     public String getName() {
-        return FlatLights.MOD_ID + ":" + this.name;
+        return FlatLights.MODID + ":" + this.name;
     }
 
     @Override

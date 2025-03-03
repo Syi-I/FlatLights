@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item.curio;
+package com.uberhelixx.flatlights.common.item.curio;
 
 import com.uberhelixx.flatlights.network.PacketCurioToggleMessage;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
@@ -6,16 +6,16 @@ import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.ServerPlayerEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 

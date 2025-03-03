@@ -1,18 +1,18 @@
 package com.uberhelixx.flatlights.startup;
 
-import com.uberhelixx.flatlights.render.EntangledEffectRenderer;
-import com.uberhelixx.flatlights.render.RisingHeatEffectRenderer;
-import com.uberhelixx.flatlights.render.player.DragonSphereRenderer;
-import com.uberhelixx.flatlights.render.player.PlayerEntangledEffectRenderer;
-import com.uberhelixx.flatlights.render.player.PlayerRisingHeatEffectRenderer;
-import com.uberhelixx.flatlights.render.player.PrismaticBladeMk2Renderer;
+import com.uberhelixx.flatlights.client.renderer.EntangledEffectRenderer;
+import com.uberhelixx.flatlights.client.renderer.RisingHeatEffectRenderer;
+import com.uberhelixx.flatlights.client.renderer.player.DragonSphereRenderer;
+import com.uberhelixx.flatlights.client.renderer.player.PlayerEntangledEffectRenderer;
+import com.uberhelixx.flatlights.client.renderer.player.PlayerRisingHeatEffectRenderer;
+import com.uberhelixx.flatlights.client.renderer.player.PrismaticBladeMk2Renderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 

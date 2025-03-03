@@ -3,25 +3,25 @@ package com.uberhelixx.flatlights.event;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsClientConfig;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.item.curio.CurioSetNames;
-import com.uberhelixx.flatlights.item.curio.CurioTier;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
+import com.uberhelixx.flatlights.common.item.curio.CurioTier;
+import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.network.PacketGenericPlayerNotification;
 import com.uberhelixx.flatlights.network.PacketHandler;
 import com.uberhelixx.flatlights.network.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.ServerPlayerEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -33,7 +33,7 @@ import java.util.List;
 
 import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;
 
-@Mod.EventBusSubscriber(modid = FlatLights.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CurioEvents {
 
     /**

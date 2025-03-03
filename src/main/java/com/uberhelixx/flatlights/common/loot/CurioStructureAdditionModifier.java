@@ -1,11 +1,11 @@
 package com.uberhelixx.flatlights.loot;
 
 import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;

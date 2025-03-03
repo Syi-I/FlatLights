@@ -121,6 +121,32 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    maven {
+        name = "Curios"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        name = "Cursemaven"
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 dependencies {
@@ -145,6 +171,19 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    // compile against the JEI API but do not include it at runtime
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
+    // at runtime, use the full JEI jar for Forge
+    runtimeOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}"))
+
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${mc_version}-${curios_version}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${mc_version}-${curios_version}:api")
+
+    //runtimeOnly fg.deobf("curse.maven:attributefix-280510:3732244")
+    //runtimeOnly fg.deobf("curse.maven:classicbars-317642:4031993")
+    //runtimeOnly fg.deobf("curse.maven:appleskin-248787:3686480")
+    //runtimeOnly fg.deobf("curse.maven:reauth-237701:4408006")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -1,7 +1,7 @@
-package com.uberhelixx.flatlights.item.tools;
+package com.uberhelixx.flatlights.common.item.tools;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class ReusableDye extends Item {
 

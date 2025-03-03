@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.render.player;
+package com.uberhelixx.flatlights.client.renderer.player;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -45,7 +45,7 @@ public class PlayerRisingHeatEffectRenderer extends LayerRenderer<AbstractClient
         }
     }
 
-    ResourceLocation HEATED_LAYER = new ResourceLocation(FlatLights.MOD_ID, "textures/models/power_layers/rising_heat_layer.png");
+    ResourceLocation HEATED_LAYER = new ResourceLocation(FlatLights.MODID, "textures/models/power_layers/rising_heat_layer.png");
 
     private ResourceLocation layerTexture() {
         return HEATED_LAYER;

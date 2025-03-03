@@ -3,11 +3,11 @@ package com.uberhelixx.flatlights.enchantments;
 import com.uberhelixx.flatlights.effect.ModEffects;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.potion.EffectInstance;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.util.text.ITextComponent;
 
 public class LethalityEnchantment extends Enchantment {

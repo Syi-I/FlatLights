@@ -1,9 +1,9 @@
-package com.uberhelixx.flatlights.render;
+package com.uberhelixx.flatlights.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.entity.BombSwingEntity;
+import com.uberhelixx.flatlights.common.entity.BombSwingEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -12,15 +12,15 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
 import java.awt.*;
 
 public class BombSwingProjectileRenderer extends EntityRenderer<BombSwingEntity> {
-    public static final ResourceLocation BOMB = new ResourceLocation(FlatLights.MOD_ID, "textures/models/bomb_projectile/bomb_base.png");
-    public static final ResourceLocation BOMB_MODEL = new ResourceLocation(FlatLights.MOD_ID, "entity/bomb_swing_projectile");
+    public static final ResourceLocation BOMB = new ResourceLocation(FlatLights.MODID, "textures/models/bomb_projectile/bomb_base.png");
+    public static final ResourceLocation BOMB_MODEL = new ResourceLocation(FlatLights.MODID, "entity/bomb_swing_projectile");
 
     public BombSwingProjectileRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);

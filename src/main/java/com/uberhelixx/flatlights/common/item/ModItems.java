@@ -1,13 +1,13 @@
 package com.uberhelixx.flatlights.common.item;
 
 import com.uberhelixx.flatlights.FlatLights;
-import com.uberhelixx.flatlights.item.armor.*;
-import com.uberhelixx.flatlights.item.tools.*;
+import com.uberhelixx.flatlights.common.item.armor.*;
+import com.uberhelixx.flatlights.common.item.tools.*;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Food;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -15,23 +15,23 @@ public class ModItems {
 
     //special items are for items with specific models and stuff (eg from blockbench) so datagen sucks less
     public static final DeferredRegister<Item> ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> SPECIAL_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> BLOCK_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> SPECIAL_BLOCK_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> PANEL_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> FLATBLOCK_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> PILLAR_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> EDGEH_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
     public static final DeferredRegister<Item> EDGEV_ITEMS
-            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MOD_ID);
+            = DeferredRegister.create(ForgeRegistries.ITEMS, FlatLights.MODID);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,14 +1,14 @@
 package com.uberhelixx.flatlights.network;
 
-import com.uberhelixx.flatlights.item.curio.BaseCurio;
-import com.uberhelixx.flatlights.item.curio.CurioUtils;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import com.uberhelixx.flatlights.common.item.curio.BaseCurio;
+import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
+import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.ServerPlayerEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 

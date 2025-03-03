@@ -1,4 +1,4 @@
-package com.uberhelixx.flatlights.item.armor;
+package com.uberhelixx.flatlights.common.item.armor;
 
 import com.google.common.collect.ImmutableMap;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
@@ -6,18 +6,18 @@ import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.MiscHelpers;
 import com.uberhelixx.flatlights.util.TextHelpers;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.IArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.math.RoundingMode;
