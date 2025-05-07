@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "flatlights:lime_horizontal_edge"
+    }
+  ],
+  "result": {
+    "item": "flatlights:lime_vertical_edge",
+    "count": 1
+  }
+}

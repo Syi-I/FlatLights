@@ -1,129 +1,75 @@
 package com.uberhelixx.flatlights.common.item.tools;
 
-import com.uberhelixx.flatlights.common.entity.BombSwingEntity;
+import com.uberhelixx.flatlights.common.entity.BombEntity;
 import com.uberhelixx.flatlights.common.entity.ModEntityTypes;
-import com.uberhelixx.flatlights.network.PacketGenericToggleMessage;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketWriteNbt;
-import com.uberhelixx.flatlights.util.TextHelpers;
+import com.uberhelixx.flatlights.common.item.ToggleableItem;
+import com.uberhelixx.flatlights.common.item.tools.basetools.BaseSword;
+import com.uberhelixx.flatlights.util.TooltipHelper;
+import com.uberhelixx.flatlights.util.lib.LibTagKeys;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.PlayerEntity;
-import net.minecraft.world.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.world.item.IItemTier;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class PrismaticSword extends SwordItem {
-    public static final String BOMB_MODE = "flatlights.bomb_mode"; //bomb shooting mode
-
-    public PrismaticSword(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
-        super(tier, attackDamageIn, attackSpeedIn, builderIn);
+public class PrismaticSword extends BaseSword implements ToggleableItem {
+    public PrismaticSword(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
-
+    
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damageItem(0, attacker, (entity) -> {
-            entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-        });
-
-        return true;
-    }
-
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        //determine if the sword is activated or deactivated
-        String bombSwing = TextHelpers.labelBrackets("Explosive Swings Mode", null, "Deactivated", TextFormatting.RED).getString();
-        assert stack.getTag() != null;
-        if(stack.getTag().getBoolean(BOMB_MODE)) {
-            bombSwing = TextHelpers.labelBrackets("Explosive Swings Mode", null, "Activated", TextFormatting.GREEN).getString();
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        ItemStack sword = pPlayer.getMainHandItem();
+        
+        if(pPlayer.isCrouching()) {
+            ToggleableItem.toggleEnabled(sword, pPlayer);
         }
-        ITextComponent bombSwingTooltip = ITextComponent.getTextComponentOrEmpty(bombSwing);
-
-        //if shift is down, show use tooltip, otherwise show short label tooltips
+        return super.use(pLevel, pPlayer, pUsedHand);
+    }
+    
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(Screen.hasShiftDown()) {
-            String bombSwingUse = TextFormatting.DARK_PURPLE + "Shoots an explosive projectile when swinging this weapon.";
-            ITextComponent bombSwingUseTooltip = ITextComponent.getTextComponentOrEmpty(bombSwingUse);
-            tooltip.add(bombSwingUseTooltip);
+            TooltipHelper.formatUsage(pTooltipComponents, "tooltip.flatlights.prismatic_sword_shift");
         }
         else {
-            tooltip.add(bombSwingTooltip);
-            tooltip.add(TextHelpers.shiftTooltip("for details"));
+            TooltipHelper.toggleText("Explosion: ", pStack, pTooltipComponents);
+            TooltipHelper.shiftHint(pTooltipComponents);
         }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
-
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack sword = playerIn.getHeldItem(handIn);
-
-        if (playerIn.isCrouching()) {
-            if (sword.getTag() == null) {
-                CompoundNBT newTag = new CompoundNBT();
-                newTag.putBoolean(BOMB_MODE, true);
-                sword.setTag(newTag);
-                if(playerIn.getEntityWorld().isRemote()) {
-                    PacketHandler.sendToServer(new PacketWriteNbt(newTag, sword));
-                }
-            }
-            else {
-                CompoundNBT tag = sword.getTag();
-                boolean active = tag.getBoolean(BOMB_MODE);
-                tag.putBoolean(BOMB_MODE, !active);
-                sword.setTag(tag);
-                if(playerIn.getEntityWorld().isRemote()) {
-                    PacketHandler.sendToServer(new PacketWriteNbt(tag, sword));
-                }
-                String toggleText = TextFormatting.WHITE + "Explosive Swings: " + TextHelpers.genericBrackets("Activated", TextFormatting.GREEN).getString();
-                if(active) {
-                    toggleText = TextFormatting.WHITE + "Explosive Swings: " + TextHelpers.genericBrackets("Deactivated", TextFormatting.RED).getString();
-                }
-                if(!playerIn.getEntityWorld().isRemote()) {
-                    PacketHandler.sendToPlayer((ServerPlayerEntity) playerIn, new PacketGenericToggleMessage(toggleText, !active, false));
-                }
-            }
-        }
-        return ActionResult.resultPass(sword);
-    }
-
-    public static void throwBomb(PlayerEntity player, ItemStack sword) {
-        World worldIn = player.getEntityWorld();
-        BlockPos pos = player.getPosition();
-        CompoundNBT tag = sword.getTag();
-        assert tag != null;
-        if(!tag.contains(BOMB_MODE) || !tag.getBoolean(BOMB_MODE)) {
+    
+    public static void throwBomb(Player player, ItemStack sword) {
+        Level levelIn = player.level();
+        BlockPos pos = player.getOnPos();
+        
+        if(player.getMainHandItem() != sword) {
             return;
         }
-        if(player.getCooledAttackStrength(0f) != 1) {
+        if(sword.getTag() == null || !sword.getTag().getBoolean(LibTagKeys.MODE_TAG)) {
             return;
         }
-        if(player.getHeldItem(Hand.MAIN_HAND) != sword) {
+        if(player.getAttackStrengthScale(0f) != 1) {
             return;
         }
-        //get direction player is looking currently
-        Vector3d look = player.getLookVec();
+        Vec3 looking = player.getLookAngle();
         //spawn projectile
-        if(!worldIn.isRemote()){
-            BombSwingEntity bomb = new BombSwingEntity(ModEntityTypes.BOMB_SWING_PROJECTILE.get(), player, worldIn);
-            bomb.shoot(look.getX(), look.getY(), look.getZ(), 1.0f, 0);
-            worldIn.addEntity(bomb);
+        if(!levelIn.isClientSide()) {
+            BombEntity bomb = new BombEntity(ModEntityTypes.BOMB_PROJECTILE.get(), player, levelIn);
+            bomb.shoot(looking.x(), looking.y(), looking.z(), 1.0f, 0f);
+            levelIn.addFreshEntity(bomb);
         }
-        worldIn.playSound(null, pos, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1, (0.75f + (worldIn.rand.nextFloat() * 0.05f)));
+        levelIn.playSound(null, pos, SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1, (0.75f + (levelIn.random.nextFloat() * 0.05f)));
     }
 }

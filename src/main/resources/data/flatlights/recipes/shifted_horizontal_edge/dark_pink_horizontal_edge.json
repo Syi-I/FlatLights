@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "## ",
+    "   "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:dark_pink_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:dark_pink_horizontal_edge",
+    "count": 64
+  }
+}

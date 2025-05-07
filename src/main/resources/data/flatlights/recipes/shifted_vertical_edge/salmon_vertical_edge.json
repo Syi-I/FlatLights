@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:salmon_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:salmon_vertical_edge",
+    "count": 64
+  }
+}

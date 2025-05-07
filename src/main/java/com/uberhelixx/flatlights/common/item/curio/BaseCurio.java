@@ -1,63 +1,61 @@
 package com.uberhelixx.flatlights.common.item.curio;
 
-import com.uberhelixx.flatlights.util.TextHelpers;
+import com.uberhelixx.flatlights.util.TooltipHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * NOTE: for balancing purposes:tm: the curios are put into three rough categories, those being cubes, prisms, and spheres.
- * Should only ever have one curio slot of each type, prevents stacking from only using one type of curio to negate everything.
- * Cube: augments some attribute/stats of the player, such as armor/toughness/speed (likely flat stat increases and not %)
- * Prism: does something for attacking and weapons, such as increasing attack speed/damage/reach, or add some sort of attacking mechanic
- * Sphere: adds some sort of special effect, such as providing water breathing or negating suffocation damage
- * Set bonuses should be a strong buff for wearing a set, could be a basic large % stat increase or some effect that triggers upon meeting requirements.
- * Set bonus effect goes on the Cube curio only, since that will have the least moving parts as it's only stat increases
- */
 public class BaseCurio extends Item implements ICurioItem {
-
-    public BaseCurio(Properties properties) {
-        super(properties);
+    public BaseCurio() {
+        super(new Item.Properties().stacksTo(1).defaultDurability(0).fireResistant());
     }
-
+    
     @Override
-    public boolean isImmuneToFire() { return true; }
-
-    //all the formatting for curio tooltips should be done here since it should be uniform for all curios we make
+    public boolean isFireResistant() {
+        return true;
+    }
+    
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         //basic info tooltip
-        if(stack.getTag() != null && !stack.getTag().isEmpty()) {
+        if(pStack.getTag() != null && !pStack.getTag().isEmpty()) {
             if(!Screen.hasShiftDown()) {
-                tooltip.add(CurioUtils.getSetTooltip(stack));
-                if (worldIn != null && worldIn.isRemote()) {
-                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+                CurioUtils.getSetTooltip(pStack, pTooltipComponents);
+                if (pLevel != null && pLevel.isClientSide()) {
+                    CurioUtils.getSetEffectTooltip(pStack, pTooltipComponents);
                 }
-                tooltip.add(CurioUtils.getTierTooltip(stack));
-                if (stack.getTag().getFloat(CurioUtils.TIER) == CurioTier.GROWTH.MODEL_VALUE && stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                    tooltip.add(CurioUtils.getGrowthTooltip(stack, true));
+                CurioUtils.getTierTooltip(pStack, pTooltipComponents);
+                if (pStack.getTag().getFloat(CurioUtils.TIER) == CurioTier.getModel(CurioTier.GROWTH) && pStack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
+                    CurioUtils.getGrowthTooltip(pStack, true, pTooltipComponents);
                 }
             }
             else {
-                if (worldIn != null && worldIn.isRemote()) {
-                    tooltip.add(CurioUtils.getSetEffectTooltip(stack));
+                if (pLevel != null && pLevel.isClientSide) {
+                    CurioUtils.getSetEffectTooltip(pStack, pTooltipComponents);
                 }
-                tooltip.add(CurioUtils.getSetDescriptionTooltip(stack));
+                CurioUtils.getSetDescriptionTooltip(pStack, pTooltipComponents);
             }
         }
         //how to use curio when not rolled yet
         else {
-            ITextComponent useTooltip = TextHelpers.genericBrackets("Right-click to roll.", TextFormatting.GRAY);
-            tooltip.add(useTooltip);
+            Style color = Style.EMPTY.withColor(ChatFormatting.GRAY);
+            TooltipHelper.genericBrackets(pTooltipComponents, "Right-click to roll.", color);
         }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    }
+    
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+    
     }
 }

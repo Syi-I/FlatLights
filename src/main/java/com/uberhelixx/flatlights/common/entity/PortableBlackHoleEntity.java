@@ -1,36 +1,35 @@
 package com.uberhelixx.flatlights.common.entity;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
-import com.uberhelixx.flatlights.util.ModSoundEvents;
+import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
+import com.uberhelixx.flatlights.startup.registry.ModSoundEvents;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrowEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 import java.util.List;
 
-public class PortableBlackHoleEntity extends AbstractArrowEntity {
-    public PortableBlackHoleEntity(EntityType<? extends AbstractArrowEntity> type, World worldIn) {
-        super(type, worldIn);
+public class PortableBlackHoleEntity extends AbstractArrow {
+    protected PortableBlackHoleEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
+        super(pEntityType, pLevel);
     }
-
-    public PortableBlackHoleEntity(EntityType<? extends AbstractArrowEntity> type, double x, double y, double z, World worldIn) {
-        super(type, x, y, z, worldIn);
+    
+    public PortableBlackHoleEntity(Level pLevel) {
+        super(ModEntityTypes.PORTABLE_BLACK_HOLE_ENTITY.get(), pLevel);
     }
-
-    public PortableBlackHoleEntity(EntityType<? extends AbstractArrowEntity> type, LivingEntity shooter, World worldIn) {
-        super(type, shooter, worldIn);
+    
+    public PortableBlackHoleEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity livingEntity, Level pLevel) {
+        super(pEntityType, livingEntity, pLevel);
     }
-
+    
     //time the black hole stays in existence
     int SECONDS = 7;
     int TICK_MULTI = 20;
@@ -40,65 +39,52 @@ public class PortableBlackHoleEntity extends AbstractArrowEntity {
         damageInRadius();
         //spawns particles once a second while the entity exists
         double PARTICLE_Y_OFFSET = 0.65;
-        if(this.ticksExisted % 20 == 0) {
-            if(world.isRemote()) {
+        if(this.tickCount % 20 == 0) {
+            if(level().isClientSide()) {
                 double PARTICLE_SPEED_MULTI = 0.75D;
                 for(int i = 0; i < 5; i++) {
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY() + PARTICLE_Y_OFFSET, this.getPosZ(),
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY() + PARTICLE_Y_OFFSET, this.getPosZ(),
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY() + PARTICLE_Y_OFFSET, this.getPosZ(),
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH, this.getPosX(), this.getPosY() + PARTICLE_Y_OFFSET, this.getPosZ(),
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
-                            (this.rand.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
+                    this.level().addParticle(ParticleTypes.DRAGON_BREATH, this.getX(), this.getY() + PARTICLE_Y_OFFSET, this.getZ(),
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
+                    this.level().addParticle(ParticleTypes.DRAGON_BREATH, this.getX(), this.getY() + PARTICLE_Y_OFFSET, this.getZ(),
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
+                    this.level().addParticle(ParticleTypes.DRAGON_BREATH, this.getX(), this.getY() + PARTICLE_Y_OFFSET, this.getZ(),
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
+                    this.level().addParticle(ParticleTypes.DRAGON_BREATH, this.getX(), this.getY() + PARTICLE_Y_OFFSET, this.getZ(),
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI, (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI,
+                            (this.random.nextDouble() - 0.5D) * PARTICLE_SPEED_MULTI);
                 }
             }
         }
-        if(this.ticksExisted % (SECONDS * TICK_MULTI) == 5) {
-            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_HUM.get(), SoundCategory.AMBIENT, 0.55f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
+        if(this.tickCount % (SECONDS * TICK_MULTI) == 5) {
+            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), ModSoundEvents.VOID_HUM.get(), SoundSource.AMBIENT, 0.55f, (1.0f + (this.level().random.nextFloat() * 0.05f)), true);
         }
         //what happens when we want to remove the entity
-        if(this.ticksExisted > (SECONDS * TICK_MULTI)) {
-            this.remove();
+        if(this.tickCount > (SECONDS * TICK_MULTI)) {
+            this.remove(RemovalReason.DISCARDED);
             for(int i = 0; i < 360; i++) {
                 if(i % 10 == 0) {
-                    this.getEntityWorld().addParticle(ParticleTypes.DRAGON_BREATH,
-                            this.getPosX(), this.getPosY() + PARTICLE_Y_OFFSET, this.getPosZ(),
+                    this.level().addParticle(ParticleTypes.DRAGON_BREATH,
+                            this.getX(), this.getY() + PARTICLE_Y_OFFSET, this.getZ(),
                             Math.cos(i) * 0.5d, 0.0, Math.sin(i) * 0.5d);
                 }
             }
-            this.getEntityWorld().playSound(this.getPosX(), this.getPosY(), this.getPosZ(), ModSoundEvents.VOID_FIZZLE.get(), SoundCategory.AMBIENT, 0.35f, (1.0f + (this.getEntityWorld().rand.nextFloat() * 0.05f)), true);
+            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), ModSoundEvents.VOID_FIZZLE.get(), SoundSource.AMBIENT, 1.0f, (1.0f + (this.level().random.nextFloat() * 0.05f)), true);
         }
     }
-
+    
     @Override
-    protected ItemStack getArrowStack() {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    protected void onEntityHit(EntityRayTraceResult ray) {
-        //super.onEntityHit(ray);
-        //ray.getEntity().attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getShooter()), 1);
-    }
-
-    //on block collision
-    @Override
-    protected void func_230299_a_(BlockRayTraceResult ray) {
-        //super.func_230299_a_(ray);
-        //BlockState theBlockYouHit = this.world.getBlockState(ray.getPos());
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-
+    
+    @Override
+    protected ItemStack getPickupItem() {
+        return null;
+    }
+    
     private void damageInRadius() {
         //constant values to tweak for black hole parameters
         //damage that being in the black hole does
@@ -113,34 +99,36 @@ public class PortableBlackHoleEntity extends AbstractArrowEntity {
         if(FlatLightsCommonConfig.portableBlackHoleSuckPower.get() != null) {
             SUCC_POWER = FlatLightsCommonConfig.portableBlackHoleSuckPower.get();
         }
-
+        Entity projSpawner = this.getOwner();
+        //FlatLights.LOGGER.info("[Portable Black Hole Entity] projectile owner is " + projSpawner);
+        
         //gets the entities around the black hole
-        List<Entity> entities = this.getEntityWorld().getEntitiesWithinAABBExcludingEntity(this.getShooter(), this.getBoundingBox().grow(SUCC_RADIUS));
+        List<Entity> entities = this.level().getEntities(this.getOwner(), this.getBoundingBox().inflate(SUCC_RADIUS));
         for (Entity instance : entities) {
             if (instance instanceof LivingEntity) {
                 //damage mobs in radius
-                if(instance.getDistance(this) <= 1.25) {
-                    instance.attackEntityFrom(ModDamageTypes.causeIndirectQuantum(this, this.getShooter()), PROJECTILE_DMG);
+                if(instance.distanceTo(this) <= 1.25 && projSpawner != null) {
+                    instance.hurt(ModDamageTypes.causeQuantumDamage(projSpawner), PROJECTILE_DMG);
                 }
                 //pull mob towards sphere
                 else {
-                    if(this.getPosX() > instance.getPosX() && instance.getMotion().getX() < 1) {
-                        instance.setMotion(instance.getMotion().getX() + SUCC_POWER, instance.getMotion().getY(), instance.getMotion().getZ());
+                    if(this.getX() > instance.getX() && instance.getDeltaMovement().x() < 1) {
+                        instance.setDeltaMovement(instance.getDeltaMovement().x() + SUCC_POWER, instance.getDeltaMovement().y(), instance.getDeltaMovement().z());
                     }
-                    else if(this.getPosX() < instance.getPosX() && instance.getMotion().getX() > -1) {
-                        instance.setMotion(instance.getMotion().getX() - SUCC_POWER, instance.getMotion().getY(), instance.getMotion().getZ());
+                    else if(this.getX() < instance.getX() && instance.getDeltaMovement().x() > -1) {
+                        instance.setDeltaMovement(instance.getDeltaMovement().x() - SUCC_POWER, instance.getDeltaMovement().y(), instance.getDeltaMovement().z());
                     }
-                    if(this.getPosY() > instance.getPosY() && instance.getMotion().getY() < 1) {
-                        instance.setMotion(instance.getMotion().getX(), instance.getMotion().getY() + SUCC_POWER, instance.getMotion().getZ());
+                    if(this.getY() > instance.getY() && instance.getDeltaMovement().y() < 1) {
+                        instance.setDeltaMovement(instance.getDeltaMovement().x(), instance.getDeltaMovement().y() + SUCC_POWER, instance.getDeltaMovement().z());
                     }
-                    else if(this.getPosY() < instance.getPosY() && instance.getMotion().getY() > -1) {
-                        instance.setMotion(instance.getMotion().getX(), instance.getMotion().getY() - SUCC_POWER, instance.getMotion().getZ());
+                    else if(this.getY() < instance.getY() && instance.getDeltaMovement().y() > -1) {
+                        instance.setDeltaMovement(instance.getDeltaMovement().x(), instance.getDeltaMovement().y() - SUCC_POWER, instance.getDeltaMovement().z());
                     }
-                    if(this.getPosZ() > instance.getPosZ() && instance.getMotion().getZ() < 1) {
-                        instance.setMotion(instance.getMotion().getX(), instance.getMotion().getY(), instance.getMotion().getZ() + SUCC_POWER);
+                    if(this.getZ() > instance.getZ() && instance.getDeltaMovement().z() < 1) {
+                        instance.setDeltaMovement(instance.getDeltaMovement().x(), instance.getDeltaMovement().y(), instance.getDeltaMovement().z() + SUCC_POWER);
                     }
-                    else if(this.getPosZ() < instance.getPosZ() && instance.getMotion().getZ() > -1) {
-                        instance.setMotion(instance.getMotion().getX(), instance.getMotion().getY(), instance.getMotion().getZ() - SUCC_POWER);
+                    else if(this.getZ() < instance.getZ() && instance.getDeltaMovement().z() > -1) {
+                        instance.setDeltaMovement(instance.getDeltaMovement().x(), instance.getDeltaMovement().y(), instance.getDeltaMovement().z() - SUCC_POWER);
                     }
                 }
             }

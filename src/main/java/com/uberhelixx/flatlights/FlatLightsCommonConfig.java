@@ -10,6 +10,7 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> healthDamageCap;
     public static final ForgeConfigSpec.ConfigValue<Double> healthDamagePercent;
     public static final ForgeConfigSpec.ConfigValue<Integer> armorDamageReduction;
+    public static final ForgeConfigSpec.DoubleValue reductionPerPoint;
     public static final ForgeConfigSpec.ConfigValue<Boolean> chestplateFlight;
     public static final ForgeConfigSpec.ConfigValue<Boolean> entityDamageableBlocks;
     public static final ForgeConfigSpec.ConfigValue<Boolean> indevBlocks;
@@ -33,8 +34,8 @@ public final class FlatLightsCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Float> shoreSetDmg;
     public static final ForgeConfigSpec.ConfigValue<Double> shoreSetRadius;
     public static final ForgeConfigSpec.ConfigValue<Double> shoreSetRadiusMax;
-    public static final ForgeConfigSpec.ConfigValue<Double> dragonsfinalSetRadius;
-    public static final ForgeConfigSpec.ConfigValue<Double> dragonsfinalSetRadiusMax;
+    public static final ForgeConfigSpec.ConfigValue<Double> dragonSetRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> dragonSetRadiusMax;
     public static final ForgeConfigSpec.ConfigValue<Integer> maxLootRolls;
     public static final ForgeConfigSpec.ConfigValue<Double> maxLootRollChance;
     public static final ForgeConfigSpec.ConfigValue<Float> sunSetDmgMulti;
@@ -56,13 +57,16 @@ public final class FlatLightsCommonConfig {
                 BUILDER.comment("Percentage of target's max HP taken to be dealt as damage by the Prismatic Blade on hit. (Deals x% bonus damage, with 1.00 = 100% of target's max HP) [Default: 0.05 (5%)]");
                 healthDamagePercent = BUILDER.defineInRange("HealthDamagePercent", 0.05, 0.00, 1.00);
                 
-                BUILDER.comment("Max percentage of damage reduction one can achieve using the Prismatic Armor. Damage reduction percentage is increased based on total armor value, each point above 20 granting +5% reduction ((totalArmorValue - 20) * 0.05). Means that the armor by itself can only achieve up to 50% reduction at most (it totals up to 30 points), but when used with other armor pieces with higher stats the reduction could reach higher values if configured to do so. Does not require full set of Prismatic Armor to activate. (Reduces incoming damage by x% up to this cap) [Default: 25%]");
-                armorDamageReduction = BUILDER.defineInRange("ArmorDamageReduction", 25, 0, 100);
+                BUILDER.comment("Max percentage of damage reduction one can achieve using the Prismatic Armor. Damage reduction percentage is determined based on total armor value, each point adding to the percentage. Does not require full set of Prismatic Armor to activate. (Reduces incoming damage by x% up to this cap) [Default: 30%]");
+                armorDamageReduction = BUILDER.defineInRange("ArmorDamageReduction", 30, 0, 100);
+                
+                BUILDER.comment("Amount of damage reduction each armor point adds. E.G. Prismatic Chestplate provides 12 armor points, so with the default value of 1 it adds 12% damage reduction. Does not require full set of Prismatic Armor to activate. [Default: 1%]");
+                reductionPerPoint = BUILDER.defineInRange("DamageReductionPerPoint", 1, 0, Float.MAX_VALUE);
                 
                 BUILDER.comment("Cooldown time for the usage of the Portable Black Hole Generator item, in SECONDS.  [Default: 10]");
                 blackHoleGeneratorCooldown = BUILDER.define("BlackHoleGeneratorCooldown", 10);
                 
-                BUILDER.comment("How powerful the sucking effect is for the black holes of the Portable Black Hole Generator. Higher means more movement speed when in range of the black hole. (Anything over like, 1, just puts mobs into orbit never to be seen again.)  [Default: 0.2]");
+                BUILDER.comment("How powerful the suction effect is for the black holes of the Portable Black Hole Generator. Higher means more movement speed when in range of the black hole. (Anything over like, 1, just puts mobs into orbit never to be seen again.)  [Default: 0.2]");
                 portableBlackHoleSuckPower = BUILDER.defineInRange("PortableBlackHoleSuckPower", 0.2, 0.0, Integer.MAX_VALUE);
                 
                 BUILDER.comment("Amount of damage the black hole from the Portable Black Hole Generator does each damaging tick.  [Default: 1.5]");
@@ -118,11 +122,11 @@ public final class FlatLightsCommonConfig {
                 BUILDER.comment("Max effect radius for the 'On the Forgotten Shore' curio set effect. Only matters for 'Growth' tier curios, cannot be smaller than the base radius otherwise it uses default values. [Default: 32 blocks]");
                 shoreSetRadiusMax = BUILDER.defineInRange("ShoreSetRadiusMax", 32.0, 1.0, Integer.MAX_VALUE);
                 
-                BUILDER.comment("Base effect radius for the 'Dragon's Final Test' curio set effect. [Default: 6 blocks]");
-                dragonsfinalSetRadius = BUILDER.defineInRange("DragonsFinalSetRadius", 6.0, 1.0, Integer.MAX_VALUE);
+                BUILDER.comment("Base effect radius for the 'Hidden Dragon' curio set effect. [Default: 6 blocks]");
+                dragonSetRadius = BUILDER.defineInRange("DragonSetRadius", 6.0, 1.0, Integer.MAX_VALUE);
                 
-                BUILDER.comment("Max effect radius for the 'Dragon's Final Test' curio set effect. Only matters for 'Growth' tier curios, cannot be smaller than the base radius otherwise it uses default values. [Default: 32 blocks]");
-                dragonsfinalSetRadiusMax = BUILDER.defineInRange("DragonsFinalSetRadiusMax", 32.0, 1.0, Integer.MAX_VALUE);
+                BUILDER.comment("Max effect radius for the 'Hidden Dragon' curio set effect. Only matters for 'Growth' tier curios, cannot be smaller than the base radius otherwise it uses default values. [Default: 32 blocks]");
+                dragonSetRadiusMax = BUILDER.defineInRange("DragonSetRadiusMax", 32.0, 1.0, Integer.MAX_VALUE);
                 
                 BUILDER.comment("Damage multiplier for the 'Radiance of the False Sun' curio set effect. Has to be >= 1, otherwise uses default value of 1.75. [Default: 1.75]");
                 sunSetDmgMulti = BUILDER.define("SunSetDmgMulti", 1.75f);

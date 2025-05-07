@@ -1,14 +1,16 @@
-package com.uberhelixx.flatlights.event;
+package com.uberhelixx.flatlights.common.event;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.common.item.ModItems;
 import com.uberhelixx.flatlights.common.item.armor.PrismaticHelm;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.world.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.util.DamageSource;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -17,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Objects;
 
-import static com.uberhelixx.flatlights.common.item.armor.ModArmorItem.*;
+import static com.uberhelixx.flatlights.common.item.armor.BaseArmorItem.*;
 import static com.uberhelixx.flatlights.common.item.armor.PrismaticChestplate.onEquip;
 import static com.uberhelixx.flatlights.common.item.armor.PrismaticChestplate.onUnequip;
 
@@ -27,27 +29,19 @@ public class ArmorEvents {
     //Prismatic Armor, reduce incoming damage amount based on armor total, requires at least one piece of prisma armor on to work
     @SubscribeEvent
     public static void DamageReduction(LivingHurtEvent event) {
-        if(!event.getSource().isUnblockable()) {
-            if(event.getEntity() instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) event.getEntity();
+        if(!event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            if(event.getEntity() instanceof Player player) {
                 if(wearingBoots(player) || wearingLegs(player) || wearingChest(player) || wearingHelm(player)) {
-                    int armorTotal = player.getTotalArmorValue();
-                    MiscHelpers.debugLogger("[Prismatic Armor] Total armor value is " + armorTotal);
-                    MiscHelpers.debugLogger("[Prismatic Armor] Initial damage is " + event.getAmount());
-                    int armorVsDiamondTotal = armorTotal - 20;
+                    int armorTotal = player.getArmorValue();
+                    //FlatLights.LOGGER.info("[Prismatic Armor] Total armor value is " + armorTotal);
+                    //FlatLights.LOGGER.info("[Prismatic Armor] Initial damage is " + event.getAmount());
+                    float totalReduction = (float) (armorTotal * (FlatLightsCommonConfig.reductionPerPoint.get() / 100f));
                     float reductionRatioCap = FlatLightsCommonConfig.armorDamageReduction.get() / 100f;
-                    float reductionRatio;
-
                     //get reductionRatio, make sure percent doesn't go above reductionRatioCap %
-                    if(armorVsDiamondTotal > 0 && reductionRatioCap > 0) {
-                        reductionRatio = Math.min((armorVsDiamondTotal * 0.05f), reductionRatioCap);
-                    }
-                    //normal damage taken if at or below diamond level armor
-                    else {
-                        reductionRatio = 0;
-                    }
+                    float reductionRatio = Mth.clamp(totalReduction, 0, reductionRatioCap);
+                    
                     float reducedDamage = event.getAmount() * (1 - reductionRatio);
-
+                    
                     //reduces damage per piece of prismatic armor worn, instead of just once if wearing any amount of prismatic armor
                     if(FlatLightsCommonConfig.multilayerReduction.get()) {
                         reducedDamage = event.getAmount();
@@ -64,66 +58,66 @@ public class ArmorEvents {
                             reducedDamage = reducedDamage * (1 - reductionRatio);
                         }
                     }
-
-                    MiscHelpers.debugLogger("[Prismatic Armor] Reduced damage is now " + reducedDamage);
+                    
+                    FlatLights.LOGGER.info("[Prismatic Armor] Reduced damage is now " + reducedDamage);
                     event.setAmount(reducedDamage);
                 }
             }
         }
     }
-
+    
     //Prismatic Boots cancel fall dmg events
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void negateFallDamage(LivingHurtEvent event) {
         DamageSource dmgSrc = event.getSource();
-        if(event.getEntityLiving() instanceof PlayerEntity && wearingBoots((PlayerEntity) event.getEntityLiving())) {
-            if(dmgSrc == DamageSource.FALL) {
+        if(event.getEntity() instanceof Player && wearingBoots((Player) event.getEntity())) {
+            if(dmgSrc.is(DamageTypes.FALL)) {
                 event.setCanceled(true);
             }
         }
     }
-
+    
     //Prismatic Chestplate checking for equipment changes to toggle flying capability
     @SubscribeEvent
     public static void chestplateEquip(LivingEquipmentChangeEvent event) {
-        if(event.getEntityLiving() instanceof PlayerEntity) {
-            if(event.getSlot() == EquipmentSlotType.CHEST) {
+        if(event.getEntity() instanceof Player) {
+            if(event.getSlot() == EquipmentSlot.CHEST) {
                 if(event.getFrom() == event.getTo() && event.getFrom().getItem() == ModItems.PRISMATIC_CHESTPLATE.get()) {
                     return;
                 }
                 else if(event.getTo().getItem() == ModItems.PRISMATIC_CHESTPLATE.get()) {
-                    onEquip((PlayerEntity) event.getEntityLiving());
+                    onEquip((Player) event.getEntity());
                 }
                 else {
-                    onUnequip((PlayerEntity) event.getEntityLiving());
+                    onUnequip((Player) event.getEntity());
                 }
             }
         }
     }
-
+    
     //Prismatic Helmet giving/removing night vision and water breathing on equipment change
     @SubscribeEvent
     public static void helmetEquip(LivingEquipmentChangeEvent event) {
-        PlayerEntity player;
+        Player player;
         boolean hasNightVis;
         boolean hasWaterBreath;
-        if(event.getEntityLiving() instanceof PlayerEntity) {
-            player = (PlayerEntity) event.getEntityLiving();
-            hasNightVis = !Objects.equals(player.getActivePotionEffect(Effects.NIGHT_VISION), null);
-            hasWaterBreath = !Objects.equals(player.getActivePotionEffect(Effects.WATER_BREATHING), null);
+        if(event.getEntity() instanceof Player) {
+            player = (Player) event.getEntity();
+            hasNightVis = !Objects.equals(player.getEffect(MobEffects.NIGHT_VISION), null);
+            hasWaterBreath = !Objects.equals(player.getEffect(MobEffects.WATER_BREATHING), null);
         }
         else {
             return;
         }
-        if(event.getSlot() == EquipmentSlotType.HEAD) {
+        if(event.getSlot() == EquipmentSlot.HEAD) {
             if(event.getFrom() == event.getTo() && event.getFrom().getItem() == ModItems.PRISMATIC_HELMET.get()) {
                 return;
             }
             else if(event.getTo().getItem() == ModItems.PRISMATIC_HELMET.get()) {
-                PrismaticHelm.onEquip((PlayerEntity) event.getEntityLiving(), hasNightVis, hasWaterBreath);
+                PrismaticHelm.onEquip((Player) event.getEntity(), hasNightVis, hasWaterBreath);
             }
             else {
-                PrismaticHelm.onUnequip((PlayerEntity) event.getEntityLiving(), hasNightVis, hasWaterBreath);
+                PrismaticHelm.onUnequip((Player) event.getEntity(), hasNightVis, hasWaterBreath);
             }
         }
     }

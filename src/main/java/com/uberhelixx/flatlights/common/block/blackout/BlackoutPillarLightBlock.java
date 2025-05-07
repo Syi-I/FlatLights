@@ -1,45 +1,25 @@
 package com.uberhelixx.flatlights.common.block.blackout;
 
-import com.uberhelixx.flatlights.common.block.lights.SlabLightBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.world.item.BlockItemUseContext;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import com.uberhelixx.flatlights.common.block.light.PillarLightBlock;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.ToIntFunction;
 
-public class BlackoutPillarLightBlock extends BlackoutRotatingBlock {
-    private final double thickness;
-
-    public BlackoutPillarLightBlock(double thickness) {
-        super();
-
-        //make shape based off of direction from RotatingBlock
-        this.thickness = thickness;
-        double initialWidth = 6;
-        double totalWidth = initialWidth + thickness;
-        UP = Block.makeCuboidShape(initialWidth,0, initialWidth, totalWidth, 16, totalWidth);
-        DOWN = Block.makeCuboidShape(initialWidth,0, initialWidth, totalWidth, 16, totalWidth);
-        EAST = Block.makeCuboidShape(0, initialWidth, initialWidth, 16, totalWidth, totalWidth);
-        WEST = Block.makeCuboidShape(0, initialWidth, initialWidth, 16, totalWidth, totalWidth);
-        NORTH = Block.makeCuboidShape(initialWidth, initialWidth,0, totalWidth, totalWidth,16);
-        SOUTH = Block.makeCuboidShape(initialWidth, initialWidth,0, totalWidth, totalWidth,16);
+public class BlackoutPillarLightBlock extends PillarLightBlock {
+    public BlackoutPillarLightBlock(ToIntFunction<BlockState> lightLevel, double thickness) {
+        super(lightLevel, thickness);
     }
-
-    @Nullable
+    
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        World worldIn = context.getWorld();
-        BlockPos pos = context.getPos().offset(context.getFace().getOpposite());
-        boolean waterlogged = worldIn.getFluidState(context.getPos()).getFluid() == Fluids.WATER;
-        if (context.getPlayer() != null && worldIn.getBlockState(pos).getBlock() instanceof SlabLightBlock && !context.getPlayer().isCrouching())
-            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
-                    .with(BlockStateProperties.FACING, worldIn.getBlockState(pos).get(BlockStateProperties.FACING));
-        else
-            return getDefaultState().with(BlockStateProperties.WATERLOGGED, waterlogged)
-                    .with(BlockStateProperties.FACING, context.getFace());
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
+        pTooltip.add(Component.translatable("tooltip.flatlights.blackout").withStyle(ChatFormatting.GRAY));
     }
 }

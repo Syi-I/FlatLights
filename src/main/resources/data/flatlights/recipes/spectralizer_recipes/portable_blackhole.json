@@ -1,0 +1,26 @@
+{
+  "type": "flatlights:spectralizer",
+  "ingredients": [
+    {
+      "item": "flatlights:prisma_nucleus"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "item": "minecraft:end_crystal"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "minecraft:end_crystal"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    }
+  ],
+  "output": {
+    "item": "flatlights:portable_blackhole"
+  }
+}

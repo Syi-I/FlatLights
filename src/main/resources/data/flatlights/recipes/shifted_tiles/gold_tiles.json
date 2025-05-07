@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X X",
+    " # ",
+    "X X"
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:gold_flatblock"
+    },
+    "X": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "flatlights:gold_tiles",
+    "count": 8
+  }
+}

@@ -1,61 +1,69 @@
-package com.uberhelixx.flatlights.effect;
+package com.uberhelixx.flatlights.common.effect;
 
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.capability.EntangledStateProvider;
-import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
-import com.uberhelixx.flatlights.network.PacketEntangledUpdate;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.common.capability.ModCapabilities;
+import com.uberhelixx.flatlights.common.network.PacketHandler;
+import com.uberhelixx.flatlights.common.network.packets.PacketEntangledUpdate;
+import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
+import com.uberhelixx.flatlights.util.MiscUtils;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.scores.Scoreboard;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
-public class EntangledEffect extends Effect {
-    private static final String ENTANGLED_TEAM = "entangledMobs";
-
-    protected EntangledEffect(EffectType typeIn, int liquidColorIn) {
-        super(typeIn, liquidColorIn);
+public class EntangledEffect extends MobEffect {
+    private static final String ENTANGLED_TEAM = "flatlights.entangledMobs";
+    
+    protected EntangledEffect(MobEffectCategory pCategory, int pColor) {
+        super(pCategory, pColor);
     }
-
+    
     @Override
-    public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
-        entityLivingBaseIn.hurtResistantTime = 0;
-        int dmgMultiplier = 1;
-        if(amplifier > 0) {
-            dmgMultiplier += amplifier;
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+        Scoreboard entityScoreboard = pLivingEntity.getCommandSenderWorld().getScoreboard();
+        //in theory the person who applied the potion effect, since this only comes from weapons enchanted with Quantum Strike normally
+        Entity trueSource = pLivingEntity.getLastDamageSource() != null ? pLivingEntity.getLastDamageSource().getEntity() : pLivingEntity;
+        //resets invulnerability timer so damage is guaranteed to hit
+        pLivingEntity.invulnerableTime = 0;
+        //final hit damage multiplied by amplifier level
+        int dmgMulti = 1;
+        if(pAmplifier > 0) {
+            dmgMulti += pAmplifier;
         }
         //deal damage to entity and remove from the entangled team so the glowing effect color is reset
-        entityLivingBaseIn.attackEntityFrom(ModDamageTypes.ENTANGLED, entityLivingBaseIn.getMaxHealth() * (0.1F * dmgMultiplier) * MiscHelpers.damagePercentCalc(FlatLightsCommonConfig.entangledEndDmg.get()));
-        if(entityLivingBaseIn.getTeam() != null) {
-            if (entityLivingBaseIn.getTeam() == entityLivingBaseIn.getEntityWorld().getScoreboard().getTeam(ENTANGLED_TEAM)) {
-                entityLivingBaseIn.getEntityWorld().getScoreboard().removePlayerFromTeam(entityLivingBaseIn.getCachedUniqueIdString(), entityLivingBaseIn.getEntityWorld().getScoreboard().getTeam(ENTANGLED_TEAM));
+        pLivingEntity.hurt(ModDamageTypes.causeEntangledDamage(trueSource), pLivingEntity.getMaxHealth() * (0.1F * dmgMulti) * MiscUtils.damagePercentCalc(FlatLightsCommonConfig.entangledEndDmg.get()));
+        //remove this entity from the entangled team once the effect expires
+        if(pLivingEntity.getTeam() != null) {
+            if (pLivingEntity.getTeam() == entityScoreboard.getPlayerTeam(ENTANGLED_TEAM)) {
+                entityScoreboard.removePlayerFromTeam(pLivingEntity.getStringUUID(), Objects.requireNonNull(entityScoreboard.getPlayerTeam(ENTANGLED_TEAM)));
             }
         }
-        if(EntangledStateProvider.getEntangledState(entityLivingBaseIn).isPresent()) {
-            EntangledStateProvider.getEntangledState(entityLivingBaseIn).ifPresent(entangledState -> {
+        //set entangled boolean capability to false since the effect has expired
+        if(ModCapabilities.getEntangledState(pLivingEntity).isPresent()) {
+            ModCapabilities.getEntangledState(pLivingEntity).ifPresent(entangledState -> {
                 entangledState.setEntangledState(false);
-                MiscHelpers.debugLogger("[entangled effect] changed entangled state to false");
-                if(!entityLivingBaseIn.getEntityWorld().isRemote()) {
-                    Supplier<Entity> supplier = () -> entityLivingBaseIn;
-                    PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entityLivingBaseIn.getEntityId(), false));
+                FlatLights.LOGGER.info("[Entangled Effect] Changed entangled state to false");
+                if(!pLivingEntity.getCommandSenderWorld().isClientSide()) {
+                    Supplier<Entity> supplier = () -> pLivingEntity;
+                    PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(pLivingEntity.getId(), false));
                 }
             });
         }
-        super.performEffect(entityLivingBaseIn, amplifier);
+        super.applyEffectTick(pLivingEntity, pAmplifier);
     }
-
-    //trigger effect as the effect is expiring
+    
     @Override
-    public boolean isReady(int duration, int amplifier) {
-        return duration <= 1;
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        return pDuration <= 1;
     }
-
+    
     public static String getEntangledTeam() {
         return ENTANGLED_TEAM;
     }
-
 }

@@ -1,59 +1,50 @@
 package com.uberhelixx.flatlights.common.block;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockReader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.ToIntFunction;
 
 public class PlateBlock extends Block {
-    //light level, change the number to whatever light level value from 0-15
-    public static ToIntFunction<BlockState> PLATE_LIGHT_LEVEL = BlockState -> 10;
-    //also constants for block hardness(time it takes to mine the block) and resistance(what level explosions and such can destroy the block)
-    //lower hardness = lower mining time required
-    static final float BLOCK_HARDNESS = 2.0f;
-    //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
-    static final float BLOCK_RESISTANCE = 100000000f;
-
+    
+    public static final ToIntFunction<BlockState> PLATE_LIGHT_LEVEL = BlockState -> 10;
+    public static final float DESTROY_TIME = 2.0f;
+    public static final float EXPLOSION_RESISTANCE = 100000000f;
+    
     public PlateBlock() {
-        super(Properties.create(Material.GLASS)
-                .hardnessAndResistance(BLOCK_HARDNESS, BLOCK_RESISTANCE)
-                .setLightLevel(PLATE_LIGHT_LEVEL)
-                .harvestTool(ToolType.PICKAXE)
-                .setRequiresTool()
-                .sound(SoundType.NETHERITE));
+        super(BlockBehaviour.Properties.copy(Blocks.GLASS)
+                .strength(DESTROY_TIME, EXPLOSION_RESISTANCE)
+                .lightLevel(PLATE_LIGHT_LEVEL)
+                .sound(SoundType.NETHERITE_BLOCK));
     }
-
+    
     @Override
-    public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
-
-        return FlatLightsCommonConfig.entityDamageableBlocks.get();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         if(FlatLightsCommonConfig.entityDamageableBlocks.get()) {
-            String mobDamageable = "Mob Destructible: " + MiscHelpers.coloredText(TextFormatting.RED, "TRUE");
-            ITextComponent mobDamageableTooltip = ITextComponent.getTextComponentOrEmpty(mobDamageable);
-            tooltip.add(mobDamageableTooltip);
+            String mobDamageable = "Mob Destructible: " + TextColor.fromLegacyFormat(ChatFormatting.RED) + "TRUE";
+            Component mobDamageableTooltip = Component.literal(mobDamageable);
+            pTooltip.add(mobDamageableTooltip);
         }
-
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
+    }
+    
+    @Override
+    public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+        return FlatLightsCommonConfig.entityDamageableBlocks.get();
     }
 }

@@ -1,10 +1,10 @@
-package com.uberhelixx.flatlights.effect;
+package com.uberhelixx.flatlights.common.effect;
 
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
-public class HealthReductionEffect extends Effect {
-    protected HealthReductionEffect(EffectType typeIn, int liquidColorIn) {
-        super(typeIn, liquidColorIn);
+public class HealthReductionEffect extends MobEffect {
+    protected HealthReductionEffect(MobEffectCategory pCategory, int pColor) {
+        super(pCategory, pColor);
     }
 }

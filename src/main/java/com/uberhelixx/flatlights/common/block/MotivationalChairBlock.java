@@ -1,82 +1,66 @@
 package com.uberhelixx.flatlights.common.block;
 
 import com.uberhelixx.flatlights.common.entity.ChairEntity;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.world.entity.player.PlayerEntity;
-import net.minecraft.world.item.BlockItemUseContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.state.StateContainer;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class MotivationalChairBlock extends HorizontalBlock {
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
 
-    static final float BLOCK_HARDNESS = 0.01f;
+public class MotivationalChairBlock extends HorizontalDirectionalBlock {
+    static final float DESTROY_TIME = 0.01f;
     //higher resistance = less stuff can destroy it, 36000000 is bedrock hardness? so this is currently very balanced:tm:
-    static final float BLOCK_RESISTANCE = 100000000f;
-
-    public MotivationalChairBlock() {
-        super(AbstractBlock.Properties.create(Material.BAMBOO)
-                .hardnessAndResistance(BLOCK_HARDNESS, BLOCK_RESISTANCE)
-                .notSolid()
-                .setOpaque(MotivationalChairBlock::isntSolid)
+    static final float EXPLOSION_RESISTANCE = 100000000f;
+    protected MotivationalChairBlock() {
+        super(BlockBehaviour.Properties.copy(Blocks.GLASS)
+                .strength(DESTROY_TIME, EXPLOSION_RESISTANCE)
+                .isSuffocating(MotivationalChairBlock::isFalse)
                 .sound(SoundType.BAMBOO));
     }
-
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(HORIZONTAL_FACING);
-    }
-
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return this.getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing());
-    }
-
-    private static boolean isntSolid(BlockState state, IBlockReader reader, BlockPos pos) {
-        return false;
-    }
-
+    
+    private static boolean isFalse(BlockState state, BlockGetter getter, BlockPos pos) {return false;}
+    
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) { return 1.0F; }
-
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) { return true; }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        String funfact = MiscHelpers.coloredText(TextFormatting.GRAY, "This model has nearly triple the triangles and double the vertices of Mario Kart Wii Coconut Mall. Motivational.");
-        ITextComponent funfactTip = ITextComponent.getTextComponentOrEmpty(funfact);
-        String mainTooltipText = MiscHelpers.coloredText(TextFormatting.GRAY, "A great spot to AFK");
-        ITextComponent mainTooltip = ITextComponent.getTextComponentOrEmpty(mainTooltipText);
-        if(Screen.hasShiftDown()) {
-            tooltip.add(funfactTip);
-        }
-        else {
-            tooltip.add(mainTooltip);
-        }
-
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return true;
     }
-
+    
     @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        ChairEntity.create(worldIn, pos, 0.4, player);
-        return ActionResultType.SUCCESS;
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(HORIZONTAL_FACING);
+    }
+    
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
+    }
+    
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(HORIZONTAL_FACING, context.getHorizontalDirection());
+    }
+    
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        return ChairEntity.create(pLevel, pPos, 0.4, pPlayer, pState.getValue(HORIZONTAL_FACING));
     }
 }

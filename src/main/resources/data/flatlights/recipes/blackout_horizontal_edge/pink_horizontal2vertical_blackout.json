@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "flatlights:pink_vertical_edge_blackout"
+    }
+  ],
+  "result": {
+    "item": "flatlights:pink_horizontal_edge_blackout",
+    "count": 1
+  }
+}

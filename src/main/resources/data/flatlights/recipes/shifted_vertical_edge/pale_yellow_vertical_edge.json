@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:pale_yellow_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:pale_yellow_vertical_edge",
+    "count": 64
+  }
+}

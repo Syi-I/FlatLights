@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "flatlights:dark_purple_panel"
+    },
+    {
+      "item": "flatlights:blackout_powder"
+    }
+  ],
+  "result": {
+    "item": "flatlights:dark_purple_panel_blackout",
+    "count": 1
+  }
+}

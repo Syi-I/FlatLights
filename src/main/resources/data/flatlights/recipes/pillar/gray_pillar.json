@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:gray_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:gray_pillar",
+    "count": 48
+  }
+}

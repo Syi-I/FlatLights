@@ -1,5 +1,5 @@
 # Flat Lights
-Flat Lights for 1.16.5 requires the mod [Curios v4.1.0.0](https://www.curseforge.com/minecraft/mc-mods/curios/files/4419403) or above to be installed.  
+Flat Lights requires [Curios](https://www.curseforge.com/minecraft/mc-mods/curios) to be installed. (Note: Flat Lights for 1.16.5 requires [Curios v4.1.0.0](https://www.curseforge.com/minecraft/mc-mods/curios/files/4419403) or above to be installed.)  
 Flat Lights is also available on [Modrinth](https://modrinth.com/mod/flat-lights)!  
 Find the mod wiki [here](https://github.com/Syi-I/FlatLights-Wiki/wiki) for more in-depth details.
 

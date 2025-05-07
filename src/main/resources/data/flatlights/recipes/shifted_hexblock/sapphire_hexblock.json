@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX ",
+    "X#X",
+    " XX"
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:sapphire_flatblock"
+    },
+    "X": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "flatlights:sapphire_hexblock",
+    "count": 12
+  }
+}

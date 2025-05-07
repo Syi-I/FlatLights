@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.startup;
 
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 
@@ -10,4 +11,6 @@ public interface IProxy {
     void init(FMLCommonSetupEvent event);
     
     void postInit(FMLCommonSetupEvent event);
+    
+    void registerEntityLayers(EntityRenderersEvent.AddLayers event);
 }

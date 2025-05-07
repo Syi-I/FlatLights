@@ -1,20 +1,24 @@
-package com.uberhelixx.flatlights.loot;
+package com.uberhelixx.flatlights.common.loot;
 
-import com.google.gson.JsonObject;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootTables;
-import net.minecraft.loot.conditions.ILootCondition;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.DimensionType;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class CurioStructureAdditionModifier extends LootModifier {
+    
     public double firstRoll;
     public double secondRoll;
     public double thirdRoll;
@@ -22,7 +26,7 @@ public class CurioStructureAdditionModifier extends LootModifier {
     public int bonusRollCount;
     //this is being used for structure chest loot not block drops
     //passes in conditions to check before modifying the loot that is generated, and what item(s) to be added
-    protected CurioStructureAdditionModifier(ILootCondition[] conditionsIn, double firstRoll, double secondRoll, double thirdRoll, double bonusRollChance, int bonusRollCount) {
+    public CurioStructureAdditionModifier(LootItemCondition[] conditionsIn, double firstRoll, double secondRoll, double thirdRoll, double bonusRollChance, int bonusRollCount) {
         super(conditionsIn);
         
         this.firstRoll = firstRoll;
@@ -34,7 +38,7 @@ public class CurioStructureAdditionModifier extends LootModifier {
     }
     
     //default CurioStructureAdditionModifier if the json doesn't specify the roll value chances
-    protected CurioStructureAdditionModifier(ILootCondition[] conditionsIn) {
+    protected CurioStructureAdditionModifier(LootItemCondition[] conditionsIn) {
         super(conditionsIn);
         this.firstRoll = 0.85;
         this.secondRoll = 0.5;
@@ -44,79 +48,62 @@ public class CurioStructureAdditionModifier extends LootModifier {
         this.bonusRollCount = 0;
     }
     
-    @Nonnull
     @Override
-    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> objectArrayList, LootContext lootContext) {
         //generatedLoot is the loot that would be dropped before adding new items here
         //can add based on chance (some conditional if statement) or guarantee (no condition checks)
         List<ItemStack> additionalItems;
         //the loot table that we are trying to modify
-        ResourceLocation queriedLootTable = context.getQueriedLootTableId();
+        ResourceLocation queriedLootTable = lootContext.getQueriedLootTableId();
         
         //get dimension ID of the chest and use it to boost odds in certain dimensions
-        ResourceLocation dimID = context.getWorld().getDimensionKey().getLocation();
+        ResourceLocation dimID = lootContext.getLevel().dimension().location();
         
         //if it's a stronghold chest, increase odds by 10%
-        if (queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CORRIDOR) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_CROSSING) || queriedLootTable.equals(LootTables.CHESTS_STRONGHOLD_LIBRARY)) {
+        if (queriedLootTable.equals(BuiltInLootTables.STRONGHOLD_CORRIDOR) || queriedLootTable.equals(BuiltInLootTables.STRONGHOLD_CROSSING) || queriedLootTable.equals(BuiltInLootTables.STRONGHOLD_LIBRARY)) {
             additionalItems = LootTableModifier.getLootTableRoll(this, 0.1f);
         }
         //if it's a structure in the NETHER, increase odds by 15%
-        else if (dimID.equals(DimensionType.THE_NETHER_ID)) {
+        else if (dimID.equals(Level.NETHER.location())) {
             additionalItems = LootTableModifier.getLootTableRoll(this, 0.15f);
         }
         //if it's a structure in the END, increase odds by 25%
-        else if (dimID.equals(DimensionType.THE_END_ID)) {
+        else if (dimID.equals(Level.END.location())) {
             additionalItems = LootTableModifier.getLootTableRoll(this, 0.25f);
         }
         //defaults to no roll bonus
         else {
             additionalItems = LootTableModifier.getLootTableRoll(this, 0.0f);
         }
-       
-        if(!(new HashSet<>(generatedLoot).containsAll(additionalItems))) {
-            for(ItemStack item : generatedLoot) {
-                //LOGGER.info("[Structure Chest] Base Generated Item: " + item.toString());
+        
+        if(!(new HashSet<>(objectArrayList).containsAll(additionalItems))) {
+            for(ItemStack item : objectArrayList) {
+                //FlatLights.LOGGER.info("[Structure Chest] Base Generated Item: " + item.toString());
             }
             for(ItemStack item : additionalItems) {
-                //LOGGER.info("[Structure Chest] Additional Item: " + item.toString());
+                //FlatLights.LOGGER.info("[Structure Chest] Additional Item: " + item.toString());
             }
-            generatedLoot.addAll(additionalItems);
-            //LOGGER.info("[Structure Chest] Added extra items to loot table.");
-            return generatedLoot;
+            objectArrayList.addAll(additionalItems);
+            //FlatLights.LOGGER.info("[Structure Chest] Added extra items to loot table.");
+            return objectArrayList;
         }
-        //LOGGER.info("[Structure Chest] Unmodified loot table returned.");
+        //FlatLights.LOGGER.info("[Structure Chest] Unmodified loot table returned.");
         //return the modified list of loot
         //List<ItemStack> duplicateChest = new ArrayList<>();
-        return generatedLoot;
+        return objectArrayList;
     }
-
-    public static class Serializer extends GlobalLootModifierSerializer<CurioStructureAdditionModifier> {
-
-        @Override
-        public CurioStructureAdditionModifier read(ResourceLocation name, JsonObject object, ILootCondition[] conditionsIn) {
-            //return values from list of properties from the json file
-            
-            return new CurioStructureAdditionModifier(
-                    conditionsIn,
-                    object.get("first_roll").getAsDouble(),
-                    object.get("second_roll").getAsDouble(),
-                    object.get("third_roll").getAsDouble(),
-                    object.get("bonus_roll_chance").getAsDouble(),
-                    object.get("bonus_roll_count").getAsInt()
-            );
-        }
-
-        @Override
-        public JsonObject write(CurioStructureAdditionModifier instance) {
-            JsonObject json = makeConditions(instance.conditions);
-            
-            json.addProperty("first_roll", instance.firstRoll);
-            json.addProperty("second_roll", instance.secondRoll);
-            json.addProperty("third_roll", instance.thirdRoll);
-            json.addProperty("bonus_roll_chance", instance.bonusRollChance);
-            json.addProperty("bonus_roll_count", instance.bonusRollCount);
-            
-            return json;
-        }
+    
+    public static final Supplier<Codec<CurioStructureAdditionModifier>> CODEC = () -> RecordCodecBuilder.create(instance -> instance.group(
+            LOOT_CONDITIONS_CODEC.fieldOf("conditions").forGetter(lm -> lm.conditions),
+            Codec.DOUBLE.fieldOf("first_roll").forGetter(d -> d.firstRoll),
+            Codec.DOUBLE.fieldOf("second_roll").forGetter(d -> d.secondRoll),
+            Codec.DOUBLE.fieldOf("third_roll").forGetter(d -> d.thirdRoll),
+            Codec.DOUBLE.fieldOf("bonus_roll_chance").forGetter(d -> d.bonusRollChance),
+            Codec.INT.fieldOf("bonus_roll_count").forGetter(d -> d.bonusRollCount)
+    ).apply(instance, CurioStructureAdditionModifier::new));
+    
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return CODEC.get();
     }
 }

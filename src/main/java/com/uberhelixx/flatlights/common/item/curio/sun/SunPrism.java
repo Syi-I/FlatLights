@@ -7,62 +7,62 @@ import com.uberhelixx.flatlights.common.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.common.item.curio.CurioTier;
 import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.UUID;
 
 public class SunPrism extends BaseCurio {
-    public SunPrism(Properties properties) {
-        super(properties);
+    public SunPrism() {
+        super();
     }
-
+    
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         //get held itemstack, which should be the input curio, and get nbt tags from it
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        CompoundNBT stackTags = stack.getTag();
-
+        ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+        CompoundTag stackTags = stack.getTag();
+        
         //doesn't let you roll again if it already has the roll data
-        if(stackTags == null || !CurioUtils.rollCheck(stackTags)) {
-            CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.SUN, null, null);
+        if(!CurioUtils.rollCheck(stackTags)) {
+            CurioUtils.setCurioNbt(pPlayer, pUsedHand, CurioSetNames.SUN, null, null);
         }
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+        return super.use(pLevel, pPlayer, pUsedHand);
     }
-
+    
     //uuids for the different attribute modifiers
-    protected static final UUID PRISM_ATTACK = UUID.fromString("d21d7059-ad2d-445b-8994-98a0a201a194");
-
+    protected static final UUID PRISM_ATTACK = new UUID(4962834571068493L, 206739874329103L);
+    
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
         //get old attribute modifiers and create a new map to modify
         Multimap<Attribute, AttributeModifier> oldMap = super.getAttributeModifiers(slotContext, uuid, stack);
         ListMultimap<Attribute, AttributeModifier> newMap = ArrayListMultimap.create();
-
+        
         CurioTier tier = null;
         //get curio tier after ensuring there is nbt data rolled for tier value
         if(stack.getTag() != null && stack.getTag().contains(CurioUtils.TIER)) {
             tier = CurioUtils.getCurioTier(stack);
         }
-
+        
         if(tier != null) {
             double basePower = CurioUtils.getTierMultiplier(stack);
             double growthModifier = 0;
             double attackBase = 4;
-
+            
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {
                 growthModifier = 1;
                 //calculate growth modifier value from core count, scale down number
-                PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
+                Player player = CurioUtils.getPlayer(slotContext);
                 if (player != null) {
                     int cores = 0;
                     if (stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
@@ -71,7 +71,7 @@ public class SunPrism extends BaseCurio {
                     growthModifier = cores * 0.01;
                 }
             }
-
+            
             //put attribute modifiers onto the new map using the growth modifier value
             newMap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(PRISM_ATTACK, "Prism Attack Modifier",(attackBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
             

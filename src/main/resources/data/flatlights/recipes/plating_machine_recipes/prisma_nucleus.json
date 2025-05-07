@@ -1,0 +1,14 @@
+{
+  "type": "flatlights:plating",
+  "ingredients": [
+    {
+      "item": "minecraft:ender_pearl"
+    },
+    {
+      "item": "flatlights:prismatic_ingot"
+    }
+  ],
+  "output": {
+    "item": "flatlights:prisma_nucleus"
+  }
+}

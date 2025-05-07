@@ -1,11 +1,11 @@
-package com.uberhelixx.flatlights.loot;
+package com.uberhelixx.flatlights.common.loot;
 
 import com.uberhelixx.flatlights.common.block.ModBlocks;
 import com.uberhelixx.flatlights.common.item.curio.ModCurios;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
@@ -14,7 +14,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class LootTableModifier {
-    
     public static List<Supplier<ItemStack>> CURIO_LOOT = new ArrayList<>();
     
     public static Random rand = new Random();
@@ -45,7 +44,7 @@ public class LootTableModifier {
         List<ItemStack> stacks = new ArrayList<>();
         
         //lower roll value means better loot, so subtract rollBonus
-        float rollValue = MathHelper.clamp(rand.nextFloat() - rollBonus, 0, 1);
+        float rollValue = Mth.clamp(rand.nextFloat() - rollBonus, 0, 1);
         //calculate number of curios to add based on rollValue
         int curioRolls = getCurioRolls(modifier, rollValue);
         

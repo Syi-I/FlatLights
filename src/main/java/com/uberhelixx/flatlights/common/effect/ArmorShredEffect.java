@@ -1,10 +1,10 @@
-package com.uberhelixx.flatlights.effect;
+package com.uberhelixx.flatlights.common.effect;
 
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
-public class ArmorShredEffect extends Effect {
-    protected ArmorShredEffect(EffectType typeIn, int liquidColorIn) {
-        super(typeIn, liquidColorIn);
+public class ArmorShredEffect extends MobEffect {
+    protected ArmorShredEffect(MobEffectCategory pCategory, int pColor) {
+        super(pCategory, pColor);
     }
 }

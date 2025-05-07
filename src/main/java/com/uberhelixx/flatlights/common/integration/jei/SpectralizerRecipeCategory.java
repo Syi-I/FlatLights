@@ -1,23 +1,30 @@
-package com.uberhelixx.flatlights.integration.jei;
+package com.uberhelixx.flatlights.common.integration.jei;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.common.block.ModBlocks;
-import com.uberhelixx.flatlights.data.recipes.SpectralizerRecipe;
+import com.uberhelixx.flatlights.common.recipe.SpectralizerRecipe;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class SpectralizerRecipeCategory implements IRecipeCategory<SpectralizerRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(FlatLights.MODID, "spectralizer");
     public static final ResourceLocation TEXTURE = new ResourceLocation(FlatLights.MODID, "textures/gui/spectralizer_gui.png");
+    public static final RecipeType<SpectralizerRecipe> SPECTRALIZER_TYPE = new RecipeType<>(UID, SpectralizerRecipe.class);
+    
     private final IDrawable background;
     private final IDrawable icon;
     private final IDrawableStatic outlineRed;
@@ -28,10 +35,10 @@ public class SpectralizerRecipeCategory implements IRecipeCategory<SpectralizerR
     private final IDrawableStatic outlinePurple;
     private final IDrawableStatic progressBar;
     private final IDrawableAnimated progress;
-
+    
     public SpectralizerRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 42, 10, 92, 100);
-        this.icon = helper.createDrawableIngredient(new ItemStack(ModBlocks.SPECTRALIZER.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.SPECTRALIZER.get()));
         this.outlineRed = helper.createDrawable(TEXTURE, 176, 22, 22, 22);
         this.outlineOrange = helper.createDrawable(TEXTURE, 176, 110, 22, 22);
         this.outlineYellow = helper.createDrawable(TEXTURE, 176, 88, 22, 22);
@@ -41,65 +48,53 @@ public class SpectralizerRecipeCategory implements IRecipeCategory<SpectralizerR
         this.progressBar = helper.createDrawable(TEXTURE, 198, 0, 30, 30);
         this.progress = helper.createAnimatedDrawable(progressBar, 80, IDrawableAnimated.StartDirection.BOTTOM, false);
     }
-
+    
     @Override
-    public ResourceLocation getUid() {
-        return UID;
+    public RecipeType<SpectralizerRecipe> getRecipeType() {
+        return SPECTRALIZER_TYPE;
     }
-
+    
     @Override
-    public Class<? extends SpectralizerRecipe> getRecipeClass() {
-        return SpectralizerRecipe.class;
+    public Component getTitle() {
+        return Component.translatable("block.flatlights.spectralizer");
     }
-
+    
     @Override
-    public String getTitle() {
-        return ModBlocks.SPECTRALIZER.get().getTranslatedName().getString();
-    }
-
-    @Override
-    public IDrawable getBackground() {
+    public @Nullable IDrawable getBackground() {
         return this.background;
     }
-
+    
     @Override
-    public IDrawable getIcon() {
+    public @Nullable IDrawable getIcon() {
         return this.icon;
     }
-
+    
     @Override
-    public void setIngredients(SpectralizerRecipe recipe, IIngredients ingredients) {
-        ingredients.setInputIngredients(recipe.getIngredients());
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, SpectralizerRecipe spectralizerRecipe, IFocusGroup iFocusGroup) {
+        int xOffset = 42;
+        int yOffset = 10;
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 80  - xOffset, 12 - yOffset).addIngredients(spectralizerRecipe.getIngredients().get(0));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 116 - xOffset, 33 - yOffset).addIngredients(spectralizerRecipe.getIngredients().get(1));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 116 - xOffset, 72 - yOffset).addIngredients(spectralizerRecipe.getIngredients().get(2));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 80  - xOffset, 92 - yOffset).addIngredients(spectralizerRecipe.getIngredients().get(3));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 44  - xOffset, 72 - yOffset).addIngredients(spectralizerRecipe.getIngredients().get(4));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 44  - xOffset, 33 - yOffset).addIngredients(spectralizerRecipe.getIngredients().get(5));
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 80  - xOffset, 52 - yOffset).addItemStack(spectralizerRecipe.getResultItem(null));
     }
-
+    
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, SpectralizerRecipe recipe, IIngredients ingredients) {
-        int xOffset = 43;
-        int yOffset = 11;
-        recipeLayout.getItemStacks().init(0, true, 80  - xOffset, 12 - yOffset);
-        recipeLayout.getItemStacks().init(1, true, 116 - xOffset, 33 - yOffset);
-        recipeLayout.getItemStacks().init(2, true, 116 - xOffset, 72 - yOffset);
-        recipeLayout.getItemStacks().init(3, true, 80  - xOffset, 92 - yOffset);
-        recipeLayout.getItemStacks().init(4, true, 44  - xOffset, 72 - yOffset);
-        recipeLayout.getItemStacks().init(5, true, 44  - xOffset, 33 - yOffset);
-        recipeLayout.getItemStacks().init(6, false,80  - xOffset, 52 - yOffset);
-        recipeLayout.getItemStacks().set(ingredients);
-    }
-
-    @Override
-    public void draw(SpectralizerRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-        IRecipeCategory.super.draw(recipe, matrixStack, mouseX, mouseY);
+    public void draw(SpectralizerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
         int xOffset = 45;
         int yOffset = 13;
         int xOffsetBar = 42;
         int yOffsetBar = 10;
-        outlineRed.draw(matrixStack, 80 - xOffset, 12 - yOffset);
-        outlineOrange.draw(matrixStack, 116 - xOffset, 33 - yOffset);
-        outlineYellow.draw(matrixStack, 116 - xOffset, 72 - yOffset);
-        outlineGreen.draw(matrixStack, 80  - xOffset, 92 - yOffset);
-        outlineBlue.draw(matrixStack, 44  - xOffset, 72 - yOffset);
-        outlinePurple.draw(matrixStack, 44  - xOffset, 33 - yOffset);
-        progress.draw(matrixStack, 73 - xOffsetBar, 45 - yOffsetBar);
+        outlineRed.draw(guiGraphics, 80 - xOffset, 12 - yOffset);
+        outlineOrange.draw(guiGraphics, 116 - xOffset, 33 - yOffset);
+        outlineYellow.draw(guiGraphics, 116 - xOffset, 72 - yOffset);
+        outlineGreen.draw(guiGraphics, 80  - xOffset, 92 - yOffset);
+        outlineBlue.draw(guiGraphics, 44  - xOffset, 72 - yOffset);
+        outlinePurple.draw(guiGraphics, 44  - xOffset, 33 - yOffset);
+        progress.draw(guiGraphics, 73 - xOffsetBar, 45 - yOffsetBar);
     }
 }

@@ -1,0 +1,27 @@
+{
+  "type": "flatlights:spectralizer",
+  "ingredients": [
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "minecraft:bread"
+    },
+    {
+      "item": "minecraft:bread"
+
+    },
+    {
+      "item": "minecraft:bread"
+    }
+  ],
+  "output": {
+    "item": "flatlights:bread_but_high_quality"
+  }
+}

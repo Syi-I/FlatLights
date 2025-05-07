@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "flatlights:block/spectralizer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "flatlights:block/spectralizer"
+    },
+    "facing=west": {
+      "model": "flatlights:block/spectralizer",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "flatlights:block/spectralizer",
+      "y": 180
+    }
+  }
+}

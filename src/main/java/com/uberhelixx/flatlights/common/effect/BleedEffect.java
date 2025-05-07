@@ -1,33 +1,31 @@
-package com.uberhelixx.flatlights.effect;
+package com.uberhelixx.flatlights.common.effect;
 
-import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
+import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
 
-public class BleedEffect extends Effect {
-    protected BleedEffect(EffectType typeIn, int liquidColorIn) {
-        super(typeIn, liquidColorIn);
+public class BleedEffect extends MobEffect {
+    protected BleedEffect(MobEffectCategory pCategory, int pColor) {
+        super(pCategory, pColor);
     }
-
+    
     @Override
-    public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
-        Entity trueSource = entityLivingBaseIn.getLastDamageSource() != null ? entityLivingBaseIn.getLastDamageSource().getTrueSource() : entityLivingBaseIn;
-
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+        Entity trueSource = pLivingEntity.getLastDamageSource() != null ? pLivingEntity.getLastDamageSource().getEntity() : pLivingEntity;
+        
         int dmgMultiplier = 1;
-        if(amplifier > 0) {
-            dmgMultiplier += amplifier;
+        if(pAmplifier > 0) {
+            dmgMultiplier += pAmplifier;
         }
-        entityLivingBaseIn.attackEntityFrom(ModDamageTypes.causeIndirectBleed(trueSource, trueSource), entityLivingBaseIn.getMaxHealth() * (0.03F * dmgMultiplier));
-
-        super.performEffect(entityLivingBaseIn, amplifier);
+        pLivingEntity.hurt(ModDamageTypes.causeBleedDamage(trueSource), pLivingEntity.getMaxHealth() * (0.03F * dmgMultiplier));
+        
+        super.applyEffectTick(pLivingEntity, pAmplifier);
     }
-
-    //potion effect should trigger every 2 seconds of duration (40 ticks = 2 seconds)
+    
     @Override
-    public boolean isReady(int duration, int amplifier) {
-        return duration % 40 == 0;
+    public boolean isDurationEffectTick(int pDuration, int pAmplifier) {
+        return pDuration % 40 == 0;
     }
-
 }

@@ -1,59 +1,53 @@
 package com.uberhelixx.flatlights.common.item.tools;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
-import com.uberhelixx.flatlights.damagesource.ModDamageTypes;
-import com.uberhelixx.flatlights.util.MiscHelpers;
-import com.uberhelixx.flatlights.util.TextHelpers;
+import com.uberhelixx.flatlights.common.item.tools.basetools.BaseSword;
+import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
+import com.uberhelixx.flatlights.util.TooltipHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.world.item.IItemTier;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 import static java.lang.Math.min;
 
-public class PrismaticBlade extends SwordItem {
-
-    public PrismaticBlade(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
-        super(tier, attackDamageIn, attackSpeedIn, builderIn);
+public class PrismaticBlade extends BaseSword {
+    public PrismaticBlade(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+        super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
-
+    
     @Override
-    public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damageItem(0, attacker, (entity) -> {
-            entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-        });
-        target.addPotionEffect(new EffectInstance(Effects.GLOWING, 100));
-        target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 60, 4));
-        target.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 60, 2));
-        //deal either x% of max hp as damage or config cap damage, whichever is lower
-        target.attackEntityFrom(ModDamageTypes.causeIndirectPhys(attacker, attacker), (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
-        attacker.heal((float) min(FlatLightsCommonConfig.healthDamageCap.get(), (target.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
-        return true;
+    public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
+        pTarget.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100));
+        pTarget.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60));
+        pTarget.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60));
+        pTarget.hurt(ModDamageTypes.causePhysicalDamage(pAttacker), (float) min(FlatLightsCommonConfig.healthDamageCap.get(), (pTarget.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
+        pAttacker.heal((float) min(FlatLightsCommonConfig.healthDamageCap.get(), (pTarget.getMaxHealth() * FlatLightsCommonConfig.healthDamagePercent.get())));
+        return super.hurtEnemy(pStack, pTarget, pAttacker);
     }
-
+    
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_blade_shift"));
+            TooltipHelper.formatUsage(pTooltipComponents, "tooltip.flatlights.prismatic_blade_shift");
         }
         else {
-            String percentDmg = TextHelpers.labelBrackets("Percent Damage", null, MiscHelpers.coloredText(TextFormatting.RED, (FlatLightsCommonConfig.healthDamagePercent.get() * 100) + "%") + " of target's max HP. (Cap of " + MiscHelpers.coloredText(TextFormatting.RED, FlatLightsCommonConfig.healthDamageCap.get() + "") + " damage)", null).getString();
-            ITextComponent percentDmgTooltip = ITextComponent.getTextComponentOrEmpty(percentDmg);
-            tooltip.add(percentDmgTooltip);
-            tooltip.add(TextHelpers.shiftTooltip("for details"));
+            Component percentDesc = Component.literal((FlatLightsCommonConfig.healthDamagePercent.get() * 100) + "%").withStyle(ChatFormatting.RED)
+                    .append(Component.literal(" of target's max HP. (Cap of ").withStyle(ChatFormatting.WHITE))
+                    .append(Component.literal(FlatLightsCommonConfig.healthDamageCap.get() + "").withStyle(ChatFormatting.RED))
+                    .append(Component.literal(" damage)").withStyle(ChatFormatting.WHITE));
+            TooltipHelper.labelBrackets(pTooltipComponents, "Percent Damage", null, percentDesc);
+            TooltipHelper.shiftHint(pTooltipComponents);
         }
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 }

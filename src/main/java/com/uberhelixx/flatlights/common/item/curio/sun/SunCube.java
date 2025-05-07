@@ -3,25 +3,25 @@ package com.uberhelixx.flatlights.common.item.curio.sun;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.common.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.common.item.curio.CurioTier;
 import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
-import com.uberhelixx.flatlights.network.PacketHandler;
-import com.uberhelixx.flatlights.network.PacketRisingHeatUpdate;
-import com.uberhelixx.flatlights.util.MiscHelpers;
+import com.uberhelixx.flatlights.common.network.PacketHandler;
+import com.uberhelixx.flatlights.common.network.packets.PacketRisingHeatUpdate;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 import top.theillusivec4.curios.api.SlotContext;
@@ -31,37 +31,32 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import static com.uberhelixx.flatlights.capability.RisingHeatStateProvider.getHeatedState;
+import static com.uberhelixx.flatlights.common.capability.ModCapabilities.getHeatedState;
 
 public class SunCube extends BaseCurio {
-    public SunCube(Properties properties) {
-        super(properties);
+    public SunCube() {
+        super();
     }
-
+    
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         //get held itemstack, which should be the input curio, and get nbt tags from it
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        CompoundNBT stackTags = stack.getTag();
-
+        ItemStack stack = pPlayer.getItemInHand(pUsedHand);
+        CompoundTag stackTags = stack.getTag();
+        
         //doesn't let you roll again if it already has the roll data
-        if(stackTags == null || !CurioUtils.rollCheck(stackTags)) {
-            CurioUtils.setCurioNbt(playerIn, handIn, worldIn, CurioSetNames.SUN, null, null);
+        if(!CurioUtils.rollCheck(stackTags)) {
+            CurioUtils.setCurioNbt(pPlayer, pUsedHand, CurioSetNames.SUN, null, null);
             //add in the set effect toggle for curios that have the functionality for the set effect (cubes only)
             CurioUtils.addSetToggle(stack);
         }
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+        return super.use(pLevel, pPlayer, pUsedHand);
     }
-
-    //uuids for the different attribute modifiers
-    protected static final UUID CUBE_ARMOR = UUID.fromString("edb8f5f5-e2de-44a0-a0b2-f42a08294f1b");
-    protected static final UUID CUBE_HEALTH = UUID.fromString("2fb3dec2-991e-4f7d-93cc-d480075b16f0");
     
     @Override
-    public void curioTick(String identifier, int index, LivingEntity livingEntity, ItemStack stack) {
-        if(livingEntity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) livingEntity;
-            CompoundNBT tag = stack.getTag();
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        if(slotContext.entity() instanceof Player player) {
+            CompoundTag tag = stack.getTag();
             if(tag != null && !tag.isEmpty()) {
                 //make sure that the worn set effect matches this curio set and the set effect is toggled on
                 if(CurioUtils.correctSetEffect(player, CurioSetNames.SUN) && tag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
@@ -71,31 +66,31 @@ public class SunCube extends BaseCurio {
                     //max radius of effect, cannot be smaller than the base radius
                     double maxRadius = FlatLightsCommonConfig.sunSetRadiusMax.get() >= baseRadius ? FlatLightsCommonConfig.sunSetRadiusMax.get() : 32;
                     //radius of the effect
-                    double expansionRadius = MathHelper.clamp(growthProgress + baseRadius, baseRadius, maxRadius);
+                    double expansionRadius = Mth.clamp(growthProgress + baseRadius, baseRadius, maxRadius);
                     //get all entities around the wearer
-                    List<Entity> entities = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, player.getBoundingBox().grow(expansionRadius + 1));
+                    List<Entity> entities = player.level().getEntities(player, player.getBoundingBox().inflate(expansionRadius + 1));
                     
                     //main function for applying the SUN set effect
                     for(Entity entity : entities) {
                         //ensure living entity is the only thing we're adding the capability to
                         if(entity instanceof LivingEntity) {
                             LivingEntity le = (LivingEntity) entity;
-                            float distance = player.getDistance(le);
+                            float distance = player.distanceTo(le);
                             boolean otherEffectUsers = false;
                             
                             //get surrounding players for this specific entity, to check if anyone else could influence the RisingHeatState
-                            List<Entity> surroundingPlayers = player.getEntityWorld().getEntitiesWithinAABBExcludingEntity(player, le.getBoundingBox().grow(maxRadius + 1));
+                            List<Entity> surroundingPlayers = player.level().getEntities(player, le.getBoundingBox().inflate(maxRadius + 1));
                             //leaves only players in the list of surrounding entities
-                            surroundingPlayers.removeIf(nextEntity -> !(nextEntity instanceof PlayerEntity));
+                            surroundingPlayers.removeIf(nextEntity -> !(nextEntity instanceof Player));
                             //getting any nearby players who could also be triggering the SUN set effect
-                            List<PlayerEntity> activeSunEffectPlayers = new ArrayList<>();
+                            List<Player> activeSunEffectPlayers = new ArrayList<>();
                             for(Entity nextEntity : surroundingPlayers) {
                                 //make sure we aren't checking the actual wearer or the entity we are checking the surroundings of over and over
                                 if(!nextEntity.equals(player) && !nextEntity.equals(le)) {
                                     //have to get the players' cube to check if they have the SUN set and if the effect is toggled on
-                                    PlayerEntity playerToCheck = (PlayerEntity) nextEntity;
+                                    Player playerToCheck = (Player) nextEntity;
                                     ItemStack cubeCurio = CurioUtils.getCurioFromSlot(playerToCheck, CurioUtils.CUBE_SLOT_ID);
-                                    CompoundNBT checkPlayerTag = cubeCurio.hasTag() ? cubeCurio.getTag() : null;
+                                    CompoundTag checkPlayerTag = cubeCurio.hasTag() ? cubeCurio.getTag() : null;
                                     //check if the other player(s) in the radius can trigger the SUN set's effect
                                     if(checkPlayerTag != null && CurioUtils.correctSetEffect(playerToCheck, CurioSetNames.SUN) && checkPlayerTag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
                                         //if player being checked has the SUN effect toggled on, add to the list of players
@@ -109,7 +104,7 @@ public class SunCube extends BaseCurio {
                             //check only if there are players with the sun effect active
                             if(!activeSunEffectPlayers.isEmpty()) {
                                 //go through each of the players with the active effect, check if the radius can overlap or not
-                                for(PlayerEntity nextPlayer : activeSunEffectPlayers) {
+                                for(Player nextPlayer : activeSunEffectPlayers) {
                                     ItemStack cubeCurio = CurioUtils.getCurioFromSlot(nextPlayer, CurioUtils.CUBE_SLOT_ID);
                                     int nextPlayerGrowthTracker = CurioUtils.getGrowthTracker(cubeCurio);
                                     //there is another player whose active effect radius overlaps with the entity, so don't set state to false
@@ -118,9 +113,9 @@ public class SunCube extends BaseCurio {
                                         otherEffectUsers = true;
                                     }
                                     else {
-                                        float nextPlayerDistance = nextPlayer.getDistance(le);
+                                        float nextPlayerDistance = nextPlayer.distanceTo(le);
                                         //radius of the effect
-                                        double nextPlayerExpansionRadius = MathHelper.clamp(nextPlayerGrowthTracker + baseRadius, baseRadius, maxRadius);
+                                        double nextPlayerExpansionRadius = Mth.clamp(nextPlayerGrowthTracker + baseRadius, baseRadius, maxRadius);
                                         //same distance check for the other players in the wearer's radius, if their AOE is smaller than the wearers (doesn't guarantee overlap)
                                         if(nextPlayerDistance < nextPlayerExpansionRadius) {
                                             otherEffectUsers = true;
@@ -134,10 +129,10 @@ public class SunCube extends BaseCurio {
                                 getHeatedState(le).ifPresent(heatedState -> {
                                     if(!heatedState.isHeated()) {
                                         heatedState.setHeatState(true);
-                                        MiscHelpers.debugLogger("[sun set effect] changed heat state to true");
-                                        if(!le.getEntityWorld().isRemote()) {
+                                        FlatLights.LOGGER.info("[sun set effect] changed heat state to true");
+                                        if(!le.level().isClientSide()) {
                                             Supplier<Entity> supplier = () -> le;
-                                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getEntityId(), true));
+                                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getId(), true));
                                         }
                                     }
                                 });
@@ -148,10 +143,10 @@ public class SunCube extends BaseCurio {
                                 getHeatedState(le).ifPresent(heatedState -> {
                                     if(heatedState.isHeated()) {
                                         heatedState.setHeatState(false);
-                                        MiscHelpers.debugLogger("[sun set effect] changed heat state to false");
-                                        if(!le.getEntityWorld().isRemote()) {
+                                        FlatLights.LOGGER.info("[sun set effect] changed heat state to false");
+                                        if(!le.level().isClientSide()) {
                                             Supplier<Entity> supplier = () -> le;
-                                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getEntityId(), false));
+                                            PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getId(), false));
                                         }
                                     }
                                 });
@@ -161,32 +156,36 @@ public class SunCube extends BaseCurio {
                 }
             }
         }
-        super.curioTick(identifier, index, livingEntity, stack);
+        super.curioTick(slotContext, stack);
     }
+    
+    //uuids for the different attribute modifiers
+    protected static final UUID CUBE_ARMOR  = new UUID(9357120593765298L, 4859356201958437L);
+    protected static final UUID CUBE_HEALTH = new UUID(5783937593494583L, 1848239348948943L);
     
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
         //get old attribute modifiers and create a new map to modify
         Multimap<Attribute, AttributeModifier> oldMap = super.getAttributeModifiers(slotContext, uuid, stack);
         ListMultimap<Attribute, AttributeModifier> newMap = ArrayListMultimap.create();
-
+        
         CurioTier tier = null;
         //get curio tier after ensuring there is nbt data rolled for tier value
         if(stack.getTag() != null && stack.getTag().contains(CurioUtils.TIER)) {
             tier = CurioUtils.getCurioTier(stack);
         }
-
+        
         if(tier != null) {
             double basePower = CurioUtils.getTierMultiplier(stack);
             double growthModifier = 0;
             double armorBase = 4;
             double healthBase = 8;
-
+            
             //ensure curio is growth tier for getting growth modifiers instead of flat ones
             if (tier == CurioTier.GROWTH) {
                 growthModifier = 1;
                 //calculate growth modifier value from core count, scale down number
-                PlayerEntity player = slotContext.getWearer() instanceof PlayerEntity ? (PlayerEntity) slotContext.getWearer() : null;
+                Player player = CurioUtils.getPlayer(slotContext);
                 if (player != null) {
                     int cores = 0;
                     if (stack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
@@ -195,7 +194,7 @@ public class SunCube extends BaseCurio {
                     growthModifier = cores * 0.01;
                 }
             }
-
+            
             //put attribute modifiers onto the new map using the growth modifier value
             newMap.put(Attributes.ARMOR, new AttributeModifier(CUBE_ARMOR, "Cube Armor Modifier", (armorBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));
             newMap.put(Attributes.MAX_HEALTH, new AttributeModifier(CUBE_HEALTH, "Cube Health Modifier", (healthBase * basePower) + growthModifier, AttributeModifier.Operation.ADDITION));

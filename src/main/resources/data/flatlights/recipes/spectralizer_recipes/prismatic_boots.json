@@ -1,0 +1,26 @@
+{
+  "type": "flatlights:spectralizer",
+  "ingredients": [
+    {
+      "item": "flatlights:boots_core"
+    },
+    {
+      "item": "flatlights:prisma_nucleus"
+    },
+    {
+      "item": "flatlights:prisma_nucleus"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "tag": "forge:ingots/netherite"
+    }
+  ],
+  "output": {
+    "item": "flatlights:prismatic_boots"
+  }
+}

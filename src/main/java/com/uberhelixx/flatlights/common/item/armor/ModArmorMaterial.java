@@ -2,82 +2,76 @@ package com.uberhelixx.flatlights.common.item.armor;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.common.item.ModItems;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.world.item.IArmorMaterial;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.util.LazyValue;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Supplier;
 
-public enum ModArmorMaterial implements IArmorMaterial {
-
-    PRISMATIC("prismatic", 40, new int[]{5, 8, 12, 5}, 30, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 5.0F, 0.25F, () -> {
-        return Ingredient.fromItems(ModItems.PRISMATIC_INGOT.get());
-    });
-
-    private static final int[] MAX_DAMAGE_ARRAY = new int[]{13, 15, 16, 11};
+public enum ModArmorMaterial implements ArmorMaterial {
+    PRISMATIC("prismatic", 40, new int[]{5, 12, 8, 5}, 30,
+            SoundEvents.ARMOR_EQUIP_NETHERITE, 5.0F, 0.25F, () -> Ingredient.of(ModItems.PRISMATIC_INGOT.get()));
+    
     private final String name;
-    private final int maxDamageFactor;
-    private final int[] damageReductionAmountArray;
-    private final int enchantability;
-    private final SoundEvent soundEvent;
+    private final int durabilityMultiplier;
+    private final int[] protectionAmounts;
+    private final int enchantmentValue;
+    private final SoundEvent equipSound;
     private final float toughness;
     private final float knockbackResistance;
-    private final LazyValue<Ingredient> repairMaterial;
-
-    private ModArmorMaterial(String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability,
-                             SoundEvent soundEvent, float toughness, float knockbackResistance, Supplier<Ingredient> repairMaterial) {
+    private final Supplier<Ingredient> repairIngredient;
+    
+    private static final int[] BASE_DURABILITY = {13, 15, 16, 11};
+    
+    ModArmorMaterial(String name, int durabilityMultiplier, int[] protectionAmounts, int enchantmentValue, SoundEvent equipSound,
+                      float toughness, float knockbackResistance, Supplier<Ingredient> repairIngredient) {
         this.name = name;
-        this.maxDamageFactor = maxDamageFactor;
-        this.damageReductionAmountArray = damageReductionAmountArray;
-        this.enchantability = enchantability;
-        this.soundEvent = soundEvent;
+        this.durabilityMultiplier = durabilityMultiplier;
+        this.protectionAmounts = protectionAmounts;
+        this.enchantmentValue = enchantmentValue;
+        this.equipSound = equipSound;
         this.toughness = toughness;
         this.knockbackResistance = knockbackResistance;
-        this.repairMaterial = new LazyValue<>(repairMaterial);
+        this.repairIngredient = repairIngredient;
     }
-
+    
     @Override
-    public int getDurability(EquipmentSlotType slotIn) {
-        return MAX_DAMAGE_ARRAY[slotIn.getIndex()] * this.maxDamageFactor;
+    public int getDurabilityForType(ArmorItem.Type type) {
+        return BASE_DURABILITY[type.ordinal()] * this.durabilityMultiplier;
     }
-
+    
     @Override
-    public int getDamageReductionAmount(EquipmentSlotType slotIn) {
-        return this.damageReductionAmountArray[slotIn.getIndex()];
+    public int getDefenseForType(ArmorItem.Type type) {
+        return this.protectionAmounts[type.ordinal()];
     }
-
+    
     @Override
-    public int getEnchantability() {
-        return this.enchantability;
+    public int getEnchantmentValue() {
+        return enchantmentValue;
     }
-
+    
     @Override
-    public SoundEvent getSoundEvent() {
-        return this.soundEvent;
+    public SoundEvent getEquipSound() {
+        return this.equipSound;
     }
-
+    
     @Override
-    public Ingredient getRepairMaterial() {
-        return this.repairMaterial.getValue();
+    public Ingredient getRepairIngredient() {
+        return this.repairIngredient.get();
     }
-
+    
     @Override
-    @OnlyIn(Dist.CLIENT)
     public String getName() {
         return FlatLights.MODID + ":" + this.name;
     }
-
+    
     @Override
     public float getToughness() {
         return this.toughness;
     }
-
-    //percentage of knockback resistance for the armor
+    
     @Override
     public float getKnockbackResistance() {
         return this.knockbackResistance;

@@ -1,0 +1,43 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "flatlights:item/curio/curio_prism_base"
+	},
+	"overrides": [
+		{
+			"__comment": "change to common tier",
+			"predicate": {
+				"flatlights:tier": 0.1
+			},
+			"model": "flatlights:item/curio/prism/curio_prism_common"
+		},
+		{
+			"__comment": "change to rare tier",
+			"predicate": {
+				"flatlights:tier": 0.2
+			},
+			"model": "flatlights:item/curio/prism/curio_prism_rare"
+		},
+		{
+			"__comment": "change to epic tier",
+			"predicate": {
+				"flatlights:tier": 0.3
+			},
+			"model": "flatlights:item/curio/prism/curio_prism_epic"
+		},
+		{
+			"__comment": "change to legendary tier",
+			"predicate": {
+				"flatlights:tier": 0.4
+			},
+			"model": "flatlights:item/curio/prism/curio_prism_legendary"
+		},
+		{
+			"__comment": "change to growth tier",
+			"predicate": {
+				"flatlights:tier": 0.5
+			},
+			"model": "flatlights:item/curio/prism/curio_prism_growth"
+		}
+	]
+}

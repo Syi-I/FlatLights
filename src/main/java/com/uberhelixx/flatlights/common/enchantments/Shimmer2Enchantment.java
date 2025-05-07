@@ -1,37 +1,41 @@
-package com.uberhelixx.flatlights.enchantments;
+package com.uberhelixx.flatlights.common.enchantments;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class Shimmer2Enchantment extends Enchantment {
-    public Shimmer2Enchantment() {
-        super(Rarity.RARE, EnchantmentType.BREAKABLE, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
+    protected Shimmer2Enchantment() {
+        super(Rarity.RARE, EnchantmentCategory.BREAKABLE, new EquipmentSlot[] {EquipmentSlot.MAINHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST,
+        EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.OFFHAND});
     }
-
+    
     @Override
-    public int getMaxLevel() { return 2; }
-
+    public int getMaxLevel() {
+        return 2;
+    }
+    
     @Override
-    public boolean isTreasureEnchantment() {
+    public Component getFullname(int pLevel) {
+        Style color = Style.EMPTY.withColor(13762706);
+        return ((MutableComponent)super.getFullname(pLevel)).withStyle(color);
+    }
+    
+    @Override
+    public boolean isTreasureOnly() {
         return true;
     }
-
+    
     @Override
-    public boolean canVillagerTrade() {
+    public boolean isTradeable() {
         return false;
     }
-
+    
     @Override
-    public boolean canGenerateInLoot() {
+    public boolean isDiscoverable() {
         return true;
-    }
-
-    @Override
-    public ITextComponent getDisplayName(int level) {
-        return ((IFormattableTextComponent) super.getDisplayName(level)).mergeStyle(TextFormatting.DARK_RED);
     }
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X#X",
+    "XXX"
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:hue_shifting_vial"
+    },
+    "X": {
+      "item": "flatlights:brown_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:sandy_yellow_flatblock",
+    "count": 8
+  }
+}

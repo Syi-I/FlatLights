@@ -1,15 +1,25 @@
-package com.uberhelixx.flatlights.enchantments;
+package com.uberhelixx.flatlights.common.enchantments;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class PulsingArrowEnchantment extends Enchantment {
-    public PulsingArrowEnchantment() {
-        super(Rarity.UNCOMMON, EnchantmentType.BOW, new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
+    protected PulsingArrowEnchantment() {
+        super(Rarity.UNCOMMON, EnchantmentCategory.BOW, new EquipmentSlot[] {EquipmentSlot.MAINHAND});
     }
-
+    
     @Override
-    public int getMaxLevel() { return 5; }
-
+    public int getMaxLevel() {
+        return 5;
+    }
+    
+    @Override
+    public Component getFullname(int pLevel) {
+        Style color = Style.EMPTY.withColor(2415001);
+        return ((MutableComponent)super.getFullname(pLevel)).withStyle(color);
+    }
 }

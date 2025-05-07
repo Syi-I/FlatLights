@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "flatlights:teal_flatblock"
+    }
+  },
+  "result": {
+    "item": "flatlights:teal_pillar",
+    "count": 48
+  }
+}

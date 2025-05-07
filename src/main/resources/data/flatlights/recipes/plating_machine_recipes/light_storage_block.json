@@ -1,0 +1,14 @@
+{
+  "type": "flatlights:plating",
+  "ingredients": [
+    {
+      "tag": "forge:chests/wooden"
+    },
+    {
+      "item": "minecraft:white_concrete"
+    }
+  ],
+  "output": {
+    "item": "flatlights:light_storage"
+  }
+}

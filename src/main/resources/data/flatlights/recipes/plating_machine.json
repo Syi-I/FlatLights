@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XPX",
+    "# #",
+    "XRX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:white_concrete"
+    },
+    "#": {
+      "item": "minecraft:piston"
+    },
+    "P": {
+      "item": "flatlights:prismatic_ingot"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "flatlights:plating_machine",
+    "count": 1
+  }
+}

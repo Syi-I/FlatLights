@@ -1,67 +1,72 @@
 package com.uberhelixx.flatlights.common.item.armor;
 
-import com.uberhelixx.flatlights.util.TextHelpers;
+import com.uberhelixx.flatlights.util.TooltipHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.world.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.world.item.IArmorMaterial;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class PrismaticHelm extends ModArmorItem {
-    public PrismaticHelm(IArmorMaterial material, EquipmentSlotType slot, Properties settings) {
-        super(material, slot, settings);
+public class PrismaticHelm extends BaseArmorItem {
+    
+    public PrismaticHelm(ArmorMaterial pMaterial, Type pType, Properties pProperties) {
+        super(pMaterial, pType, pProperties);
     }
-
+    
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(Screen.hasShiftDown()) {
-            tooltip.add(new TranslationTextComponent("tooltip.flatlights.prismatic_helm_shift"));
+            TooltipHelper.formatUsage(pTooltipComponents, "tooltip.flatlights.prismatic_helm_shift");
         }
         else {
-            super.addInformation(stack, worldIn, tooltip, flagIn);
-            tooltip.add(TextHelpers.shiftTooltip("for details"));
+            super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+            TooltipHelper.shiftHint(pTooltipComponents);
+        }
+    }
+    
+    public static void onEquip(Player player, boolean hasNightVis, boolean hasWaterBreath) {
+        if(!hasNightVis) {
+            player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false));
+        }
+        if(!hasWaterBreath) {
+            player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, Integer.MAX_VALUE, 0, true, false));
+        }
+    }
+    
+    public static void onUnequip(Player player, boolean hasNightVis, boolean hasWaterBreath) {
+        if(hasNightVis) {
+            player.removeEffect(MobEffects.NIGHT_VISION);
+        }
+        if(hasWaterBreath) {
+            player.removeEffect(MobEffects.WATER_BREATHING);
         }
     }
     
     @Override
-    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+    public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
         //give potion effects again only if the player doesn't already have it applied, so we aren't spam reapplying
-        if(!world.isRemote()) {
-            if (player != null && Objects.equals(player.getActivePotionEffect(Effects.WATER_BREATHING), null)) {
-                player.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, Integer.MAX_VALUE, 0, true, false));
+        if(!level.isClientSide() && player != null && wearingHelm(player)) {
+            if(Objects.equals(player.getEffect(MobEffects.WATER_BREATHING), null)) {
+                player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, Integer.MAX_VALUE, 0, true, false));
             }
-            if (player != null && Objects.equals(player.getActivePotionEffect(Effects.NIGHT_VISION), null)) {
-                player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false));
+            if(Objects.equals(player.getEffect(MobEffects.NIGHT_VISION), null)) {
+                player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false));
             }
         }
-        super.onArmorTick(stack, world, player);
+        super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
     }
     
-    public static void onEquip(PlayerEntity player, boolean hasNightVis, boolean hasWaterBreath) {
-        if(!hasNightVis) {
-            player.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false));
-        }
-        if(!hasWaterBreath) {
-            player.addPotionEffect(new EffectInstance(Effects.WATER_BREATHING, Integer.MAX_VALUE, 0, true, false));
-        }
-    }
-
-    public static void onUnequip(PlayerEntity player, boolean hasNightVis, boolean hasWaterBreath) {
-        if(hasNightVis) {
-            player.removePotionEffect(Effects.NIGHT_VISION);
-        }
-        if(hasWaterBreath) {
-            player.removePotionEffect(Effects.WATER_BREATHING);
-        }
+    @Override
+    public boolean isEnderMask(ItemStack stack, Player player, EnderMan endermanEntity) {
+        return true;
     }
 }

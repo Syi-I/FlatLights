@@ -39,6 +39,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Power transfer cable for the power generator
 - Powered item repairer
 
+## [2.0.0+1.20.1] - 2025-05-07
+Ported the entire thing to 1.20.1 from 1.16.5. There should not be too many noticeable differences between mod versions currently.
+
+### Added
+- Random curio loot box item so that it's easier to carry all the curio loot found in structures while exploring.
+
+### Changed
+- Curio structure loot from individual curios to the random curio loot box item for better inventory storage.
+- Method of applying potion effects from certain items, wearable gear like curios and armor, now reapplies effects per tick instead of just on equip/unequip. This is due to some other mod interactions causing you to lose the effects under some circumstances, leading to constantly equipping and unequipping gear to regain the effects which is annoying.
+- Prismatic armor damage reduction function now simply calculates damage reduction based on total armor points of the player. Percentage of damage reduction provided per armor point is now configurable in the configs.
+
+### Fixed
+-
+
 ## [1.23.2] - 2024-07-05
 ### Added
 -

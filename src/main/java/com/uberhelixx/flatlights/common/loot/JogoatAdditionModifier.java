@@ -1,32 +1,31 @@
-package com.uberhelixx.flatlights.loot;
+package com.uberhelixx.flatlights.common.loot;
 
-import com.google.gson.JsonObject;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import java.util.function.Supplier;
 
 public class JogoatAdditionModifier extends LootModifier {
     private final Item addition;
-
-    //this is for block drops
-    protected JogoatAdditionModifier(ILootCondition[] conditionsIn, Item addition) {
+    
+    public JogoatAdditionModifier(LootItemCondition[] conditionsIn, Item addition) {
         super(conditionsIn);
         this.addition = addition;
     }
-
-    @Nonnull
+    
     @Override
-    protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> objectArrayList, LootContext lootContext) {
         //generatedLoot is the loot that would be dropped before adding new items here
         //can add based on chance (some conditional if statement) or guarantee (no condition checks)
         double DROP_CHANCE = 0.01;
@@ -34,27 +33,19 @@ public class JogoatAdditionModifier extends LootModifier {
             DROP_CHANCE = FlatLightsCommonConfig.jogoatDropChance.get();
         }
         if(Math.random() <= DROP_CHANCE) {
-            generatedLoot.add(new ItemStack(addition, 1));
+            objectArrayList.add(new ItemStack(addition, 1));
         }
-
+        
         //returns the new modified loot with the additional item(s)
-        return generatedLoot;
+        return objectArrayList;
     }
-
-    public static class Serializer extends GlobalLootModifierSerializer<JogoatAdditionModifier> {
-
-        @Override
-        public JogoatAdditionModifier read(ResourceLocation name, JsonObject object, ILootCondition[] conditionsIn) {
-            Item addition = ForgeRegistries.ITEMS.getValue(
-                    new ResourceLocation(JSONUtils.getString(object, "addition")));
-            return new JogoatAdditionModifier(conditionsIn, addition);
-        }
-
-        @Override
-        public JsonObject write(JogoatAdditionModifier instance) {
-            JsonObject json = makeConditions(instance.conditions);
-            json.addProperty("addition", ForgeRegistries.ITEMS.getKey(instance.addition).toString());
-            return json;
-        }
+    
+    public static final Supplier<Codec<JogoatAdditionModifier>> CODEC = Suppliers.memoize(()
+            -> RecordCodecBuilder.create(inst -> codecStart(inst).and(ForgeRegistries.ITEMS.getCodec()
+            .fieldOf("addition").forGetter(m -> m.addition)).apply(inst, JogoatAdditionModifier::new)));
+    
+    @Override
+    public Codec<? extends IGlobalLootModifier> codec() {
+        return CODEC.get();
     }
 }

@@ -1,13 +1,8 @@
-package com.uberhelixx.flatlights.capability;
+package com.uberhelixx.flatlights.common.capability;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
 
-import javax.annotation.Nullable;
-
-public class EntangledState implements IEntangled{
+public class EntangledState implements IEntangled {
     private boolean entangled;
     
     public EntangledState() {
@@ -22,7 +17,7 @@ public class EntangledState implements IEntangled{
         return entangled;
     }
     
-    public void readEntangledState(CompoundNBT nbt) {
+    public void readEntangledState(CompoundTag nbt) {
         this.entangled = nbt.getBoolean(ENTANGLED_KEY);
     }
     
@@ -30,28 +25,15 @@ public class EntangledState implements IEntangled{
         this.entangled = state;
     }
     
-    public static EntangledState createDefaultInstance() {
-        return new EntangledState();
+    @Override
+    public CompoundTag serializeNBT() {
+        CompoundTag tag = new CompoundTag();
+        tag.putBoolean(IEntangled.ENTANGLED_KEY, this.isEntangled());
+        return tag;
     }
     
-    public static class EntangledStateNBTStorage implements Capability.IStorage<EntangledState> {
-        @Nullable
-        @Override
-        public INBT writeNBT(Capability<EntangledState> capability, EntangledState instance, Direction side) {
-            CompoundNBT tag = new CompoundNBT();
-            tag.putBoolean(IEntangled.ENTANGLED_KEY, instance.isEntangled());
-            return tag;
-        }
-        
-        @Override
-        public void readNBT(Capability<EntangledState> capability, EntangledState instance, Direction side, INBT nbt) {
-            //make sure we input CompoundNBT before trying to cast to CompoundNBT
-            if(!(nbt instanceof CompoundNBT)) {
-                return;
-            }
-            CompoundNBT tag = (CompoundNBT) nbt;
-            //read entangled state
-            instance.readEntangledState(tag);
-        }
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+        setEntangledState(tag.getBoolean(IEntangled.ENTANGLED_KEY));
     }
 }
