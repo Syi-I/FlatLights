@@ -1,0 +1,10 @@
+{
+  "type": "flatlights:jogoat_fire",
+  "addition": "flatlights:jogoat",
+  "conditions": [
+    {
+      "block": "minecraft:fire",
+      "condition": "minecraft:block_state_property"
+    }
+  ]
+}

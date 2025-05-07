@@ -1,0 +1,18 @@
+{
+  "type": "flatlights:curio_structure_loot",
+  "conditions": [
+    {
+      "condition": "flatlights:generic_structure_chest",
+      "block": "forge:chests/wooden"
+    },
+    {
+      "condition": "flatlights:generic_structure_chest",
+      "block": "forge:chests/trapped"
+    }
+  ],
+  "first_roll": 0.85,
+  "second_roll": 0.5,
+  "third_roll": 0.3,
+  "bonus_roll_chance": 0.0,
+  "bonus_roll_count": 0
+}

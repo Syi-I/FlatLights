@@ -7,11 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Random curio loot box item so that it's easier to carry all the curio loot found in structures while exploring.
+-
 
 ### Changed
-- Curio structure loot from individual curios to the random curio loot box item for better inventory storage.
-- Method of applying potion effects from certain items, wearable gear like curios and armor, now reapplies effects per tick instead of just on equip/unequip. This is due to some other mod interactions causing you to lose the effects under some circumstances, leading to constantly equipping and unequipping gear to regain the effects which is annoying.
+-
 
 ### Fixed
 -
