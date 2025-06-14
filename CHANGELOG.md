@@ -38,6 +38,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Power transfer cable for the power generator
 - Powered item repairer
 
+## [2.0.1+1.20.1] - 2025-06-14
+
+### Added
+- 
+
+### Changed
+- Tweaked how the Prismatic Chestplate applies flight when equipped so it's less clunky and doesn't require re-equipping sometimes
+
+### Fixed
+- Fixed a buggy interaction with Mekanism's Mekasuit Gravitational Modulation Unit and Magnetic Attraction Unit.
+
 ## [2.0.0+1.20.1] - 2025-05-07
 Ported the entire thing to 1.20.1 from 1.16.5. There should not be too many noticeable differences between mod versions currently.
 

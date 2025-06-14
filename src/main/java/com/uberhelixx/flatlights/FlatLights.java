@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights;
 
 import com.mojang.logging.LogUtils;
+import com.uberhelixx.flatlights.client.particle.ModParticles;
 import com.uberhelixx.flatlights.client.screen.ModMenuTypes;
 import com.uberhelixx.flatlights.common.block.ModBlocks;
 import com.uberhelixx.flatlights.common.blockentity.ModBlockEntities;
@@ -67,6 +68,7 @@ public class FlatLights
         ModCurios.register(modEventBus);
         ModAttributes.register(modEventBus);
         ModLootModifiers.register(modEventBus);
+        ModParticles.register(modEventBus);
         
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FlatLightsCommonConfig.SPEC, "flatlights-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FlatLightsClientConfig.SPEC, "flatlights-client.toml");

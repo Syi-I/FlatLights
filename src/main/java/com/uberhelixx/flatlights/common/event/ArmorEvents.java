@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.common.event;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.common.item.ModItems;
+import com.uberhelixx.flatlights.common.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.common.item.armor.PrismaticHelm;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -11,6 +12,8 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -80,17 +83,29 @@ public class ArmorEvents {
     //Prismatic Chestplate checking for equipment changes to toggle flying capability
     @SubscribeEvent
     public static void chestplateEquip(LivingEquipmentChangeEvent event) {
-        if(event.getEntity() instanceof Player) {
+        if(event.getEntity() instanceof Player player) {
             if(event.getSlot() == EquipmentSlot.CHEST) {
-                if(event.getFrom() == event.getTo() && event.getFrom().getItem() == ModItems.PRISMATIC_CHESTPLATE.get()) {
+                //ignore if same item before and after
+                if(event.getFrom().equals(event.getTo(), false)) {
                     return;
                 }
-                else if(event.getTo().getItem() == ModItems.PRISMATIC_CHESTPLATE.get()) {
-                    onEquip((Player) event.getEntity());
+                else if(event.getTo().getItem() instanceof PrismaticChestplate) {
+                    onEquip(player);
                 }
-                else {
-                    onUnequip((Player) event.getEntity());
+                else if(event.getFrom().getItem() instanceof PrismaticChestplate){
+                    onUnequip(player);
                 }
+            }
+        }
+    }
+    
+    //Updates the player abilities for when the Prismatic Chestplate gets equipped, prevents having to double equip it
+    @SubscribeEvent
+    public static void playerTickChestplate(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        if(player.getInventory().getArmor(2).getItem() instanceof PrismaticChestplate) {
+            if(!player.getAbilities().flying && !player.getAbilities().mayfly && !player.isCreative() && !player.isSpectator()) {
+                onEquip(player);
             }
         }
     }
