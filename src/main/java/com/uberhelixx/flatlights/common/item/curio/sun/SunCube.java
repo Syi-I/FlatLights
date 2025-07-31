@@ -11,6 +11,7 @@ import com.uberhelixx.flatlights.common.item.curio.CurioTier;
 import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
 import com.uberhelixx.flatlights.common.network.PacketHandler;
 import com.uberhelixx.flatlights.common.network.packets.PacketRisingHeatUpdate;
+import com.uberhelixx.flatlights.util.MiscUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -90,12 +91,14 @@ public class SunCube extends BaseCurio {
                                     //have to get the players' cube to check if they have the SUN set and if the effect is toggled on
                                     Player playerToCheck = (Player) nextEntity;
                                     ItemStack cubeCurio = CurioUtils.getCurioFromSlot(playerToCheck, CurioUtils.CUBE_SLOT_ID);
-                                    CompoundTag checkPlayerTag = cubeCurio.hasTag() ? cubeCurio.getTag() : null;
-                                    //check if the other player(s) in the radius can trigger the SUN set's effect
-                                    if(checkPlayerTag != null && CurioUtils.correctSetEffect(playerToCheck, CurioSetNames.SUN) && checkPlayerTag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
-                                        //if player being checked has the SUN effect toggled on, add to the list of players
-                                        if(checkPlayerTag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
-                                            activeSunEffectPlayers.add(playerToCheck);
+                                    if(cubeCurio != null) {
+                                        CompoundTag checkPlayerTag = cubeCurio.hasTag() ? cubeCurio.getTag() : null;
+                                        //check if the other player(s) in the radius can trigger the SUN set's effect
+                                        if (checkPlayerTag != null && CurioUtils.correctSetEffect(playerToCheck, CurioSetNames.SUN) && checkPlayerTag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
+                                            //if player being checked has the SUN effect toggled on, add to the list of players
+                                            if (checkPlayerTag.getBoolean(CurioUtils.SET_EFFECT_TOGGLE)) {
+                                                activeSunEffectPlayers.add(playerToCheck);
+                                            }
                                         }
                                     }
                                 }
@@ -106,19 +109,20 @@ public class SunCube extends BaseCurio {
                                 //go through each of the players with the active effect, check if the radius can overlap or not
                                 for(Player nextPlayer : activeSunEffectPlayers) {
                                     ItemStack cubeCurio = CurioUtils.getCurioFromSlot(nextPlayer, CurioUtils.CUBE_SLOT_ID);
-                                    int nextPlayerGrowthTracker = CurioUtils.getGrowthTracker(cubeCurio);
-                                    //there is another player whose active effect radius overlaps with the entity, so don't set state to false
-                                    //larger radius from this player than the wearer guarantees to overlap the areas
-                                    if(nextPlayerGrowthTracker > growthProgress) {
-                                        otherEffectUsers = true;
-                                    }
-                                    else {
-                                        float nextPlayerDistance = nextPlayer.distanceTo(le);
-                                        //radius of the effect
-                                        double nextPlayerExpansionRadius = Mth.clamp(nextPlayerGrowthTracker + baseRadius, baseRadius, maxRadius);
-                                        //same distance check for the other players in the wearer's radius, if their AOE is smaller than the wearers (doesn't guarantee overlap)
-                                        if(nextPlayerDistance < nextPlayerExpansionRadius) {
+                                    if (cubeCurio != null) {
+                                        int nextPlayerGrowthTracker = CurioUtils.getGrowthTracker(cubeCurio);
+                                        //there is another player whose active effect radius overlaps with the entity, so don't set state to false
+                                        //larger radius from this player than the wearer guarantees to overlap the areas
+                                        if (nextPlayerGrowthTracker > growthProgress) {
                                             otherEffectUsers = true;
+                                        } else {
+                                            float nextPlayerDistance = nextPlayer.distanceTo(le);
+                                            //radius of the effect
+                                            double nextPlayerExpansionRadius = Mth.clamp(nextPlayerGrowthTracker + baseRadius, baseRadius, maxRadius);
+                                            //same distance check for the other players in the wearer's radius, if their AOE is smaller than the wearers (doesn't guarantee overlap)
+                                            if (nextPlayerDistance < nextPlayerExpansionRadius) {
+                                                otherEffectUsers = true;
+                                            }
                                         }
                                     }
                                 }
@@ -129,7 +133,7 @@ public class SunCube extends BaseCurio {
                                 getHeatedState(le).ifPresent(heatedState -> {
                                     if(!heatedState.isHeated()) {
                                         heatedState.setHeatState(true);
-                                        FlatLights.LOGGER.info("[sun set effect] changed heat state to true");
+                                        MiscUtils.infoLog("[sun set effect] changed heat state to true");
                                         if(!le.level().isClientSide()) {
                                             Supplier<Entity> supplier = () -> le;
                                             PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getId(), true));
@@ -143,7 +147,7 @@ public class SunCube extends BaseCurio {
                                 getHeatedState(le).ifPresent(heatedState -> {
                                     if(heatedState.isHeated()) {
                                         heatedState.setHeatState(false);
-                                        FlatLights.LOGGER.info("[sun set effect] changed heat state to false");
+                                        MiscUtils.infoLog("[sun set effect] changed heat state to false");
                                         if(!le.level().isClientSide()) {
                                             Supplier<Entity> supplier = () -> le;
                                             PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketRisingHeatUpdate(le.getId(), false));

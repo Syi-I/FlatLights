@@ -29,6 +29,18 @@ import java.util.*;
 
 public class MiscUtils {
     
+    static boolean toggle = false;
+    
+    /**
+     * Puts a message into the info log
+     * @param message A String message that gets put into the logs at the info level
+     */
+    public static void infoLog(String message) {
+        if(toggle) {
+            FlatLights.LOGGER.info(message);
+        }
+    }
+    
     /**
      * Get the total attack damage from the input weapon (attack attributes + any sharpness damage increase)
      * @param weapon The weapon being checked
@@ -142,7 +154,7 @@ public class MiscUtils {
                 try {
                     plUuid = UUID.fromString(entry.getUuid());
                     players.add(plUuid);
-                    FlatLights.LOGGER.info("Note for UUID [" + plUuid + "]: " + entry.getNote());
+                    MiscUtils.infoLog("Note for UUID [" + plUuid + "]: " + entry.getNote());
                 }
                 catch (Exception exc) {
                     skipped++;
@@ -153,7 +165,7 @@ public class MiscUtils {
             if (skipped > 0) {
                 FlatLights.LOGGER.warn("Skipped " + skipped + " player(s) during loading due to malformed data.");
             }
-            FlatLights.LOGGER.info("List loading finished.");
+            MiscUtils.infoLog("List loading finished.");
         });
         tr.setName("json Player List Loader");
         tr.start();

@@ -47,7 +47,7 @@ public class ChestCheckCondition implements LootItemCondition {
         }
         
         if (pContext.getQueriedLootTableId().equals(BuiltInLootTables.ABANDONED_MINESHAFT)) {
-            //FlatLights.LOGGER.info("[Chest Loot Condition] We are spamming the mineshaft carts trying to put loot in. Instead, we are making duplicate item entries in all the chest minecarts. God why.");
+            //MiscUtils.infoLog("[Chest Loot Condition] We are spamming the mineshaft carts trying to put loot in. Instead, we are making duplicate item entries in all the chest minecarts. God why.");
             return false;
         }
         
@@ -55,10 +55,10 @@ public class ChestCheckCondition implements LootItemCondition {
         //get tile entity from chestPos
         BlockEntity chestTile = pContext.getLevel().getBlockEntity(chestPos);
         if(chestTile != null) {
-            //FlatLights.LOGGER.info("[Chest Loot Condition] Tile Entity is " + chestTile.toString());
+            //MiscUtils.infoLog("[Chest Loot Condition] Tile Entity is " + chestTile.toString());
         }
         else {
-            //FlatLights.LOGGER.info("[Chest Loot Condition] Chest is null???");
+            //MiscUtils.infoLog("[Chest Loot Condition] Chest is null???");
         }
         
       
@@ -68,7 +68,7 @@ public class ChestCheckCondition implements LootItemCondition {
       also would not want to put stuff in a hopper if another mod uses that as part of a structure, in case of messing up a puzzle or redstone mechanism
        */
         boolean isChest = chestTile instanceof RandomizableContainerBlockEntity && !(chestTile instanceof DispenserBlockEntity || chestTile instanceof HopperBlockEntity);
-        //FlatLights.LOGGER.info("[Chest Loot Condition] isChest = " + isChest);
+        //MiscUtils.infoLog("[Chest Loot Condition] isChest = " + isChest);
         
         //returns if the tile entity is specifically a chest, and if it's in the right location
         return isChest && this.predicate.matches(pContext.getLevel(), vector3d.x() + (double) this.offset.getX(), vector3d.y() + (double) this.offset.getY(), vector3d.z() + (double) this.offset.getZ());

@@ -41,7 +41,7 @@ public class PortableBlackHoleProjectileEntity extends ThrowableItemProjectile {
             if(entity instanceof LivingEntity) {
                 blackHoleEntity = new PortableBlackHoleEntity(ModEntityTypes.PORTABLE_BLACK_HOLE_ENTITY.get(), (LivingEntity) entity, level());
                 blackHoleEntity.setOwner(entity);
-                //FlatLights.LOGGER.info("set owner of this black hole entity to " + entity);
+                //MiscUtils.infoLog("set owner of this black hole entity to " + entity);
             }
             else {
                 blackHoleEntity = new PortableBlackHoleEntity(ModEntityTypes.PORTABLE_BLACK_HOLE_ENTITY.get(), level());

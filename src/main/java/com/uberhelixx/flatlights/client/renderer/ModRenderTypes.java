@@ -26,7 +26,7 @@ public class ModRenderTypes {
             "space",
             DefaultVertexFormat.POSITION,
             VertexFormat.Mode.QUADS,
-            100000,
+            256,
             true,
             true,
             RenderType.CompositeState.builder()

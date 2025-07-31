@@ -79,16 +79,16 @@ public class CurioStructureAdditionModifier extends LootModifier {
         
         if(!(new HashSet<>(objectArrayList).containsAll(additionalItems))) {
             for(ItemStack item : objectArrayList) {
-                //FlatLights.LOGGER.info("[Structure Chest] Base Generated Item: " + item.toString());
+                //MiscUtils.infoLog("[Structure Chest] Base Generated Item: " + item.toString());
             }
             for(ItemStack item : additionalItems) {
-                //FlatLights.LOGGER.info("[Structure Chest] Additional Item: " + item.toString());
+                //MiscUtils.infoLog("[Structure Chest] Additional Item: " + item.toString());
             }
             objectArrayList.addAll(additionalItems);
-            //FlatLights.LOGGER.info("[Structure Chest] Added extra items to loot table.");
+            //MiscUtils.infoLog("[Structure Chest] Added extra items to loot table.");
             return objectArrayList;
         }
-        //FlatLights.LOGGER.info("[Structure Chest] Unmodified loot table returned.");
+        //MiscUtils.infoLog("[Structure Chest] Unmodified loot table returned.");
         //return the modified list of loot
         //List<ItemStack> duplicateChest = new ArrayList<>();
         return objectArrayList;

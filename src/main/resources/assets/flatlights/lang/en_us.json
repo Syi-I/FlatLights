@@ -1,5 +1,6 @@
 {
   "itemGroup.flatlights": "Flat Lights",
+  "key.categories.flatlights": "Flat Lights",
 
   "item.flatlights.gun_rat": "no",
 
@@ -570,7 +571,9 @@
   "enchantment.flatlights.lethality": "Lethality",
   "enchantment.flatlights.lethality.desc": "Inflicts [Health Reduction] on the target for 30 seconds. (Health Reduction: Lowers the target's HP by 20% while in effect)",
   "enchantment.flatlights.lifted_pickup_truck": "Curse of Lifted Pickup Truck",
-  "enchantment.flatlights.lifted_pickup_truck.desc": "Makes oneself appear tougher, attempting to compensate for one's fragile physique.",
+  "enchantment.flatlights.lifted_pickup_truck.desc": "Tough exterior, but actually extremely fragile.",
+  "enchantment.flatlights.fragmentation": "Fragmentation",
+  "enchantment.flatlights.fragmentation.desc": "Damage taken gets capped to a percentage of the wearer's max HP.",
 
   "screen.flatlights.plating_machine": "Plating Machine",
   "screen.flatlights.spectrum_anvil": "Spectrum Anvil",

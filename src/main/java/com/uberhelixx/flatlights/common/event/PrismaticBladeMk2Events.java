@@ -248,16 +248,16 @@ public class PrismaticBladeMk2Events {
             int bladeIter = oldCurrTier;
             int coreCheckCount = newCurrCores;
             
-            FlatLights.LOGGER.info("[core math] gainedCores = " + gainedCores);
-            FlatLights.LOGGER.info("[core math] oldCurrCores = " + oldCurrCores);
-            FlatLights.LOGGER.info("[core math] newCurrCores = " + newCurrCores);
+            MiscUtils.infoLog("[core math] gainedCores = " + gainedCores);
+            MiscUtils.infoLog("[core math] oldCurrCores = " + oldCurrCores);
+            MiscUtils.infoLog("[core math] newCurrCores = " + newCurrCores);
             //adds the core counts of previously filled tiers onto our freshly updated current core count
             while(bladeIter > 1) {
                 bladeIter--;
                 coreCheckCount = coreCheckCount + (bladeIter * TIER_MULTIPLIER);
             }
-            FlatLights.LOGGER.info("[core math] old totalCores = " + totalCores);
-            FlatLights.LOGGER.info("[core math] coreCheckCount = " + coreCheckCount);
+            MiscUtils.infoLog("[core math] old totalCores = " + totalCores);
+            MiscUtils.infoLog("[core math] coreCheckCount = " + coreCheckCount);
             
             //if our total cores is not the same as the check, set total to the calculated check amount
             if(totalCores != coreCheckCount) {
@@ -268,22 +268,22 @@ public class PrismaticBladeMk2Events {
             //check if this player has the playerTracker cap or not
             if(PrismaticBladeMk2.hasCoreTracker(player)) {
                 playerTracker = PrismaticBladeMk2.getPlayerCores(player);
-                FlatLights.LOGGER.info("[core math] playerCoreCount = " + playerTracker);
+                MiscUtils.infoLog("[core math] playerCoreCount = " + playerTracker);
                 //if player tracker is less than total cores from blade NBT, set player tracker to count from blade NBT
                 if(playerTracker < totalCores) {
-                    FlatLights.LOGGER.info("[core math] playerTracker <= totalCores");
+                    MiscUtils.infoLog("[core math] playerTracker <= totalCores");
                     PrismaticBladeMk2.setPlayerCores(player, totalCores);
                 }
                 //if total cores from blade NBT is less than player tracker, add difference between totals to newCurrCores to update blade NBT
                 else {
-                    FlatLights.LOGGER.info("[core math] playerTracker > totalCores");
+                    MiscUtils.infoLog("[core math] playerTracker > totalCores");
                     int coreDiff = playerTracker - totalCores;
                     //update gained cores to include any core difference between player and blade trackers
                     gainedCores = gainedCores + coreDiff;
                     newCurrCores = oldCurrCores + gainedCores;
-                    FlatLights.LOGGER.info("[core math] coreDiff = " + coreDiff);
-                    FlatLights.LOGGER.info("[core math] gainedCores = " + gainedCores);
-                    FlatLights.LOGGER.info("[core math] newCurrCores = " + newCurrCores);
+                    MiscUtils.infoLog("[core math] coreDiff = " + coreDiff);
+                    MiscUtils.infoLog("[core math] gainedCores = " + gainedCores);
+                    MiscUtils.infoLog("[core math] newCurrCores = " + newCurrCores);
                 }
             }
             
@@ -313,8 +313,8 @@ public class PrismaticBladeMk2Events {
                 oldCurrTier = newTier;
             }
             
-            FlatLights.LOGGER.info("[core math END] totalCores + gainedCores = " + (totalCores));
-            FlatLights.LOGGER.info("[core math END] newCurrCores = " + newCurrCores);
+            MiscUtils.infoLog("[core math END] totalCores + gainedCores = " + (totalCores));
+            MiscUtils.infoLog("[core math END] newCurrCores = " + newCurrCores);
             
             //update nbt data of sword
             tag.putInt(TOTAL_CORES_TAG, totalCores);

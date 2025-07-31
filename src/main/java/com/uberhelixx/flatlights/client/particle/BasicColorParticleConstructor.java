@@ -18,7 +18,7 @@ public class BasicColorParticleConstructor {
     private float roll = 0F;
     
     @Builder.Default
-    private boolean physical = true;
+    private boolean physical = false;
     
     @Builder.Default
     private int lifetime = 20;

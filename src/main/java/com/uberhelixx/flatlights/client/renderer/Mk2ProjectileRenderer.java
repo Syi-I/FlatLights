@@ -54,7 +54,8 @@ public class Mk2ProjectileRenderer extends EntityRenderer<Mk2ProjectileEntity> {
         //   our entity model as if it were a block model.
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
         
-        VertexConsumer shaderBuffer = pBuffer.getBuffer(ModRenderTypes.SPACE);
+        //VertexConsumer shaderBuffer = pBuffer.getBuffer(ModRenderTypes.SPACE);
+        VertexConsumer shaderBuffer = pBuffer.getBuffer(RenderType.endGateway());
         dispatcher.getModelRenderer().renderModel(currentPose, shaderBuffer, null, mk2ProjectileModel,
                 red, green, blue, pPackedLight, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, RenderType.entityCutoutNoCull(MK2_PROJECTILE));
         

@@ -40,7 +40,7 @@ public class PortableBlackHoleItem extends Item {
             //sets velocity and direction for the projectile
             blackHoleProjectileEntity.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.0F, 0F);
             blackHoleProjectileEntity.setOwner(pPlayer);
-            //FlatLights.LOGGER.info("set owner of black hole item projectile to " + pPlayer);
+            //MiscUtils.infoLog("set owner of black hole item projectile to " + pPlayer);
             pLevel.addFreshEntity(blackHoleProjectileEntity);
         }
         

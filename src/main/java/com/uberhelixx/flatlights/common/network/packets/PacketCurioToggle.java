@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.common.network.packets;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.common.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.util.MiscUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,7 +55,7 @@ public class PacketCurioToggle {
                 CompoundTag tag = curio.getTag();
                 //check if the curio is one with the set effect toggle
                 if(tag != null && !tag.isEmpty() && tag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
-                    FlatLights.LOGGER.info("[PacketCurioToggle] Returning worn curio.");
+                    MiscUtils.infoLog("[PacketCurioToggle] Returning worn curio.");
                     return curio;
                 }
             }
@@ -62,13 +63,13 @@ public class PacketCurioToggle {
             else if(hand.getItem() instanceof BaseCurio){
                 CompoundTag tag = hand.getTag();
                 if(tag != null && !tag.isEmpty() && tag.contains(CurioUtils.SET_EFFECT_TOGGLE)) {
-                    FlatLights.LOGGER.info("[PacketCurioToggle] Returning held curio.");
+                    MiscUtils.infoLog("[PacketCurioToggle] Returning held curio.");
                     return hand;
                 }
             }
         }
         
-        FlatLights.LOGGER.info("[PacketCurioToggle] Returning null from no curios inventory.");
+        MiscUtils.infoLog("[PacketCurioToggle] Returning null from no curios inventory.");
         return null;
     }
 }

@@ -3,6 +3,7 @@ package com.uberhelixx.flatlights.common.entity;
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.startup.registry.ModSoundEvents;
+import com.uberhelixx.flatlights.util.MiscUtils;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -92,7 +93,7 @@ public class GravityLiftEntity extends AbstractArrow {
             //if lift is expiring or player is trying to jump out, give motion increase
             else if(instance.distanceTo(this) > (ModEntityTypes.GRAV_LIFT_HEIGHT - HEIGHT_BUFFER) && (this.tickCount >= (SECONDS - 1) * TICK_MULTI || hopOut)) {
                 if(hopOut) {
-                    FlatLights.LOGGER.info("[Gravity Lift Entity] Player should be launching out after sneaking in lift.");
+                    MiscUtils.infoLog("[Gravity Lift Entity] Player should be launching out after sneaking in lift.");
                 }
                 
                 float SPEED_MULTI = 1.75F;

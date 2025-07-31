@@ -6,6 +6,7 @@ import com.uberhelixx.flatlights.common.block.PlateBlock;
 import com.uberhelixx.flatlights.common.block.WireGlassBlock;
 import com.uberhelixx.flatlights.common.block.blackout.BlackoutFlatBlock;
 import com.uberhelixx.flatlights.common.block.light.*;
+import com.uberhelixx.flatlights.util.MiscUtils;
 import com.uberhelixx.flatlights.util.lib.LibBlockNames;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -31,7 +32,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         //get all blocks from registry to make the block state and block models according to block type
         for(RegistryObject<Block> blockRegistryObject : ModBlocks.BLOCKS.getEntries()) {
             String filePath = blockRegistryObject.getId().getPath();
-            FlatLights.LOGGER.info("File path is " + filePath);
+            MiscUtils.infoLog("File path is " + filePath);
             Block block = blockRegistryObject.get();
             
             //flatblocks use custom model, blackout flatblocks use normal cube model

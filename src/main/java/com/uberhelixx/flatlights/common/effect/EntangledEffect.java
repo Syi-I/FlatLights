@@ -48,7 +48,7 @@ public class EntangledEffect extends MobEffect {
         if(ModCapabilities.getEntangledState(pLivingEntity).isPresent()) {
             ModCapabilities.getEntangledState(pLivingEntity).ifPresent(entangledState -> {
                 entangledState.setEntangledState(false);
-                FlatLights.LOGGER.info("[Entangled Effect] Changed entangled state to false");
+                MiscUtils.infoLog("[Entangled Effect] Changed entangled state to false");
                 if(!pLivingEntity.getCommandSenderWorld().isClientSide()) {
                     Supplier<Entity> supplier = () -> pLivingEntity;
                     PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(pLivingEntity.getId(), false));

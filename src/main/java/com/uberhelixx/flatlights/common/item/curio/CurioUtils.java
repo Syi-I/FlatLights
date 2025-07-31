@@ -147,7 +147,7 @@ public class CurioUtils {
             TooltipHelper.labelBrackets(tooltipIn, "Tier", null, tierName, tierColor);
         }
         else {
-            FlatLights.LOGGER.info("[Base Curio] Somehow we failed to put a tier on this curio???");
+            MiscUtils.infoLog("[Base Curio] Somehow we failed to put a tier on this curio???");
             TooltipHelper.labelBrackets(tooltipIn, "Tier", null, "Bugged Item", Style.EMPTY.withColor(ChatFormatting.RED));
         }
     }
@@ -168,7 +168,7 @@ public class CurioUtils {
             TooltipHelper.labelBrackets(tooltipIn, "Set", null, setName, Style.EMPTY.withColor(ChatFormatting.DARK_AQUA));
         }
         else {
-            FlatLights.LOGGER.info("[Base Curio] Somehow we failed to put a set on this curio???");
+            MiscUtils.infoLog("[Base Curio] Somehow we failed to put a set on this curio???");
             TooltipHelper.labelBrackets(tooltipIn, "Tier", null, "Bugged Item", Style.EMPTY.withColor(ChatFormatting.RED));
         }
     }
@@ -204,7 +204,7 @@ public class CurioUtils {
             TooltipHelper.labelBrackets(tooltipIn, "Progress", null, formattedTracker);
         }
         else {
-            FlatLights.LOGGER.info("[Base Curio] Why are we calling this for a non growth type curio???");
+            MiscUtils.infoLog("[Base Curio] Why are we calling this for a non growth type curio???");
             TooltipHelper.labelBrackets(tooltipIn, "Progress", null, "Bugged Item", Style.EMPTY.withColor(ChatFormatting.RED));
         }
     }
@@ -282,7 +282,7 @@ public class CurioUtils {
             }
         }
         //if it matches none then the item is bugged, so return ERROR tier
-        FlatLights.LOGGER.info("[Base Curio] No matching tier value.");
+        MiscUtils.infoLog("[Base Curio] No matching tier value.");
         return CurioTier.ERROR;
     }
     
@@ -300,11 +300,14 @@ public class CurioUtils {
     /**
      * Gets the worn curios from only our specific slot types (cube/prism/sphere)
      * @param playerIn The player whose curios we are checking
-     * @return A list of curios in {@link ItemStack} form, present in the given slot types
+     * @return A list of curios in {@link ItemStack} form, present in the given slot types, returns null if no curio slots
      */
     //TODO: test and fix the getWornCurioSlots related methods using the new Map<String, ICurioStacksHandler>
     public static List<ItemStack> getWornCurios(Player playerIn) {
         Map<String, ICurioStacksHandler> curioSlots = getWornCurioSlots(playerIn);
+        if(curioSlots.isEmpty()) {
+            return null;
+        }
         List<ItemStack> curioList = new ArrayList<>();
         for(int slotIndex = 0; slotIndex < curioSlots.get(CUBE_SLOT_ID).getSlots(); slotIndex++) {
             curioList.add(curioSlots.get(CUBE_SLOT_ID).getStacks().getStackInSlot(slotIndex));
@@ -321,21 +324,25 @@ public class CurioUtils {
     /**
      * Gets a list of curios in the cube/prism/sphere slot types
      * @param playerIn The player whose curio slots are being checked
-     * @return A list of {@link SlotResult} for the given player
+     * @return A Map<String, ICurioStacksHandler> for the given player
      */
     //TODO: test and fix the getWornCurioSlots related methods using the new Map<String, ICurioStacksHandler>
     public static Map<String, ICurioStacksHandler> getWornCurioSlots(Player playerIn) {
         Map<String, ICurioStacksHandler> curioInv = new HashMap<>();
         //gets the curios inventory
-        CuriosApi.getCuriosInventory(playerIn).ifPresent(curiosInventory -> {
-            //string is slot type identifier i.e. "ring", ICurioStacksHandler is slot inventory (but not item directly)
-            Map<String, ICurioStacksHandler> curios = curiosInventory.getCurios();
-            curioInv.put(CUBE_SLOT_ID, curios.get(CUBE_SLOT_ID));
-            curioInv.put(PRISM_SLOT_ID, curios.get(PRISM_SLOT_ID));
-            curioInv.put(SPHERE_SLOT_ID, curios.get(SPHERE_SLOT_ID));
-            //gets slot inventory of a specified slot type
-            //curiosInventory.getStacksHandler(CUBE_SLOT_ID).ifPresent(slotInventory -> {});
-        });
+        try {
+            CuriosApi.getCuriosInventory(playerIn).ifPresent(curiosInventory -> {
+                //string is slot type identifier i.e. "ring", ICurioStacksHandler is slot inventory (but not item directly)
+                Map<String, ICurioStacksHandler> curios = curiosInventory.getCurios();
+                curioInv.put(CUBE_SLOT_ID, curios.get(CUBE_SLOT_ID));
+                curioInv.put(PRISM_SLOT_ID, curios.get(PRISM_SLOT_ID));
+                curioInv.put(SPHERE_SLOT_ID, curios.get(SPHERE_SLOT_ID));
+                //gets slot inventory of a specified slot type
+                //curiosInventory.getStacksHandler(CUBE_SLOT_ID).ifPresent(slotInventory -> {});
+            });
+        } catch (Exception e) {
+            FlatLights.LOGGER.error("[CurioUtils#getWornCurioSlots] Could not get curio inventory from player. Returning empty map.");
+        }
         return curioInv;
     }
     
@@ -352,6 +359,9 @@ public class CurioUtils {
         
         //get curios in our specific slot types only
         Map<String, ICurioStacksHandler> curios = getWornCurioSlots(playerIn);
+        if(curios.isEmpty()) {
+            return false;
+        }
         //should only ever have 1 of each slot type, if you cheat and have more then no set effects work
         if(curios.get(CUBE_SLOT_ID).getSlots() == 1 && curios.get(PRISM_SLOT_ID).getSlots() == 1 && curios.get(SPHERE_SLOT_ID).getSlots() == 1) {
             //get curio ItemStack in the first (and only) slot of the player
@@ -389,6 +399,7 @@ public class CurioUtils {
         if(canTriggerSetEffect(playerIn)) {
             //get all curios and just get the set name from one of them since they should all share the same set
             List<ItemStack> curios = getWornCurios(playerIn);
+            assert curios != null;
             CompoundTag firstCurioTag = curios.get(0).getTag();
             setName = firstCurioTag != null ? firstCurioTag.getString(SET) : null;
         }
@@ -471,6 +482,12 @@ public class CurioUtils {
     public static ItemStack getCurioFromSlot(Player playerIn, String slotIn) {
         //get the specific slot curio from the player
         Map<String, ICurioStacksHandler> curioSlots = CurioUtils.getWornCurioSlots(playerIn);
+        if(curioSlots.isEmpty()) {
+            return null;
+        }
+        //MiscUtils.infoLog("[CurioUtils#getWornCurioSlots] Map from curioSlots = " + curioSlots);
+        //MiscUtils.infoLog("[CurioUtils#getWornCurioSlots] playerIn = " + playerIn);
+        //MiscUtils.infoLog("[CurioUtils#getWornCurioSlots] slotIn = " + slotIn);
         ItemStack curio = null;
         for(int slotIndex = 0; slotIndex < curioSlots.get(slotIn).getSlots(); slotIndex++) {
             curio = curioSlots.get(slotIn).getStacks().getStackInSlot(slotIndex);

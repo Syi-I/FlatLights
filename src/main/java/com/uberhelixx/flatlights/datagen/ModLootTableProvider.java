@@ -30,11 +30,11 @@ public class ModLootTableProvider extends LootTableProvider {
         @Override
         protected void generate() {
             for(RegistryObject<Block> block : ModBlocks.BLOCKS.getEntries()) {
-                //FlatLights.LOGGER.info("Created " + block.getId() + " loot table.");
+                //MiscUtils.infoLog("Created " + block.getId() + " loot table.");
                 this.dropSelf(block.get());
             }
             for(RegistryObject<Block> block : ModBlocks.NOGEN_BLOCKS.getEntries()) {
-                //FlatLights.LOGGER.info("Created " + block.getId() + " loot table.");
+                //MiscUtils.infoLog("Created " + block.getId() + " loot table.");
                 this.dropSelf(block.get());
             }
         }

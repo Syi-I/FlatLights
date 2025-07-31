@@ -9,6 +9,7 @@ import com.uberhelixx.flatlights.common.item.curio.BaseCurio;
 import com.uberhelixx.flatlights.common.item.curio.CurioSetNames;
 import com.uberhelixx.flatlights.common.item.curio.CurioTier;
 import com.uberhelixx.flatlights.common.item.curio.CurioUtils;
+import com.uberhelixx.flatlights.util.MiscUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -70,7 +71,7 @@ public class ShoreCube extends BaseCurio {
                         //ensure living entity is the only thing we're adding slowness to
                         if(entity instanceof LivingEntity) {
                             if(entity.isInWater() || player.level().isRaining()) {
-                                FlatLights.LOGGER.info("[Shore Cube] trying to slow nearby entities");
+                                MiscUtils.infoLog("[Shore Cube] trying to slow nearby entities");
                                 float distance = player.distanceTo(entity);
                                 //calculates how close the entity is to the wearer as a percentage
                                 float percentMod = 1 - (float) (distance / expansionRadius);

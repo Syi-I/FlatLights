@@ -31,5 +31,6 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> NEUTRALIZER = registerEnch("neutralizer", NeutralizerEnchantment::new);
     public static final RegistryObject<Enchantment> PULSINGARROW = registerEnch("pulsing_arrow", PulsingArrowEnchantment::new);
     public static final RegistryObject<Enchantment> SHIMMER2 = registerEnch("shimmer2", Shimmer2Enchantment::new);
+    public static final RegistryObject<Enchantment> FRAGMENTATION = registerEnch("fragmentation", FragmentationEnchantment::new);
     
 }

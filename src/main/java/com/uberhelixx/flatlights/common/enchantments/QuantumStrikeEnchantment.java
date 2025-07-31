@@ -19,6 +19,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -54,18 +55,23 @@ public class QuantumStrikeEnchantment extends Enchantment {
             
             //get attribute map of the currently held mainhand item
             Multimap<Attribute, AttributeModifier> attributes = weapon.getAttributeModifiers(EquipmentSlot.MAINHAND);
-            FlatLights.LOGGER.info("[Quantum Strike] Damage attribute from weapon: " + getDamageAttribute(attributes, Attributes.ATTACK_DAMAGE));
-            FlatLights.LOGGER.info("[Quantum Strike] Damage addition from sharpness: " + getSharpnessDmg(pAttacker));
+            MiscUtils.infoLog("[Quantum Strike] Damage attribute from weapon: " + getDamageAttribute(attributes, Attributes.ATTACK_DAMAGE));
+            MiscUtils.infoLog("[Quantum Strike] Damage addition from sharpness: " + getSharpnessDmg(pAttacker));
             
             //total up additional damage modifiers from the weapon and any present sharpness levels
             double newWeaponDmg = getDamageAttribute(attributes, Attributes.ATTACK_DAMAGE) + getSharpnessDmg(pAttacker);
-            FlatLights.LOGGER.info("[Quantum Strike] Total Dmg: " + newWeaponDmg);
+            MiscUtils.infoLog("[Quantum Strike] Total Dmg: " + newWeaponDmg);
             
             //add damage modifiers to initial fist damage for total weapon damage
             weaponDamage += newWeaponDmg;
             
-            //reset iframes so that the instance of quantum damage hits and actually deals damage
-            pTarget.invulnerableTime = 0;
+            if(pAttacker instanceof Player player) {
+                //only with full attack cooldown so it can't be spam abused
+                if(player.getAttackStrengthScale(0f) == 1) {
+                    //reset iframes so that the instance of quantum damage hits and actually deals damage
+                    pTarget.invulnerableTime = 0;
+                }
+            }
             pTarget.hurt(ModDamageTypes.causeQuantumDamage(pAttacker), (float) (weaponDamage * (1 + (0.1F * pLevel))) * MiscUtils.damagePercentCalc(FlatLightsCommonConfig.quantumPercent.get()));
             
             //apply entangled for shared damage effect, glowing and set team for colored outline indicator of being entangled
@@ -89,8 +95,8 @@ public class QuantumStrikeEnchantment extends Enchantment {
             for(AttributeModifier entry : collector) {
                 double entryAmount = entry.getAmount();
                 amount += entryAmount;
-                FlatLights.LOGGER.info("[Quantum Strike] Attack Dmg Attribute Name: " + Attributes.ATTACK_DAMAGE.getDescriptionId());
-                FlatLights.LOGGER.info("[Quantum Strike] Collection Entry Name: " + entry);
+                MiscUtils.infoLog("[Quantum Strike] Attack Dmg Attribute Name: " + Attributes.ATTACK_DAMAGE.getDescriptionId());
+                MiscUtils.infoLog("[Quantum Strike] Collection Entry Name: " + entry);
             }
         }
         

@@ -7,9 +7,18 @@ import com.uberhelixx.flatlights.common.effect.EntangledEffect;
 import com.uberhelixx.flatlights.common.effect.ModEffects;
 import com.uberhelixx.flatlights.common.enchantments.ModEnchantments;
 import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
+import com.uberhelixx.flatlights.util.ClientUtils;
 import com.uberhelixx.flatlights.util.MiscUtils;
+import com.uberhelixx.flatlights.util.ParticleHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,15 +35,21 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Scoreboard;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.NetworkHooks;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EnchantmentEvents {
@@ -54,7 +69,7 @@ public class EnchantmentEvents {
             List<Entity> entities = target.level().getEntities(target, target.getBoundingBox().inflate(searchRadius, searchRadius, searchRadius));
             for (Entity instance : entities) {
                 if (instance != target && instance instanceof LivingEntity && ((LivingEntity) instance).hasEffect(ModEffects.ENTANGLED.get())) {
-                    FlatLights.LOGGER.info("[Quantum Strike Enchant] Entangled mob: " + instance.getName());
+                    MiscUtils.infoLog("[Quantum Strike Enchant] Entangled mob: " + instance.getName());
                     instance.invulnerableTime = 0;
                     instance.hurt(ModDamageTypes.causeEntangledDamage(attacker), event.getAmount() * MiscUtils.damagePercentCalc(FlatLightsCommonConfig.entangledPercent.get()));
                     instance.invulnerableTime = 20;
@@ -94,7 +109,9 @@ public class EnchantmentEvents {
     public static void xpDropMultiplier(LivingExperienceDropEvent event) {
         LivingEntity user = event.getAttackingPlayer();
         int baseXpAmount = event.getDroppedExperience();
-        Level world = user.level();
+        if(user == null) {
+            return;
+        }
         //check if player died since the game freaks out and crashes
         if(event.getEntity() instanceof Player) {
             return;
@@ -104,6 +121,7 @@ public class EnchantmentEvents {
             return;
         }
         
+        Level world = user.level();
         int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FLASH_OF_BRILLIANCE.get(), user);
         //check if enchantment is present on mainhand item (the item that killed)
         if(level != 0) {
@@ -113,8 +131,8 @@ public class EnchantmentEvents {
             if(Math.random() <= Math.min(activeChance, chanceCap)) {
                 event.setDroppedExperience(10 * baseXpAmount);
                 world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundSource.NEUTRAL, 5.0F, 1.0F);
-                FlatLights.LOGGER.info("[Flash of Brilliance] Triggered XP multiplier.");
-                FlatLights.LOGGER.info("[Flash of Brilliance] Base XP value: " + baseXpAmount + " | New XP value: " + baseXpAmount * 10);
+                MiscUtils.infoLog("[Flash of Brilliance] Triggered XP multiplier.");
+                MiscUtils.infoLog("[Flash of Brilliance] Base XP value: " + baseXpAmount + " | New XP value: " + baseXpAmount * 10);
             }
         }
     }
@@ -145,13 +163,13 @@ public class EnchantmentEvents {
                 for(AttributeModifier armorPoints : initialArmorValues) {
                     totalArmor += armorPoints.getAmount();
                 }
-                FlatLights.LOGGER.info("[Lifted Pickup Truck ARMOR] Cursed Armor Total: " + totalArmor);
+                MiscUtils.infoLog("[Lifted Pickup Truck ARMOR] Cursed Armor Total: " + totalArmor);
             }
         }
         //only apply the modifier if there is cursed armor
         if(totalArmor > 0 && armor != null) {
             armor.addTransientModifier(new AttributeModifier(LIFTED_TRUCK_ARMOR, "Lifted Truck Armor Modifier", totalArmor, AttributeModifier.Operation.ADDITION));
-            FlatLights.LOGGER.info("[Lifted Pickup Truck ARMOR] Cursed Armor Added: " + totalArmor);
+            MiscUtils.infoLog("[Lifted Pickup Truck ARMOR] Cursed Armor Added: " + totalArmor);
             
         }
     }
@@ -181,8 +199,8 @@ public class EnchantmentEvents {
         if(armor != null && armor.getModifier(LIFTED_TRUCK_ARMOR) != null) {
             //if there is cursed armor on (value of modifier > 0), then increase damage amount
             if(Objects.requireNonNull(armor.getModifier(LIFTED_TRUCK_ARMOR)).getAmount() > 0) {
-                FlatLights.LOGGER.info("[Lifted Pickup Truck DAMAGE] Initial Damage: " + event.getAmount());
-                FlatLights.LOGGER.info("[Lifted Pickup Truck DAMAGE] New Damage: " + event.getAmount() * DMG_MULTIPLIER);
+                MiscUtils.infoLog("[Lifted Pickup Truck DAMAGE] Initial Damage: " + event.getAmount());
+                MiscUtils.infoLog("[Lifted Pickup Truck DAMAGE] New Damage: " + event.getAmount() * DMG_MULTIPLIER);
                 event.setAmount(event.getAmount() * DMG_MULTIPLIER);
             }
         }
@@ -199,8 +217,8 @@ public class EnchantmentEvents {
         if(!event.getSource().is(ModDamageTypes.PHYSICAL)) {
             //if neutralizer present, cancel initial damage event and trigger equivalent physical damage instead
             if(EnchantmentHelper.getEnchantmentLevel(ModEnchantments.NEUTRALIZER.get(), target) > 0) {
-                FlatLights.LOGGER.info("[Neutralizer] Neutralizer enchantment triggered");
-                FlatLights.LOGGER.info("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
+                MiscUtils.infoLog("[Neutralizer] Neutralizer enchantment triggered");
+                MiscUtils.infoLog("[Neutralizer] Initial un-neutralized damage: " + damageAmount);
                 event.setCanceled(true);
                 doPhysDmg(target, attacker, damageAmount);
             }
@@ -209,7 +227,7 @@ public class EnchantmentEvents {
     
     //does one instance of physical damage to a target, self-explanatory
     private static void doPhysDmg(LivingEntity target, Entity attacker, float damageAmount) {
-        FlatLights.LOGGER.info("[Neutralizer] Doing physical damage");
+        MiscUtils.infoLog("[Neutralizer] Doing physical damage");
         target.invulnerableTime = 0;
         if(attacker != null) {
             target.hurt(ModDamageTypes.causePhysicalDamage(attacker), damageAmount);
@@ -219,35 +237,92 @@ public class EnchantmentEvents {
         }
     }
     
-    //Pulsing Arrow aoe damage
+    //Pulsing Arrow aoe damage when arrow hits block instead of entity
     @SubscribeEvent
-    public static void arrowPulseDmg(ProjectileImpactEvent event) {
-        //check if projectile was an arrow
-        if(event.getProjectile() instanceof Arrow arrow) {
+    public static void arrowPulseDmgMiss(ProjectileImpactEvent event) {
+        HitResult.Type hitResult = event.getRayTraceResult().getType();
+        //check if projectile was an arrow and missed any entity
+        if(event.getProjectile() instanceof Arrow arrow && !hitResult.equals(HitResult.Type.ENTITY)) {
             //grab search radius from config to determine how far to look for mobs to damage
             double searchRadius = FlatLightsCommonConfig.pulsingArrowRadius.get();
             //check if arrow was shot from an actual player/entity
             if (arrow.getOwner() != null && arrow.getOwner() instanceof LivingEntity shooter) {
-                FlatLights.LOGGER.info("[Pulsing Arrow Damage] Shooter of arrow: " + shooter.getName());
-                ItemStack bow = shooter.getMainHandItem();
+                MiscUtils.infoLog("[Pulsing Arrow Damage Miss] Shooter of arrow: " + shooter.getName());
                 //check enchantment level from held bow to calculate the splash damage
                 int pulseLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.PULSINGARROW.get(), shooter);
                 if (pulseLevel != 0) {
                     List<Entity> entities = arrow.level().getEntities(arrow, arrow.getBoundingBox().inflate(searchRadius, searchRadius, searchRadius));
                     //damage all mobs found in the search radius of the arrow
                     for (Entity instance : entities) {
-                        if (instance instanceof LivingEntity && !instance.is(arrow)) {
+                        //make sure it's a livingentity, not the arrow itself, and not the shooter
+                        if (instance instanceof LivingEntity && !instance.is(arrow) && !instance.is(shooter)) {
                             double arrowDamage = arrow.getBaseDamage();
                             float pulseDamage = (float) (2F * arrowDamage * (pulseLevel) * MiscUtils.damagePercentCalc(FlatLightsCommonConfig.pulsingPercent.get()));
-                            instance.invulnerableTime = 0;
                             instance.hurt(ModDamageTypes.causeIndirectPhysicalDamage(arrow, shooter), pulseDamage);
-                            instance.invulnerableTime = 0;
-                            FlatLights.LOGGER.info("[Pulsing Arrow Damage] Pulse damaged mob: " + instance.getName());
-                            FlatLights.LOGGER.info("[Pulsing Arrow Damage] Arrow damage: " + arrowDamage);
-                            FlatLights.LOGGER.info("[Pulsing Arrow Damage] Initial pulse damage: " + pulseDamage);
+                            
+                            MiscUtils.infoLog("[Pulsing Arrow Damage Miss] Pulse damaged mob: " + instance.getName());
+                            MiscUtils.infoLog("[Pulsing Arrow Damage Miss] Arrow damage: " + arrowDamage);
+                            MiscUtils.infoLog("[Pulsing Arrow Damage Miss] Initial pulse damage: " + pulseDamage);
                         }
                     }
+                    float[] hsbVals = Color.RGBtoHSB(36, 217, 153, null);
+                    ParticleOptions pulseParticle = ParticleHelper.constructSimpleSpark(Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]),
+                            0.3f, 3, 1);
+                    ParticleHelper.createBall(pulseParticle, event.getRayTraceResult().getLocation(), event.getEntity().level(),
+                            3, 0.8f);
+                    /*float[] hsbVals2 = Color.RGBtoHSB(231, 158, 46, null);
+                    ParticleOptions fragParticle = ParticleHelper.constructSimpleSpark(Color.getHSBColor(hsbVals2[0], hsbVals2[1], hsbVals2[2]),
+                            0.2f, 6, 1);
+                    ParticleHelper.createCylinder(fragParticle, event.getEntity().level(), 3,
+                            new Vec3(0, 0.4, 0), 1.5, event.getEntity().position(), 0.6, 0.15f);*/
                 }
+            }
+        }
+    }
+    
+    //Pulsing Arrow aoe damage when hitting entity
+    @SubscribeEvent
+    public static void arrowPulseDmgHit(LivingHurtEvent event) {
+        LivingEntity shooter = event.getSource().getEntity() instanceof LivingEntity ? (LivingEntity) event.getSource().getEntity() : null;
+        //if no shooter then do nothing
+        if(shooter == null) {
+            return;
+        }
+        
+        Entity arrow = event.getSource().getDirectEntity();
+        DamageSource source = event.getSource();
+        LivingEntity hitEntity = event.getEntity();
+        int pulseLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.PULSINGARROW.get(), shooter);
+        
+        MiscUtils.infoLog("[Pulsing Arrow Damage Hit] Source Entity: " + shooter);
+        MiscUtils.infoLog("[Pulsing Arrow Damage Hit] Arrow: " + arrow);
+        
+        //only trigger if arrow damage from someone with pulsing arrow enchant
+        if(source.is(DamageTypes.ARROW) && pulseLevel > 0) {
+            //grab search radius from config to determine how far to look for mobs to damage
+            double searchRadius = FlatLightsCommonConfig.pulsingArrowRadius.get();
+            List<Entity> entities = hitEntity.level().getEntities(hitEntity, hitEntity.getBoundingBox().inflate(searchRadius, searchRadius, searchRadius));
+            //damage all mobs found in the search radius of the arrow
+            for (Entity instance : entities) {
+                //make sure it's a livingentity, not the already damaged entity, and not the shooter
+                if (instance instanceof LivingEntity && !instance.is(hitEntity) && !instance.is(shooter)) {
+                    double arrowDamage = event.getAmount();
+                    float pulseDamage = (float) (2F * arrowDamage * (pulseLevel) * MiscUtils.damagePercentCalc(FlatLightsCommonConfig.pulsingPercent.get()));
+                    instance.hurt(ModDamageTypes.causeIndirectPhysicalDamage(arrow, shooter), pulseDamage);
+                    MiscUtils.infoLog("[Pulsing Arrow Damage HIT] Pulse damaged mob: " + instance.getName());
+                    MiscUtils.infoLog("[Pulsing Arrow Damage HIT] Arrow damage: " + arrowDamage);
+                    MiscUtils.infoLog("[Pulsing Arrow Damage HIT] Initial pulse damage: " + pulseDamage);
+                }
+            }
+            if(hitEntity.level().isClientSide()) {
+                MiscUtils.infoLog("[Pulsing Arrow Damage HIT] Trying particle spawn.");
+                float[] hsbVals = Color.RGBtoHSB(36, 217, 153, null);
+                ParticleOptions pulseParticle = ParticleHelper.constructSimpleSpark(Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]),
+                        0.3f, 3, 1);
+                Vec3 loc = new Vec3(hitEntity.getX(), hitEntity.getY() + hitEntity.getBbHeight(), hitEntity.getZ());
+                ParticleHelper.createBall(pulseParticle, loc, hitEntity.level(),
+                        3, 0.8f);
+                Level world = hitEntity.level();
             }
         }
     }
@@ -273,7 +348,7 @@ public class EnchantmentEvents {
         }
         
         //if book has no enchants, shimmer isn't lvl 2, or just fails the 0.001% chance of triggering
-        if (bookMap.isEmpty() || !(shimmerlvl2Only && bookMap.size() == 1) || Math.random() <= 0.5/*0.99999*/) { return; }
+        if (bookMap.isEmpty() || !(shimmerlvl2Only && bookMap.size() == 1) || Math.random() <= 0.99999/*0.99999*/) { return; }
         
         //goes through each enchant on the book, adds 10 levels to each enchant
         for (Map.Entry<Enchantment, Integer> bookEnchEntry : bookMap.entrySet()) {
@@ -308,5 +383,37 @@ public class EnchantmentEvents {
         ItemStack enchantedItem = inputItem.copy();
         EnchantmentHelper.setEnchantments(outputMap, enchantedItem);
         event.setOutput(enchantedItem);
+    }
+    
+    @SubscribeEvent
+    public static void fragmentationDamage(LivingDamageEvent event) {
+        LivingEntity hitEntity = event.getEntity();
+        Level world = hitEntity.level();
+        int fragLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FRAGMENTATION.get(), hitEntity);
+        //if fragmentation enchantment level exists, reduce incoming damage and cap to a portion of max HP
+        if(fragLevel > 0) {
+            float damageCap = hitEntity.getMaxHealth() / (fragLevel + 1);
+            
+            MiscUtils.infoLog("[Fragmentation Hit] Fragmentation Level: " + fragLevel);
+            MiscUtils.infoLog("[Fragmentation Hit] Incoming Damage: " + event.getAmount());
+            MiscUtils.infoLog("[Fragmentation Hit] Fragmentation HP Cap: " + damageCap);
+            
+            if(event.getAmount() > damageCap) {
+                MiscUtils.infoLog("[Fragmentation Hit] Fragmentation threshold exceeded");
+                hitEntity.playSound(SoundEvents.TOTEM_USE, 0.4f, 0.3F / (hitEntity.level().random.nextFloat() * 0.4F + 0.8F));
+                if(hitEntity.level().isClientSide()) {
+                    float[] hsbVals = Color.RGBtoHSB(231, 158, 46, null);
+                    ParticleOptions fragParticle = ParticleHelper.constructSimpleSpark(Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]),
+                            0.2f, 6, 1);
+                    ParticleHelper.createCylinder(fragParticle, hitEntity.level(), 3,
+                            new Vec3(0, 0.4, 0), 1.5, hitEntity.position(), 0.6, 0.15f);
+                    world.addParticle(ParticleTypes.SCULK_SOUL, 0, 1, 0, 0, 1, 0);
+                    world.addParticle(ParticleTypes.SCULK_SOUL, 0, 1, 0, 0, 1, 0);
+                    world.addParticle(ParticleTypes.SCULK_SOUL, 0, 1, 0, 0, 1, 0);
+                    
+                }
+                event.setAmount(damageCap);
+            }
+        }
     }
 }

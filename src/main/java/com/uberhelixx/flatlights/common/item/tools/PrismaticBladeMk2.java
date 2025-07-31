@@ -117,6 +117,11 @@ public class PrismaticBladeMk2 extends SwordItem {
     }
     
     @Override
+    public boolean isFoil(ItemStack pStack) {
+        return super.isFoil(pStack) || (pStack.hasTag() && pStack.getTag().contains(MODE_TAG) && pStack.getTag().getInt(MODE_TAG) > 0);
+    }
+    
+    @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack pStack = pPlayer.getItemInHand(pUsedHand);
         if(MiscUtils.uuidCheck(pPlayer.getUUID())) {

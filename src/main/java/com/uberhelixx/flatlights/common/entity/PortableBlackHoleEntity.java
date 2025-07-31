@@ -100,7 +100,7 @@ public class PortableBlackHoleEntity extends AbstractArrow {
             SUCC_POWER = FlatLightsCommonConfig.portableBlackHoleSuckPower.get();
         }
         Entity projSpawner = this.getOwner();
-        //FlatLights.LOGGER.info("[Portable Black Hole Entity] projectile owner is " + projSpawner);
+        //MiscUtils.infoLog("[Portable Black Hole Entity] projectile owner is " + projSpawner);
         
         //gets the entities around the black hole
         List<Entity> entities = this.level().getEntities(this.getOwner(), this.getBoundingBox().inflate(SUCC_RADIUS));

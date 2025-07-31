@@ -48,7 +48,7 @@ public class GravityLiftProjectileEntity extends ThrowableItemProjectile {
             if (entity instanceof LivingEntity) {
                 gravityLiftEntity = new GravityLiftEntity(ModEntityTypes.GRAVITY_LIFT_ENTITY.get(), (LivingEntity) entity, level());
                 gravityLiftEntity.setOwner(entity);
-                //FlatLights.LOGGER.info("set owner of this black hole entity to " + entity);
+                //MiscUtils.infoLog("set owner of this black hole entity to " + entity);
             } else {
                 gravityLiftEntity = new GravityLiftEntity(ModEntityTypes.GRAVITY_LIFT_ENTITY.get(), level());
             }

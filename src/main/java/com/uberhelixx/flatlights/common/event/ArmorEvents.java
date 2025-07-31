@@ -5,6 +5,7 @@ import com.uberhelixx.flatlights.FlatLightsCommonConfig;
 import com.uberhelixx.flatlights.common.item.ModItems;
 import com.uberhelixx.flatlights.common.item.armor.PrismaticChestplate;
 import com.uberhelixx.flatlights.common.item.armor.PrismaticHelm;
+import com.uberhelixx.flatlights.util.MiscUtils;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -36,8 +37,8 @@ public class ArmorEvents {
             if(event.getEntity() instanceof Player player) {
                 if(wearingBoots(player) || wearingLegs(player) || wearingChest(player) || wearingHelm(player)) {
                     int armorTotal = player.getArmorValue();
-                    //FlatLights.LOGGER.info("[Prismatic Armor] Total armor value is " + armorTotal);
-                    //FlatLights.LOGGER.info("[Prismatic Armor] Initial damage is " + event.getAmount());
+                    //MiscUtils.infoLog("[Prismatic Armor] Total armor value is " + armorTotal);
+                    //MiscUtils.infoLog("[Prismatic Armor] Initial damage is " + event.getAmount());
                     float totalReduction = (float) (armorTotal * (FlatLightsCommonConfig.reductionPerPoint.get() / 100f));
                     float reductionRatioCap = FlatLightsCommonConfig.armorDamageReduction.get() / 100f;
                     //get reductionRatio, make sure percent doesn't go above reductionRatioCap %
@@ -62,7 +63,7 @@ public class ArmorEvents {
                         }
                     }
                     
-                    FlatLights.LOGGER.info("[Prismatic Armor] Reduced damage is now " + reducedDamage);
+                    MiscUtils.infoLog("[Prismatic Armor] Reduced damage is now " + reducedDamage);
                     event.setAmount(reducedDamage);
                 }
             }

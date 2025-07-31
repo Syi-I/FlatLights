@@ -41,7 +41,7 @@ public class GravityLiftItem extends Item {
             //sets velocity and direction for the projectile
             gravityLiftProjectileEntity.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 0.4F, 0F);
             gravityLiftProjectileEntity.setOwner(pPlayer);
-            //FlatLights.LOGGER.info("set owner of black hole item projectile to " + pPlayer);
+            //MiscUtils.infoLog("set owner of black hole item projectile to " + pPlayer);
             pLevel.addFreshEntity(gravityLiftProjectileEntity);
         }
         

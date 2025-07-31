@@ -79,23 +79,12 @@ public class Mk2ProjectileEntity extends AbstractArrow {
         }
         //effects to be done as the projectile is removed from the world
         if(this.inGround && this.inGroundTime >= (SECONDS * TICK_MULTI)) {
-            this.level().playSound(this, this.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0f, (1.0f + (this.level()).getRandom().nextFloat() * 0.05f));
-            for(int i = 0; i < 2; i++) {
-                this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() + 1.5 * (this.random.nextDouble()), this.getY() + 1.5 * (this.random.nextDouble()), this.getZ() + 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
-                this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() - 1.5 * (this.random.nextDouble()), this.getY() + 1.5 * (this.random.nextDouble()), this.getZ() - 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
-                this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() + 1.5 * (this.random.nextDouble()), this.getY() - 1.5 * (this.random.nextDouble()), this.getZ() + 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
-                this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() - 1.5 * (this.random.nextDouble()), this.getY() - 1.5 * (this.random.nextDouble()), this.getZ() - 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
-            }
-            //fake explosion since real explosion destroys items
-            Entity owner = this.getOwner();
-            if(owner instanceof Player player) {
-                List<Entity> entities = this.level().getEntities(player, this.getBoundingBox().inflate(2));
-                for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity mob) {
-                        mob.hurt(ModDamageTypes.causeQuantumDamage(player), 5);
-                    }
-                }
-            }
+            fakeExplosion();
+            didExpireEffects = true;
+        }
+        //don't let the projectile fly for too long either
+        if(this.tickCount >= ((SECONDS * 2) * TICK_MULTI)) {
+            fakeExplosion();
             didExpireEffects = true;
         }
     }
@@ -170,6 +159,26 @@ public class Mk2ProjectileEntity extends AbstractArrow {
                     } else if (this.getZ() < instance.getZ() && instance.getDeltaMovement().z() > -1) {
                         instance.setDeltaMovement(instance.getDeltaMovement().x(), instance.getDeltaMovement().y(), instance.getDeltaMovement().z() - MAG_STRENGTH);
                     }
+                }
+            }
+        }
+    }
+    
+    private void fakeExplosion() {
+        this.level().playSound(this, this.blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0f, (1.0f + (this.level()).getRandom().nextFloat() * 0.05f));
+        for(int i = 0; i < 2; i++) {
+            this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() + 1.5 * (this.random.nextDouble()), this.getY() + 1.5 * (this.random.nextDouble()), this.getZ() + 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
+            this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() - 1.5 * (this.random.nextDouble()), this.getY() + 1.5 * (this.random.nextDouble()), this.getZ() - 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
+            this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() + 1.5 * (this.random.nextDouble()), this.getY() - 1.5 * (this.random.nextDouble()), this.getZ() + 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
+            this.level().addParticle(ParticleTypes.SONIC_BOOM, this.getX() - 1.5 * (this.random.nextDouble()), this.getY() - 1.5 * (this.random.nextDouble()), this.getZ() - 1.5 * (this.random.nextDouble()), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D), (this.random.nextDouble() - 0.5D));
+        }
+        //fake explosion since real explosion destroys items
+        Entity owner = this.getOwner();
+        if(owner instanceof Player player) {
+            List<Entity> entities = this.level().getEntities(player, this.getBoundingBox().inflate(2));
+            for (Entity entity : entities) {
+                if (entity instanceof LivingEntity mob) {
+                    mob.hurt(ModDamageTypes.causeQuantumDamage(player), 5);
                 }
             }
         }

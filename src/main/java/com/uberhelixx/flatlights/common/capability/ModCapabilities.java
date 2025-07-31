@@ -5,6 +5,7 @@ import com.uberhelixx.flatlights.common.effect.ModEffects;
 import com.uberhelixx.flatlights.common.network.PacketHandler;
 import com.uberhelixx.flatlights.common.network.packets.PacketEntangledUpdate;
 import com.uberhelixx.flatlights.common.network.packets.PacketSyncPlayerCap;
+import com.uberhelixx.flatlights.util.MiscUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -80,16 +81,16 @@ public class ModCapabilities {
          */
         @SubscribeEvent
         public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
-            //FlatLights.LOGGER.info("[Attach Caps] Trying to attach all capabilities.");
+            //MiscUtils.infoLog("[Attach Caps] Trying to attach all capabilities.");
             if(event.getObject() instanceof LivingEntity) {
                 EntangledStateAttacher.attach(event);
                 RisingHeatStateAttacher.attach(event);
             }
             //for some reason this ever only tries to attach to random UUIDs
             /*if(event.getObject() instanceof Player player) {
-                FlatLights.LOGGER.info("[Attach Caps] Trying to add PlayerTrackerCap to " + player.getStringUUID());
+                MiscUtils.infoLog("[Attach Caps] Trying to add PlayerTrackerCap to " + player.getStringUUID());
                 if(MiscUtils.uuidCheck(player.getUUID())) {
-                    FlatLights.LOGGER.info("[Attach Caps] Added PlayerTrackerCap to " + player.getStringUUID());
+                    MiscUtils.infoLog("[Attach Caps] Added PlayerTrackerCap to " + player.getStringUUID());
                     PlayerTrackerCapAttacher.attach(event);
                 }
             }*/
@@ -119,7 +120,7 @@ public class ModCapabilities {
                 if(getEntangledState(entity).isPresent()) {
                     getEntangledState(entity).ifPresent(entangledState -> {
                         entangledState.setEntangledState(true);
-                        FlatLights.LOGGER.info("[Added potion effect] Changed entangled state to true");
+                        MiscUtils.infoLog("[Added potion effect] Changed entangled state to true");
                         if(!entity.level().isClientSide()) {
                             Supplier<Entity> supplier = () -> entity;
                             PacketHandler.sendToDistributor(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(supplier), new PacketEntangledUpdate(entity.getId(), true));
