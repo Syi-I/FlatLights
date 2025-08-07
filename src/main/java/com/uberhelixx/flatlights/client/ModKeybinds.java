@@ -17,8 +17,15 @@ public class ModKeybinds {
     
     public final KeyMapping CURIO_TOGGLE = new KeyMapping(
             "key." + FlatLights.MODID + ".curio_toggle",
-            KeyConflictContext.IN_GAME,
+            KeyConflictContext.UNIVERSAL,
             InputConstants.getKey(InputConstants.KEY_V, -1),
+            CATEGORY
+    );
+    
+    public final KeyMapping MODE_CYCLE = new KeyMapping(
+            "key." + FlatLights.MODID + ".tool_mode_cycle",
+            KeyConflictContext.IN_GAME,
+            InputConstants.getKey(InputConstants.KEY_G, -1),
             CATEGORY
     );
 }

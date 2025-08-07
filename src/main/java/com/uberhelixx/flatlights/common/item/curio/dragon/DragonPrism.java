@@ -32,6 +32,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import java.util.List;
 import java.util.UUID;
 
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.PLAYER_CORETRACKER_TAG;
+
 public class DragonPrism extends BaseCurio {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
@@ -41,48 +43,9 @@ public class DragonPrism extends BaseCurio {
         
         //doesn't let you roll again if it already has the roll data
         if(stackTags == null || !CurioUtils.rollCheck(stackTags)) {
-            if(MiscUtils.uuidCheck(pPlayer.getUUID())) {
-                CurioUtils.setCurioNbt(pPlayer, pUsedHand, CurioSetNames.DRAGON, CurioTier.getModel(CurioTier.GROWTH), Integer.MAX_VALUE);
-            }
-            else {
-                CurioUtils.setCurioNbt(pPlayer, pUsedHand, CurioSetNames.DRAGON, null, null);
-            }
+            CurioUtils.setCurioNbt(pPlayer, pUsedHand, CurioSetNames.DRAGON, null, null);
         }
         return super.use(pLevel, pPlayer, pUsedHand);
-    }
-    
-    //there's already a tooltip formatting in BaseCurio but this overrides that since dragon is the test set
-    //normally won't have to do this with other curio sets
-    @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        //info tooltip
-        if(pStack.getTag() != null && !pStack.getTag().isEmpty()) {
-            if(!Screen.hasShiftDown()) {
-                CurioUtils.getSetTooltip(pStack, pTooltipComponents);
-                if (pLevel != null && pLevel.isClientSide()) {
-                    CurioUtils.getSetEffectTooltip(pStack, pTooltipComponents);
-                }
-                CurioUtils.getTierTooltip(pStack, pTooltipComponents);
-                if (pStack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                    if (pStack.getTag().getInt(CurioUtils.GROWTH_CAP) == Integer.MAX_VALUE) {
-                        CurioUtils.getGrowthTooltip(pStack, false, pTooltipComponents);
-                    } else {
-                        CurioUtils.getGrowthTooltip(pStack, true, pTooltipComponents);
-                    }
-                }
-            }
-            else {
-                if (pLevel != null && pLevel.isClientSide()) {
-                    CurioUtils.getSetEffectTooltip(pStack, pTooltipComponents);
-                }
-                CurioUtils.getSetDescriptionTooltip(pStack, pTooltipComponents);
-            }
-        }
-        //how to use curio
-        else {
-            Style color = Style.EMPTY.withColor(ChatFormatting.GRAY);
-            TooltipHelper.genericBrackets(pTooltipComponents, "Right-click to roll.", color);
-        }
     }
     
     //uuids for the different attribute modifiers
@@ -168,8 +131,8 @@ public class DragonPrism extends BaseCurio {
         }
         
         //if core tracker stat tag in data, return core amount from tracker
-        if(persistent.contains(PrismaticBladeMk2.PLAYER_CORETRACKER_TAG)) {
-            return persistent.getInt(PrismaticBladeMk2.PLAYER_CORETRACKER_TAG);
+        if(persistent.contains(PLAYER_CORETRACKER_TAG)) {
+            return persistent.getInt(PLAYER_CORETRACKER_TAG);
         }
         else {
             return 0;

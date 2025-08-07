@@ -14,6 +14,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.PLAYER_CORETRACKER_TAG;
+
 @Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModEvents {
     //registers the command, can do multiple different commands here if there are eventually more
@@ -30,8 +32,8 @@ public class ModEvents {
         Player newPlayer = event.getEntity();
         Level level = original.getCommandSenderWorld();
         if(!level.isClientSide() && PrismaticBladeMk2.hasCoreTracker(original)) {
-            newPlayer.getPersistentData().putInt(PrismaticBladeMk2.PLAYER_CORETRACKER_TAG,
-                    original.getPersistentData().getInt(PrismaticBladeMk2.PLAYER_CORETRACKER_TAG));
+            newPlayer.getPersistentData().putInt(PLAYER_CORETRACKER_TAG,
+                    original.getPersistentData().getInt(PLAYER_CORETRACKER_TAG));
         }
     }
     

@@ -29,6 +29,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import static com.uberhelixx.flatlights.FlatLights.LOGGER;
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.MODE_TAG;
 
 @Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientSetup {
@@ -38,7 +39,7 @@ public class ClientSetup {
                 new ResourceLocation(FlatLights.MODID, "mode"), (stack, level, living, id) -> {
                     float bombMode = 0.0F;
                     if (stack.getTag() != null) {
-                        if (stack.getTag().contains(LibTagKeys.MODE_TAG) && stack.getTag().getBoolean(LibTagKeys.MODE_TAG)) {
+                        if (stack.getTag().contains(MODE_TAG) && stack.getTag().getBoolean(MODE_TAG)) {
                             bombMode = 1.0F;
                         }
                     }
@@ -61,7 +62,7 @@ public class ClientSetup {
                 new ResourceLocation(FlatLights.MODID, "mode"), (stack, world, living, id) -> {
                     float mk2Mode = 0.0F;
                     if(stack.getTag() != null) {
-                        if (stack.getTag().contains(PrismaticBladeMk2.MODE_TAG) && stack.getTag().getInt(PrismaticBladeMk2.MODE_TAG) == PrismaticBladeMk2.SPEAR_MODE) {
+                        if (stack.getTag().contains(MODE_TAG) && stack.getTag().getInt(MODE_TAG) == PrismaticBladeMk2.SPEAR_MODE) {
                             mk2Mode = 1.0F;
                         }
                     }
@@ -103,5 +104,6 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerKeybinds(RegisterKeyMappingsEvent event) {
         event.register(ModKeybinds.INSTANCE.CURIO_TOGGLE);
+        event.register(ModKeybinds.INSTANCE.MODE_CYCLE);
     }
 }

@@ -10,6 +10,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.MODE_TAG;
+
 @Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WeaponEvents {
     //Check for left click on full swing to perform an action
@@ -19,7 +21,7 @@ public class WeaponEvents {
         if(!heldItem.isEmpty() && heldItem.getItem() == ModItems.PRISMATIC_SWORD.get()) {
             PacketHandler.sendToServer(new PacketLeftClick());
         }
-        if(!heldItem.isEmpty() && heldItem.getItem() == ModItems.PRISMATIC_BLADEMK2.get() && heldItem.getTag() != null && heldItem.getTag().contains(PrismaticBladeMk2.MODE_TAG) && heldItem.getTag().getInt(PrismaticBladeMk2.MODE_TAG) == PrismaticBladeMk2.AURA_MODE) {
+        if(!heldItem.isEmpty() && heldItem.getItem() == ModItems.PRISMATIC_BLADEMK2.get() && heldItem.getTag() != null && heldItem.getTag().contains(MODE_TAG) && heldItem.getTag().getInt(MODE_TAG) == PrismaticBladeMk2.AURA_MODE) {
             PacketHandler.sendToServer(new PacketLeftClick());
         }
         /*if(event.getPlayer().getAttribute(ForgeMod.REACH_DISTANCE.get()) != null && event.getPlayer().getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue() > 5.0) {

@@ -29,7 +29,7 @@ import java.util.*;
 
 public class MiscUtils {
     
-    static boolean toggle = false;
+    static boolean toggle = true;
     
     /**
      * Puts a message into the info log

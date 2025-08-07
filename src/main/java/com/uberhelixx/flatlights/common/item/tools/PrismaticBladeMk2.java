@@ -5,6 +5,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
 import com.uberhelixx.flatlights.common.entity.Mk2ProjectileEntity;
 import com.uberhelixx.flatlights.common.entity.ModEntityTypes;
+import com.uberhelixx.flatlights.common.item.IMultiModeItem;
 import com.uberhelixx.flatlights.common.network.PacketHandler;
 import com.uberhelixx.flatlights.common.network.packets.PacketWriteNbt;
 import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
@@ -46,20 +47,16 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 
-public class PrismaticBladeMk2 extends SwordItem {
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.*;
+
+public class PrismaticBladeMk2 extends SwordItem implements IMultiModeItem {
     public static final int DEFAULT_MODE = 0;
     public static final int DMG_MODE = 1;
     public static final int AURA_MODE = 2;
     public static final int SPEAR_MODE = 3;
-    public static final String MODE_TAG = "flatlights.mk2_mode";
-    public static final String CURR_CORES_TAG = "flatlights.curr_cores";
-    public static final String TOTAL_CORES_TAG = "flatlights.total_cores";
-    public static final String TIER_TAG = "flatlights.tier";
     public static final int TOTAL_TIERS = 7;
     public static final int TIER_MULTIPLIER = 1000;
     public static final int REACH_DISTANCE = 4;
-    public static final String HAS_SWORD_TAG = "flatlights.has_sword";
-    public static final String PLAYER_CORETRACKER_TAG = "flatlights.core_tracker";
     
     public PrismaticBladeMk2(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -125,83 +122,23 @@ public class PrismaticBladeMk2 extends SwordItem {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack pStack = pPlayer.getItemInHand(pUsedHand);
         if(MiscUtils.uuidCheck(pPlayer.getUUID())) {
-            //can't use Screen.hasShiftDown since clientside so it doesn't register
-            if(pPlayer.isCrouching()) {
-                //get or create the blade mode tag
-                CompoundTag tag = pStack.getOrCreateTag();
-                if(tag.isEmpty() || !hasBladeTags(tag)) {
-                    tag = putFreshTags(tag);
-                    pStack.setTag(tag);
-                    if(pPlayer.level().isClientSide()) {
-                        PacketHandler.sendToServer(new PacketWriteNbt(tag, pStack));
-                    }
+            //standard right click use functions
+            if(pStack.getTag() != null && pStack.getTag().contains(MODE_TAG) && !pPlayer.isCrouching()) {
+                CompoundTag tag = pStack.getTag();
+                int mode = tag.getInt(MODE_TAG);
+                //do dash if in damage mode
+                if(mode == DMG_MODE) {
+                    doDash(pPlayer.level(), pPlayer);
                 }
-                else {
-                    int bladeMode = tag.getInt(MODE_TAG);
-                    Component toggleText;
-                    //if currently in damage mode, cycle to projectile mode next
-                    if(bladeMode == DMG_MODE) {
-                        tag.putInt(MODE_TAG, AURA_MODE);
-                        toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
-                                .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
-                                .append(Component.literal("Soul Sword").withStyle(ChatFormatting.GREEN))
-                                .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
-                    }
-                    //if currently in projectile mode, cycle to spear mode next
-                    else if(bladeMode == AURA_MODE) {
-                        tag.putInt(MODE_TAG, SPEAR_MODE);
-                        toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
-                                .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
-                                .append(Component.literal("Spear").withStyle(ChatFormatting.GREEN))
-                                .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
-                    }
-                    //if currently in spear mode, cycle to inactive mode next
-                    else if(bladeMode == SPEAR_MODE) {
-                        tag.putInt(MODE_TAG, DEFAULT_MODE);
-                        toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
-                                .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
-                                .append(Component.literal("Inactive").withStyle(ChatFormatting.RED))
-                                .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
-                    }
-                    //if currently inactive, cycle to damage mode next
-                    else {
-                        tag.putInt(MODE_TAG, DMG_MODE);
-                        toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
-                                .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
-                                .append(Component.literal("Annihilation").withStyle(ChatFormatting.GREEN))
-                                .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
-                    }
-                    //update tag on server
-                    pStack.setTag(tag);
-                    if(pPlayer.level().isClientSide()) {
-                        PacketHandler.sendToServer(new PacketWriteNbt(tag, pStack));
-                    }
-                    //clientside mode cycling notification
-                    if(!pPlayer.level().isClientSide()) {
-                        pPlayer.displayClientMessage(toggleText, true);
-                        MiscUtils.modeSwitchSound(pPlayer, bladeMode != SPEAR_MODE);
-                    }
+                //try doing spear launch if on spear mode
+                if(mode == SPEAR_MODE) {
+                    pPlayer.startUsingItem(pUsedHand);
+                    return InteractionResultHolder.consume(pStack);
                 }
-            }
-            else {
-                //standard right click use functions
-                if(pStack.getTag() != null && pStack.getTag().contains(MODE_TAG) && !pPlayer.isCrouching()) {
-                    CompoundTag tag = pStack.getTag();
-                    int mode = tag.getInt(MODE_TAG);
-                    //do dash if in damage mode
-                    if(mode == DMG_MODE) {
-                        doDash(pPlayer.level(), pPlayer);
-                    }
-                    //try doing spear launch if on spear mode
-                    if(mode == SPEAR_MODE) {
-                        pPlayer.startUsingItem(pUsedHand);
-                        return InteractionResultHolder.consume(pStack);
-                    }
-                    //if inactive try doing a block action (like a shield does)
-                    if(mode == DEFAULT_MODE){
-                        pPlayer.startUsingItem(pUsedHand);
-                        return InteractionResultHolder.consume(pStack);
-                    }
+                //if inactive try doing a block action (like a shield does)
+                if(mode == DEFAULT_MODE){
+                    pPlayer.startUsingItem(pUsedHand);
+                    return InteractionResultHolder.consume(pStack);
                 }
             }
         }
@@ -287,7 +224,7 @@ public class PrismaticBladeMk2 extends SwordItem {
         Multimap<Attribute, AttributeModifier> oldMap = super.getAttributeModifiers(slot, stack);
         ListMultimap<Attribute, AttributeModifier> newMap = ArrayListMultimap.create();
         CompoundTag tag = stack.getTag();
-        double attackModifier = tag != null && tag.contains(TOTAL_CORES_TAG) ? tag.getInt(TOTAL_CORES_TAG) * 0.005 : 0;
+        double attackModifier = tag != null && tag.contains(TOTAL_CORES_TAG) ? tag.getInt(TOTAL_CORES_TAG) * 0.001 : 0;
         double reachModifier = tag != null && tag.contains(MODE_TAG) && tag.getInt(MODE_TAG) == SPEAR_MODE ? REACH_DISTANCE : 0;
         if (slot == EquipmentSlot.MAINHAND) {
             newMap.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(CORE_DMG_MOD, "Core Count Modifier", attackModifier, AttributeModifier.Operation.MULTIPLY_TOTAL));
@@ -331,6 +268,65 @@ public class PrismaticBladeMk2 extends SwordItem {
             return false;
         }
         return true;
+    }
+    
+    //number of modes the sword has
+    @Override
+    public int getNumModes(ItemStack stack) {
+        return 4;
+    }
+    
+    //what to do when cycling modes
+    @Override
+    public void onModeChange(Player pPlayer, ItemStack pStack) {
+        if(MiscUtils.uuidCheck(pPlayer.getUUID())) {
+            //get or create the blade mode tag
+            CompoundTag tag = pStack.getOrCreateTag();
+            if (tag.isEmpty() || !hasBladeTags(tag)) {
+                tag = putFreshTags(tag);
+                pStack.setTag(tag);
+                if (pPlayer.level().isClientSide()) {
+                    PacketHandler.sendToServer(new PacketWriteNbt(tag, pStack));
+                }
+            }
+            else {
+                int bladeMode = tag.getInt(MODE_TAG);
+                Component toggleText;
+                //display text for damage mode
+                if (bladeMode == DMG_MODE) {
+                    toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
+                            .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
+                            .append(Component.literal("Annihilation").withStyle(ChatFormatting.GREEN))
+                            .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
+                }
+                //display text for projectile mode
+                else if (bladeMode == AURA_MODE) {
+                    toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
+                            .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
+                            .append(Component.literal("Soul Sword").withStyle(ChatFormatting.GREEN))
+                            .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
+                }
+                //display text for spear mode
+                else if (bladeMode == SPEAR_MODE) {
+                    toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
+                            .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
+                            .append(Component.literal("Spear").withStyle(ChatFormatting.GREEN))
+                            .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
+                }
+                //display text for inactive mode
+                else {
+                    toggleText = Component.literal("Mode Cycled: ").withStyle(ChatFormatting.WHITE)
+                            .append(Component.literal("[").withStyle(ChatFormatting.AQUA))
+                            .append(Component.literal("Inactive").withStyle(ChatFormatting.RED))
+                            .append(Component.literal("]").withStyle(ChatFormatting.AQUA));
+                }
+                //clientside mode cycling notification
+                if (!pPlayer.level().isClientSide()) {
+                    pPlayer.displayClientMessage(toggleText, true);
+                    MiscUtils.modeSwitchSound(pPlayer, bladeMode != SPEAR_MODE);
+                }
+            }
+        }
     }
     
     /**
@@ -550,9 +546,9 @@ public class PrismaticBladeMk2 extends SwordItem {
         //pull damage tag from sword to set damage values
         CompoundTag tag = shooter.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PrismaticBladeMk2 ? shooter.getItemInHand(InteractionHand.MAIN_HAND).getTag() : null;
         //if tag present with totalBonus then get damage, otherwise just get 1
-        int projectileBonus = tag != null && tag.contains(PrismaticBladeMk2.TOTAL_CORES_TAG) && tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) > 0 ? tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) : 1;
-        int tier = tag != null && tag.contains(PrismaticBladeMk2.TIER_TAG) ? tag.getInt(PrismaticBladeMk2.TIER_TAG) + 1 : 1;
-        return (projectileBonus * ((float) tier / PrismaticBladeMk2.TOTAL_TIERS)) / 2;
+        int projectileBonus = tag != null && tag.contains(TOTAL_CORES_TAG) && tag.getInt(TOTAL_CORES_TAG) > 0 ? tag.getInt(TOTAL_CORES_TAG) : 1;
+        int tier = tag != null && tag.contains(TIER_TAG) ? tag.getInt(TIER_TAG) + 1 : 1;
+        return (projectileBonus * ((float) tier / TOTAL_TIERS)) / 2;
     }
     
     /**
@@ -562,9 +558,9 @@ public class PrismaticBladeMk2 extends SwordItem {
      */
     public static float calcProjectileDmg(CompoundTag tag) {
         //if tag present with totalBonus then get damage, otherwise just get 1
-        int projectileBonus = tag != null && tag.contains(PrismaticBladeMk2.TOTAL_CORES_TAG) && tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) > 0 ? tag.getInt(PrismaticBladeMk2.TOTAL_CORES_TAG) : 1;
-        int tier = tag != null && tag.contains(PrismaticBladeMk2.TIER_TAG) ? tag.getInt(PrismaticBladeMk2.TIER_TAG) + 1 : 1;
-        return (projectileBonus * ((float) tier / PrismaticBladeMk2.TOTAL_TIERS)) / 2;
+        int projectileBonus = tag != null && tag.contains(TOTAL_CORES_TAG) && tag.getInt(TOTAL_CORES_TAG) > 0 ? tag.getInt(TOTAL_CORES_TAG) : 1;
+        int tier = tag != null && tag.contains(TIER_TAG) ? tag.getInt(TIER_TAG) + 1 : 1;
+        return (projectileBonus * ((float) tier / TOTAL_TIERS)) / 2;
     }
     
 }

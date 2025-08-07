@@ -29,6 +29,9 @@ import net.minecraftforge.client.model.data.ModelData;
 
 import java.awt.*;
 
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.MODE_TAG;
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.TIER_TAG;
+
 public class PrismaticBladeMk2Renderer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
     public PrismaticBladeMk2Renderer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> pRenderer) {
         super(pRenderer);
@@ -86,8 +89,8 @@ public class PrismaticBladeMk2Renderer extends RenderLayer<AbstractClientPlayer,
             poseStack.popPose();
         }
         
-        if(bladeTag.contains(PrismaticBladeMk2.MODE_TAG)) {
-            int bladeMode = bladeTag.getInt(PrismaticBladeMk2.MODE_TAG);
+        if(bladeTag.contains(MODE_TAG)) {
+            int bladeMode = bladeTag.getInt(MODE_TAG);
             if(bladeMode == PrismaticBladeMk2.DMG_MODE) {
                 //yoinked from vanilla EnergyLayer since it requires being IChargeable mob which players are not
                 float tickTime = (float) abstractClientPlayer.tickCount + pPartialTicks;
@@ -102,7 +105,7 @@ public class PrismaticBladeMk2Renderer extends RenderLayer<AbstractClientPlayer,
             else if(bladeMode == PrismaticBladeMk2.AURA_MODE) {
                 BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
                 //renderSphereOrbit(poseStack, multiBufferSource, pPackedLight, abstractClientPlayer, pAgeInTicks, dispatcher);
-                int swords = bladeTag.getInt(PrismaticBladeMk2.TIER_TAG);
+                int swords = bladeTag.getInt(TIER_TAG);
                 renderBladeOrbit(poseStack, multiBufferSource,pPackedLight, pAgeInTicks, dispatcher, swords);
             }
         }

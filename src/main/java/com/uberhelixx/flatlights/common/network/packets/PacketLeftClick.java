@@ -26,8 +26,13 @@ public class PacketLeftClick {
                 ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
                 Level level = player.level();
                 
-                PrismaticSword.throwBomb(player, heldItem);
-                PrismaticBladeMk2.shootProjectile(level, player, player.getOnPos());
+                //filter for different items
+                if(heldItem.getItem() instanceof PrismaticSword) {
+                    PrismaticSword.throwBomb(player, heldItem);
+                }
+                if(heldItem.getItem() instanceof PrismaticBladeMk2) {
+                    PrismaticBladeMk2.shootProjectile(level, player, player.getOnPos());
+                }
             });
         }
         ctx.get().setPacketHandled(true);

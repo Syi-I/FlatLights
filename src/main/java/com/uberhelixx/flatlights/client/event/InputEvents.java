@@ -5,6 +5,8 @@ import com.uberhelixx.flatlights.client.ModKeybinds;
 import com.uberhelixx.flatlights.common.network.PacketHandler;
 import com.uberhelixx.flatlights.common.network.packets.PacketAirstrafeMovement;
 import com.uberhelixx.flatlights.common.network.packets.PacketCurioToggle;
+import com.uberhelixx.flatlights.common.network.packets.PacketCycleModes;
+import com.uberhelixx.flatlights.common.network.packets.PacketWriteNbt;
 import com.uberhelixx.flatlights.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -23,11 +25,16 @@ public class InputEvents {
         onInput(mc, event.getKey(), event.getAction());
     }
     
+    //handles what happens for each keybind press
     private static void onInput(Minecraft mc, int key, int action) {
         //this one is for toggling the curio set effect on or off
         //first checks curio slot, then main hand if nothing in the slot
         if (mc.screen == null && ModKeybinds.INSTANCE.CURIO_TOGGLE.isDown()) {
             PacketHandler.sendToServer(new PacketCurioToggle());
+        }
+        
+        if (mc.screen == null && ModKeybinds.INSTANCE.MODE_CYCLE.isDown()) {
+            PacketHandler.sendToServer(new PacketCycleModes());
         }
     }
     

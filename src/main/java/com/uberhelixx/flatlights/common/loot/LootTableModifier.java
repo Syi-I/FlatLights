@@ -48,11 +48,11 @@ public class LootTableModifier {
         //calculate number of curios to add based on rollValue
         int curioRolls = getCurioRolls(modifier, rollValue);
         
-        //guaranteed 24-48 glowstone dust
-        stacks.add(new ItemStack(Items.GLOWSTONE_DUST, 24 + rand.nextInt(16)));
+        //guaranteed 16-32 glowstone dust
+        stacks.add(new ItemStack(Items.GLOWSTONE_DUST, 16 + rand.nextInt(16)));
         
         //chance to roll 1-4 motivational chairs
-        if(rollValue < 0.4) {
+        if(rollValue < 0.3) {
             stacks.add(new ItemStack(ModBlocks.MOTIVATIONAL_CHAIR.get().asItem(), 1 + rand.nextInt(3)));
         }
         

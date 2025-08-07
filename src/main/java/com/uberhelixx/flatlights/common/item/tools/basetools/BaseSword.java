@@ -1,6 +1,5 @@
 package com.uberhelixx.flatlights.common.item.tools.basetools;
 
-import com.uberhelixx.flatlights.common.item.ToggleableItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +9,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BaseSword extends SwordItem implements ToggleableItem {
+public class BaseSword extends SwordItem {
     public BaseSword(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }

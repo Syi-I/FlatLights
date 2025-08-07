@@ -33,6 +33,7 @@ public class PacketHandler {
         HANDLER.registerMessage(id++, PacketCurioToggle.class, PacketCurioToggle::encode, PacketCurioToggle::decode, PacketCurioToggle::handle);
         HANDLER.registerMessage(id++, PacketSyncPlayerCap.class, PacketSyncPlayerCap::encode, PacketSyncPlayerCap::decode, PacketSyncPlayerCap::handle);
         HANDLER.registerMessage(id++, PacketAirstrafeMovement.class, PacketAirstrafeMovement::encode, PacketAirstrafeMovement::decode, PacketAirstrafeMovement::handle);
+        HANDLER.registerMessage(id++, PacketCycleModes.class, PacketCycleModes::encode, PacketCycleModes::decode, PacketCycleModes::handle);
     }
     
     /**

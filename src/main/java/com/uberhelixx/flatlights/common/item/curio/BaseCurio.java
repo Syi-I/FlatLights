@@ -36,7 +36,8 @@ public class BaseCurio extends Item implements ICurioItem {
                 }
                 CurioUtils.getTierTooltip(pStack, pTooltipComponents);
                 if (pStack.getTag().getFloat(CurioUtils.TIER) == CurioTier.getModel(CurioTier.GROWTH) && pStack.getTag().contains(CurioUtils.GROWTH_TRACKER)) {
-                    CurioUtils.getGrowthTooltip(pStack, true, pTooltipComponents);
+                    //hide tooltip if the cap is maxed out
+                    CurioUtils.getGrowthTooltip(pStack, pStack.getTag().getInt(CurioUtils.GROWTH_CAP) != Integer.MAX_VALUE, pTooltipComponents);
                 }
             }
             else {

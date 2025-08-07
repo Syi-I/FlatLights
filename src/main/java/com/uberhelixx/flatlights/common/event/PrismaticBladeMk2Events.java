@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2.*;
+import static com.uberhelixx.flatlights.util.lib.LibTagKeys.*;
 
 @Mod.EventBusSubscriber(modid = FlatLights.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PrismaticBladeMk2Events {
@@ -161,53 +162,6 @@ public class PrismaticBladeMk2Events {
         }
         return false;
     }
-    
-    @SubscribeEvent
-    public static void EnchantStack (AnvilUpdateEvent event) {
-        if (Objects.requireNonNull(event.getPlayer()).isLocalPlayer()) {
-            return;
-        }
-        
-        ItemStack prismaticBlade = event.getLeft();
-        ItemStack enchantedBook = event.getRight();
-        
-        if (prismaticBlade == null || prismaticBlade.getItem() != ModItems.PRISMATIC_BLADEMK2.get() || enchantedBook == null || enchantedBook.getItem() != Items.ENCHANTED_BOOK) {
-            return;
-        }
-        
-        Map<Enchantment, Integer> swordMap = EnchantmentHelper.getEnchantments(prismaticBlade);
-        Map<Enchantment, Integer> bookMap = EnchantmentHelper.getEnchantments(enchantedBook);
-        
-        if (bookMap.isEmpty()) {
-            return;
-        }
-        
-        Map<Enchantment, Integer> outputMap = new HashMap<>(swordMap);
-        int costCounter = 0;
-        
-        for (Map.Entry<Enchantment, Integer> entry : bookMap.entrySet()) {
-            Enchantment enchantment = entry.getKey();
-            if (enchantment == null) {
-                continue;
-            }
-            Integer currentValue = swordMap.get(entry.getKey());
-            Integer addValue = entry.getValue();
-            if (currentValue == null) {
-                outputMap.put(entry.getKey(), addValue);
-                costCounter += addValue;
-            } else if(MiscUtils.uuidCheck(event.getPlayer().getUUID())) {
-                int value = Math.min(currentValue + addValue, 32767);
-                outputMap.put(entry.getKey(), value);
-                costCounter += ((currentValue + addValue) / 2);
-            }
-        }
-        
-        event.setCost(costCounter);
-        ItemStack enchantedBlade = prismaticBlade.copy();
-        EnchantmentHelper.setEnchantments(outputMap, enchantedBlade);
-        event.setOutput(enchantedBlade);
-    }
-    
     
     //do all core and tier math after killing entities
     @SubscribeEvent (priority = EventPriority.HIGH)
