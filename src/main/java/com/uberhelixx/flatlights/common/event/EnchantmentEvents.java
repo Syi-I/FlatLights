@@ -402,7 +402,7 @@ public class EnchantmentEvents {
             if(event.getAmount() > damageCap) {
                 MiscUtils.infoLog("[Fragmentation Hit] Fragmentation threshold exceeded");
                 hitEntity.playSound(SoundEvents.TOTEM_USE, 0.4f, 0.3F / (hitEntity.level().random.nextFloat() * 0.4F + 0.8F));
-                if(hitEntity.level().isClientSide()) {
+                /*if(hitEntity.level().isClientSide()) {
                     float[] hsbVals = Color.RGBtoHSB(231, 158, 46, null);
                     ParticleOptions fragParticle = ParticleHelper.constructSimpleSpark(Color.getHSBColor(hsbVals[0], hsbVals[1], hsbVals[2]),
                             0.2f, 6, 1);
@@ -412,7 +412,7 @@ public class EnchantmentEvents {
                     world.addParticle(ParticleTypes.SCULK_SOUL, 0, 1, 0, 0, 1, 0);
                     world.addParticle(ParticleTypes.SCULK_SOUL, 0, 1, 0, 0, 1, 0);
                     
-                }
+                }*/
                 event.setAmount(damageCap);
             }
         }
