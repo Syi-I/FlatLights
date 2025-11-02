@@ -45,7 +45,7 @@ public class Mk2ProjectileRenderer extends EntityRenderer<Mk2ProjectileEntity> {
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(90 - Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
         pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
         
-        Color blendColor = Color.WHITE;
+        Color blendColor = Color.BLUE;
         float red = blendColor.getRed() / 255.0F;
         float green = blendColor.getGreen() / 255.0F;
         float blue = blendColor.getBlue() / 255.0F;
@@ -55,7 +55,13 @@ public class Mk2ProjectileRenderer extends EntityRenderer<Mk2ProjectileEntity> {
         BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
         
         //VertexConsumer shaderBuffer = pBuffer.getBuffer(ModRenderTypes.SPACE);
-        VertexConsumer shaderBuffer = pBuffer.getBuffer(RenderType.endPortal());
+        VertexConsumer shaderBuffer;
+        if(!ModRenderTypes.isOculusPresent()) {
+            shaderBuffer = pBuffer.getBuffer(RenderType.endPortal());
+        }
+        else {
+            shaderBuffer = pBuffer.getBuffer(RenderType.energySwirl(this.bladeLayerTexture(), this.layerPosition(pEntity.tickCount), pEntity.tickCount * 0.01F));
+        }
         dispatcher.getModelRenderer().renderModel(currentPose, shaderBuffer, null, mk2ProjectileModel,
                 red, green, blue, pPackedLight, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, RenderType.entityCutoutNoCull(MK2_PROJECTILE));
         
@@ -67,5 +73,20 @@ public class Mk2ProjectileRenderer extends EntityRenderer<Mk2ProjectileEntity> {
     @Override
     public ResourceLocation getTextureLocation(Mk2ProjectileEntity mk2ProjectileEntity) {
         return MK2_PROJECTILE;
+    }
+    
+    ResourceLocation DAMAGE_LAYER = new ResourceLocation(FlatLights.MODID, "textures/models/power_layers/mk2_damage_mode_layer.png");
+    ResourceLocation BLADE_LAYER = new ResourceLocation(FlatLights.MODID, "textures/models/power_layers/blade.png");
+    
+    private float layerPosition(float f) {
+        return f * 0.015f;
+    }
+    
+    private ResourceLocation layerTexture() {
+        return DAMAGE_LAYER;
+    }
+    
+    private ResourceLocation bladeLayerTexture() {
+        return BLADE_LAYER;
     }
 }

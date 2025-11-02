@@ -22,6 +22,10 @@ public class ModRenderTypes {
     
     public static final ResourceLocation SPACE_TEX = new ResourceLocation(FlatLights.MODID, "textures/environment/space.png");
     
+    public static boolean isOculusPresent() {
+        return net.minecraftforge.fml.ModList.get().isLoaded("oculus");
+    }
+    
     public static final RenderType SPACE = RenderType.create(
             "space",
             DefaultVertexFormat.POSITION,

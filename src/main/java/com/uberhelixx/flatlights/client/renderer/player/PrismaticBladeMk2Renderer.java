@@ -112,14 +112,19 @@ public class PrismaticBladeMk2Renderer extends RenderLayer<AbstractClientPlayer,
     }
     
     ResourceLocation DAMAGE_LAYER = new ResourceLocation(FlatLights.MODID, "textures/models/power_layers/mk2_damage_mode_layer.png");
+    ResourceLocation BLADE_LAYER = new ResourceLocation(FlatLights.MODID, "textures/models/power_layers/blade.png");
     
     private float layerPosition(float f) {
-        //return MathHelper.cos(f * 0.02F) * 3.0F + MathHelper.sin(f * 0.02F) * 3.0F;
+        //return Mth.cos(f * 0.02F) * 3.0F + Mth.sin(f * 0.02F) * 3.0F;
         return f * 0.015f;
     }
     
     private ResourceLocation layerTexture() {
         return DAMAGE_LAYER;
+    }
+    
+    private ResourceLocation bladeLayerTexture() {
+        return BLADE_LAYER;
     }
     
     public static final ResourceLocation SPHERE_MODEL = new ResourceLocation(FlatLights.MODID, "entity/void_sphere_wrapper");
@@ -171,18 +176,28 @@ public class PrismaticBladeMk2Renderer extends RenderLayer<AbstractClientPlayer,
             if (!horizontal) {
                 ms.mulPose(Axis.YP.rotationDegrees(45));
                 ms.mulPose(Axis.ZP.rotationDegrees(180));
-            } else {
+            }
+            else {
                 ms.mulPose(Axis.XP.rotationDegrees(90));
             }
             
-            Color blendColour = Color.WHITE;
-            float red = blendColour.getRed() / 255.0F;
-            float green = blendColour.getGreen() / 255.0F;
-            float blue = blendColour.getBlue() / 255.0F;
-            
             PoseStack.Pose currentPose = ms.last();
+            
+            Color blendColor = Color.BLUE;
+            float red = blendColor.getRed() / 255.0F;
+            float green = blendColor.getGreen() / 255.0F;
+            float blue = blendColor.getBlue() / 255.0F;
+            
             //space shader for the rendered model
-            VertexConsumer shaderBuffer = buffers.getBuffer(ModRenderTypes.SPACE);
+            //VertexConsumer shaderBuffer = buffers.getBuffer(ModRenderTypes.SPACE);
+            VertexConsumer shaderBuffer;
+            if (!ModRenderTypes.isOculusPresent()) {
+                shaderBuffer = buffers.getBuffer(ModRenderTypes.SPACE);
+            }
+            else {
+                shaderBuffer = buffers.getBuffer(RenderType.energySwirl(this.bladeLayerTexture(), this.layerPosition(ageInTicks), ageInTicks * 0.01F));
+            }
+            
             //actually render the item
             dispatcher.getModelRenderer().renderModel(currentPose, shaderBuffer, null, mk2ProjectileModel,
                     red, green, blue, pPackedLight, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, RenderType.entityCutoutNoCull(MK2_PROJECTILE));

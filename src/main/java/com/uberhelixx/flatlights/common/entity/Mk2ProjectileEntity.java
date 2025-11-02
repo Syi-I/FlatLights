@@ -101,6 +101,7 @@ public class Mk2ProjectileEntity extends AbstractArrow {
             float projectileDmg = PrismaticBladeMk2.calcProjectileDmg(shooter);
             setBaseDamage(projectileDmg);
             pResult.getEntity().hurt(ModDamageTypes.causeQuantumDamage(shooter), projectileDmg);
+            fakeExplosion();
             this.remove(RemovalReason.DISCARDED);
         }
     }
