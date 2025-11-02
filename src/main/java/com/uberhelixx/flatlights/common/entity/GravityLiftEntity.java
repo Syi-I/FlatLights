@@ -2,6 +2,7 @@ package com.uberhelixx.flatlights.common.entity;
 
 import com.uberhelixx.flatlights.FlatLights;
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.common.item.ModItems;
 import com.uberhelixx.flatlights.startup.registry.ModSoundEvents;
 import com.uberhelixx.flatlights.util.MiscUtils;
 import net.minecraft.core.particles.ParticleTypes;
@@ -67,7 +68,7 @@ public class GravityLiftEntity extends AbstractArrow {
     
     @Override
     protected ItemStack getPickupItem() {
-        return null;
+        return ModItems.GUN_RAT.get().getDefaultInstance();
     }
     
     private void liftUp() {

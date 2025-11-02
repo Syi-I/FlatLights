@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.common.entity;
 
+import com.uberhelixx.flatlights.common.item.ModItems;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvent;
@@ -17,7 +18,7 @@ public class BombEntity extends AbstractArrow {
     //returns nothing because this isn't meant to be picked up ever
     @Override
     protected ItemStack getPickupItem() {
-        return null;
+        return ModItems.GUN_RAT.get().getDefaultInstance();
     }
     
     protected BombEntity(EntityType<? extends AbstractArrow> type, Level levelIn) {

@@ -1,5 +1,6 @@
 package com.uberhelixx.flatlights.common.entity;
 
+import com.uberhelixx.flatlights.common.item.ModItems;
 import com.uberhelixx.flatlights.common.item.tools.PrismaticBladeMk2;
 import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
 import com.uberhelixx.flatlights.startup.registry.ModSoundEvents;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -115,7 +117,7 @@ public class Mk2ProjectileEntity extends AbstractArrow {
     
     @Override
     protected ItemStack getPickupItem() {
-        return null;
+        return Items.DIAMOND.getDefaultInstance();
     }
     
     @Override

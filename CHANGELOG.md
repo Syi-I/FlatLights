@@ -7,13 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
--
+- General keybind for cycling modes of tools (No longer able to SNEAK+RIGHT-CLICK to toggle modes)
+- Particle effects when firing arrows for the Pulsing Arrows enchantment to better visualize the splash damage
+- Fragmentation chestplate enchantment which puts a cap on how much damage the wearer can take in a single hit (Level cap of 4) 
+- Tooltip for Regenerating Dye Vial indicating that it is not consumed when used as an ingredient in the crafting table
+- Dye tag recipes for wool, carpet, concrete powder, terracotta, stained glass and glass panes, beds, and candles so that regenerating dyes can be used
 
 ### Changed
--
+- Tweaked name scheme of Reusable Dyes to Regenerating Dye Vials
+- Loot tables now only target vanilla structures, but do also include mineshafts as opposed to before which attempted to target all chest-like containers (but often bugged out when involving other mods)
+- Wording for some enchantment descriptions should now be more clear
+- Lowered chance of finding Motivational Chairs in generated loot from 40% -> 30%
 
 ### Fixed
--
+- Null pointer and empty map return value crashes stemming from some curio related functions
+- Crash related to Supplementaries arrow pickup and certain projectiles from tools
 
 ### Planned
 - Curio Set: **Relic Hunter's Resolution**
@@ -30,7 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - Set Effect: **(Foul Play)** Increases the damage dealt to a target based on the number of negative potion effects that are applied
 - Curio Set: undecided
   - Speed related buffs
-  - Set Effect: **(Speed of Silence)** Increases the damage dealt by a factor of the wearer's movement speed
+  - Set Effect: **(Momentum Shift)** Increases the damage dealt by a factor of the wearer's movement speed
 - Curio Set: **Seven Star Hero**
   - Low level generic combat buffs, loot focused sphere stats
   - Set Effect: **(Dao of Fortune)** x% chance to survive a lethal attack

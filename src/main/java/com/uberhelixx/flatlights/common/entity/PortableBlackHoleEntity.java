@@ -1,6 +1,7 @@
 package com.uberhelixx.flatlights.common.entity;
 
 import com.uberhelixx.flatlights.FlatLightsCommonConfig;
+import com.uberhelixx.flatlights.common.item.ModItems;
 import com.uberhelixx.flatlights.startup.registry.ModDamageTypes;
 import com.uberhelixx.flatlights.startup.registry.ModSoundEvents;
 import net.minecraft.core.particles.ParticleTypes;
@@ -82,7 +83,7 @@ public class PortableBlackHoleEntity extends AbstractArrow {
     
     @Override
     protected ItemStack getPickupItem() {
-        return null;
+        return ModItems.GUN_RAT.get().getDefaultInstance();
     }
     
     private void damageInRadius() {
