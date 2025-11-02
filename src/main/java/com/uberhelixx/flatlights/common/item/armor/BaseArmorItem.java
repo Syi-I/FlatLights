@@ -14,10 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -132,29 +129,41 @@ public class BaseArmorItem extends ArmorItem {
     //check if individual armor pieces are prismatic
     public static boolean wearingHelm(Player player) {
         if (!player.getInventory().armor.get(3).isEmpty()) {
-            ArmorItem helmet = ((ArmorItem) player.getInventory().armor.get(3).getItem());
-            return helmet.getMaterial() == ModArmorMaterial.PRISMATIC;
+            Item hatSlotItem = player.getInventory().armor.get(3).getItem();
+            //check to ensure this is an armor item
+            if(hatSlotItem instanceof ArmorItem helmet) {
+                return helmet.getMaterial() == ModArmorMaterial.PRISMATIC;
+            }
         }
         return false;
     }
     public static boolean wearingChest(Player player) {
         if (!player.getInventory().armor.get(2).isEmpty()) {
-            ArmorItem chestplate = ((ArmorItem) player.getInventory().armor.get(2).getItem());
-            return chestplate.getMaterial() == ModArmorMaterial.PRISMATIC;
+            Item chestSlotItem = player.getInventory().armor.get(2).getItem();
+            //check to ensure this is an armor piece instead of something like an elytra
+            if(chestSlotItem instanceof ArmorItem chestplate) {
+                return chestplate.getMaterial() == ModArmorMaterial.PRISMATIC;
+            }
         }
         return false;
     }
     public static boolean wearingLegs(Player player) {
         if (!player.getInventory().armor.get(1).isEmpty()) {
-            ArmorItem leggings = ((ArmorItem) player.getInventory().armor.get(1).getItem());
-            return leggings.getMaterial() == ModArmorMaterial.PRISMATIC;
+            Item pantsSlotItem = player.getInventory().armor.get(1).getItem();
+            //check to ensure this is an armor item
+            if(pantsSlotItem instanceof ArmorItem leggings) {
+                return leggings.getMaterial() == ModArmorMaterial.PRISMATIC;
+            }
         }
         return false;
     }
     public static boolean wearingBoots(Player player) {
         if (!player.getInventory().armor.get(0).isEmpty()) {
-            ArmorItem boots = ((ArmorItem) player.getInventory().armor.get(0).getItem());
-            return boots.getMaterial() == ModArmorMaterial.PRISMATIC;
+            Item bootsSlotItem = player.getInventory().armor.get(0).getItem();
+            //check to ensure this is an armor item
+            if(bootsSlotItem instanceof ArmorItem boots) {
+                return boots.getMaterial() == ModArmorMaterial.PRISMATIC;
+            }
         }
         return false;
     }

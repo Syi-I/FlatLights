@@ -109,6 +109,7 @@ public class EnchantmentEvents {
     public static void xpDropMultiplier(LivingExperienceDropEvent event) {
         LivingEntity user = event.getAttackingPlayer();
         int baseXpAmount = event.getDroppedExperience();
+        //make sure there is an attacking player and not something like /kill
         if(user == null) {
             return;
         }

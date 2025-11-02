@@ -7,21 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- General keybind for cycling modes of tools (No longer able to SNEAK+RIGHT-CLICK to toggle modes)
-- Particle effects when firing arrows for the Pulsing Arrows enchantment to better visualize the splash damage
-- Fragmentation chestplate enchantment which puts a cap on how much damage the wearer can take in a single hit (Level cap of 4) 
-- Tooltip for Regenerating Dye Vial indicating that it is not consumed when used as an ingredient in the crafting table
-- Dye tag recipes for wool, carpet, concrete powder, terracotta, stained glass and glass panes, beds, and candles so that regenerating dyes can be used
+- 
 
 ### Changed
-- Tweaked name scheme of Reusable Dyes to Regenerating Dye Vials
-- Loot tables now only target vanilla structures, but do also include mineshafts as opposed to before which attempted to target all chest-like containers (but often bugged out when involving other mods)
-- Wording for some enchantment descriptions should now be more clear
-- Lowered chance of finding Motivational Chairs in generated loot from 40% -> 30%
+- 
 
 ### Fixed
-- Null pointer and empty map return value crashes stemming from some curio related functions
-- Crash related to Supplementaries arrow pickup and certain projectiles from tools
+- 
 
 ### Planned
 - Curio Set: **Relic Hunter's Resolution**
@@ -45,6 +37,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Rudimentary power generator that just eats items and gives 1 rf per item or something silly
 - Power transfer cable for the power generator
 - Powered item repairer
+
+## [2.0.2+1.20.1] - 2025-11-02
+### Added
+- General keybind for cycling modes of tools (No longer able to SNEAK+RIGHT-CLICK to toggle modes)
+- Particle effects when firing arrows for the Pulsing Arrows enchantment to better visualize the splash damage
+- Fragmentation chestplate enchantment which puts a cap on how much damage the wearer can take in a single hit (Level cap of 4)
+- Tooltip for Regenerating Dye Vial indicating that it is not consumed when used as an ingredient in the crafting table
+- Dye tag recipes for wool, carpet, concrete powder, terracotta, stained glass and glass panes, beds, and candles so that regenerating dyes can be used
+
+### Changed
+- Tweaked name scheme of Reusable Dyes to Regenerating Dye Vials
+- Loot tables now only target vanilla structures, but do also include mineshafts as opposed to before which attempted to target all chest-like containers (but often bugged out when involving other mods)
+- Wording for some enchantment descriptions should now be more clear
+- Lowered chance of finding Motivational Chairs in generated loot from 40% -> 30%
+
+### Fixed
+- Null pointer and empty map return value crashes stemming from some curio related functions
+- Crash related to Supplementaries arrow pickup and certain projectiles from tools
+- Crash related to unchecked armor slot item types for the `DamageReduction` event
+- Crash caused by `xpDropMultiplier` event when triggering with a null attacker source e.g. `/kill` command
 
 ## [2.0.1+1.20.1] - 2025-06-14
 
