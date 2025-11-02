@@ -29,7 +29,8 @@ import java.util.*;
 
 public class MiscUtils {
     
-    static boolean toggle = true;
+    //TODO: remember to turn this off before making a release jar
+    static boolean toggle = false;
     
     /**
      * Puts a message into the info log
