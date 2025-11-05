@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Power transfer cable for the power generator
 - Powered item repairer
 
-## [2.0.2+1.20.1] - 2025-11-02
+## [2.0.2+1.20.1] - 2025-11-04
 ### Added
 - General keybind for cycling modes of tools (No longer able to SNEAK+RIGHT-CLICK to toggle modes)
 - Particle effects when firing arrows for the Pulsing Arrows enchantment to better visualize the splash damage
