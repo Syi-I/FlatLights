@@ -65,6 +65,9 @@ public class ClientSetup {
                         if (stack.getTag().contains(MODE_TAG) && stack.getTag().getInt(MODE_TAG) == PrismaticBladeMk2.SPEAR_MODE) {
                             mk2Mode = 1.0F;
                         }
+                        if (stack.getTag().contains(MODE_TAG) && stack.getTag().getInt(MODE_TAG) == PrismaticBladeMk2.DMG_MODE) {
+                            mk2Mode = 2.0F;
+                        }
                     }
                     return mk2Mode;
                 });

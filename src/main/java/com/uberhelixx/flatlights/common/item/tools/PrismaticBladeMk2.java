@@ -135,11 +135,6 @@ public class PrismaticBladeMk2 extends SwordItem implements IMultiModeItem {
                     pPlayer.startUsingItem(pUsedHand);
                     return InteractionResultHolder.consume(pStack);
                 }
-                //if inactive try doing a block action (like a shield does)
-                if(mode == DEFAULT_MODE){
-                    pPlayer.startUsingItem(pUsedHand);
-                    return InteractionResultHolder.consume(pStack);
-                }
             }
         }
         return super.use(pLevel, pPlayer, pUsedHand);
@@ -152,10 +147,6 @@ public class PrismaticBladeMk2 extends SwordItem implements IMultiModeItem {
             int mode = pStack.getTag().getInt(MODE_TAG);
             if(mode == SPEAR_MODE) {
                 //same duration as a vanilla trident has
-                return 72000;
-            }
-            //if weapon is inactive, allow for blocking
-            if(mode == DEFAULT_MODE) {
                 return 72000;
             }
         }

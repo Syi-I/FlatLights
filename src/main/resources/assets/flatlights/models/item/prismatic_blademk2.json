@@ -402,6 +402,13 @@
 				"flatlights:mode": 1
 			},
 			"model": "flatlights:item/mk2_spear_form_final"
+		},
+		{
+			"__comment": "cleaver form checking nbt",
+			"predicate": {
+				"flatlights:mode": 2
+			},
+			"model": "flatlights:item/mk2_cleaver_form"
 		}
 	]
 }

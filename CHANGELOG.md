@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - 
 
 ### Changed
-- 
+- PrismaticBladeMk2 damage mode has new model to differentiate from other modes more distinctly
 
 ### Fixed
 - 
